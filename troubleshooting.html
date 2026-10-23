@@ -402,6 +402,22 @@ changes before replacing files. A missing package version in a configured
 index is a dependency/index issue to diagnose, not a reason to silently claim
 the documented installation worked.</p>
 </section>
+<section id="powershell-cannot-change-into-a-folder-containing-spaces">
+<h2>PowerShell cannot change into a folder containing spaces<a class="headerlink" href="#powershell-cannot-change-into-a-folder-containing-spaces" title="Link to this heading">#</a></h2>
+<p>For “A positional parameter cannot be found” after a <code class="docutils literal notranslate"><span class="pre">cd</span></code> command, quote the
+entire path:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-Location</span> <span class="n">-LiteralPath</span> <span class="s1">'C:\work\AI works\Desktop_SAM3\SAM_Image_Studio_v1.4.2_CPU\SAM_Image_Studio'</span>
+<span class="nb">Test-Path</span> <span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">install_conda_gpu</span><span class="p">.</span><span class="n">py</span>
+<span class="nb">Test-Path</span> <span class="p">.\</span><span class="n">pyproject</span><span class="p">.</span><span class="n">toml</span>
+</pre></div>
+</div>
+<p>Replace the example with your real folder. Both checks should return <code class="docutils literal notranslate"><span class="pre">True</span></code>
+before running the installer. A <code class="docutils literal notranslate"><span class="pre">False</span></code> result means you are in the wrong
+level of the extracted folder or the source tree is incomplete.</p>
+<p>For native Windows GPU, use the SAM1/2 recipe. The SAM3.1 <code class="docutils literal notranslate"><span class="pre">--sam3</span></code> recipe must
+run inside Linux/WSL2 with Linux Conda, not in Windows PowerShell. See
+<a class="reference internal" href="installation.html#nvidia-gpu-with-conda"><span class="std std-ref">GPU installation</span></a>.</p>
+</section>
 <section id="qt-cannot-open-a-display">
 <h2>Qt cannot open a display<a class="headerlink" href="#qt-cannot-open-a-display" title="Link to this heading">#</a></h2>
 <p>A normal launch requires a desktop display and the platform’s Qt runtime
@@ -510,6 +526,7 @@ integration tests or old bundled XML reports as a current full validation run.</
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-stops">Installation stops</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#powershell-cannot-change-into-a-folder-containing-spaces">PowerShell cannot change into a folder containing spaces</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qt-cannot-open-a-display">Qt cannot open a display</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-detection-or-model-loading-fails">GPU detection or model loading fails</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-do-not-create-the-expected-result">Prompts do not create the expected result</a></li>

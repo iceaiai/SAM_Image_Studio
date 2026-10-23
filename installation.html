@@ -474,15 +474,44 @@ app-owned <code class="docutils literal notranslate"><span class="pre">.venv</sp
 <p>Install Anaconda, Miniforge, or another Conda distribution from its official source. Open
 its Conda prompt, change to this repository, and inspect the detected hardware
 and installation plan:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>run<span class="w"> </span>-n<span class="w"> </span>base<span class="w"> </span>python<span class="w"> </span>scripts/install_conda_gpu.py<span class="w"> </span>--inspect
-conda<span class="w"> </span>run<span class="w"> </span>-n<span class="w"> </span>base<span class="w"> </span>python<span class="w"> </span>scripts/install_conda_gpu.py<span class="w"> </span>--name<span class="w"> </span>sam-image-studio-gpu<span class="w"> </span>--dry-run
-conda<span class="w"> </span>run<span class="w"> </span>-n<span class="w"> </span>base<span class="w"> </span>python<span class="w"> </span>scripts/install_conda_gpu.py<span class="w"> </span>--name<span class="w"> </span>sam-image-studio-gpu
-conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-gpu
-python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>check
-python<span class="w"> </span>-m<span class="w"> </span>samstudio.selftest<span class="w"> </span>--device<span class="w"> </span>cuda
-python<span class="w"> </span>-m<span class="w"> </span>samstudio
+<section id="first-choose-the-correct-project-folder">
+<h3>First choose the correct project folder<a class="headerlink" href="#first-choose-the-correct-project-folder" title="Link to this heading">#</a></h3>
+<p>The working directory must be the <strong>inner <code class="docutils literal notranslate"><span class="pre">SAM_Image_Studio</span></code> folder containing
+<code class="docutils literal notranslate"><span class="pre">scripts/</span></code>, <code class="docutils literal notranslate"><span class="pre">samstudio/</span></code>, and <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></strong>. Do not run installer commands
+from <code class="docutils literal notranslate"><span class="pre">C:\Users\yourname</span></code>, the parent ZIP extraction folder, or inside <code class="docutils literal notranslate"><span class="pre">scripts/</span></code>.
+The CPU-named release archive also contains the GPU installer; you can use that
+complete source tree for the dedicated GPU installation.</p>
+<p>In <strong>Anaconda PowerShell Prompt</strong>, put paths containing spaces in quotes.
+For example, replace this sample path with your actual extracted folder:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-Location</span> <span class="n">-LiteralPath</span> <span class="s1">'C:\work\AI works\Desktop_SAM3\SAM_Image_Studio_v1.4.2_CPU\SAM_Image_Studio'</span>
+<span class="nb">Test-Path</span> <span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">install_conda_gpu</span><span class="p">.</span><span class="n">py</span>
+<span class="nb">Test-Path</span> <span class="p">.\</span><span class="n">pyproject</span><span class="p">.</span><span class="n">toml</span>
 </pre></div>
 </div>
+<p>Both checks must return <strong><code class="docutils literal notranslate"><span class="pre">True</span></code></strong>. An unquoted path such as <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">C:\work\AI</span> <span class="pre">works\...</span></code>
+is split at the space, producing PowerShell’s “A positional parameter cannot
+be found” error. <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">'C:\path</span> <span class="pre">with</span> <span class="pre">spaces\SAM_Image_Studio'</span></code> is also valid;
+<code class="docutils literal notranslate"><span class="pre">Set-Location</span> <span class="pre">-LiteralPath</span></code> is explicit and avoids wildcard interpretation.</p>
+</section>
+<section id="first-installation-native-windows-sam1-2-gpu">
+<h3>First installation: native Windows SAM1/2 GPU<a class="headerlink" href="#first-installation-native-windows-sam1-2-gpu" title="Link to this heading">#</a></h3>
+<p>After the folder checks above, run:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">run</span> <span class="n">-n</span> <span class="n">base</span> <span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">install_conda_gpu</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-inspect</span>
+<span class="n">conda</span> <span class="n">run</span> <span class="n">-n</span> <span class="n">base</span> <span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">install_conda_gpu</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-name</span> <span class="n">sam-image-studio-gpu</span> <span class="p">-</span><span class="n">-dry-run</span>
+<span class="n">conda</span> <span class="n">run</span> <span class="n">-n</span> <span class="n">base</span> <span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">install_conda_gpu</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-name</span> <span class="n">sam-image-studio-gpu</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">sam-image-studio-gpu</span>
+<span class="n">python</span> <span class="n">-m</span> <span class="n">pip</span> <span class="n">check</span>
+<span class="n">python</span> <span class="n">-m</span> <span class="n">samstudio</span><span class="p">.</span><span class="n">selftest</span> <span class="p">-</span><span class="n">-device</span> <span class="n">cuda</span>
+<span class="n">python</span> <span class="n">-m</span> <span class="n">samstudio</span>
+</pre></div>
+</div>
+<p>This creates a <strong>new</strong> environment. <code class="docutils literal notranslate"><span class="pre">(base)</span></code> in the prompt is normal for the
+first three outer commands; the app runs after activating the dedicated GPU
+environment. If that name already exists and you are updating, use the
+<a class="reference internal" href="#updating-an-existing-conda-environment">existing-environment update steps</a>
+instead of recreating it.</p>
+<p>On Linux, change to the corresponding project path first, then use the same
+Conda commands for SAM1/2 GPU. For SAM3/SAM3.1 use the separate recipe below.</p>
 <p>On Windows, <code class="docutils literal notranslate"><span class="pre">Install_GPU_Conda.bat</span></code> and <code class="docutils literal notranslate"><span class="pre">Start_GUI_GPU.bat</span></code> use this default
 environment name. An existing Conda environment is not silently replaced.</p>
 <p>The planner selects PyTorch 2.7.1 / torchvision 0.22.1 from <code class="docutils literal notranslate"><span class="pre">cu128</span></code>, <code class="docutils literal notranslate"><span class="pre">cu126</span></code>, or
@@ -498,11 +527,29 @@ GPU installer’s base environment. Do not add GPU packages to the CPU <code cla
 GUI construction. Model inference still requires compatible checkpoints and a
 representative preview/save/reopen test with actual images.</p>
 </section>
+</section>
 <section id="optional-sam3-and-sam3-1">
 <h2>Optional SAM3 and SAM3.1<a class="headerlink" href="#optional-sam3-and-sam3-1" title="Link to this heading">#</a></h2>
 <p>Use Linux or WSL2, Conda, and a driver supporting CUDA 12.6 or later:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>scripts/install_conda_gpu.py<span class="w"> </span>--name<span class="w"> </span>sam-image-studio-sam3<span class="w"> </span>--sam3
+<p><strong>Native Windows Anaconda is not the SAM3.1 installation path in this release.</strong>
+If you are at a <code class="docutils literal notranslate"><span class="pre">(base)</span> <span class="pre">PS</span> <span class="pre">C:\...&gt;</span></code> prompt on Windows, the ordinary commands
+above prepare SAM1/2 GPU. For SAM3.1, open a <strong>Linux/WSL2 terminal</strong> and use a
+Linux Anaconda/Conda installation inside WSL2. Windows and WSL Conda
+environments are separate; do not try to activate the Windows environment from
+the Linux shell.</p>
+<p>For the sample Windows folder above, the corresponding WSL path is:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="s1">'/mnt/c/work/AI works/Desktop_SAM3/SAM_Image_Studio_v1.4.2_CPU/SAM_Image_Studio'</span>
+<span class="nb">test</span><span class="w"> </span>-f<span class="w"> </span>scripts/install_conda_gpu.py<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">test</span><span class="w"> </span>-f<span class="w"> </span>pyproject.toml
+</pre></div>
+</div>
+<p>Keep the path quoted because it contains a space. Confirm that NVIDIA detection
+works in WSL2 and that Linux Conda is available, then create the separate
+SAM3/SAM3.1 environment:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>run<span class="w"> </span>-n<span class="w"> </span>base<span class="w"> </span>python<span class="w"> </span>scripts/install_conda_gpu.py<span class="w"> </span>--inspect
+conda<span class="w"> </span>run<span class="w"> </span>-n<span class="w"> </span>base<span class="w"> </span>python<span class="w"> </span>scripts/install_conda_gpu.py<span class="w"> </span>--name<span class="w"> </span>sam-image-studio-sam3<span class="w"> </span>--sam3
 conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-sam3
+python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>check
+python<span class="w"> </span>-m<span class="w"> </span>samstudio.selftest<span class="w"> </span>--device<span class="w"> </span>cuda
 hf<span class="w"> </span>auth<span class="w"> </span>login
 python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </pre></div>
@@ -644,7 +691,11 @@ caches are preserved by the supported uninstallers. See
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-on-windows">CPU on Windows</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-on-linux">CPU on Linux</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-in-an-existing-dedicated-environment">CPU in an existing dedicated environment</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpu-with-conda">NVIDIA GPU with Conda</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpu-with-conda">NVIDIA GPU with Conda</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-choose-the-correct-project-folder">First choose the correct project folder</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-installation-native-windows-sam1-2-gpu">First installation: native Windows SAM1/2 GPU</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-sam3-and-sam3-1">Optional SAM3 and SAM3.1</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-an-existing-conda-environment">Updating an existing Conda environment</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#models-storage-and-network">Models, storage, and network</a></li>
