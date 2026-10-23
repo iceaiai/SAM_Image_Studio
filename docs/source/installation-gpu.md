@@ -9,8 +9,8 @@ contains the full prerequisites, diagnostics and model-access details.
 Choose one route before creating an environment:
 
 - **ZIP:** use the [CPU version download list](downloads.md), download v1.4.3
-  and extract every file. The CPU-named source bundle also includes `GPU/`.
-  Open its inner folder containing `pyproject.toml`, `samstudio/` and `GPU/`.
+  and extract every file. The same source bundle includes `GPU/`.
+  Open the extracted project folder containing `pyproject.toml`, `samstudio/` and `GPU/`.
 - **Git:** run these shared commands in your chosen parent folder:
 
 ```sh

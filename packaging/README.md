@@ -1,7 +1,8 @@
 # CPU install, launch and packaging
 
-First [download the current CPU source ZIP](https://github.com/iceaiai/SAM_Image_Studio/releases/download/v1.4.3/SAM_Image_Studio_v1.4.3_CPU.zip),
-extract the complete archive and open its inner `SAM_Image_Studio` folder.
+First [download the current CPU source ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip),
+extract the complete archive and open `SAM_Image_Studio-1.4.3/`, containing
+`pyproject.toml`.
 Alternatively, clone the full repository and enter its root using the
 [shared download/clone steps](../README.md#first-download-or-clone-the-complete-project-cpu-and-gpu).
 For older CPU packages, see the [version download list](https://iceaiai.github.io/SAM_Image_Studio/downloads.html).

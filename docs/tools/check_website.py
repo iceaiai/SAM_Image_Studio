@@ -55,7 +55,7 @@ with sync_playwright() as p:
  assert page.url.endswith('/downloads.html')
  downloads=page.locator('article').get_by_role('link',name='Download ZIP',exact=True)
  assert downloads.count()==2
- assert downloads.nth(0).get_attribute('href').endswith('/v1.4.3/SAM_Image_Studio_v1.4.3_CPU.zip')
+ assert downloads.nth(0).get_attribute('href').endswith('/archive/refs/tags/v1.4.3.zip')
  assert downloads.nth(1).get_attribute('href').endswith('/uploads/SAM_Image_Studio_v1.4.2_CPU.zip')
  page.screenshot(path='/tmp/samstudio-downloads-desktop.png',full_page=True)
  page.goto(base+'/installation.html',wait_until='networkidle')

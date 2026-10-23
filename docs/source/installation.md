@@ -20,7 +20,7 @@ CPU and GPU installations both need the complete project first. Choose **one**:
 
 - **Download:** open the [CPU version download list](downloads.md), click
   **Download ZIP** for v1.4.3, and extract the entire archive. The same source
-  bundle includes optional GPU setup. Enter the inner folder containing
+  bundle includes optional GPU setup. Enter the extracted project folder containing
   `pyproject.toml`, `samstudio/`, `packaging/` and `GPU/`.
 - **Clone:** open a terminal in your chosen parent folder and run:
 
@@ -36,7 +36,7 @@ continue with exactly one CPU or GPU route below.
 ## CPU: Windows
 
 1. Download/extract the complete current source or clone it using the shared
-   steps above. Open the inner folder containing `pyproject.toml`.
+   steps above. Open the extracted project folder containing `pyproject.toml`.
 2. Install Python 3.12 64-bit, if absent. The helper
    `packaging/Install_Python_3_12.bat` uses the official WinGet package.
 3. Open **packaging** in that source folder.

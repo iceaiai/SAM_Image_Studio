@@ -9,10 +9,10 @@ SAM3 ONNX public text weights do not require Hugging Face login.
 
 Do this before every installation route below. Choose **one** option:
 
-- **ZIP:** [Download the complete v1.4.3 source](https://github.com/iceaiai/SAM_Image_Studio/releases/download/v1.4.3/SAM_Image_Studio_v1.4.3_CPU.zip),
-  extract the whole archive, and find its inner folder containing
-  `pyproject.toml`, `samstudio/` and `GPU/`. The CPU-named source bundle also
-  contains all GPU setup files; it is the same shared application.
+- **ZIP:** [Download the complete v1.4.3 source](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip),
+  extract the whole archive, and find the extracted project folder containing
+  `pyproject.toml`, `samstudio/` and `GPU/`. The same source bundle
+  contains all GPU setup files; it is the shared application.
 - **Git:** in your chosen parent folder, run the following in the terminal
   you will use for installation (inside Ubuntu for native SAM3.1):
 

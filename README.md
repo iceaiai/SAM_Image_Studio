@@ -22,7 +22,7 @@ You do not need Git if you download a ZIP.
 
 | CPU version | Download | Package / next step |
 | --- | --- | --- |
-| **1.4.3 — recommended** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/releases/download/v1.4.3/SAM_Image_Studio_v1.4.3_CPU.zip)** | Complete source bundle for Windows/Linux CPU; extract, then use `packaging/Install_CPU.bat` or `bash packaging/install_cpu.sh`. |
+| **1.4.3 — recommended** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip)** | Complete source bundle for Windows/Linux CPU; extract, then use `packaging/Install_CPU.bat` or `bash packaging/install_cpu.sh`. |
 | 1.4.2 — original archive | **[Download ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip)** | Historical CPU source bundle; extract, then use `Install_CPU.bat` or `bash install_cpu.sh` inside its `SAM_Image_Studio` folder. |
 
 These are source packages, not standalone executables. Install **64-bit Python
@@ -31,8 +31,9 @@ separately. The v1.4.3 source bundle also contains the optional GPU setup files;
 you do not need to download a second source package for GPU installation.
 
 **Download route:** click Download ZIP, extract the entire archive, and open the
-inner folder containing `pyproject.toml` and `samstudio/`. Keep the folder contents
-together. For v1.4.3 it also contains `GPU/` and `packaging/`.
+project folder containing `pyproject.toml` and `samstudio/`. Keep the folder contents
+together. The v1.4.3 source ZIP extracts to `SAM_Image_Studio-1.4.3/`; it also contains
+`GPU/` and `packaging/`.
 
 **Git alternative, shared by CPU and GPU:** open a terminal in the parent folder
 where you want to keep the project, then run:
@@ -43,7 +44,7 @@ cd SAM_Image_Studio
 ```
 
 After either route, continue below. See the [download list](https://iceaiai.github.io/SAM_Image_Studio/downloads.html)
-for version details and checksums.
+for version details and installation steps.
 
 ## Install and start on CPU
 
