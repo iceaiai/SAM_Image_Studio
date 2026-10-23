@@ -1,0 +1,3 @@
+# Test host compatibility
+
+The managed test host exposes a virtual process ID to syscalls and a shared /proc namespace. psutil default current-process discovery therefore fails or reads an unrelated process. The test run used PYTHONPATH pointing to host_compat/sitecustomize.py solely to map current /proc reads and use os.sched_getaffinity(0) for the current process. No application source or dependency was patched, and no image algorithm/model output was substituted. Ordinary Windows/Linux hosts do not need this shim. It is not installed into the application wheel. The full runner and child acceptance processes inherited this test-host setting.

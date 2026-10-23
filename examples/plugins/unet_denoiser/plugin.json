@@ -1,0 +1,1 @@
+{"id":"example.unet_denoiser","name":"U-Net denoiser example","api_version":1,"module":"plugin.py","version":"1.0","description":"Tiled grayscale TorchScript U-Net; provide your trained checkpoint. No trained weights are bundled."}

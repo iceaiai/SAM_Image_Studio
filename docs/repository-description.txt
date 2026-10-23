@@ -1,0 +1,1 @@
+Desktop microscopy annotation and SAM segmentation with calibrated measurements, reversible image restoration, and local plugins. CPU and NVIDIA GPU support.

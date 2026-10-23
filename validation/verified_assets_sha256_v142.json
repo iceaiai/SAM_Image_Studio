@@ -1,0 +1,17 @@
+{
+  "fixtures/example_image.emd": "ab32bb274c4e159dbf2e39bf18119b1476e1eec04349ab5fcc77e9701773f9cb",
+  "fixtures/fei_example_tem_stack.emd": "397d5076b0133db608abd985985fad275bf6594823393f72a069020e47c21a1e",
+  "fixtures/multi_signal.dm3": "cd025111a163cad9ef6fb0331b740ddefa2f7024c3f691723bd5235a313aa12e",
+  "fixtures/test-2.dm4": "db23e0fa74d1c50ea1ef3c4df847e952aa15cc97eb25ea96deede46ba1e0edcd",
+  "fixtures/test_STEM_image.dm3": "fcba806af75bc3c2e50e7d7b0626cba545c1464f39e99c8922b225b0b0b0224c",
+  "models/.sam2.1_hiera_tiny.pt.part.ZrDTgL": "f934686423df1ae120b593476334d302d4f9cfb73f8c31db49542bc629ced894",
+  "models/.sam2.1_hiera_tiny.pt.part.hGIfVa": "3fd0dc5114fe35fe44af946a610d85b448a09a78aa028daf3fa3a45b1edf1c4e",
+  "models/.sam_vit_b_01ec64.pth.part.3DNElS": "ad5988c1812c217f24326c4f2b20f9f7c339bf99aac1716cc29b7a6f1aff2cab",
+  "models/.sam_vit_b_01ec64.pth.part.rTSRuV": "9d0a235a3513bc453bc3cc25783dad89cf7d02bcf2ecf4778f19d380b25a53ae",
+  "models/big-lama.pt": "7ba7aa7ac37a4d41fdbbeba3a2af7ead18058552997e3a3cd1a3b2210c9e6b4c",
+  "models/sam2.1_hiera_tiny.pt": "7402e0d864fa82708a20fbd15bc84245c2f26dff0eb43a4b5b93452deb34be69",
+  "models/sam2.1_hiera_tiny.pt.part": "5e1eb966799421d3df45199227fb317bf0933861497bd8dc51105d1765557621",
+  "models/sam_vit_b_01ec64.pth": "ec2df62732614e57411cdcf32a23ffdf28910380d03139ee0f4fcbe91eb8c912",
+  "models/sam_vit_b_01ec64.pth.part": "c73fb866c94a49318c6b51f2964d19e2f38bcd01f390073d3c80cb1cf94ae095",
+  "truck.jpg": "941715e721c8864324a1425b445ea4dde0498b995c45ddce0141a58971c6ff99"
+}

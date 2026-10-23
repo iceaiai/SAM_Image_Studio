@@ -1,0 +1,4 @@
+# Documentation builds do not install or import the desktop application.
+Sphinx==8.2.3
+myst-parser==4.0.1
+sphinx-autoapi==3.6.1

@@ -1,0 +1,23 @@
+# Local Python environments and generated Python/build files
+.venv/
+.venv-*/
+.docs-venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Documentation output and AutoAPI intermediate sources
+docs/_build/
+docs/source/autoapi/
+
+# Downloaded models, local validation and user projects
+validation_assets/
+validation/local_*
+validation/gpu_install_local.json
+SAM_Annotations/
+*.sam.json
+.ipynb_checkpoints/

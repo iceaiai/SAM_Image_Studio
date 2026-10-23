@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "version": "1.4.2",
+  "import_path": "/workspace/scratch/5fa25f42e157/revision_v142/work/SAM_Image_Studio/.venv/lib/python3.12/site-packages/samstudio/__init__.py",
+  "whole_image_actual_sam2_1_masks": 3,
+  "negative_instance_excluded": true,
+  "native_v14_panels": true,
+  "dedicated_text_button_clicked": true,
+  "effective_alias": "truck",
+  "actual_text_masks": 3,
+  "actual_processing_and_plugin_preview_apply_undo": [
+    "Preview Gaussian smooth",
+    "Plugin: U-Net denoise"
+  ],
+  "actual_torchscript_unet_interface": true,
+  "untrained_checkpoint_only": true,
+  "retained_real_crop_and_native_recovery": true,
+  "pdf_pages": [
+    22,
+    13,
+    27
+  ],
+  "workspace_remove_keeps_projects": true,
+  "actual_startup_no_leaves_empty": true,
+  "background_heartbeat_ticks": 1869,
+  "new_backend_checks": {
+    "DCT sparsity": true,
+    "TV iterative (notebook)": true,
+    "Sparse dictionary learning": true,
+    "BM3D": true,
+    "Noise2Void": {
+      "real_train_save_reload": true,
+      "epochs": 1,
+      "steps": 1
+    },
+    "N2V2": {
+      "real_train_save_reload": true,
+      "epochs": 1,
+      "steps": 1
+    }
+  },
+  "excel_calibration_and_native_recovery": true,
+  "dot_scope_guard": true,
+  "errors": []
+}

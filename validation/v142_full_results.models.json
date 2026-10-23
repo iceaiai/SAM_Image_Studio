@@ -1,0 +1,115 @@
+{
+  "real_checkpoint_tests": [
+    {
+      "family": "SAM1",
+      "variant": "ViT-B",
+      "device": "cpu",
+      "checkpoint_sha256": "ec2df62732614e57411cdcf32a23ffdf28910380d03139ee0f4fcbe91eb8c912",
+      "load_seconds": 2.579,
+      "v13_inverted_prompt": true,
+      "v13_inverted_grid": true,
+      "v13_smoothed_source_segmentation": true,
+      "prompt_seconds": 8.812,
+      "point_area": 2367,
+      "point_score": 0.9897531270980835,
+      "box_area": 15341,
+      "roi_area": 9988,
+      "whole_seconds": 0.207,
+      "whole_new_masks": 2,
+      "failed_load_preserved_predictor": true,
+      "qt_preview_accept_recovery": true,
+      "prompted_whole_scope_exact_native_prediction": true,
+      "preload_prompts_then_new_live_clicks": true,
+      "zoom_40x_point_and_cleaning_recovery": true,
+      "v14_text_rejected_on_sam1": true
+    },
+    {
+      "family": "SAM2.1",
+      "variant": "Tiny",
+      "device": "cpu",
+      "checkpoint_sha256": "7402e0d864fa82708a20fbd15bc84245c2f26dff0eb43a4b5b93452deb34be69",
+      "load_seconds": 1.058,
+      "v13_inverted_prompt": true,
+      "v13_inverted_grid": true,
+      "v13_smoothed_source_segmentation": true,
+      "prompt_seconds": 2.287,
+      "point_area": 2488,
+      "point_score": 0.8765580654144287,
+      "box_area": 2792,
+      "roi_area": 3118,
+      "whole_seconds": 0.161,
+      "whole_new_masks": 3,
+      "failed_load_preserved_predictor": true,
+      "qt_preview_accept_recovery": true,
+      "prompted_whole_scope_exact_native_prediction": true,
+      "preload_prompts_then_new_live_clicks": true,
+      "zoom_40x_point_and_cleaning_recovery": true,
+      "v14_real_text_alias": {
+        "input": "sample vehicle",
+        "effective": "truck",
+        "detector": "IDEA-Research/grounding-dino-tiny",
+        "revision": "a2bb814dd30d776dcf7e30523b00659f4f141c71",
+        "masks": 2
+      },
+      "v14_text_exact_roi": true
+    },
+    {
+      "family": "LaMa",
+      "device": "cpu",
+      "checkpoint_sha256": "7ba7aa7ac37a4d41fdbbeba3a2af7ead18058552997e3a3cd1a3b2210c9e6b4c",
+      "inference_seconds": 1.247,
+      "outside_region_unchanged": true
+    },
+    {
+      "family": "SAM1",
+      "device": "cpu",
+      "fresh_process": true,
+      "qt_heartbeat_ticks": 688,
+      "preexisting_prompts_then_new_clicks": true,
+      "accepted_objects": 1,
+      "autosave_recovery": true,
+      "histogram_paint_resize": true,
+      "errors": []
+    },
+    {
+      "family": "SAM1",
+      "device": "cpu",
+      "fresh_process": true,
+      "qt_heartbeat_ticks": 726,
+      "preexisting_prompts_then_new_clicks": true,
+      "accepted_objects": 1,
+      "autosave_recovery": true,
+      "histogram_paint_resize": true,
+      "errors": []
+    },
+    {
+      "family": "SAM2.1",
+      "device": "cpu",
+      "fresh_process": true,
+      "qt_heartbeat_ticks": 283,
+      "preexisting_prompts_then_new_clicks": true,
+      "accepted_objects": 1,
+      "autosave_recovery": true,
+      "histogram_paint_resize": true,
+      "errors": []
+    },
+    {
+      "family": "SAM2.1",
+      "device": "cpu",
+      "fresh_process": true,
+      "qt_heartbeat_ticks": 296,
+      "preexisting_prompts_then_new_clicks": true,
+      "accepted_objects": 1,
+      "autosave_recovery": true,
+      "histogram_paint_resize": true,
+      "errors": []
+    }
+  ],
+  "not_verified": [
+    "NVIDIA CUDA",
+    "Native SAM3",
+    "SAM1 ViT-L/ViT-H",
+    "SAM2 Small/Base+/Large",
+    "Native Windows EXE"
+  ]
+}

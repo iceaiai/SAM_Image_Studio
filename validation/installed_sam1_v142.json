@@ -1,0 +1,11 @@
+{
+  "family": "SAM1",
+  "device": "cpu",
+  "fresh_process": true,
+  "qt_heartbeat_ticks": 800,
+  "preexisting_prompts_then_new_clicks": true,
+  "accepted_objects": 1,
+  "autosave_recovery": true,
+  "histogram_paint_resize": true,
+  "errors": []
+}

@@ -1,0 +1,4 @@
+# Grounding DINO Tiny text-to-box support for SAM2 / SAM2.1.
+transformers==4.53.3
+safetensors>=0.4.3,<1
+huggingface-hub>=0.30,<1

@@ -1,0 +1,23 @@
+# SAM Image Studio 1.4.2
+
+## Calibration and segmentation
+
+Excel pixel-size lookup reads converted_image_name and converted_size, matches filenames without their extension and applies physical calibration to current/later images. Unit selection, invalid/conflicting-row checks, rotated-coordinate calibration, autosave and Undo are supported.
+
+Point/dot segmentation uses whole-image exemplar search. Single object and Inside ROI only are hidden and disabled for this tool, and return with area tools.
+
+SAM3.1 is a distinct GPU-only family using the official multiplex predictor and sam3.1_multiplex.pt weights. It supports point-derived/area examples and text through lossless single-frame sessions. The dedicated Linux/WSL2 Conda installer supplies the optional backend. Actual CUDA/SAM3.1 inference requires local hardware validation.
+
+## Restoration and parameter guidance
+
+Processing adds global DCT sparsity and explicit notebook TV with separate reconstruction/denoising tasks. The notebook preset preserves random 10% sampling, seed 7, nearest initialization and 40 iterations. Ordinary denoising uses relaxed data consistency, so full images are not restored unchanged by hard L2 constraints. The TV denoise step starts at 0.01; the reconstruction preset retains notebook step 0.08.
+
+SPORCO dictionary learning, official BM3D and actual CAREamics Noise2Void/N2V2 training/prediction join the configurable TV, wavelet, NLM, bilateral and median methods. Tiny BM3D inputs receive safe reflected context. Each parameter has a default, allowed range/options, explanation and suggested starting values. Defaults reload on each dialog open/method change. The complete Denoising Parameters PDF is available from Help.
+
+Neural models save per channel and can be reloaded. Model files remain after image preview cancellation or image Undo. BM3D/BM4D retain their upstream academic/non-commercial license terms. No pretrained model weights are bundled.
+
+## Workflow and validation
+
+The v1.4 annotation, Objects/Groups/Image files panels, COCO export, reversible cleaning, manual/edit tools, calibrated statistics, transforms and savepoints remain in use. Whole-image positive/negative examples, text Run, automatic grid, protected crops, workspace recovery and the plugin API are retained. Developer plugin/U-Net implementation instructions remain in the separate For Developer manual.
+
+The CPU installer installs its specified PyTorch build before restoration dependencies. The Windows packaging recipe includes all three PDFs and BM4D native data. TEST_REPORT.md records the complete test run, installed-package acceptance, version/asset evidence and unverified platforms. Source comparison and patch are included under validation.

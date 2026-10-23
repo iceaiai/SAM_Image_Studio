@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sam-image-studio"
+version = "1.4.2"
+description = "Desktop microscopy annotation, SAM segmentation, calibrated measurements and reversible cleaning"
+requires-python = ">=3.12,<3.13"
+license = "MIT"
+dependencies = ["PySide6==6.8.3", "numpy>=1.26,<3", "scipy>=1.13,<2", "Pillow>=10,<13", "opencv-python-headless==4.11.0.86", "tifffile>=2025.1", "imagecodecs>=2024.6", "rosettasciio>=0.12,<0.16", "h5py>=3.12,<4", "matplotlib>=3.9,<4", "PyYAML>=6,<7", "segment-anything==1.0", "scikit-image==0.26.0", "transformers==4.53.3", "huggingface-hub>=0.30,<1", "safetensors>=0.4.3,<1", "PyWavelets==1.10.0", "openpyxl==3.1.5", "sporco==0.2.2.post1", "bm3d==4.0.3", "careamics==0.3.5"]
+
+[project.scripts]
+sam-image-studio = "samstudio.app:main"
+
+[tool.setuptools.packages.find]
+include = ["samstudio*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = ["integration: requires downloaded real model weights", "microscopy: uses real reader fixtures"]
+
+
+[tool.setuptools.package-data]
+samstudio = ["resources/*.pdf"]

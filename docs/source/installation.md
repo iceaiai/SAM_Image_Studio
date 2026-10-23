@@ -1,0 +1,186 @@
+# Installation
+
+Run all commands from the repository root, the directory containing
+`pyproject.toml`, `samstudio/`, and `scripts/`. Use a writable local folder and
+**64-bit Python 3.12**: this release requires `>=3.12,<3.13`.
+
+```sh
+git clone https://github.com/iceaiai/SAM_Image_Studio.git
+cd SAM_Image_Studio
+```
+
+Alternatively, extract the original CPU ZIP from the [downloads](downloads.md)
+page. It contains its own `SAM_Image_Studio/` top-level folder. Preserve the
+complete tree, including `vendor/`, because the installer checks the bundled
+SAM2 wheel's SHA-256 digest.
+
+## Choose a backend
+
+| Workflow | Environment | Models | Requirements |
+| --- | --- | --- | --- |
+| CPU | App-owned `.venv` or dedicated existing virtual/Conda environment | SAM1, SAM2/2.1 | Python 3.12; no NVIDIA hardware needed |
+| NVIDIA GPU | Dedicated non-base Conda environment | SAM1, SAM2/2.1 | NVIDIA driver and compatible CUDA PyTorch wheels |
+| Optional SAM3 / SAM3.1 | Separate Linux/WSL2 Conda environment | Matching SAM3 or SAM3.1 weights | Driver supporting CUDA 12.6+ and approved checkpoint access |
+
+The installer does not install system NVIDIA drivers. AMD/Intel GPUs use the
+CPU path in this release. Native Windows CUDA and real SAM3/SAM3.1 inference
+require acceptance testing on the target hardware.
+
+## CPU on Windows
+
+1. Install 64-bit Python 3.12, if needed, using the official installer or
+   `Install_Python_3_12.bat`.
+2. Run `Install_CPU.bat` from the writable source/release folder.
+3. Run `Start_GUI.bat`.
+
+To install Python per user from PowerShell:
+
+```powershell
+winget install --exact --id Python.Python.3.12 --architecture x64 --scope user --source winget
+```
+
+Reopen the terminal and check `py -3.12 --version`. The batch launcher uses the
+app-owned environment; no administrator shell is required for that per-user
+Python installation.
+
+## CPU on Linux
+
+Check that `python3 --version` reports Python 3.12, then run:
+
+```sh
+bash install_cpu.sh
+bash start_gui.sh
+```
+
+If `python3` is a different version but `python3.12` is installed, use the
+installer explicitly:
+
+```sh
+python3.12 scripts/install_environment.py --backend cpu
+bash start_gui.sh
+```
+
+The installer creates `.venv`, installs CPU PyTorch 2.7.1 and torchvision 0.22.1,
+installs `requirements.lock.txt` and the bundled SAM2 wheel, installs the app,
+runs `pip check`, and runs `samstudio.selftest --device cpu`. System Python
+packages remain separate. If `.venv` already exists without the app's ownership
+marker, the installer stops rather than replacing it.
+
+## CPU in an existing dedicated environment
+
+Activate a Python 3.12 virtual environment or create a CPU Conda environment:
+
+```sh
+conda create -n sam-image-studio-cpu python=3.12 pip
+conda activate sam-image-studio-cpu
+python scripts/install_environment.py --backend cpu --current
+python -m samstudio
+```
+
+`--current` requires an activated virtual or Conda environment. When using it,
+start with `python -m samstudio`; the default shell/batch launchers target the
+app-owned `.venv` instead.
+
+## NVIDIA GPU with Conda
+
+Install Miniforge or another Conda distribution from its official source. Open
+its Conda prompt, change to this repository, and inspect the detected hardware
+and installation plan:
+
+```sh
+conda run -n base python scripts/install_conda_gpu.py --inspect
+conda run -n base python scripts/install_conda_gpu.py --name sam-image-studio-gpu --dry-run
+conda run -n base python scripts/install_conda_gpu.py --name sam-image-studio-gpu
+conda activate sam-image-studio-gpu
+python -m pip check
+python -m samstudio.selftest --device cuda
+python -m samstudio
+```
+
+On Windows, `Install_GPU_Conda.bat` and `Start_GUI_GPU.bat` use this default
+environment name. An existing Conda environment is not silently replaced.
+
+The planner selects PyTorch 2.7.1 / torchvision 0.22.1 from `cu128`, `cu126`, or
+`cu118` according to the driver's reported capability. GPUs with compute
+capability 10 or newer require the CUDA 12.8 build; outdated drivers are
+rejected. A driver-reported CUDA version is its maximum supported runtime,
+not evidence of working CUDA inference or sufficient free VRAM.
+
+Select **NVIDIA CUDA (Conda)** or **Automatic device** in Model manager.
+Automatic chooses the visible CUDA device with most total memory inside Conda;
+otherwise it uses CPU. This application rejects CUDA outside Conda and in the
+GPU installer's base environment. Do not add GPU packages to the CPU `.venv`.
+
+The CUDA self-test exercises a matrix product, torchvision NMS, recovery, and
+GUI construction. Model inference still requires compatible checkpoints and a
+representative preview/save/reopen test with actual images.
+
+## Optional SAM3 and SAM3.1
+
+Use Linux or WSL2, Conda, and a driver supporting CUDA 12.6 or later:
+
+```sh
+python scripts/install_conda_gpu.py --name sam-image-studio-sam3 --sam3
+conda activate sam-image-studio-sam3
+hf auth login
+python -m samstudio
+```
+
+Obtain access separately at <https://huggingface.co/facebook/sam3> or
+<https://huggingface.co/facebook/sam3.1>. Select the matching model family and
+authorized checkpoint in Model manager. `sam3.pt` and
+`sam3.1_multiplex.pt` are different architectures and are not interchangeable.
+SAM3 CPU and native Windows SAM3 are not enabled as verified installation paths.
+
+`requirements-sam3-experimental.txt` pins the official SAM3 source commit and a
+separate NumPy 1.26-compatible dependency graph. The default CPU recipe uses
+NumPy 2. Do not merge these environments or independently upgrade their
+NumPy/TIFF/codec dependencies. See the source release's
+{download}`GPU guide <../../GPU_CONDA_GUIDE.md>` for the recorded validation limits.
+
+## Models, storage, and network
+
+Model weights are **not bundled**. Model manager can download supported SAM1/2
+weights separately, or use a matching local checkpoint. Text prompting for
+SAM2/2.1 additionally downloads the pinned Grounding DINO model. No hosted API
+key is needed for ordinary local CPU annotation. Gated SAM3/SAM3.1 weights need
+the user's own approved access.
+
+Installation uses PyPI (`pypi.org`, `files.pythonhosted.org`) and
+`download.pytorch.org` and its official redirects. Model downloads use hosts
+specified in `samstudio/inference.py`, including
+`dl.fbaipublicfiles.com`; optional Hugging Face models also need
+`huggingface.co` and the download destinations returned by that service.
+Restricted cloud environments must allow the actual required destinations.
+Keep TLS and artifact checksum verification enabled.
+
+Application state/model caches normally live at
+`%LOCALAPPDATA%/SAMImageStudio` on Windows or
+`~/.local/share/sam-image-studio` on Linux. `SAM_STUDIO_DATA_DIR` overrides the
+location. Choose a writable **project folder** for native `.sam.json` saves.
+
+## Headless cloud checks
+
+The app is a Qt desktop GUI. A local desktop needs a working display. On a
+headless Linux machine, run installation diagnostics offscreen:
+
+```sh
+QT_QPA_PLATFORM=offscreen .venv/bin/python -m samstudio.selftest --device cpu
+```
+
+Offscreen checks construct the GUI and exercise persistence; they do not
+provide an interactive desktop or verify GPU model inference.
+
+## Uninstall
+
+Close the GUI, then use `Uninstall.bat` or `bash uninstall.sh` for app-owned
+local environments. For the dedicated GPU environment:
+
+```sh
+conda deactivate
+conda env remove -n sam-image-studio-gpu
+```
+
+Use its actual name. Source images, annotation projects, exports, and model
+caches are preserved by the supported uninstallers. See
+[troubleshooting](troubleshooting.md) for recovery and dependency failures.
