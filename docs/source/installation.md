@@ -92,7 +92,33 @@ Install Anaconda, Miniforge, or another Conda distribution from its official sou
 its Conda prompt, change to this repository, and inspect the detected hardware
 and installation plan:
 
-```sh
+### First choose the correct project folder
+
+The working directory must be the **inner `SAM_Image_Studio` folder containing
+`scripts/`, `samstudio/`, and `pyproject.toml`**. Do not run installer commands
+from `C:\Users\yourname`, the parent ZIP extraction folder, or inside `scripts/`.
+The CPU-named release archive also contains the GPU installer; you can use that
+complete source tree for the dedicated GPU installation.
+
+In **Anaconda PowerShell Prompt**, put paths containing spaces in quotes.
+For example, replace this sample path with your actual extracted folder:
+
+```powershell
+Set-Location -LiteralPath 'C:\work\AI works\Desktop_SAM3\SAM_Image_Studio_v1.4.2_CPU\SAM_Image_Studio'
+Test-Path .\scripts\install_conda_gpu.py
+Test-Path .\pyproject.toml
+```
+
+Both checks must return **`True`**. An unquoted path such as `cd C:\work\AI works\...`
+is split at the space, producing PowerShell's "A positional parameter cannot
+be found" error. `cd 'C:\path with spaces\SAM_Image_Studio'` is also valid;
+`Set-Location -LiteralPath` is explicit and avoids wildcard interpretation.
+
+### First installation: native Windows SAM1/2 GPU
+
+After the folder checks above, run:
+
+```powershell
 conda run -n base python scripts/install_conda_gpu.py --inspect
 conda run -n base python scripts/install_conda_gpu.py --name sam-image-studio-gpu --dry-run
 conda run -n base python scripts/install_conda_gpu.py --name sam-image-studio-gpu
@@ -101,6 +127,15 @@ python -m pip check
 python -m samstudio.selftest --device cuda
 python -m samstudio
 ```
+
+This creates a **new** environment. `(base)` in the prompt is normal for the
+first three outer commands; the app runs after activating the dedicated GPU
+environment. If that name already exists and you are updating, use the
+[existing-environment update steps](#updating-an-existing-conda-environment)
+instead of recreating it.
+
+On Linux, change to the corresponding project path first, then use the same
+Conda commands for SAM1/2 GPU. For SAM3/SAM3.1 use the separate recipe below.
 
 On Windows, `Install_GPU_Conda.bat` and `Start_GUI_GPU.bat` use this default
 environment name. An existing Conda environment is not silently replaced.
@@ -124,9 +159,30 @@ representative preview/save/reopen test with actual images.
 
 Use Linux or WSL2, Conda, and a driver supporting CUDA 12.6 or later:
 
+**Native Windows Anaconda is not the SAM3.1 installation path in this release.**
+If you are at a `(base) PS C:\...>` prompt on Windows, the ordinary commands
+above prepare SAM1/2 GPU. For SAM3.1, open a **Linux/WSL2 terminal** and use a
+Linux Anaconda/Conda installation inside WSL2. Windows and WSL Conda
+environments are separate; do not try to activate the Windows environment from
+the Linux shell.
+
+For the sample Windows folder above, the corresponding WSL path is:
+
 ```sh
-python scripts/install_conda_gpu.py --name sam-image-studio-sam3 --sam3
+cd '/mnt/c/work/AI works/Desktop_SAM3/SAM_Image_Studio_v1.4.2_CPU/SAM_Image_Studio'
+test -f scripts/install_conda_gpu.py && test -f pyproject.toml
+```
+
+Keep the path quoted because it contains a space. Confirm that NVIDIA detection
+works in WSL2 and that Linux Conda is available, then create the separate
+SAM3/SAM3.1 environment:
+
+```sh
+conda run -n base python scripts/install_conda_gpu.py --inspect
+conda run -n base python scripts/install_conda_gpu.py --name sam-image-studio-sam3 --sam3
 conda activate sam-image-studio-sam3
+python -m pip check
+python -m samstudio.selftest --device cuda
 hf auth login
 python -m samstudio
 ```

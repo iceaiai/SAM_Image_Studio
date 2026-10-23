@@ -14,6 +14,25 @@ changes before replacing files. A missing package version in a configured
 index is a dependency/index issue to diagnose, not a reason to silently claim
 the documented installation worked.
 
+## PowerShell cannot change into a folder containing spaces
+
+For "A positional parameter cannot be found" after a `cd` command, quote the
+entire path:
+
+```powershell
+Set-Location -LiteralPath 'C:\work\AI works\Desktop_SAM3\SAM_Image_Studio_v1.4.2_CPU\SAM_Image_Studio'
+Test-Path .\scripts\install_conda_gpu.py
+Test-Path .\pyproject.toml
+```
+
+Replace the example with your real folder. Both checks should return `True`
+before running the installer. A `False` result means you are in the wrong
+level of the extracted folder or the source tree is incomplete.
+
+For native Windows GPU, use the SAM1/2 recipe. The SAM3.1 `--sam3` recipe must
+run inside Linux/WSL2 with Linux Conda, not in Windows PowerShell. See
+[GPU installation](installation.md#nvidia-gpu-with-conda).
+
 ## Qt cannot open a display
 
 A normal launch requires a desktop display and the platform's Qt runtime
