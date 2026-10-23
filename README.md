@@ -7,6 +7,12 @@ This repository contains the complete **1.4.2** application source extracted
 from the supplied CPU release, all five original uploads, and Sphinx
 documentation based on the code and user/developer manuals.
 
+**[Documentation website](https://iceaiai.github.io/SAM_Image_Studio/)** ·
+[Installation and updates](https://iceaiai.github.io/SAM_Image_Studio/installation.html) ·
+[Image workflows](https://iceaiai.github.io/SAM_Image_Studio/features/index.html) ·
+[SAM3.1 text and shape prompts](https://iceaiai.github.io/SAM_Image_Studio/segmentation/sam31.html) ·
+[Buttons, menus and modes](https://iceaiai.github.io/SAM_Image_Studio/documentation/index.html)
+
 ## Features
 
 - Manual annotation, editable masks/shapes, groups, Undo/Redo, and native
@@ -109,9 +115,13 @@ python3.12 -m venv .docs-venv
 
 Open `docs/_build/html/index.html` locally. Windows commands and editing details
 are in [development and documentation](docs/source/development.md).
-GitHub Actions builds the HTML and saves a downloadable artifact;
-`.readthedocs.yaml` supports optional Read the Docs hosting. A hosted site needs
-a separate service connection/deployment.
+The Sphinx website uses the PyData Sphinx Theme, with installation, image
+workflows, a control-by-control reference and a dedicated SAM3.1 prompting
+guide. GitHub Actions builds the HTML, saves an artifact and updates the
+prebuilt `gh-pages` branch on `main`. Pages serves that static branch.
+For local publication and hosting prerequisites, see
+[website publishing](docs/source/developer/publishing.md).
+`.readthedocs.yaml` supports optional Read the Docs hosting.
 
 ## Original uploads and repository layout
 

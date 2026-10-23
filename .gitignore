@@ -21,3 +21,4 @@ validation/gpu_install_local.json
 SAM_Annotations/
 *.sam.json
 .ipynb_checkpoints/
+.pages-publish/

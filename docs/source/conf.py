@@ -15,19 +15,30 @@ release = next(
     and any(isinstance(t, ast.Name) and t.id == "__version__" for t in node.targets)
 )
 version = release
-extensions = ["myst_parser", "autoapi.extension", "sphinx.ext.napoleon"]
+extensions = ["myst_parser", "sphinx_design", "autoapi.extension", "sphinx.ext.napoleon"]
 source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
 root_doc = "index"
 exclude_patterns = []
 language = "en"
-html_theme = "alabaster"
+html_theme = "pydata_sphinx_theme"
 html_title = f"{project} {release}"
 html_theme_options = {
-    "description": "Microscopy annotation, segmentation and image restoration",
-    "github_user": "iceaiai",
-    "github_repo": "SAM_Image_Studio",
+    "logo": {"text": "SAM Image Studio"},
+    "navigation_depth": 3,
+    "show_nav_level": 1,
+    "navbar_align": "left",
+    "navbar_end": ["theme-switcher", "navbar-icon-links"],
+    "icon_links": [{"name": "GitHub", "url": "https://github.com/iceaiai/SAM_Image_Studio", "icon": "fa-brands fa-github"}],
+    "show_prev_next": True,
+    "footer_start": ["copyright"],
+    "footer_end": ["sphinx-version", "theme-version"],
 }
-html_static_path = []
+html_context = {"github_user": "iceaiai", "github_repo": "SAM_Image_Studio", "github_version": "main", "doc_path": "docs/source"}
+html_baseurl = "https://iceaiai.github.io/SAM_Image_Studio/"
+html_static_path = ["_static"]
+html_css_files = ["studio.css"]
+html_copy_source = False
+html_show_sourcelink = False
 myst_enable_extensions = ["colon_fence", "dollarmath"]
 myst_heading_anchors = 4
 

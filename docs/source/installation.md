@@ -4,6 +4,11 @@ Run all commands from the repository root, the directory containing
 `pyproject.toml`, `samstudio/`, and `scripts/`. Use a writable local folder and
 **64-bit Python 3.12**: this release requires `>=3.12,<3.13`.
 
+For **Anaconda GPU testing**, go to [NVIDIA GPU with Conda](#nvidia-gpu-with-conda)
+and [optional SAM3/SAM3.1](#optional-sam3-and-sam31). After first installation,
+use [Updating an existing Conda environment](#updating-an-existing-conda-environment).
+The ordinary CPU route remains available for SAM1/SAM2.
+
 ```sh
 git clone https://github.com/iceaiai/SAM_Image_Studio.git
 cd SAM_Image_Studio
@@ -83,7 +88,7 @@ app-owned `.venv` instead.
 
 ## NVIDIA GPU with Conda
 
-Install Miniforge or another Conda distribution from its official source. Open
+Install Anaconda, Miniforge, or another Conda distribution from its official source. Open
 its Conda prompt, change to this repository, and inspect the detected hardware
 and installation plan:
 
@@ -137,6 +142,44 @@ separate NumPy 1.26-compatible dependency graph. The default CPU recipe uses
 NumPy 2. Do not merge these environments or independently upgrade their
 NumPy/TIFF/codec dependencies. See the source release's
 {download}`GPU guide <../../GPU_CONDA_GUIDE.md>` for the recorded validation limits.
+
+## Updating an existing Conda environment
+
+**A routine GPU application update does not require uninstalling Anaconda or
+deleting the existing environment.** Close the GUI, obtain the new source
+version, activate the same dedicated GPU environment, and run the installer
+from the new version's directory.
+
+For SAM3/SAM3.1:
+
+```sh
+conda activate sam-image-studio-sam3
+git pull --ff-only
+python scripts/install_conda_gpu.py --current --sam3
+python -m samstudio
+```
+
+Replace the environment name with your actual name. If using a new release ZIP,
+extract the complete new release to a fresh folder and change to it **instead
+of** running `git pull`. The same `--current --sam3` command updates the app and
+dependencies in the existing activated environment. Do not run the
+environment-creation command with the existing name for routine updates.
+
+For a SAM1/2-only GPU environment, use
+`python scripts/install_conda_gpu.py --current` without `--sam3`.
+For an existing CPU environment, use
+`python scripts/install_environment.py --backend cpu --current`.
+
+Installing only a requirements file does not update all of the application,
+verified vendor wheel, or hardware-selected PyTorch installation steps. The
+project installer performs those steps, checks dependency consistency, and
+runs the self-test. Keep model weights/projects in their existing separate
+locations and select weights matching the chosen architecture.
+
+Create a **new parallel environment** when a release explicitly requires an
+incompatible stack or dependency conflicts cannot be resolved. Keep the old
+working environment until the new one passes your GPU/model acceptance checks.
+That is a migration decision, not a requirement for every version update.
 
 ## Models, storage, and network
 

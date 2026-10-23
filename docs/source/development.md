@@ -97,10 +97,10 @@ build. The notebook is offered as a download and is not executed by Sphinx.
 ## Continuous integration and hosting
 
 `.github/workflows/docs.yml` builds HTML with warnings treated as errors on
-pushes and pull requests, then uploads the site as a workflow artifact.
-`.readthedocs.yaml` supplies a Python 3.12 configuration for an optional
-Read the Docs project. Connecting that service or deploying GitHub Pages is a
-separate publishing step; these files alone do not publish a documentation site.
+pushes and pull requests, uploads a workflow artifact, and updates the static
+GitHub Pages branch on `main`. `.readthedocs.yaml` remains an optional alternative.
+See [website publishing](developer/publishing.md) for local publication and
+hosting prerequisites. A local build alone does not establish a live site.
 
 ## Edit the right source
 

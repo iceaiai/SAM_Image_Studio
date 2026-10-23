@@ -9,9 +9,16 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: documentation-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   sphinx:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pages: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -28,3 +35,26 @@ jobs:
           name: sam-image-studio-docs
           path: docs/_build/html/
           if-no-files-found: error
+      - name: Check out the static Pages branch
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: .pages-publish
+      - name: Update the static website
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: |
+          rsync -a --delete --exclude=.git --exclude=CNAME --exclude=.doctrees --exclude=.buildinfo docs/_build/html/ .pages-publish/
+          touch .pages-publish/.nojekyll
+          git -C .pages-publish config user.name 'github-actions[bot]'
+          git -C .pages-publish config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C .pages-publish add --all
+          if ! git -C .pages-publish diff --cached --quiet; then
+            git -C .pages-publish commit -m "Publish Sphinx website from ${GITHUB_SHA}"
+            git -C .pages-publish push origin HEAD:gh-pages
+          fi
+      - name: Request a GitHub Pages build
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds" --silent
