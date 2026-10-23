@@ -49,7 +49,7 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/troubleshooting.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Original supplied files" href="downloads.html" />
+    <link rel="next" title="CPU version downloads and manuals" href="downloads.html" />
     <link rel="prev" title="Denoising parameters" href="denoising.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -323,10 +323,11 @@
 <li class="toctree-l1"><a class="reference internal" href="segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation/dialogs.html">Dialogs and their controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation/files.html">Folders, projects, and model files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation-gpu.html">GPU installation and updates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-manual.html">User manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="denoising.html">Denoising parameters</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Troubleshooting installation and operation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="downloads.html">Original supplied files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="downloads.html">CPU version downloads and manuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="provenance.html">Sources, versions, and licenses</a></li>
 </ul>
 </div>
@@ -397,14 +398,16 @@ environment is usually unnecessary.</p>
 <section id="confirm-the-folder-and-environment">
 <h2>1. Confirm the folder and environment<a class="headerlink" href="#confirm-the-folder-and-environment" title="Link to this heading">#</a></h2>
 <p>A PowerShell error saying “A positional parameter cannot be found” usually means
-an unquoted path with spaces. Enter the real project root:</p>
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-Location</span> <span class="n">-LiteralPath</span> <span class="s1">'C:\work\AI works\SAM_Image_Studio'</span>
+an unquoted path with spaces. First download/extract or clone the complete
+project. Then enter its root. The following paths are fictional examples;
+replace them with your chosen folder:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-Location</span> <span class="n">-LiteralPath</span> <span class="s1">'C:\Projects\Example Folder\SAM_Image_Studio'</span>
 <span class="nb">Test-Path</span> <span class="p">.\</span><span class="n">GPU</span><span class="p">\</span><span class="n">install</span><span class="p">.</span><span class="n">py</span>
 <span class="nb">Test-Path</span> <span class="p">.\</span><span class="n">pyproject</span><span class="p">.</span><span class="n">toml</span>
 </pre></div>
 </div>
 <p>Both should return <code class="docutils literal notranslate"><span class="pre">True</span></code>. Linux/WSL needs its own path, for example
-<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">'/mnt/c/work/AI</span> <span class="pre">works/SAM_Image_Studio'</span></code>. Use Linux Conda inside WSL for native
+<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">'/mnt/c/Projects/Example</span> <span class="pre">Folder/SAM_Image_Studio'</span></code>. Use Linux Conda inside WSL for native
 SAM3.1. Windows Anaconda alone is not Linux Conda. Activate the dedicated
 <code class="docutils literal notranslate"><span class="pre">sam-image-studio-sam3</span></code> or <code class="docutils literal notranslate"><span class="pre">sam-image-studio-gpu</span></code> environment before <code class="docutils literal notranslate"><span class="pre">--current</span></code>.
 Application installation into Conda base is rejected.</p>
@@ -567,7 +570,7 @@ tests a full model validation. See <a class="reference internal" href="developme
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Original supplied files</p>
+        <p class="prev-next-title">CPU version downloads and manuals</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

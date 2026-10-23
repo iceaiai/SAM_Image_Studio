@@ -49,7 +49,7 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/installation.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="NVIDIA GPU with Anaconda / Conda" href="installation-gpu.html" />
+    <link rel="next" title="Image workflows" href="features/index.html" />
     <link rel="prev" title="SAM Image Studio" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -315,10 +315,7 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="installation-gpu.html">NVIDIA GPU with Anaconda / Conda</a></li>
-</ul>
-</div>
+  <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
     </div>
   
@@ -403,17 +400,39 @@ All application environments use <strong>64-bit Python 3.12</strong>.</p>
 </div>
 <p>SAM3 ONNX downloads public text-only weights without HF login. Native SAM3.1
 has a separate installation and gated weights; it is not an ONNX mode switch.</p>
+<section id="first-for-every-route-download-extract-or-clone">
+<h2>First for every route: download, extract or clone<a class="headerlink" href="#first-for-every-route-download-extract-or-clone" title="Link to this heading">#</a></h2>
+<p>CPU and GPU installations both need the complete project first. Choose <strong>one</strong>:</p>
+<ul class="simple">
+<li><p><strong>Download:</strong> open the <a class="reference internal" href="downloads.html"><span class="std std-doc">CPU version download list</span></a>, click
+<strong>Download ZIP</strong> for v1.4.3, and extract the entire archive. The same source
+bundle includes optional GPU setup. Enter the extracted project folder containing
+<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, <code class="docutils literal notranslate"><span class="pre">samstudio/</span></code>, <code class="docutils literal notranslate"><span class="pre">packaging/</span></code> and <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>.</p></li>
+<li><p><strong>Clone:</strong> open a terminal in your chosen parent folder and run:</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/iceaiai/SAM_Image_Studio.git
+<span class="nb">cd</span><span class="w"> </span>SAM_Image_Studio
+</pre></div>
+</div>
+<p>ZIP users do not need Git or another clone. For native SAM3.1, use Linux/WSL2
+for the environment and installation commands. After obtaining the source,
+continue with exactly one CPU or GPU route below.</p>
+</section>
 <section id="cpu-windows">
 <h2>CPU: Windows<a class="headerlink" href="#cpu-windows" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
+<li><p>Download/extract the complete current source or clone it using the shared
+steps above. Open the extracted project folder containing <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p></li>
 <li><p>Install Python 3.12 64-bit, if absent. The helper
 <code class="docutils literal notranslate"><span class="pre">packaging/Install_Python_3_12.bat</span></code> uses the official WinGet package.</p></li>
-<li><p>Open the complete source folder, then open <strong>packaging</strong>.</p></li>
+<li><p>Open <strong>packaging</strong> in that source folder.</p></li>
 <li><p>Double-click <strong>Install_CPU.bat</strong> and wait for the installation self-test.</p></li>
 <li><p>Double-click <strong>Start_GUI.bat</strong>.</p></li>
 </ol>
-<p>For a command-line install, first enter your real project folder, quoting spaces:</p>
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-Location</span> <span class="n">-LiteralPath</span> <span class="s1">'C:\work\AI works\SAM_Image_Studio'</span>
+<p>For command-line installation, obtain/extract the source first, then enter its
+root. The path below is a fictional example; substitute your chosen folder and
+quote paths containing spaces:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-Location</span> <span class="n">-LiteralPath</span> <span class="s1">'C:\Projects\Example Folder\SAM_Image_Studio'</span>
 <span class="nb">Test-Path</span> <span class="p">.\</span><span class="n">pyproject</span><span class="p">.</span><span class="n">toml</span>
 <span class="n">py</span> <span class="p">-</span><span class="n">3</span><span class="p">.</span><span class="n">12</span> <span class="n">scripts</span><span class="p">/</span><span class="n">install_environment</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-backend</span> <span class="n">cpu</span>
 <span class="p">.\.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">python</span><span class="p">.</span><span class="n">exe</span> <span class="n">-m</span> <span class="n">samstudio</span>
@@ -425,7 +444,8 @@ source tree and then run installation helpers.</p>
 </section>
 <section id="cpu-linux">
 <h2>CPU: Linux<a class="headerlink" href="#cpu-linux" title="Link to this heading">#</a></h2>
-<p>With Python 3.12 available, enter the repository root:</p>
+<p>First download/extract the complete current source or clone it using the shared
+steps above. With Python 3.12 available, enter that project root:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="s1">'/path/with spaces/SAM_Image_Studio'</span>
 bash<span class="w"> </span>packaging/install_cpu.sh
 bash<span class="w"> </span>packaging/start_gui.sh
@@ -439,7 +459,9 @@ wheels are available; this release has not been acceptance-tested on macOS.</p>
 </section>
 <section id="existing-dedicated-cpu-environment">
 <h2>Existing dedicated CPU environment<a class="headerlink" href="#existing-dedicated-cpu-environment" title="Link to this heading">#</a></h2>
-<p>If using a dedicated Conda/virtual environment, activate its Python 3.12 first:</p>
+<p>First download/extract or clone the complete current project and enter its
+root as above. If using a dedicated Conda/virtual environment, activate its
+Python 3.12 before running:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>scripts/install_environment.py<span class="w"> </span>--backend<span class="w"> </span>cpu<span class="w"> </span>--current
 python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </pre></div>
@@ -451,15 +473,29 @@ the provided helper selects the correct distribution for the environment.</p>
 </section>
 <section id="nvidia-gpu-with-conda">
 <h2>NVIDIA GPU with Conda<a class="headerlink" href="#nvidia-gpu-with-conda" title="Link to this heading">#</a></h2>
-<p>All GPU setup files live under <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>. Follow the
-<a class="reference internal" href="installation-gpu.html"><span class="std std-doc">complete GPU installation and updates guide</span></a>, including
-quoted PowerShell paths, WSL2, authentication and routine updates without
-uninstalling. No application packages are installed into Conda base.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="installation-gpu.html">NVIDIA GPU with Anaconda / Conda</a></li>
-</ul>
+<p>First download/extract or clone the complete current source using the common
+steps above and enter its root. All GPU setup files live under <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>.</p>
+<p>For <strong>SAM1/2 and SAM3 ONNX</strong> on Windows or Linux, open an initialized Conda
+terminal in that folder, then run:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-gpu<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip<span class="w"> </span>-y
+conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-gpu
+python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current
+python<span class="w"> </span>-m<span class="w"> </span>samstudio
+</pre></div>
 </div>
+<p>For <strong>native SAM3/SAM3.1</strong>, obtain/extract the source inside Linux/WSL2 or where
+Ubuntu can access it, enter its root in Ubuntu, and use Linux Conda:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-sam3<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip<span class="w"> </span>-y
+conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-sam3
+python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current<span class="w"> </span>--sam3
+python<span class="w"> </span>-m<span class="w"> </span>samstudio
+</pre></div>
+</div>
+<p>These creation steps are for first installation only. No application packages
+are installed into Conda base. For complete prerequisites, quoted paths,
+authentication and update steps, read the
+<a class="reference internal" href="installation-gpu.html"><span class="std std-doc">GPU installation guide</span></a>, or the
+<a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/blob/main/GPU/INSTALLATION.md">full guide on GitHub</a>.</p>
 </section>
 <section id="choose-a-model-after-installation">
 <h2>Choose a model after installation<a class="headerlink" href="#choose-a-model-after-installation" title="Link to this heading">#</a></h2>
@@ -525,11 +561,11 @@ by the supported uninstallers.</p>
       </div>
     </a>
     <a class="right-next"
-       href="installation-gpu.html"
+       href="features/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">NVIDIA GPU with Anaconda / Conda</p>
+        <p class="prev-next-title">Image workflows</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -552,6 +588,7 @@ by the supported uninstallers.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-for-every-route-download-extract-or-clone">First for every route: download, extract or clone</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-windows">CPU: Windows</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-linux">CPU: Linux</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#existing-dedicated-cpu-environment">Existing dedicated CPU environment</a></li>

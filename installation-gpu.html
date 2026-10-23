@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>NVIDIA GPU with Anaconda / Conda &#8212; SAM Image Studio 1.4.3</title>
+    <title>GPU installation and updates &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -49,8 +49,8 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/installation-gpu.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Image workflows" href="features/index.html" />
-    <link rel="prev" title="Installation and updates" href="installation.html" />
+    <link rel="next" title="User manual" href="user-manual.html" />
+    <link rel="prev" title="Folders, projects, and model files" href="documentation/files.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.4.3" />
@@ -129,7 +129,7 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="installation.html">
     Installation
   </a>
@@ -143,7 +143,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="documentation/index.html">
     Documentation
   </a>
@@ -245,7 +245,7 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="installation.html">
     Installation
   </a>
@@ -259,7 +259,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="documentation/index.html">
     Documentation
   </a>
@@ -316,7 +316,19 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">NVIDIA GPU with Anaconda / Conda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/workspace.html">Workspace and panels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/menus.html">Menu-by-menu reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/controls.html">Buttons, tools, and segmentation controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/modes.html">The four modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/dialogs.html">Dialogs and their controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/files.html">Folders, projects, and model files</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">GPU installation and updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-manual.html">User manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="denoising.html">Denoising parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting installation and operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="downloads.html">CPU version downloads and manuals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="provenance.html">Sources, versions, and licenses</a></li>
 </ul>
 </div>
 </nav></div>
@@ -358,9 +370,9 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="installation.html" class="nav-link">Installation and updates</a></li>
+    <li class="breadcrumb-item"><a href="documentation/index.html" class="nav-link">Documentation: controls, modes, and files</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">NVIDIA GPU with Anaconda / Conda</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">GPU installation and updates</span></li>
   </ul>
 </nav>
 </div>
@@ -377,196 +389,74 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="nvidia-gpu-with-anaconda-conda">
-<h1>NVIDIA GPU with Anaconda / Conda<a class="headerlink" href="#nvidia-gpu-with-anaconda-conda" title="Link to this heading">#</a></h1>
-<p>Choose the backend first. <strong>SAM1/2 and SAM3 ONNX</strong> have Windows and Linux GPU
-installation paths. <strong>Native SAM3 / SAM3.1</strong> use Linux or WSL2 Ubuntu and their
-separate optional dependency set. They require approved compatible weights.
-SAM3 ONNX public text weights do not require Hugging Face login.</p>
-<section id="open-the-correct-terminal-and-project-folder">
-<h2>1. Open the correct terminal and project folder<a class="headerlink" href="#open-the-correct-terminal-and-project-folder" title="Link to this heading">#</a></h2>
-<p>On Windows, open <strong>Anaconda PowerShell Prompt</strong> or an initialized Conda prompt.
-Quote paths containing spaces:</p>
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-Location</span> <span class="n">-LiteralPath</span> <span class="s1">'C:\work\AI works\SAM_Image_Studio'</span>
-<span class="nb">Test-Path</span> <span class="p">.\</span><span class="n">GPU</span><span class="p">\</span><span class="n">install</span><span class="p">.</span><span class="n">py</span>
-<span class="nb">Test-Path</span> <span class="p">.\</span><span class="n">pyproject</span><span class="p">.</span><span class="n">toml</span>
+  <section class="tex2jax_ignore mathjax_ignore" id="gpu-installation-and-updates">
+<h1>GPU installation and updates<a class="headerlink" href="#gpu-installation-and-updates" title="Link to this heading">#</a></h1>
+<p>This page is readable both on GitHub and on the Sphinx website. The
+<a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/blob/main/GPU/INSTALLATION.md">complete GPU guide</a>
+contains the full prerequisites, diagnostics and model-access details.</p>
+<section id="obtain-the-complete-project-first">
+<h2>1. Obtain the complete project first<a class="headerlink" href="#obtain-the-complete-project-first" title="Link to this heading">#</a></h2>
+<p>Choose one route before creating an environment:</p>
+<ul class="simple">
+<li><p><strong>ZIP:</strong> use the <a class="reference internal" href="downloads.html"><span class="std std-doc">CPU version download list</span></a>, download v1.4.3
+and extract every file. The same source bundle includes <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>.
+Open the extracted project folder containing <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, <code class="docutils literal notranslate"><span class="pre">samstudio/</span></code> and <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>.</p></li>
+<li><p><strong>Git:</strong> run these shared commands in your chosen parent folder:</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/iceaiai/SAM_Image_Studio.git
+<span class="nb">cd</span><span class="w"> </span>SAM_Image_Studio
 </pre></div>
 </div>
-<p>Replace the example path with your actual clone/extracted folder. Both checks
-must return <code class="docutils literal notranslate"><span class="pre">True</span></code>. Do not enter only the outer archive directory.</p>
-<p>For native SAM3.1, enter your existing WSL2 Ubuntu distribution first:</p>
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">wsl</span> <span class="n">-d</span> <span class="n">Ubuntu</span><span class="p">-</span><span class="n">22</span><span class="p">.</span><span class="n">04</span>
-</pre></div>
-</div>
-<p>Then use Linux paths and the Linux Conda installation:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="s1">'/mnt/c/work/AI works/SAM_Image_Studio'</span>
-<span class="nb">test</span><span class="w"> </span>-f<span class="w"> </span>GPU/install.py<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">'Project folder OK'</span>
-conda<span class="w"> </span>--version
-nvidia-smi
-</pre></div>
-</div>
-<p>The Windows NVIDIA driver must expose the GPU to WSL2. Installing Windows
-Anaconda alone does not create a Linux Conda installation. Install Anaconda or
-Miniforge for Linux inside WSL if <code class="docutils literal notranslate"><span class="pre">conda</span></code> is missing there. WSLg supplies the GUI
-display; keep WSL updated through Windows when its display service is unavailable.</p>
+<p>ZIP users do not need to clone again. For native SAM3.1, run installation in
+Linux/WSL2 using Linux Conda; obtain the source there or make the extracted
+folder accessible to Ubuntu. Native Windows supports SAM1/2 and SAM3 ONNX.</p>
 </section>
-<section id="create-one-dedicated-environment">
-<h2>2. Create one dedicated environment<a class="headerlink" href="#create-one-dedicated-environment" title="Link to this heading">#</a></h2>
-<p><strong>Windows or Linux, SAM1/2 + SAM3 ONNX:</strong></p>
+<section id="select-the-route-and-install">
+<h2>2. Select the route and install<a class="headerlink" href="#select-the-route-and-install" title="Link to this heading">#</a></h2>
+<p>Use <strong>64-bit Python 3.12</strong>. Run from the complete project root obtained above.</p>
+<p><strong>Windows or Linux: SAM1/2 and SAM3 ONNX</strong></p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-gpu<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip<span class="w"> </span>-y
 conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-gpu
 python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current
+python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </pre></div>
 </div>
-<p><strong>Linux/WSL2, additionally native SAM3/SAM3.1:</strong></p>
+<p><strong>Linux/WSL2: additionally native SAM3 and SAM3.1</strong></p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-sam3<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip<span class="w"> </span>-y
 conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-sam3
 python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current<span class="w"> </span>--sam3
+python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </pre></div>
 </div>
-<p>The creation command may run from a base Conda prompt; it creates a <strong>separate</strong>
-environment. All application package installation happens after activation.
-<code class="docutils literal notranslate"><span class="pre">--current</span></code> rejects base. There is no need to upgrade, remove or install app
-packages in base.</p>
-<p>Optional inspection before installation:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>GPU/install.py<span class="w"> </span>--inspect
-python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current<span class="w"> </span>--sam3<span class="w"> </span>--dry-run
-</pre></div>
-</div>
-<p>Omit <code class="docutils literal notranslate"><span class="pre">--sam3</span></code> for the ordinary GPU environment. An existing named environment
-must use <code class="docutils literal notranslate"><span class="pre">--current</span></code>; the default automatic creation command is for new names.</p>
+<p>The installer handles driver-aware Torch selection, application dependencies,
+ONNX runtime, compatible setuptools and missing Ubuntu Qt libraries, then runs
+checks. Ubuntu may request your sudo password for missing system libraries.
+Application packages are installed only into the dedicated environment.
+A supported NVIDIA driver and, for WSL GUI use, working WSLg are prerequisites.</p>
 </section>
-<section id="what-installation-handles-automatically">
-<h2>3. What installation handles automatically<a class="headerlink" href="#what-installation-handles-automatically" title="Link to this heading">#</a></h2>
-<p>The installer detects the driver/GPU, selects compatible PyTorch 2.7.1 and
-Torchvision 0.22.1 wheels (CUDA 12.8, 12.6 or 11.8 where supported), installs
-application dependencies and the verified bundled SAM2 wheel, adds CUDA ONNX
-Runtime, runs <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">check</span></code>, and executes the CUDA installation self-test.
-The ONNX CUDA package needs CUDA 12.x/cuDNN 9. With a legacy CUDA 11.8 Torch
-plan, the installer supplies CPU ONNX instead; SAM1/2 still use CUDA. Update
-the driver and reinstall with a CUDA 12.x plan to use ONNX on GPU.</p>
-<p>On Ubuntu/WSL, it detects and installs missing Qt display/font/XCB libraries
-in one system-package step. A non-root user may need to enter their <strong>Ubuntu
-administrator password</strong> for <code class="docutils literal notranslate"><span class="pre">sudo</span></code>. The SAM3 requirements pin a compatible
-setuptools release for <code class="docutils literal notranslate"><span class="pre">pkg_resources</span></code>. The launcher selects X11 on WSLg when
-<code class="docutils literal notranslate"><span class="pre">DISPLAY</span></code> is present. These repairs are built in; do not install each library
-or edit environment variables by hand during a normal installation.</p>
-<p>Driver installation, access approval for gated model weights, and GUI display
-availability are external prerequisites. CUDA maximum shown by <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code>
-is driver capability; it need not equal the CUDA runtime bundled with Torch.
-Native SAM3 requires driver support for CUDA 12.6 or newer in this release.</p>
+<section id="load-the-selected-model">
+<h2>3. Load the selected model<a class="headerlink" href="#load-the-selected-model" title="Link to this heading">#</a></h2>
+<p>In <strong>Load model…</strong>, choose the family and NVIDIA CUDA device. SAM3/3.1 need
+approved access to their distinct authentic weights. Paste an approved read
+token in the optional masked field or reuse local Hugging Face login. The GUI
+field is not saved. SAM3 ONNX downloads public text-only weights without HF login.</p>
+<p>See <a class="reference internal" href="segmentation/sam31.html"><span class="std std-doc">SAM3.1 text/shape prompts</span></a> and
+<a class="reference internal" href="segmentation/sam3-onnx.html"><span class="std std-doc">public ONNX text segmentation</span></a>.</p>
 </section>
-<section id="start-and-load-a-model">
-<h2>4. Start and load a model<a class="headerlink" href="#start-and-load-a-model" title="Link to this heading">#</a></h2>
-<p>From the same activated environment and project root:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>samstudio
-</pre></div>
-</div>
-<p>Choose <strong>Load model… → SAM3.1 → NVIDIA CUDA GPU (Conda)</strong> for native SAM3.1.
-The optional <strong>Hugging Face token</strong> field is masked and accepts paste. Use a
-token belonging to the account approved for
-<a class="reference external" href="https://huggingface.co/facebook/sam3.1">facebook/sam3.1</a>, with permission to read
-that gated repository. The field is used for this download and is not saved
-in projects, application settings or Git credentials. Leave it blank to use
-your existing local Hugging Face login. A local matching checkpoint avoids a
-download. <code class="docutils literal notranslate"><span class="pre">sam3.pt</span></code> and <code class="docutils literal notranslate"><span class="pre">sam3.1_multiplex.pt</span></code> are distinct, incompatible weights.</p>
-<p>For <strong>SAM3 ONNX</strong>, select that family and leave the model-folder field blank
-to download the public export. Native geometric prompts are unavailable in
-this text-only export. See the
-<a class="reference external" href="https://iceaiai.github.io/SAM_Image_Studio/segmentation/sam3-onnx.html">ONNX guide</a>.</p>
-<p>If you prefer persistent local CLI login, <code class="docutils literal notranslate"><span class="pre">hf</span> <span class="pre">auth</span> <span class="pre">login</span></code> remains supported.
-Token input is invisible: paste once with Ctrl+Shift+V or right-click, then
-Enter. Answer <strong>n</strong> to adding a Git credential; <code class="docutils literal notranslate"><span class="pre">hf</span> <span class="pre">auth</span> <span class="pre">whoami</span></code> checks the
-account. Login validity and model-access approval are separate checks.
-Never put a token in a command argument, project, screenshot, chat or repository.</p>
-</section>
-<section id="validate-environment-then-model-execution">
-<h2>5. Validate environment, then model execution<a class="headerlink" href="#validate-environment-then-model-execution" title="Link to this heading">#</a></h2>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>check
-python<span class="w"> </span>-m<span class="w"> </span>samstudio.selftest<span class="w"> </span>--device<span class="w"> </span>cuda
-</pre></div>
-</div>
-<p>The self-test checks imports, real CUDA tensor/torchvision operations, exact
-mask persistence and Qt window construction. Its headless/offscreen check
-does <strong>not</strong> establish interactive display availability or SAM3.1 inference.
-Load the authentic weights, open an image, enter a prompt and inspect a real
-preview to validate that model. A 6 GB GPU can pass CUDA checks yet run out of
-memory loading or executing a large model. Close other GPU applications and
-use a smaller model when necessary; ONNX does not guarantee smaller memory use.</p>
-</section>
-<section id="update-without-uninstalling">
-<h2>6. Update without uninstalling<a class="headerlink" href="#update-without-uninstalling" title="Link to this heading">#</a></h2>
-<p>Close the GUI. Download/pull the complete new source into your chosen folder,
-enter that folder, then reuse the environment:</p>
+<section id="update-an-existing-installation">
+<h2>4. Update an existing installation<a class="headerlink" href="#update-an-existing-installation" title="Link to this heading">#</a></h2>
+<p>Close the GUI, download/extract or pull the new complete source, then enter
+its project root. Reuse the existing environment instead of recreating it:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-sam3
 python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current<span class="w"> </span>--sam3
 python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </pre></div>
 </div>
-<p>For <code class="docutils literal notranslate"><span class="pre">sam-image-studio-gpu</span></code>, activate that name and omit <code class="docutils literal notranslate"><span class="pre">--sam3</span></code>. Installing
-only a requirements file does not update application code, hardware-selected
-Torch or verified vendor packages. The project installer updates and checks
-these together. Existing model caches, native projects and local login remain.
-Create a new environment only for an incompatible stack migration or unresolved
-conflicts, keeping the old working one until the replacement is validated.</p>
-</section>
-<section id="problems-that-still-require-user-action">
-<h2>7. Problems that still require user action<a class="headerlink" href="#problems-that-still-require-user-action" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Symptom</p></th>
-<th class="head"><p>Action</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>PowerShell positional-parameter error</p></td>
-<td><p>Quote the complete folder path with <code class="docutils literal notranslate"><span class="pre">Set-Location</span> <span class="pre">-LiteralPath</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Native SAM3 selected on Windows</p></td>
-<td><p>Run the native SAM3.1 recipe inside WSL2/Linux; Windows supports the other GPU paths.</p></td>
-</tr>
-<tr class="row-even"><td><p>No GPU detected</p></td>
-<td><p>Check the Windows/Linux NVIDIA driver and <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code>; the app does not install drivers.</p></td>
-</tr>
-<tr class="row-odd"><td><p>HF <code class="docutils literal notranslate"><span class="pre">Invalid</span> <span class="pre">user</span> <span class="pre">token</span></code> / whoami 401</p></td>
-<td><p>Recopy a complete valid read token. GUI paste is masked; CLI input is completely invisible.</p></td>
-</tr>
-<tr class="row-even"><td><p>Login works, model download is denied</p></td>
-<td><p>Obtain approval and enable access to that gated repository on the fine-grained token.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Missing Qt library or <code class="docutils literal notranslate"><span class="pre">pkg_resources</span></code> from an older installation</p></td>
-<td><p>Update to this source and rerun the installer in the same environment; the repair is automatic.</p></td>
-</tr>
-<tr class="row-even"><td><p>Qt plugin loads but cannot connect to display</p></td>
-<td><p>Check WSLg/display availability; offscreen is only for diagnostics.</p></td>
-</tr>
-<tr class="row-odd"><td><p>sudo unavailable / system package install denied</p></td>
-<td><p>Ask the machine administrator to run the installer’s system-library step.</p></td>
-</tr>
-<tr class="row-even"><td><p>Backend import error after installation</p></td>
-<td><p>Save the exact error and installer output; <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">check</span></code> alone cannot validate lazy backend imports.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Kernel/microcode check unavailable at end of apt under WSL</p></td>
-<td><p>These notices do not mean the requested Qt packages failed; check apt’s final exit status.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">propagateSizeHints()</span></code> during offscreen testing</p></td>
-<td><p>Harmless if the installation self-test completes with <code class="docutils literal notranslate"><span class="pre">passed</span></code>.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Avoid reinstalling the whole Conda environment for each missing library.
-The <a class="reference external" href="https://iceaiai.github.io/SAM_Image_Studio/troubleshooting.html">troubleshooting guide</a>
-explains diagnostic commands for unresolved failures.</p>
-</section>
-<section id="uninstall-and-validation-boundaries">
-<h2>Uninstall and validation boundaries<a class="headerlink" href="#uninstall-and-validation-boundaries" title="Link to this heading">#</a></h2>
-<p>Use <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">deactivate</span></code>, then <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">remove</span> <span class="pre">-n</span> <span class="pre">YOUR_ENVIRONMENT_NAME</span></code> to
-remove only the selected environment. Preserve source images, native projects,
-exports and model caches separately.</p>
-<p>Current cloud checks include genuine <strong>CPU</strong> SAM3 ONNX inference and Qt workflow
-checks. The cloud machine has no NVIDIA device: these instructions do not claim
-new CUDA benchmarks, native Windows execution, or native SAM3.1 weight inference.</p>
+<p>For the ordinary GPU environment activate <code class="docutils literal notranslate"><span class="pre">sam-image-studio-gpu</span></code> and omit
+<code class="docutils literal notranslate"><span class="pre">--sam3</span></code>. No routine uninstall is needed. Preserve projects, model caches and
+local login separately from downloaded source folders.</p>
+<p>For failures, follow <a class="reference internal" href="troubleshooting.html"><span class="std std-doc">troubleshooting</span></a> and the
+<a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/blob/main/GPU/INSTALLATION.md">complete GPU guide</a>.</p>
 </section>
 </section>
 
@@ -581,20 +471,20 @@ new CUDA benchmarks, native Windows execution, or native SAM3.1 weight inference
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="installation.html"
+       href="documentation/files.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Installation and updates</p>
+        <p class="prev-next-title">Folders, projects, and model files</p>
       </div>
     </a>
     <a class="right-next"
-       href="features/index.html"
+       href="user-manual.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Image workflows</p>
+        <p class="prev-next-title">User manual</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -617,14 +507,10 @@ new CUDA benchmarks, native Windows execution, or native SAM3.1 weight inference
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#open-the-correct-terminal-and-project-folder">1. Open the correct terminal and project folder</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-one-dedicated-environment">2. Create one dedicated environment</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-installation-handles-automatically">3. What installation handles automatically</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start-and-load-a-model">4. Start and load a model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validate-environment-then-model-execution">5. Validate environment, then model execution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-without-uninstalling">6. Update without uninstalling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems-that-still-require-user-action">7. Problems that still require user action</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uninstall-and-validation-boundaries">Uninstall and validation boundaries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#obtain-the-complete-project-first">1. Obtain the complete project first</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-the-route-and-install">2. Select the route and install</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-selected-model">3. Load the selected model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-an-existing-installation">4. Update an existing installation</a></li>
 </ul>
   </nav></div>
 
