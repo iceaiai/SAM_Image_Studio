@@ -32,6 +32,10 @@ default is guaranteed to preserve all specimen features.
 
 ## Denoising versus compressed-sensing reconstruction
 
+Follow the [illustrated compressed-sensing guide](compressed-sensing.md) for
+every DCT/TV control in dialog order, parameter suggestions and computed comparisons.
+
+
 **Denoise** uses every input pixel and relaxed fidelity. **Reconstruct** simulates
 missing pixels and follows the notebook's sampled-data updates. Hard L2
 consistency with every pixel sampled returns the input, so it is not a useful

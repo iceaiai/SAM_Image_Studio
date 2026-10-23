@@ -1,0 +1,40 @@
+{
+  "model": "SAM3 ONNX / ViT-H \u00b7 text prompts",
+  "device": "cpu",
+  "checkpoint": "Separately downloaded, SHA-256-verified public v3.0.0 export (six files)",
+  "status": "passed",
+  "text": "white dots",
+  "image_shape": [
+    512,
+    768,
+    3
+  ],
+  "load_seconds": 11.821124689995486,
+  "request_seconds": 39.638318085999344,
+  "count": 10,
+  "min_score": 0.7,
+  "scores": [
+    0.9336519837379456,
+    0.944340705871582,
+    0.9559248685836792,
+    0.9587935209274292,
+    0.9588063359260559,
+    0.9546076059341431,
+    0.9630094766616821,
+    0.95680832862854,
+    0.9493933916091919,
+    0.9645283222198486
+  ],
+  "providers": {
+    "image_encoder": [
+      "CPUExecutionProvider"
+    ],
+    "language_encoder": [
+      "CPUExecutionProvider"
+    ],
+    "decoder": [
+      "CPUExecutionProvider"
+    ]
+  },
+  "timing_scope": "Load includes integrity verification/session creation. Request includes encoding, decoding and app filtering; no GUI drawing. Cached requests can be faster."
+}

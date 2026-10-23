@@ -59,6 +59,19 @@ panel. Keep the full manuals and parameter reference close at hand.
 *Synthetic demo with manually supplied reference masks; this illustrates the
 workspace and is not a SAM3.1 inference result.*
 
+## Illustrated workflow guides
+
+Follow the interface from the workspace and menus to the relevant controls.
+
+- [Data cleaning](features/cleaning.md): choose a target, compare fill methods,
+  preview, apply and restore original pixels.
+- [Three prompted Seg scopes](segmentation/scopes.md): ROI only, whole-image
+  examples and a single native object; automatic grid is explained separately.
+- [Compressed sensing](features/compressed-sensing.md): dialog order, DCT/TV
+  parameter suggestions and computed synthetic comparisons.
+- [SAM3 ONNX](segmentation/sam3-onnx.md): public text weights without HF login,
+  aliases and exact application ROI clipping.
+
 ## A practical guide to SAM3.1
 
 Start with **`black dots`**, run a preview, and accept only the masks you want.
@@ -96,9 +109,9 @@ autosave, calibrated measurements, and reversible processing. Read the
 [application additions guide](segmentation/application-tools.md) to understand
 their scope and limitations.
 
-Version **1.4.2**, based on the v1.4 application line. The optional SAM3/3.1
+Version **1.4.3**, based on the v1.4 application line. The optional SAM3/3.1
 backend requires NVIDIA CUDA, a dedicated Linux/WSL2 Conda environment, and
-approved compatible weights. CPU supports SAM1 and SAM2/2.1. This website
+approved compatible weights. CPU supports SAM1, SAM2/2.1 and public SAM3 ONNX text segmentation. This website
 documents implementation and recorded checks; it does not claim new CUDA
 benchmarks or microscopy detection accuracy.
 
@@ -106,7 +119,7 @@ benchmarks or microscopy detection accuracy.
 :maxdepth: 2
 :hidden:
 
-installation
+Installation <installation>
 features/index
 Documentation <documentation/index>
 developer/index

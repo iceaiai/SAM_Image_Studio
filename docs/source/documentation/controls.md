@@ -1,5 +1,9 @@
 # Buttons, tools, and segmentation controls
 
+Start at the top toolbar, then the prompt toolbar, left tools and right panels.
+The [illustrated scope guide](../segmentation/scopes.md) explains the most
+important Segment choices before you run a preview.
+
 ## Workflow and image controls
 
 | Control | Meaning / example |
@@ -22,13 +26,15 @@
 
 | Control | Meaning / example |
 | --- | --- |
-| Text prompt / alias (SAM2+) | Type a phrase such as `black dots`, or a project alias. SAM1 hides this control. |
+| Model-specific text prompt / alias | The label/placeholder follows the loaded SAM2/2.1, SAM3, SAM3.1 or ONNX family. Type `black dots` or an alias. SAM1 hides it. |
 | Run text segmentation | Run the current text in Segment; Enter in the text field also runs it. Check Scope first. |
 | Prompt aliases… | Edit case-insensitive complete-phrase mappings, for example `nanoparticle → black dots`. |
 | Positive example / Negative example | Label the next area exemplar in whole-image mode; applies to rectangle, circle, ellipse, polygon. |
 
 Left/right clicks give positive/negative point prompts in Segment. Point
 polarity is determined by the click, not by the shape-polarity selector.
+SAM3 ONNX shows text and aliases but disables native shape polarity; choose
+Inside ROI only with an area tool for application output clipping.
 For detailed text/shape interaction and output scope, see the
 [SAM3.1 guide](../segmentation/sam31.md).
 

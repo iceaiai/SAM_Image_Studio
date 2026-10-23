@@ -1,0 +1,38 @@
+{
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "device": "cpu",
+  "checks": [
+    {
+      "check": "Core and microscopy imports",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PyTorch and torchvision native operations",
+      "passed": true,
+      "detail": "2.7.1+cpu on cpu"
+    },
+    {
+      "check": "Autosave recovery and exact COCO RLE",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Qt desktop window construction",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "status": "passed",
+  "versions": {
+    "sam-image-studio": "1.4.3",
+    "PySide6": "6.8.3",
+    "torch": "2.7.1+cpu",
+    "torchvision": "0.22.1+cpu",
+    "numpy": "2.3.5",
+    "SAM-2": "1.0",
+    "rosettasciio": "0.15.0",
+    "tifffile": "2026.3.3"
+  }
+}

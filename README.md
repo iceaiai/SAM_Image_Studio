@@ -1,111 +1,82 @@
 # SAM Image Studio
 
-Desktop microscopy annotation and SAM segmentation with calibrated measurements,
-reversible image restoration, and local plugins. CPU and NVIDIA GPU support.
-
-This repository contains the complete **1.4.2** application source extracted
-from the supplied CPU release, all five original uploads, and Sphinx
-documentation based on the code and user/developer manuals.
+Desktop microscopy annotation, SAM segmentation, reversible data cleaning and
+compressed-sensing restoration, with calibrated measurements and editable projects.
 
 **[Documentation website](https://iceaiai.github.io/SAM_Image_Studio/)** ·
-[Installation and updates](https://iceaiai.github.io/SAM_Image_Studio/installation.html) ·
-[Image workflows](https://iceaiai.github.io/SAM_Image_Studio/features/index.html) ·
-[SAM3.1 text and shape prompts](https://iceaiai.github.io/SAM_Image_Studio/segmentation/sam31.html) ·
-[Buttons, menus and modes](https://iceaiai.github.io/SAM_Image_Studio/documentation/index.html)
+[Installation](https://iceaiai.github.io/SAM_Image_Studio/installation.html) ·
+[Cleaning](https://iceaiai.github.io/SAM_Image_Studio/features/cleaning.html) ·
+[Segmentation modes](https://iceaiai.github.io/SAM_Image_Studio/segmentation/scopes.html) ·
+[SAM3.1 text and shapes](https://iceaiai.github.io/SAM_Image_Studio/segmentation/sam31.html) ·
+[Compressed sensing](https://iceaiai.github.io/SAM_Image_Studio/features/compressed-sensing.html)
 
-## Features
+Version **1.4.3** adds public SAM3 ONNX text segmentation, optional model-manager
+Hugging Face token entry, automatic Ubuntu/WSL Qt dependency setup, and organized
+installation files. Original v1.4.2 uploads remain unchanged.
 
-- Manual annotation, editable masks/shapes, groups, Undo/Redo, and native
-  `.sam.json` saving and recovery.
-- SAM1 and SAM2/2.1 segmentation on CPU or NVIDIA GPU; whole-image positive and
-  negative exemplars, single-object/ROI workflows, and reviewed mask acceptance.
-- SAM2/2.1 text-to-box segmentation, plus optional GPU-only SAM3/SAM3.1 backends.
-- Microscopy readers, Excel pixel-size lookup, calibrated statistics,
-  COCO/YOLO/mask/overlay exports, and separate acquired/derived pixels.
-- Reversible cleaning and configurable TV, wavelet, DCT, non-local means,
-  SPORCO, BM3D, and CAREamics Noise2Void/N2V2 processing.
-- Local plugin API v1 and a tiled TorchScript U-Net interface example.
+## Install and start on CPU
 
-## CPU installation
-
-Use **64-bit Python 3.12** and a writable folder containing the full repository:
+Use **64-bit Python 3.12**. Clone or extract the complete project into a writable folder.
 
 ```sh
 git clone https://github.com/iceaiai/SAM_Image_Studio.git
 cd SAM_Image_Studio
 ```
 
-On **Windows**, run `Install_CPU.bat`, then `Start_GUI.bat`.
-`Install_Python_3_12.bat` helps install Python when needed.
+- **Windows:** double-click [`packaging/Install_CPU.bat`](packaging/Install_CPU.bat),
+  then [`packaging/Start_GUI.bat`](packaging/Start_GUI.bat).
+- **Linux:** run `bash packaging/install_cpu.sh`, then `bash packaging/start_gui.sh`.
 
-On **Linux**, with `python3` pointing to Python 3.12:
+The installer creates an isolated `.venv`, installs verified dependencies and the
+CPU ONNX runtime, and runs checks. Ubuntu/WSL missing Qt libraries are installed
+automatically; an administrator password may be required. Model weights download
+separately when you choose **Load model…**.
 
-```sh
-bash install_cpu.sh
-bash start_gui.sh
-```
+## GPU installation, launch and updates
 
-The installer creates an app-owned `.venv`, installs the pinned CPU dependencies
-and verified bundled SAM2 wheel, runs `pip check`, and runs the application
-self-test. For an already activated dedicated Python 3.12 virtual or Conda
-environment:
+All GPU setup entry points, dependency files and instructions are in **[GPU/](GPU/README.md)**.
+Use a dedicated Anaconda/Conda environment. Native SAM3.1 requires Linux/WSL2;
+SAM1/2 and SAM3 ONNX also have a native Windows GPU installation path.
+Routine updates reuse the environment; uninstalling is unnecessary.
 
-```sh
-python scripts/install_environment.py --backend cpu --current
-python -m samstudio
-```
+## What can it do?
 
-SAM1/SAM2.1 weights download separately through Model manager or can be selected
-locally. No model weights or pretrained U-Net denoising weights are bundled.
+| Task | Workflow |
+| --- | --- |
+| Annotate | Draw/edit points and shapes; organize objects into groups; Undo/Redo. |
+| Segment | SAM1/2 point/box segmentation; SAM2 text detection → masks; SAM3 ONNX text; optional native SAM3/3.1 concepts. |
+| Control output | Whole-image exemplar search, single object, exact ROI/inverse-region limits, protected annotations and review before acceptance. |
+| Clean data | Remove contamination, fill from neighbors or manual background patches, and restore retained original pixels. |
+| Restore pixels | TV, wavelets, DCT, sampled compressed-sensing reconstruction, BM3D, dictionary learning, and N2V/N2V2. |
+| Measure/export | Physical calibration, object statistics, COCO/YOLO/masks/overlays, native editable `.sam.json` projects. |
 
-## NVIDIA GPU installation
+For text segmentation without Hugging Face login, choose **SAM3 ONNX** and enter
+`black dots` (or `white dots` for the bundled bright-particle example). The public
+export downloads about **3.53 GiB** and supports text, aliases and application ROI
+clipping. Native point/shape concepts use the separate SAM3.1 backend. See the
+[ONNX guide](https://iceaiai.github.io/SAM_Image_Studio/segmentation/sam3-onnx.html).
 
-GPU execution requires a **dedicated non-base Conda environment** and a
-compatible NVIDIA driver. From a Conda prompt in the repository root:
+## Repository map
 
-```sh
-conda run -n base python scripts/install_conda_gpu.py --inspect
-conda run -n base python scripts/install_conda_gpu.py --name sam-image-studio-gpu --dry-run
-conda run -n base python scripts/install_conda_gpu.py --name sam-image-studio-gpu
-conda activate sam-image-studio-gpu
-python -m pip check
-python -m samstudio.selftest --device cuda
-python -m samstudio
-```
+| Folder | Contents |
+| --- | --- |
+| [`GPU/`](GPU/) | GPU README, installation/update guide, installer, launchers and optional GPU requirements. |
+| [`packaging/`](packaging/) | CPU launch/install/uninstall helpers, shared requirement files and Windows build recipe. |
+| [`samstudio/`](samstudio/) | Application package; keep this location for Python imports. |
+| [`docs/`](docs/) | Sphinx site source, illustrated guides, original manuals, release notes and validation records. |
+| [`examples/`](examples/) | Public synthetic demo and plugin example. |
+| [`scripts/`](scripts/) | Shared setup, diagnostics, validation and website publishing helpers. |
+| [`tests/`](tests/) | Regression tests. |
+| [`uploads/`](uploads/) | Five original uploads, their digests, original archive manifest and historical wheel. |
+| [`vendor/`](vendor/) / [`third_party/`](third_party/) | Verified bundled SAM2 wheel and upstream notices/licenses. |
 
-On Windows, `Install_GPU_Conda.bat` and `Start_GUI_GPU.bat` target the same
-default environment. The planner chooses PyTorch 2.7.1 / torchvision 0.22.1
-CUDA 12.8, 12.6, or 11.8 wheels according to detected hardware and driver
-capability. It does not install NVIDIA drivers. AMD/Intel GPUs use the CPU path.
+`pyproject.toml`, `README.md`, `LICENSE` and hosting configuration stay at the root
+for packaging, GitHub and documentation tools. Source images, tokens and downloaded
+model weights should stay outside Git.
 
-Optional **SAM3/SAM3.1** uses Linux/WSL2 Conda, the installer's `--sam3` flag,
-a driver supporting CUDA 12.6+, and separately approved access to matching
-weights. These backends are not enabled on CPU. See the
-[installation guide](docs/source/installation.md) and
-[GPU Conda guide](GPU_CONDA_GUIDE.md) for details and validation boundaries.
-CUDA planning tests do not establish real GPU inference.
+## Documentation and validation
 
-## First use
-
-1. Open an image, such as `examples/synthetic_particles.ome.tif`.
-2. Check calibration and create a group.
-3. Load SAM2.1 Tiny or SAM1 ViT-B on CPU in Model manager.
-4. Switch to Segment, choose **Prompt project, whole image**, and add positive
-   and negative examples. Inspect the preview, then **Accept masks**.
-5. Retain native `.sam.json` projects for editing/recovery; export COCO, YOLO,
-   masks, overlays, or derived images as needed.
-
-Choose an area tool for **Single object** or **Inside ROI only**; Point uses
-whole-image exemplars. Processing and cleaning use Preview/Apply and Undo.
-The [quickstart](docs/source/quickstart.md) and
-[user manual](docs/USER_MANUAL.md) cover the complete workflow.
-
-## Sphinx documentation
-
-Documentation includes CPU/GPU installation, a quickstart, full user/developer
-and denoising manuals, architecture, validation, notebook guidance, original
-file downloads, and a Python API reference generated statically from source.
-It builds without installing Qt, PyTorch, or model weights:
+Build the Sphinx website without Qt, Torch or model weights:
 
 ```sh
 python3.12 -m venv .docs-venv
@@ -113,50 +84,13 @@ python3.12 -m venv .docs-venv
 .docs-venv/bin/python -m sphinx -W --keep-going -b html docs/source docs/_build/html
 ```
 
-Open `docs/_build/html/index.html` locally. Windows commands and editing details
-are in [development and documentation](docs/source/development.md).
-The Sphinx website uses the PyData Sphinx Theme, with installation, image
-workflows, a control-by-control reference and a dedicated SAM3.1 prompting
-guide. GitHub Actions builds the HTML, saves an artifact and updates the
-prebuilt `gh-pages` branch on `main`. Pages serves that static branch.
-For local publication and hosting prerequisites, see
-[website publishing](docs/source/developer/publishing.md).
-`.readthedocs.yaml` supports optional Read the Docs hosting.
+See [development](docs/source/development.md) and
+[website publishing](docs/source/developer/publishing.md). The website follows
+installation → image workflows → menus/buttons/modes, with a source-generated API.
+Current validation is recorded in [`docs/validation/ONNX_VALIDATION_v143.md`](docs/validation/ONNX_VALIDATION_v143.md).
+CPU ONNX inference has been exercised with real weights; this cloud environment
+has no GPU, so no new CUDA performance or native Windows validation is claimed.
 
-## Original uploads and repository layout
-
-| Location | Contents |
-| --- | --- |
-| [`uploads/`](uploads/) | Original CPU ZIP, three supplied PDF manuals, notebook, and SHA-256 digests |
-| [`samstudio/`](samstudio/) | Editable application source and packaged PDF help |
-| [`scripts/`](scripts/) | Installers, diagnostics, and validation helpers |
-| [`docs/source/`](docs/source/) | Sphinx pages and configuration |
-| [`docs/`](docs/) | Release Markdown/PDF manuals and screenshots |
-| [`examples/`](examples/) | Demo images and U-Net plugin example |
-| [`tests/`](tests/) | Application regression tests |
-| [`validation/`](validation/) | Original release evidence, separate from current test results |
-| [`vendor/`](vendor/) and [`dist/`](dist/) | Bundled dependency wheels and original app wheel |
-
-The notebook targets Google Colab and uses external `gduscher/MLSTEM2026`
-workshop images; it is preserved unchanged. See
-[notebook guidance](docs/source/notebook.md). The separately supplied PDFs
-differ from the earlier PDFs inside the ZIP; both versions are retained.
-
-`FILE_MANIFEST_SHA256.json` describes the **original ZIP contents**, including
-its original README. It is not a checksum manifest for this expanded Git tree.
-See [provenance](docs/source/provenance.md).
-
-## Validation and licenses
-
-Use the installed environment for `python -m samstudio.selftest --device cpu`
-and the existing regression suite. Headless Linux diagnostics use
-`QT_QPA_PLATFORM=offscreen`. Real model/reader validation requires external
-assets; this archive omits `validation/external_assets.json`, needed by its
-asset-fetch helper. See [development](docs/source/development.md) before running
-full validation. Bundled reports describe the original release's checks and
-do not certify a new machine's CUDA or Windows execution.
-
-Application source is supplied under [MIT](LICENSE). Third-party dependencies
-and model checkpoints have separate terms; see [notices](third_party/NOTICE.md).
-BM3D/bm4d have upstream academic/non-commercial terms. The application license
-does not automatically apply to the notebook, workshop assets, or model weights.
+Application code is [MIT licensed](LICENSE). Model weights and third-party packages
+have their own terms; see [notices](third_party/NOTICE.md). Public download does not
+remove SAM model license obligations. The original PDFs/notebook remain unchanged.

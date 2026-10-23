@@ -1,26 +1,36 @@
 # SAM3.1: text and shape prompts
 
-This guide describes the **SAM3.1 Multiplex · GPU only** family in version 1.4.2.
+This guide describes the **SAM3.1 Multiplex · GPU only** family in version 1.4.3.
 It uses the official native predictor, wrapped for a single still image.
 
 ## Before you start
 
 1. Use a dedicated **Anaconda/Conda GPU environment** on Linux or WSL2, with a
-   compatible NVIDIA driver. Follow [installation](../installation.md).
+   compatible NVIDIA driver. Follow [GPU installation](../installation-gpu.md).
 2. Obtain approved access to `facebook/sam3.1` and its authentic
    **`sam3.1_multiplex.pt`**. SAM3's `sam3.pt` cannot be renamed/substituted.
 3. Start the app from that environment. Open the image and choose/create a group.
 4. In **Load model…**, choose **SAM3.1**, matching weights, and **NVIDIA CUDA
-   (Conda)** or **Automatic device**. Wait for the loaded status.
+   (Conda)** or **Automatic device**. Paste an approved read token in the optional masked field if needed, or leave
+   it empty to reuse local HF login. Wait for the loaded status.
 5. Choose **Segment**. Select **Prompt project, whole image** for concept search.
 
 The GPU recipe is provided, but actual CUDA execution and model quality must
 be checked on the target machine. A CPU installation cannot run this backend.
 
+```{image} ../_static/workflows/model-manager-sam31.png
+:alt: Actual SAM3.1 Model manager with CUDA selected and an empty masked optional Hugging Face token field
+:width: 100%
+```
+
+The token field is used for the download and is not saved. Approved model access
+is still required. A valid token alone does not approve a gated model. For public
+text segmentation without login, use the separate [SAM3 ONNX backend](sam3-onnx.md).
+
 ## Text prompt recipe: `black dots`
 
-1. Enter **`black dots`** in the **Text prompt / alias (SAM2+)** field. The
-   "SAM2+" label includes SAM3 and SAM3.1.
+1. Enter **`black dots`** in the **SAM3.1 text prompt / alias** field.
+   The label/placeholder follows the loaded model family.
 2. Click **Run text segmentation**, or press Enter in that field.
 3. Watch the status/progress area and inspect the provisional masks across
    the current image. No annotations are committed yet.
@@ -98,6 +108,10 @@ accepted objects are protected from new proposals, so compare experimental
 prompt settings on a fresh image/project state or explicitly record that state.
 
 ## Restrict text results to an ROI
+
+The [illustrated scope comparison](scopes.md) shows how the same area tool changes
+meaning across ROI only, whole-image examples and single-object segmentation.
+
 
 1. Choose an **area tool** and **Inside ROI only**.
 2. Draw the region in which output is allowed. It is now a region, not a stored

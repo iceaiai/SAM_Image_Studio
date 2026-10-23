@@ -14,7 +14,7 @@ def main():
     parser.add_argument("--models",action="store_true",help="Also download approximately 703 MiB of genuine model weights")
     parser.add_argument("--text",action="store_true",help="Also cache the pinned public Grounding DINO Tiny model")
     args=parser.parse_args()
-    for asset in json.loads((ROOT/"validation/external_assets.json").read_text()):
+    for asset in json.loads((ROOT/"docs/validation/external_assets.json").read_text()):
         path=args.directory/("truck.jpg" if asset["name"]=="truck.jpg" else "fixtures/"+asset["name"])
         download_file(asset["url"],path,asset["sha256"],progress=print)
     if args.models:

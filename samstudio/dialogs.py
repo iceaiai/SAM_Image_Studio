@@ -84,17 +84,25 @@ class ModelDialog(QDialog):
         self.path = QLineEdit()
         self.path.setObjectName("modelCheckpoint")
         self.path.setPlaceholderText("Empty = download official weights on demand")
-        browse = QPushButton("Browse .pt / .pth…")
-        browse.clicked.connect(self.browse)
+        self.browse_button = QPushButton("Browse .pt / .pth…")
+        self.browse_button.clicked.connect(self.browse)
         form.addRow("Model family", self.family)
         form.addRow("Variant", self.variant)
         form.addRow("Execution device", self.device)
         form.addRow("Local checkpoint", self.path)
-        form.addRow("", browse)
+        form.addRow("", self.browse_button)
         layout.addLayout(form)
         self.info = QLabel()
         self.info.setWordWrap(True)
         layout.addWidget(self.info)
+        self.hf_token_label = QLabel("Hugging Face token (optional)")
+        self.hf_token = QLineEdit()
+        self.hf_token.setObjectName("modelHfToken")
+        self.hf_token.setEchoMode(QLineEdit.EchoMode.Password)
+        self.hf_token.setPlaceholderText("Paste here, or leave empty to use your local Hugging Face login")
+        self.hf_token.setToolTip("Used for this model download only. Not saved in the project, settings or Git credentials. Approved model access is still required.")
+        layout.addWidget(self.hf_token_label)
+        layout.addWidget(self.hf_token)
         self.controls = buttons(self, layout)
         self.controls.button(QDialogButtonBox.StandardButton.Ok).setText("Download / load")
         self.family.currentTextChanged.connect(self.change_family)
@@ -109,16 +117,42 @@ class ModelDialog(QDialog):
         for spec in CATALOG:
             if spec.family == self.family.currentText():
                 self.variant.addItem(spec.variant, spec)
+        onnx = self.family.currentText() == "SAM3 ONNX"
+        native_sam3 = self.family.currentText() in ("SAM3", "SAM3.1")
+        self.hf_token_label.setVisible(native_sam3)
+        self.hf_token.setVisible(native_sam3)
+        if not native_sam3:
+            self.hf_token.clear()
+        self.browse_button.setText("Browse ONNX model folder…" if onnx else "Browse .pt / .pth…")
+        self.path.setPlaceholderText("Empty = download public ONNX export (~3.53 GiB); no HF token" if onnx else "Empty = download official weights on demand")
+        if onnx:
+            self.info.setText("SAM3 ONNX uses the public X-AnyLabeling ViT-H export, verified by SHA-256. No Hugging Face login is required. Download is about 3.53 GiB plus a small tokenizer. Supports text, aliases and application ROI clipping; this export does not support native point/shape prompting. CPU works on Windows/Linux; CUDA requires the ONNX GPU runtime in a dedicated Conda environment. For native geometric prompts use optional SAM3.1 on Linux/WSL2.")
+            return
         self.info.setText("SAM3 / SAM3.1 are optional native CUDA backends. It needs the separate SAM3 environment and approved Hugging Face checkpoint access. This release does not advertise SAM3 CPU support." if self.family.currentText() in ("SAM3", "SAM3.1") else
                           "CPU works without an NVIDIA GPU. A .pt or .pth checkpoint must match the selected family and variant. Downloaded weights are cached for later use. CPU automatic segmentation starts with an 8 × 8 prompt grid.")
 
     def browse(self):
+        if self.family.currentText() == "SAM3 ONNX":
+            path = QFileDialog.getExistingDirectory(self, "Select folder containing the six SAM3 ONNX files")
+            if path:
+                self.path.setText(path)
+            return
         path, _ = QFileDialog.getOpenFileName(self, "Select compatible checkpoint", "", "PyTorch checkpoint (*.pt *.pth)")
         if path:
             self.path.setText(path)
 
     def values(self):
         return self.variant.currentData(), self.device.currentData(), self.path.text().strip() or None
+
+    def take_hf_token(self):
+        """Remove the password from the widget; caller retains it only for the job."""
+        token = self.hf_token.text().strip() if self.family.currentText() in ("SAM3", "SAM3.1") else ""
+        self.hf_token.clear()
+        return token or None
+
+    def reject(self):
+        self.hf_token.clear()
+        super().reject()
 
 
 class CalibrationDialog(QDialog):

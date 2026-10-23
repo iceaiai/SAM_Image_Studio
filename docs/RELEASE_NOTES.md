@@ -1,3 +1,49 @@
+# SAM Image Studio 1.4.3
+
+## Installation and repository organization
+
+CPU helpers are now under `packaging/`; GPU README, install/update instructions,
+installer and optional requirements are under `GPU/`. The existing
+`scripts/install_conda_gpu.py` remains a compatibility entry point. Shared
+requirements live under `packaging/requirements/`. Original validation reports
+moved to `docs/validation/`; original artifacts and archive checksums remain in
+`uploads/`. Runtime package/import paths remain unchanged.
+
+Ubuntu/WSL installers detect and install missing Qt/font/XCB libraries, including
+libxcb-shape. WSLg startup selects X11 without overriding explicit Qt platform
+choices. Native SAM3 requirements retain setuptools 80.9.0 for pkg_resources.
+Existing dedicated environments update in place; no routine uninstall is needed.
+
+## Model and prompt workflows
+
+- SAM3 ONNX text segmentation uses the public verified six-file ViT-H export.
+  Supports CPU/CUDA runtime selection, text aliases, exact ROI limits, filters,
+  preview and native project recovery. Native point/shape concepts and automatic
+  grids are not exposed by this text-only export.
+- SAM3/3.1 Model manager accepts a masked optional Hugging Face read token for
+  downloads. The field is not saved; existing local login or local matching
+  checkpoints remain supported. Model access approval is still required.
+- Native SAM3 instance/ROI predictions now share processor image features through
+  the parent's predict_inst API; they no longer call an interactive tracker with
+  no backbone. Text control labels/placeholders follow the loaded model family.
+- Whole-image examples can use selected accepted masks. SAM1/2 pool public
+  predictor image embeddings; SAM3/3.1 use native concept prompts. Single object
+  stays separate from exact ROI clipping because their output boundaries differ.
+
+## Illustrated website and validation
+
+Sphinx guides follow workspace, menus, toolbar controls and modes. New figures
+cover data cleaning, three prompted Seg scopes, compressed sensing and DCT/TV
+parameter comparisons. Synthetic schematics are labeled; real ONNX screenshots
+use public synthetic input. Original v1.4.2 manuals remain historical references.
+
+Current full regression: 460 passed, 35 external-asset checks skipped. Genuine
+SAM3 ONNX CPU CLI and Qt text/alias/ROI/accept/reopen checks passed, as did CPU
+installation self-test and strict Sphinx build. CUDA/native Windows/native
+SAM3.1 inference were not run in this cloud. See `validation/ONNX_VALIDATION_v143.md`.
+
+---
+
 # SAM Image Studio 1.4.2
 
 ## Calibration and segmentation

@@ -16,9 +16,11 @@ docs/source/autoapi/
 
 # Downloaded models, local validation and user projects
 validation_assets/
-validation/local_*
-validation/gpu_install_local.json
+docs/validation/local_*
+docs/validation/gpu_install_local.json
 SAM_Annotations/
 *.sam.json
 .ipynb_checkpoints/
 .pages-publish/
+
+.cache/

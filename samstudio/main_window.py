@@ -403,7 +403,13 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         for kind in ("polygon","rectangle","circle","ellipse","point"):self.tool_actions[kind].setEnabled(self.mode.currentText()!="Edit" and (not self.busy or self._job_prompt_editable))
         name=doc.get_group(doc.background_group_id).name if doc and doc.background_group_id else "not selected"
         self.background_button.setText("Background: "+name+"…");self.background_button.setEnabled(has and not self.busy)
-        text_enabled=bool(self.engine.spec and self.engine.spec.family in ("SAM2","SAM2.1","SAM3","SAM3.1"))
+        self._scope_tool_changed()
+        text_enabled=bool(self.engine.spec and self.engine.spec.family in ("SAM2","SAM2.1","SAM3","SAM3.1","SAM3 ONNX"))
+        family = self.engine.spec.family if self.engine.spec else ""
+        self.text_prompt.setPlaceholderText(f"{family} text prompt / alias" if text_enabled else "Text prompt unavailable for this model")
+        if hasattr(self, "text_prompt_label_action"):
+            self.text_prompt_label_action.setVisible(text_enabled)
+            self.text_prompt_label.setText(f" {family} text prompt ")
         self.text_prompt_action.setVisible(text_enabled);self.aliases_action.setVisible(text_enabled)
         if hasattr(self,"text_run_action"):
             self.text_run_action.setVisible(text_enabled);self.text_run_button.setEnabled(has and bool(self.text_prompt.text().strip()) and self.engine.ready and not self.busy)
@@ -890,8 +896,15 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         dialog=ModelDialog(self.engine,self)
         if dialog.exec()==QDialog.DialogCode.Accepted:
             spec,device,path=dialog.values()
+            token = dialog.take_hf_token() if hasattr(dialog, "take_hf_token") else None
             def loaded(result):self.model_label.setText(result["model"]+" · "+result["device"].upper());self.model_label.setToolTip(result["checkpoint"]);self.statusBar().showMessage("Model loaded. Choose Segment and add positive/negative examples, text, or automatic grid.",10000);self.preview_timer.start() if self.mode.currentText()=="Segment" and self.scope.currentData()=="automatic" else None
-            self._start_job("Loading model…",lambda progress,cancel:self.engine.load(spec,device,path,progress,cancel),loaded)
+            def load_model(progress, cancel):
+                nonlocal token
+                try:
+                    return self.engine.load(spec,device,path,progress,cancel,hf_token=token) if token else self.engine.load(spec,device,path,progress,cancel)
+                finally:
+                    token = None
+            self._start_job("Loading model…",load_model,loaded)
 
     def _text_prompt_changed(self):
         if not self.document:return
@@ -1002,7 +1015,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             roi=self._selection_mask() if doc.draft.get("roi") and not automatic else None
             if exact_region:whole=False
             points=copy.deepcopy(doc.draft.get("points",[])) if not automatic else []
-            has_text=bool(self.engine.spec.family in ("SAM2","SAM2.1","SAM3","SAM3.1") and self.text_prompt.text().strip())
+            has_text=bool(self.engine.spec.family in ("SAM2","SAM2.1","SAM3","SAM3.1","SAM3 ONNX") and self.text_prompt.text().strip())
             examples=self._whole_image_examples(doc,roi)
             exemplar_mode=self.scope.currentData()=="prompt" and not automatic and clip is None and force_whole is None and not self._refine_target
             if not automatic and not points and roi is None and not has_text and not examples:
@@ -1021,12 +1034,12 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             protected=doc.protected_mask([self._refine_target] if self._refine_target and not automatic else [])
             if clip is not None:protected|=~clip
             raw=doc.working if self.cleaned_checkbox.isChecked() and doc.working is not None else doc.frame.raw
-            rgb=display_rgb(raw);text=resolve_prompt(self.text_prompt.text(),doc.text_aliases) if not automatic and self.engine.spec.family in ("SAM2","SAM2.1","SAM3","SAM3.1") else ""
+            rgb=display_rgb(raw);text=resolve_prompt(self.text_prompt.text(),doc.text_aliases) if not automatic and self.engine.spec.family in ("SAM2","SAM2.1","SAM3","SAM3.1","SAM3 ONNX") else ""
             context={"target":self._refine_target,"method":"SAM","model":self.engine.spec.label,
                      "device":self.engine.device,"input":"cleaned" if raw is doc.working else "original",
                      "normalization":"uint8 RGB; non-uint8 0.5–99.5 percentile stretch"}
-            if exemplar_mode:context.update(prompt_mode="whole-image exemplars",example_backend=self.engine.spec.family+" native concepts" if self.engine.spec.family in ("SAM3","SAM3.1") else "SAM candidates + feature/intensity retrieval",examples=copy.deepcopy(examples),point_examples=copy.deepcopy(points))
-            if text:context.update(text_prompt=self.text_prompt.text().strip(),effective_text_prompt=text,text_backend=self.engine.spec.family if self.engine.spec.family in ("SAM3","SAM3.1") else "Grounding DINO Tiny → SAM2")
+            if exemplar_mode:context.update(prompt_mode="text only" if self.engine.spec.family=="SAM3 ONNX" else "whole-image exemplars",example_backend="SAM3 ONNX text" if self.engine.spec.family=="SAM3 ONNX" else self.engine.spec.family+" native concepts" if self.engine.spec.family in ("SAM3","SAM3.1") else "SAM candidates + feature/intensity retrieval",examples=copy.deepcopy(examples),point_examples=copy.deepcopy(points))
+            if text:context.update(text_prompt=self.text_prompt.text().strip(),effective_text_prompt=text,text_backend=self.engine.spec.family if self.engine.spec.family in ("SAM3","SAM3.1","SAM3 ONNX") else "Grounding DINO Tiny → SAM2")
             if clip is not None:context["clip_region"]=pack_mask(clip)
             self.canvas.set_preview([]);self._preview_context=None;self._refine_target=None
             def finished(masks):

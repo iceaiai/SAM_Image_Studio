@@ -9,7 +9,11 @@ as downloadable artifacts in the built documentation:
 - {download}`SAM_Image_Studio_Denoising_Parameters.pdf <../../uploads/SAM_Image_Studio_Denoising_Parameters.pdf>`
 - {download}`3PM_Compressed_Sensing.ipynb <../../uploads/3PM_Compressed_Sensing.ipynb>`
 
-The source archive is also extracted into the repository root so the
+The archive is the historical v1.4.2 release, not the updated v1.4.3 tree.
+Use the [current repository](https://github.com/iceaiai/SAM_Image_Studio) for
+updated installers and source.
+
+The source archive was extracted and organized in this repository so the
 application, installers, examples, and tests can be edited directly.
 
 The archive includes earlier packaged PDF resources in `docs/` and

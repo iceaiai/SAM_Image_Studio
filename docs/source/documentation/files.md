@@ -22,15 +22,17 @@ folders have been removed. Preserve those separately when migrating machines.
 | Directory | Purpose |
 | --- | --- |
 | `samstudio/` | Application source; `resources/` contains packaged help PDFs. |
-| `scripts/` | CPU/GPU environment installers, diagnostics and validation helpers. |
+| `GPU/` | All GPU setup entry points, README, installation/update guide and optional GPU requirement files. |
+| `packaging/` | CPU launch/install helpers, shared requirements and Windows portable build recipe. |
+| `scripts/` | Shared setup, diagnostics and validation helpers. |
 | `docs/source/` | Sphinx website pages and configuration. |
 | `docs/` | Original editable manuals, screenshots, documentation requirements. |
 | `docs/_build/html/` | Generated website; not application source. |
 | `examples/` | Demo images and local U-Net plugin example. |
 | `tests/` | Existing regression tests. |
-| `validation/` | Original release reports and test records, not automatically rerun evidence. |
+| `docs/validation/` | Original release reports and test records, not automatically rerun evidence. |
 | `vendor/` | Bundled dependency wheels, including the verified SAM2 wheel. |
-| `dist/` | Original installable application wheel. |
+| `uploads/original-wheel/` | Original v1.4.2 application wheel; historical, not the current source. |
 | `uploads/` | The five original supplied artifacts, retained unchanged. |
 | `.venv/` | Default app-owned CPU installation, if used. |
 | `.docs-venv/` | Optional isolated documentation build environment. |

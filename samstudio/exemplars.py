@@ -10,12 +10,14 @@ import cv2
 import numpy as np
 from scipy.ndimage import distance_transform_edt
 from .processing import shape_mask,bounding_box,filter_proposals
+from .domain import unpack_mask
 
 def _check(cancel):
     if cancel and cancel.is_set():raise InterruptedError('Exemplar preview cancelled.')
 
 def _embedding(engine,mask):
-    value=getattr(engine.predictor,'features',None)
+    getter = getattr(engine.predictor, 'get_image_embedding', None)
+    value = getter() if callable(getter) else getattr(engine.predictor,'features',None)
     if value is None:value=getattr(engine.predictor,'_features',{}).get('image_embed')
     if value is None:return None
     value=value.detach().float().cpu().numpy()
@@ -63,6 +65,11 @@ def infer_examples(engine,rgb,points=None,examples=None,protected=None,grid=8,mi
     if not engine.ready:raise ValueError('Load a model first.')
     shape=rgb.shape[:2];protected=np.zeros(shape,bool) if protected is None else np.asarray(protected,bool)
     if protected.shape!=shape:raise ValueError('Protected mask dimensions do not match.')
+    if engine.spec.family=='SAM3 ONNX':
+        if points or examples:
+            raise ValueError('This SAM3 ONNX export is text-only. Clear exemplar prompts and enter text; choose Inside ROI only for an output region. Use SAM3.1 for native positive/negative shapes.')
+        return engine.infer(rgb,protected=protected,whole=True,min_score=min_score,min_area=min_area,
+                            max_objects=max_objects,progress=progress,cancel=cancel,text_prompt=text_prompt)
     if engine.spec.family=='SAM3.1':
         with engine._lock:
             candidates,scores=engine.predictor.concepts(rgb,points,examples,text_prompt,cancel)
@@ -77,6 +84,15 @@ def infer_examples(engine,rgb,points=None,examples=None,protected=None,grid=8,mi
         seeds.append((mask,float(score),bool(label)))
     for example in examples or []:
         _check(cancel)
+        if example['kind'] == 'mask':
+            mask = unpack_mask(example['mask'], shape)
+            if not mask.any():raise ValueError('A selected exemplar object is empty.')
+            # Existing masks already describe the exemplar; pool SAM image
+            # features over them rather than replacing them by a box prediction.
+            if engine.spec.family in ('SAM1','SAM2','SAM2.1'):
+                engine._set_image(np.ascontiguousarray(rgb, dtype=np.uint8), progress, cancel)
+            seeds.append((mask, 1., bool(example.get('label',1))))
+            continue
         region=shape_mask(example['kind'],example['points'],shape)
         if not region.any():raise ValueError('An example shape is empty.')
         x,y,w,h=bounding_box(region)

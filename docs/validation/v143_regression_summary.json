@@ -1,0 +1,15 @@
+{
+  "tests": 495,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 35,
+  "passed": 460,
+  "version": "1.4.3",
+  "device": "cpu",
+  "command": "QT_QPA_PLATFORM=offscreen python -m pytest -q",
+  "limitations": [
+    "35 checks require unavailable genuine SAM1/2/LaMa weights or RosettaSciIO external fixtures.",
+    "No CUDA device: native SAM3/3.1 and Windows execution were not exercised.",
+    "Native SAM3 shared-backbone and token behavior are contract regressions, not GPU model inference."
+  ]
+}

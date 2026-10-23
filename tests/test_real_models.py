@@ -235,7 +235,7 @@ def test_fresh_gui_process_real_model_loading_preexisting_points_and_histogram(f
 def save_results():
     yield
     if REPORTS:
-        path=Path(os.environ.get("SAM_STUDIO_TEST_REPORT","validation/real_models.json"))
+        path=Path(os.environ.get("SAM_STUDIO_TEST_REPORT","docs/validation/real_models.json"))
         path.parent.mkdir(parents=True,exist_ok=True)
         path.write_text(json.dumps({"real_checkpoint_tests":REPORTS,"not_verified":["NVIDIA CUDA","Native SAM3","SAM1 ViT-L/ViT-H","SAM2 Small/Base+/Large","Native Windows EXE"]},indent=2))
 

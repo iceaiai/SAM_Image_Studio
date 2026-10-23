@@ -66,3 +66,25 @@ SPORCO: https://github.com/bwohlberg/sporco (BSD-3-Clause).
 CAREamics: https://github.com/CAREamics/careamics (BSD-3-Clause).
 BM3D/BM4D: https://pypi.org/project/bm3d/ and https://pypi.org/project/bm4d/ . These native backend distributions have academic/non-commercial terms. This application's MIT license does not relicense them. No backend native binaries are bundled in this source/wheel archive; the installer obtains the upstream distributions. Retain their full licenses when redistributing installed packages or portable builds.
 SAM3.1 uses the official SAM3 upstream license and separately gated sam3.1_multiplex.pt weights from https://huggingface.co/facebook/sam3.1 . No SAM3/SAM3.1 weights are bundled.
+
+## Version 1.4.3 SAM3 ONNX
+
+The SAM3 ONNX adapter is implemented in this project using the exported graph
+interfaces. No GPL AnyLabeling/X-AnyLabeling implementation source is copied.
+The optional six-file public ViT-H export is downloaded from X-AnyLabeling's
+v3.0.0 GitHub release, with the release API's SHA-256 digests pinned in
+samstudio/sam3_onnx.py. These are SAM3 weights, not SAM3.1 Multiplex weights.
+Public distribution does not remove the SAM3 model license or use conditions;
+the original SAM3 license in third_party/SAM3_LICENSE.txt remains applicable.
+No model weights are bundled in the application source or wheel.
+
+samstudio/_clip_tokenizer.py contains OpenAI's MIT-licensed CLIP SimpleTokenizer
+from commit d05afc436d78f1c48dc0dbf8e5980a9d471f35f6, with attribution added and
+its implementation retained. Copyright (c) 2021 OpenAI. The complete notice is
+in third_party/CLIP_LICENSE.txt. The small public BPE vocabulary is downloaded
+from the same pinned upstream commit and verified with SHA-256. There is no
+zero-token or approximate tokenizer fallback.
+
+ONNX Runtime: https://github.com/microsoft/onnxruntime (MIT).
+ftfy: https://github.com/rspeer/python-ftfy (Apache-2.0).
+Retain the installed dependency notices when redistributing a packaged build.

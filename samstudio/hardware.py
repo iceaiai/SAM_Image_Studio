@@ -45,19 +45,21 @@ def conda_gpu_plan(root,report,name='sam-image-studio-gpu',current=False,sam3=Fa
     if not current:
         executable=conda or shutil.which('conda')
         if not executable:raise ValueError('Install Miniforge/Conda, open its prompt, and run this command again.')
-        second=[executable,'run','--no-capture-output','-n',name,'python',str(root/'scripts/install_conda_gpu.py'),'--current']
+        second=[executable,'run','--no-capture-output','-n',name,'python',str(root/'GPU/install.py'),'--current']
         if sam3:second.append('--sam3')
         return [[executable,'create','--yes','--name',name,'python=3.12','pip'],second]
     if not os.environ.get('CONDA_PREFIX') or Path(os.environ['CONDA_PREFIX']).name.lower() in ('base','anaconda3','miniconda3','miniforge3'):
         raise ValueError('Activate a dedicated non-base Conda environment before GPU installation.')
     py=sys.executable
-    requirements='requirements-sam3-experimental.txt' if sam3 else 'requirements.lock.txt'
+    requirements='GPU/requirements-sam3.txt' if sam3 else 'packaging/requirements/cpu.lock.txt'
     commands=[
-        [py,'-m','pip','install','--upgrade','pip>=24.3','setuptools>=75','wheel'],
+        [py,str(root/'scripts/install_linux_dependencies.py')],
+        [py,'-m','pip','install','--upgrade','pip>=24.3','setuptools==80.9.0','wheel'],
         [py,'-m','pip','install','torch==2.7.1','torchvision==0.22.1','--index-url','https://download.pytorch.org/whl/'+index],
         [py,'-m','pip','install','--find-links',str(root/'vendor'),'-r',str(root/requirements)],
         [py,'-m','pip','install','--no-deps',str(root/'vendor/sam_2-1.0-py3-none-any.whl')],
         [py,'-m','pip','install','--no-deps',str(root)],
+        [py,str(root/'scripts/install_onnx_runtime.py'),'--device','cpu' if index=='cu118' else 'cuda'],
         [py,'-m','pip','check'],
         [py,'-m','samstudio.selftest','--device','cuda'],
     ]

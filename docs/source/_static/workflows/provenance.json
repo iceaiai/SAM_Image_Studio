@@ -1,0 +1,7 @@
+{
+  "data": "Synthetic particles, generated here; no user images or model predictions",
+  "seed": 7,
+  "scope_figure": "Manual reference-mask schematic",
+  "cleaning": "samstudio.processing.neighbor_fill and patch_fill; outside-target equality checked",
+  "restoration": "samstudio.compressed_sensing.iterative_restore; normalized float32; 192x256; 40 iterations; max_side=0"
+}

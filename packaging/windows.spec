@@ -1,5 +1,5 @@
 # Native Windows CPU build recipe. Run Build_Windows_Portable.bat on Windows.
-# A successful build still requires the acceptance checks in INSTALL_UNINSTALL.md.
+# A successful build still requires native Windows acceptance checks.
 # Spec format and collection helpers: https://pyinstaller.org/en/stable/spec-files.html
 from pathlib import Path
 
@@ -7,7 +7,9 @@ from PyInstaller.utils.hooks import collect_data_files, collect_submodules, copy
 
 root = Path(SPECPATH).resolve().parent
 datas = [(str(root / "third_party"), "third_party"), (str(root / "LICENSE"), ".")]
-hidden = ["matplotlib.backends.backend_qtagg", "PySide6.QtSvg", "PySide6.QtPdf", "PySide6.QtPdfWidgets"]
+datas += collect_data_files("onnxruntime")
+hidden_onnx = collect_submodules("onnxruntime")
+hidden = hidden_onnx + ["matplotlib.backends.backend_qtagg", "PySide6.QtSvg", "PySide6.QtPdf", "PySide6.QtPdfWidgets"]
 datas += collect_data_files("samstudio", includes=["resources/*.pdf"])
 
 # SAM2 uses Hydra YAML configuration and dynamically named model classes.
@@ -35,12 +37,12 @@ for distribution in (
     "transformers", "huggingface-hub", "tokenizers", "safetensors",
     "rosettasciio", "torch", "torchvision", "sam_2", "segment-anything",
     "careamics", "lightning", "pytorch-lightning", "torchmetrics",
-    "bioimageio.core", "bioimageio.spec", "sporco", "bm3d", "bm4d", "openpyxl",
+    "bioimageio.core", "bioimageio.spec", "onnxruntime", "ftfy", "regex", "sporco", "bm3d", "bm4d", "openpyxl",
 ):
     datas += copy_metadata(distribution, recursive=True)
 
 a = Analysis(
-    [str(root / "launch.py")],
+    [str(root / "packaging/launch.py")],
     pathex=[str(root)],
     binaries=native_bm4d,
     datas=datas,

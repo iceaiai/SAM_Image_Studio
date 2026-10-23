@@ -1,92 +1,134 @@
-# Troubleshooting
+# Troubleshooting installation and operation
 
-## Installation stops
+Use current installers from a complete version 1.4.3 source tree. They now handle
+the repeated dependency fixes encountered during v1.4.2 WSL installation. Rerunning
+in an existing dedicated environment is a supported repair; deleting that
+environment is usually unnecessary.
 
-Check 64-bit Python 3.12, a writable complete source tree, available disk space,
-and the first failing command. Re-run the installer after correcting that
-prerequisite. Keep the CPU and optional SAM3 lockfiles separate.
-Use the supported installer and `--find-links vendor` path rather than ignoring
-dependencies, altering pins, or disabling TLS/checksum verification.
+## 1. Confirm the folder and environment
 
-If a bundled artifact fails its checksum, re-extract the original archive and
-verify it before installation. Preserve images, native projects, and any user
-changes before replacing files. A missing package version in a configured
-index is a dependency/index issue to diagnose, not a reason to silently claim
-the documented installation worked.
-
-## PowerShell cannot change into a folder containing spaces
-
-For "A positional parameter cannot be found" after a `cd` command, quote the
-entire path:
+A PowerShell error saying "A positional parameter cannot be found" usually means
+an unquoted path with spaces. Enter the real project root:
 
 ```powershell
-Set-Location -LiteralPath 'C:\work\AI works\Desktop_SAM3\SAM_Image_Studio_v1.4.2_CPU\SAM_Image_Studio'
-Test-Path .\scripts\install_conda_gpu.py
+Set-Location -LiteralPath 'C:\work\AI works\SAM_Image_Studio'
+Test-Path .\GPU\install.py
 Test-Path .\pyproject.toml
 ```
 
-Replace the example with your real folder. Both checks should return `True`
-before running the installer. A `False` result means you are in the wrong
-level of the extracted folder or the source tree is incomplete.
+Both should return `True`. Linux/WSL needs its own path, for example
+`cd '/mnt/c/work/AI works/SAM_Image_Studio'`. Use Linux Conda inside WSL for native
+SAM3.1. Windows Anaconda alone is not Linux Conda. Activate the dedicated
+`sam-image-studio-sam3` or `sam-image-studio-gpu` environment before `--current`.
+Application installation into Conda base is rejected.
 
-For native Windows GPU, use the SAM1/2 recipe. The SAM3.1 `--sam3` recipe must
-run inside Linux/WSL2 with Linux Conda, not in Windows PowerShell. See
-[GPU installation](installation.md#nvidia-gpu-with-conda).
+## 2. Dependency problems handled by installation
 
-## Qt cannot open a display
+| Earlier symptom | Current automatic handling |
+| --- | --- |
+| `libxkbcommon.so.0`, `libfontconfig.so.1` or `libxcb-shape.so.0` missing | Ubuntu helper detects Qt system libraries and installs the missing packages. |
+| Wayland/xcb Qt plugin fails because of a missing library | Installer supplies XCB dependencies; WSLg launch selects X11 when a display is present. |
+| `No module named pkg_resources` from native SAM3.1 | Installer and native requirements select setuptools 80.9.0. |
+| CPU and GPU ONNX distributions conflict | Runtime helper removes the opposite known distribution and installs the selected one. |
+| Torch CUDA wheel does not match driver capability | GPU planner chooses a supported official Torch index or explains why the driver is too old. |
 
-A normal launch requires a desktop display and the platform's Qt runtime
-libraries. On headless Linux, use `QT_QPA_PLATFORM=offscreen` for diagnostics
-and GUI tests; an offscreen process is not an interactive application preview.
-If Qt reports a missing shared library, install that library through the
-system's supported package manager, preserving package verification.
+For an older affected native environment, update to the complete current source,
+then run from its root:
 
-## GPU detection or model loading fails
+```sh
+conda activate sam-image-studio-sam3
+python GPU/install.py --current --sam3
+```
 
-Run `python scripts/install_conda_gpu.py --inspect` from the repository root.
-No `nvidia-smi`, no visible NVIDIA devices, or an old driver prevents this CUDA
-path. The installer neither installs drivers nor treats AMD/Intel GPUs as CUDA.
-Use CPU where appropriate. CUDA execution requires a dedicated Conda environment.
+For ordinary GPU setup omit `--sam3`; CPU repair uses its CPU installer. Normal
+users do not need per-library apt/pip recipes. A non-root Ubuntu user must allow
+`sudo` for missing system libraries; on managed machines that may require an
+administrator. An installer failure must be resolved before claiming readiness.
 
-Run `python -m samstudio.selftest --device cuda` in the GPU environment, then
-load matching real weights for a model acceptance check. Detection and synthetic
-planner tests do not verify kernels, available VRAM, or model performance.
-SAM3/3.1 require Linux/WSL2, approved access, and the correct distinct checkpoint.
+## 3. Display failures remaining after installation
 
-## Prompts do not create the expected result
+An **offscreen self-test passing** means Qt can construct widgets; it does not
+establish that an interactive desktop is reachable. Start normally with
+`python -m samstudio`. Explicit `QT_QPA_PLATFORM` choices are respected; do not
+leave it set to `offscreen` when expecting a visible window.
 
-- Confirm that a model is loaded and **Segment** mode is active.
-- Choose an area tool for **Single object** or **Inside ROI only**. **Point**
-  uses **Prompt project, whole image**.
-- Use **Run text segmentation** for text; SAM1 does not offer that path.
-- A zero-mask automatic-grid result is a visible result. Review grid density,
-  minimum score/area, and image suitability.
-- Previews require **Accept masks**. Review positive and negative examples
-  and compare with acquired image content.
+If a display failure remains on Linux/WSL, collect:
 
-## Saving or recovery fails
+```bash
+echo "DISPLAY=$DISPLAY"
+echo "WAYLAND_DISPLAY=$WAYLAND_DISPLAY"
+ldd "$(python -c 'import pathlib, PySide6; print(pathlib.Path(PySide6.__file__).parent / "Qt/plugins/platforms/libqxcb.so")')"
+QT_DEBUG_PLUGINS=1 QT_QPA_PLATFORM=xcb python -m samstudio > /tmp/samstudio-qt.log 2>&1
+tail -n 80 /tmp/samstudio-qt.log
+```
 
-Choose a writable project folder and retain native `.sam.json` files.
-Removing an image entry does not delete its source or saved project. The app
-normally writes rotating `samstudio.log` files in its data directory;
-`SAM_STUDIO_DATA_DIR` can select another writable location. Exports do not
-replace full native editing/recovery records.
+`not found` identifies a missing library. `cannot connect to display` points to
+display/WSLg availability rather than another pip dependency. Reinstallation
+without reading the actual load error can repeat the same failure.
 
-## A plugin or restoration operation fails
+WSL apt's kernel/microcode inspection notices are separate from package install
+success. `propagateSizeHints()` during offscreen testing is harmless if the
+self-test finishes successfully.
 
-Install plugin dependencies in the active environment, then run `pip check`.
-Check the processor's shape, dtype, finite-value, target-mask and cancellation
-contract. Keep GUI calls on the GUI thread. Remove/disable an incompatible
-plugin through its manager; dependencies are not installed automatically.
+## 4. Hugging Face login and gated model access
 
-For CAREamics, validate image size, patch size/depth, device, and output paths.
-Training saves model files before Apply, and image Undo does not delete those
-files. For BM3D/bm4d, review the upstream package's applicable license terms.
+Select SAM3/SAM3.1 in Model manager to expose its optional masked token field.
+Paste a complete approved read token there; it is used for the download and not
+saved. Leave it blank to reuse local HF login. Token approval and model-access
+approval are separate; a fine-grained token also needs the relevant repository
+read permission. Request access on the model page using the token owner's account.
 
-## Full validation cannot download fixtures
+For CLI login, `hf auth login` deliberately shows **no characters or asterisks**.
+Paste once with Ctrl+Shift+V or right-click, press Enter, and answer **n** to
+adding Git credentials. Ctrl+U clears input before resubmission. Check the
+account with `hf auth whoami`. Windows and WSL use separate caches unless you
+explicitly configure sharing.
 
-This release archive omits `validation/external_assets.json`, required by its
-asset-fetch helper. Obtain the authoritative manifest from the maintainer, or
-use existing genuine assets with the full runner. See
-[development and validation](development.md). Do not describe skipped
-integration tests or old bundled XML reports as a current full validation run.
+| Error | Interpretation |
+| --- | --- |
+| `whoami-v2` 401 / `Invalid user token` | The token itself was rejected; recopy/create a valid one. |
+| Login valid, checkpoint download 401/403 | Check gated-model approval, account and repository permission. |
+| SAM3.1 selected but filename is `sam3.pt` | Check the actual selected family; authentic SAM3.1 uses `sam3.1_multiplex.pt`. |
+
+Do not put tokens into shell arguments, projects, screenshots or Git. The GUI
+field does not bypass a gate. For public text weights without HF login, choose
+[SAM3 ONNX](segmentation/sam3-onnx.md), which has different capabilities.
+
+## 5. GPU and model errors
+
+Use `python GPU/install.py --inspect` to check detection. `nvidia-smi` must see
+a supported NVIDIA device. The installer does not install drivers; AMD/Intel
+GPUs use the CPU route. Native SAM3.1 requires Linux/WSL2 and matching weights.
+
+`python -m samstudio.selftest --device cuda` verifies real CUDA operations and
+installation contracts. Then load the model and run a real preview. A CUDA pass
+does not prove sufficient VRAM for SAM3.1. A 6 GB laptop GPU can still run out of
+memory on large models. Capture the actual error instead of assuming CPU fallback.
+
+## 6. Unexpected masks, cleaning or reconstruction
+
+- Check Mode, Scope, text and pending examples. **Point** hides ROI/single-object
+  choices; choose an area tool. See [scope diagrams](segmentation/scopes.md).
+- Automatic grid ignores text. Single object should use empty text for its
+  native instance path. ONNX text requires cleared native point/example prompts.
+- Accepted annotations are protected. Use explicit refinement to change one.
+- **Fill holes** edits masks; Cleaning fills **image pixels**. Remove a target
+  before filling, and use unaffected manual background patches.
+- A 100%-sampled L2 reconstruction returns its input. Choose denoise with relaxed
+  fidelity for ordinary noisy complete images. See [parameter examples](features/compressed-sensing.md).
+
+## 7. Saving, plugins and external fixtures
+
+Choose a writable project folder and keep native `.sam.json` backups. COCO,
+YOLO and flat image exports are not a complete editable-project replacement.
+If saving fails, image removal is blocked to protect recovery.
+
+Local plugins need compatible dependencies in the active environment. Run
+`python -m pip check` and inspect the processor's shape/dtype/target contract.
+CAREamics training creates model files before image Apply; Cancel or Undo does
+not delete those files.
+
+The original release omitted `external_assets.json`; the fetch helper now looks
+under `docs/validation/`. Obtain the authoritative manifest before full external
+validation. Do not invent digests, disable TLS/checksums, or call skipped model
+tests a full model validation. See [development](development.md).

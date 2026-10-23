@@ -11,6 +11,7 @@ every underlying SAM version a native text detector.
 | --- | --- | --- | --- | --- |
 | SAM1 | Native point/box-prompt segmentation | Not available | Application candidate generation and exemplar retrieval | CPU or Conda CUDA |
 | SAM2 / SAM2.1 | Native point/box-prompt segmentation | External Grounding DINO Tiny detects boxes, then SAM2 segments them | Application exemplar retrieval; text can supply candidate boxes | CPU or Conda CUDA |
+| SAM3 ONNX | Not exposed by this public text export | Native exported image/language/decoder graphs | Text-only search; app ROI and aliases | CPU or Conda CUDA ONNX Runtime |
 | SAM3 | Native interactive mask path | Native image concept prompting | Native image concept/geometric prompts, prepared by the app | Optional Linux/WSL2 Conda CUDA |
 | SAM3.1 | Official multiplex predictor adapted to a single image | Native multiplex text/concept request | Multiple concept boxes sent together in a single prompt request | Optional Linux/WSL2 Conda CUDA; own weights |
 
@@ -21,8 +22,9 @@ The model returns a mask and quality score. It does not directly understand
 `black dots` in this application; SAM1 hides the text controls.
 
 For **Prompt project, whole image**, the app builds candidate masks using
-grid prompts and positive exemplars, supplements small-object candidates using
-template-correlation seeds, pools SAM features, and compares appearance/shape
+grid prompts and positive exemplars (including selected existing objects), supplements small-object candidates using
+template-correlation seeds, pools SAM image embeddings through the predictor's
+`get_image_embedding()` feature accessor when available, and compares appearance/shape
 descriptors with positive and negative examples. Filters remove unsuitable,
 protected, too-small, or duplicate proposals. This is an application retrieval
 heuristic; it is not native semantic concept propagation or a trained
@@ -46,7 +48,21 @@ to TEM/SEM. A threshold cannot repair a concept the detector does not locate.
 Point/shape whole-image exemplar search uses the application's retrieval layer
 described above.
 
+## SAM3 ONNX: exported text inference
+
+The public export encodes uint8 RGB pixels and CLIP text, then decodes original-size
+masks and scores. It requires no HF authentication. Application filters, aliases,
+review/accept and exact ROI limits remain available. This export does not expose
+native point/shape concepts or automatic grids; choose native SAM3.1 for those.
+See the [public ONNX workflow](sam3-onnx.md).
+
 ## SAM3: native image concepts
+
+For native instance/ROI prompts, the processor computes image features and the
+parent model's `predict_inst` shares them with its interactive predictor. Calling
+the interactive predictor's independent `set_image` would fail because its
+tracker has no backbone; v1.4.3 corrects this route.
+
 
 The app's SAM3 processor sets an image, applies an optional native text prompt,
 and adds positive/negative geometric prompts. Shape/point exemplars first

@@ -6,7 +6,7 @@ Install the CPU or dedicated GPU environment first. Activate it, then install
 the supplied development requirements:
 
 ```sh
-python -m pip install -r requirements-dev.txt
+python -m pip install -r packaging/requirements/dev.txt
 python -m pip check
 python -m samstudio.selftest --device cpu
 python -m pytest -q tests/test_v141_processing_workspace.py tests/test_v141_segmentation_plugins_gpu.py
@@ -28,7 +28,7 @@ The release documents these commands:
 
 ```sh
 python scripts/fetch_validation_assets.py --models --text --directory /local/validation_assets
-python scripts/run_full_validation.py --assets /local/validation_assets --output validation/local_full_results.xml
+python scripts/run_full_validation.py --assets /local/validation_assets --output docs/validation/local_full_results.xml
 ```
 
 The full runner requires actual SAM1/SAM2.1, LaMa, microscopy reader fixtures,
@@ -36,7 +36,7 @@ and the pinned Grounding DINO cache. It rejects skipped tests.
 
 ```{warning}
 The supplied 1.4.2 archive does **not** contain
-`validation/external_assets.json`, which `fetch_validation_assets.py` reads.
+`docs/validation/external_assets.json`, which `fetch_validation_assets.py` reads.
 Consequently, the fetch command cannot complete from this distribution as-is.
 Obtain the authoritative manifest with expected asset hashes from the release
 maintainer before using that helper. Do not invent hashes or disable checks.
@@ -44,10 +44,16 @@ If genuine fixtures are already available, provide their directory to the full
 runner and ensure its separate text-model cache requirement is satisfied.
 ```
 
-The uploaded ZIP's `TEST_REPORT.md` and `validation/` describe the original
+The uploaded ZIP's original `TEST_REPORT.md` and `validation/` (now archived under `docs/`) describe the original
 release's checks. They are historical artifacts, not results from a current
 checkout or this documentation build. Real CUDA and SAM3/SAM3.1 checks remain
 hardware/access dependent.
+
+## Current 1.4.3 checks
+
+See [current validation](https://github.com/iceaiai/SAM_Image_Studio/blob/main/docs/validation/ONNX_VALIDATION_v143.md)
+for actual runtime/model tests and their scope. The historical import results below
+refer only to the earlier checkout.
 
 ## Repository import checks
 

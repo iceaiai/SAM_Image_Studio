@@ -31,18 +31,23 @@ def main(argv=None):
         parser.error("Use scripts/install_conda_gpu.py inside a dedicated Conda environment. GPU venv installation is disabled.")
     if args.current and sys.prefix==sys.base_prefix and not os.environ.get("CONDA_PREFIX"):
         parser.error("--current requires an activated virtual environment or Conda environment.")
+    conda = os.environ.get("CONDA_PREFIX")
+    if args.current and conda and Path(conda).name.lower() in ("base", "anaconda3", "miniconda3", "miniforge3"):
+        parser.error("Activate a dedicated environment; installation into Conda base is disabled.")
     wheel=ROOT/"vendor/sam_2-1.0-py3-none-any.whl"
     if hashlib.sha256(wheel.read_bytes()).hexdigest()!=SAM2_WHEEL_SHA256:
         raise ValueError("The bundled SAM2 package failed verification. Extract a clean copy of the release.")
     env=ROOT/(".venv" if args.backend=="cpu" else ".venv-gpu")
     py=Path(sys.executable) if args.current else env/("Scripts/python.exe" if os.name=="nt" else "bin/python")
     commands=[
-        [py,"-m","pip","install","--upgrade","pip>=24.3","setuptools>=75","wheel"],
+        [sys.executable, ROOT/"scripts/install_linux_dependencies.py"],
+        [py,"-m","pip","install","--upgrade","pip>=24.3","setuptools==80.9.0","wheel"],
         [py,"-m","pip","install","torch==2.7.1","torchvision==0.22.1","--index-url",
          "https://download.pytorch.org/whl/"+("cpu" if args.backend=="cpu" else "cu126")],
-        [py,"-m","pip","install","--find-links",ROOT/"vendor","-r",ROOT/"requirements.lock.txt"],
+        [py,"-m","pip","install","--find-links",ROOT/"vendor","-r",ROOT/"packaging/requirements/cpu.lock.txt"],
         [py,"-m","pip","install","--no-deps",wheel],
         [py,"-m","pip","install","--no-deps",ROOT],
+        [py,ROOT/"scripts/install_onnx_runtime.py","--device","cpu"],
         [py,"-m","pip","check"],
         [py,"-m","samstudio.selftest","--device",args.backend],
     ]
@@ -59,9 +64,8 @@ def main(argv=None):
         venv.EnvBuilder(with_pip=True,clear=False).create(env)
         marker.write_text("SAM Image Studio local environment\n")
     for command in commands:run(command)
-    print("\nInstallation verified. Run Start_GUI.bat on Windows or ./start_gui.sh on Linux/macOS.")
+    print("\nInstallation verified. Run packaging/Start_GUI.bat on Windows or bash packaging/start_gui.sh on Linux/macOS.")
     if args.current:print("For this activated environment use: python -m samstudio")
-    elif args.backend=="cuda":print("For GPU use: Start_GUI_GPU.bat or .venv-gpu/bin/python -m samstudio")
     return 0
 
 

@@ -1,3 +1,5 @@
+# Native SAM3 still imports pkg_resources; setuptools 81+ removes it.
+setuptools==80.9.0
 # Separate optional Linux/WSL NVIDIA environment, not the verified CPU environment.
 # SAM3 upstream currently requires NumPy <2. Use the older compatible codec wheel.
 torch==2.7.1

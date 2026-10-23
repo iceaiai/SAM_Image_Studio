@@ -3,11 +3,18 @@
 ## Model manager and inference options
 
 Choose the family and variant before selecting a checkpoint. **CPU** supports
-SAM1/2/2.1. **NVIDIA CUDA (Conda)** requires the dedicated GPU environment.
+SAM1/2/2.1 and SAM3 ONNX text. **NVIDIA CUDA (Conda)** requires the dedicated GPU environment.
 **Automatic device** selects the CUDA device with most total reported VRAM in
 Conda when available; this is not a guarantee of enough free VRAM.
 
-SAM3/3.1 have distinct checkpoints and optional dependency requirements.
+SAM3 ONNX uses a folder containing verified graph/sidecar files, rather than a
+`.pt` checkpoint. Browse changes to folder selection for that family.
+
+SAM3/3.1 have distinct checkpoints and optional dependency requirements. The
+masked optional **Hugging Face token** field appears only for these native
+families. Paste an approved read token for the download, or leave it blank to
+reuse local login. It is cleared after submission/cancel and is not stored in
+settings or projects.
 The first public model download and gated-weight authentication are separate
 from accepting a segmentation preview.
 

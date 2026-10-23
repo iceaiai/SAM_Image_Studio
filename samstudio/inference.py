@@ -76,6 +76,7 @@ for version, stamp, prefix in [("SAM2", "072824", "sam2"), ("SAM2.1", "092824", 
         checksum = "7402e0d864fa82708a20fbd15bc84245c2f26dff0eb43a4b5b93452deb34be69" if version == "SAM2.1" and label == "Tiny" else ""
         CATALOG.append(ModelSpec(version, label, filename,
             f"https://dl.fbaipublicfiles.com/segment_anything_2/{stamp}/{filename}", config, checksum))
+CATALOG.append(ModelSpec("SAM3 ONNX", "ViT-H · text prompts", "sam3-onnx-v3", config="sam3-onnx-v3"))
 CATALOG.append(ModelSpec("SAM3", "Native interactive", "sam3.pt", config="sam3"))
 CATALOG.append(ModelSpec("SAM3.1", "Multiplex · GPU only", "sam3.1_multiplex.pt", config="sam3.1"))
 
@@ -169,7 +170,29 @@ class InferenceEngine:
     def ready(self):
         return self.predictor is not None
 
-    def load(self, spec: ModelSpec, device="cpu", checkpoint=None, progress=None, cancel=None):
+    def load(self, spec: ModelSpec, device="cpu", checkpoint=None, progress=None, cancel=None, hf_token=None):
+        if spec.family == "SAM3 ONNX":
+            from .sam3_onnx import Sam3OnnxBackend, model_directory
+            if device == "auto":
+                from .hardware import automatic_device
+                device = automatic_device()
+            if device != "cpu" and not re.fullmatch(r"cuda(?::[0-9]+)?", device):
+                raise ValueError("Select CPU or NVIDIA CUDA.")
+            # Check the runtime/provider before downloading several GiB.
+            try:
+                import onnxruntime as ort
+                import ftfy
+                from .sam3_onnx import runtime_providers
+                runtime_providers(device, ort)
+            except ImportError as error:
+                raise RuntimeError("Install the SAM3 ONNX runtime first: python scripts/install_onnx_runtime.py --device cpu (or cuda). " + str(error)) from error
+            directory, tokenizer = model_directory(checkpoint, progress, cancel)
+            with self._lock:
+                predictor = Sam3OnnxBackend(directory, tokenizer, device, progress, cancel)
+                self.model, self.predictor, self.processor = predictor, predictor, None
+                self.spec, self.device, self._image_key, self._text_state = spec, device, None, None
+            gc.collect()
+            return {"model": spec.label, "device": device, "checkpoint": str(directory)}
         torch = initialize_torch_runtime()
         if device == "auto":
             from .hardware import automatic_device
@@ -177,7 +200,7 @@ class InferenceEngine:
         if device != "cpu" and not re.fullmatch(r"cuda(?::[0-9]+)?",device):
             raise ValueError("Select CPU or NVIDIA CUDA.")
         if device.startswith("cuda") and not os.environ.get("CONDA_PREFIX"):
-            raise ValueError("GPU execution requires a dedicated Conda environment. Follow GPU_CONDA_GUIDE.md.")
+            raise ValueError("GPU execution requires a dedicated Conda environment. Follow GPU/README.md.")
         if device.startswith("cuda") and not torch.cuda.is_available():
             raise ValueError("CUDA is unavailable in this environment. Use CPU or install the optional GPU environment with a compatible NVIDIA driver.")
         if spec.family in ("SAM3", "SAM3.1") and not device.startswith("cuda"):
@@ -189,9 +212,11 @@ class InferenceEngine:
         elif spec.family in ("SAM3", "SAM3.1"):
             try:
                 from huggingface_hub import hf_hub_download
-                path = Path(hf_hub_download("facebook/"+spec.family.lower(), spec.filename))
+                download_options = {"token": hf_token} if hf_token else {}
+                path = Path(hf_hub_download("facebook/"+spec.family.lower(), spec.filename, **download_options))
             except Exception as error:
-                raise RuntimeError(f"{spec.family} requires approved checkpoint access. Sign in with the Hugging Face CLI, or select a local {spec.filename} checkpoint. " + str(error)) from error
+                detail = str(error).replace(hf_token, "[redacted]") if hf_token else str(error)
+                raise RuntimeError(f"{spec.family} requires approved checkpoint access. Paste a read token in Model manager, use your local Hugging Face login, or select a local {spec.filename} checkpoint. " + detail) from None
         else:
             path = download_file(spec.url, data_directory() / "models" / spec.filename, spec.sha256, progress, cancel)
         check_cancel(cancel)
@@ -244,26 +269,38 @@ class InferenceEngine:
             check_cancel(cancel)
             if progress:
                 progress("Computing image embedding…")
-            self.predictor.set_image(rgb)
+            if self.spec and self.spec.family == "SAM3":
+                # The official interactive predictor has no independent backbone.
+                # Sam3Image.predict_inst consumes features prepared by Sam3Processor.
+                from PIL import Image
+                self._text_state = self.processor.set_image(Image.fromarray(rgb))
+            else:
+                self.predictor.set_image(rgb)
+                self._text_state = None
             self._image_key = key
-            self._text_state = None
         check_cancel(cancel)
 
     def predict(self, rgb, points=None, box=None, progress=None, cancel=None):
         if not self.ready:
             raise ValueError("Load a SAM model first.")
+        if self.spec and self.spec.family == "SAM3 ONNX":
+            raise ValueError("This SAM3 ONNX export supports text prompts only. Use text with an optional ROI, or select SAM3.1 for native point/shape prompts.")
         import torch
         with self._lock, torch.inference_mode():
-            if self.spec.family == "SAM3.1":
+            if self.spec and self.spec.family == "SAM3.1":
                 return self.predictor.predict(np.ascontiguousarray(rgb,dtype=np.uint8), points, box, cancel)
             self._set_image(np.ascontiguousarray(rgb, dtype=np.uint8), progress, cancel)
             coords = np.asarray([[p[0], p[1]] for p in points], np.float32) if points else None
             labels = np.asarray([int(p[2]) for p in points], np.int32) if points else None
             if coords is None and box is None:
                 raise ValueError("Add a positive point or draw an ROI first.")
-            masks, scores, _ = self.predictor.predict(point_coords=coords, point_labels=labels,
-                                                     box=np.asarray(box, np.float32) if box is not None else None,
-                                                     multimask_output=True)
+            options = dict(point_coords=coords, point_labels=labels,
+                           box=np.asarray(box, np.float32) if box is not None else None,
+                           multimask_output=True)
+            if self.spec and self.spec.family == "SAM3":
+                masks, scores, _ = self.model.predict_inst(self._text_state, **options)
+            else:
+                masks, scores, _ = self.predictor.predict(**options)
             check_cancel(cancel)
             masks = np.asarray(masks, dtype=bool)
             scores = np.asarray(scores, dtype=float).reshape(-1)
@@ -291,6 +328,17 @@ class InferenceEngine:
                 score = scores[int(np.argmax(overlaps))] if overlaps and scores else None
                 self.last_proposal_scores.append(float(score) if score is not None and np.isfinite(score) else None)
             return output
+        if self.spec and self.spec.family == "SAM3 ONNX":
+            if points:
+                raise ValueError("Clear point prompts for SAM3 ONNX. Use a text prompt and an optional area ROI; native geometric prompts require SAM3.1.")
+            if not text_prompt.strip():
+                raise ValueError("SAM3 ONNX requires text, for example black dots. Automatic grid and shape-only concepts are not supported by this export.")
+            with self._lock:
+                candidates, scores = self.predictor.segment(np.ascontiguousarray(rgb, dtype=np.uint8), text_prompt, progress, cancel)
+            pairs = [(mask, score) for mask, score in zip(candidates, scores) if score >= min_score]
+            result = finish([p[0] for p in pairs], [p[1] for p in pairs], None if whole else roi)[:max_objects]
+            self.last_proposal_scores = self.last_proposal_scores[:len(result)]
+            return result
         if text_prompt.strip():
             if self.spec.family == "SAM3.1":
                 with self._lock:

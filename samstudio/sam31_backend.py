@@ -9,6 +9,7 @@ from tempfile import TemporaryDirectory
 import numpy as np
 from PIL import Image
 from .processing import bounding_box, shape_mask
+from .domain import unpack_mask
 
 
 class Sam31Backend:
@@ -74,7 +75,7 @@ class Sam31Backend:
             bx,by,bw,bh = bounding_box(mask)
             boxes.append([bx/w,by/h,bw/w,bh/h]); labels.append(int(label))
         for example in examples or []:
-            region = shape_mask(example['kind'],example['points'],(h,w))
+            region = unpack_mask(example['mask'], (h,w)) if example['kind']=='mask' else shape_mask(example['kind'],example['points'],(h,w))
             x,y,bw,bh = bounding_box(region)
             if not bw or not bh:
                 raise ValueError('An example shape is empty.')

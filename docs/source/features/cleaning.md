@@ -1,44 +1,103 @@
-# Reversible cleaning
+# Data cleaning: remove, fill and restore
 
-Cleaning modifies derived pixels while retaining the acquired image. A removal
-or fill is stored as an edit record, visible in **Objects**, so it can be
-restored later.
+Use cleaning to remove contamination or unwanted regions from **derived pixels**.
+The acquired image is retained. Native projects store cleaning records so you
+can undo, restore a region, or remove one record later. Cleaning changes image
+intensities; deleting an ordinary annotation only removes geometry.
 
-## Remove and fill a region
+```{image} ../_static/workflows/cleaning-comparison.png
+:alt: Synthetic contaminant and cleaning target, followed by actual neighbor-fill and background-patch-fill results
+:width: 100%
+```
 
-1. Choose **Clean** and draw an area or use the point cleaning brush.
-2. Choose **Remove selected image area**, or right-click an eligible unlocked
-   area object and choose **Delete for cleaning**.
-3. Select a fill method and inspect its preview.
-4. Apply the result or cancel it.
+*Computed with the application's real neighbor/patch algorithms on synthetic
+data. The same intensity scale is used in every panel. These are illustrative
+fills, not recovered observations of an unknown specimen.*
 
-| Fill | What it uses | Example |
+## 1. File and Group: prepare the image
+
+Open the image through **File → Open images…**. Keep a writable native project
+folder. Inspect the original image before editing and keep original/processed
+exports distinct. If accepted masks already identify the unwanted material,
+you can select those area objects instead of redrawing the target.
+
+For patch filling, create a group containing only manually marked **clean
+background** regions. Choose several patches with appropriate texture, avoiding
+particles, gradients or damaged pixels that should not be copied.
+
+## 2. Mode and drawing tools: define what to remove
+
+Choose **Mode → Clean**. Rectangle is initially selected; Polygon, Circle and
+Ellipse also define area targets. **Point / cleaning brush** becomes a brush
+in this mode. Set its radius through **Cleaning → Cleaning brush radius…**;
+this is unrelated to SAM's point prompt size.
+
+For a complement target, select area objects then choose **Edit → Invert region**.
+The resulting exact region includes all pixels outside the selected masks.
+Inspect it carefully before removing a large area.
+
+## 3. Cleaning menu: remove the selected area
+
+Choose **Cleaning → Remove selected image area** (Ctrl+D). The operation creates
+a reversible removal record. Alternatively right-click an unlocked foreground
+area object in Clean mode and choose **Delete for cleaning**; this removes its
+pixels and records the operation, rather than merely deleting an annotation.
+
+Inspect the target outline before filling. A temporary removed region is not
+an acceptable final scientific measurement or evidence of what was originally
+there. Retained/protected crops remain excluded from processing operations.
+
+## 4. Cleaning menu: choose a fill
+
+| Entry | Use it for | What to inspect |
 | --- | --- | --- |
-| Fill from neighboring pixels | Available image content near the target | A small isolated background defect |
-| Fill with LaMa… | Separately loaded model-based inpainting | A larger contamination region requiring a reviewed fill |
-| Fill with background patches | Real pixels from manually marked background areas | Copy the appearance of clean support material |
+| Fill from neighboring pixels | Small isolated defects with nearby usable pixels | Diffusion seams, gradients and copied neighboring structure |
+| Fill with background patches | Texture matched to manually selected real support/background | Patch repetition, texture mismatch, artificial specimen features |
+| Fill with LaMa… | A separately loaded learned-inpainting model | Invented structure; model compatibility and provenance |
 
-## Background patch sources
+Neighbor filling uses nearest available pixels followed by local diffusion.
+It requires some unremoved content. Patch filling copies actual source pixels;
+it does not infer the material behind contamination. LaMa needs its own compatible
+checkpoint; no LaMa weights are bundled.
 
-Create area annotations over clean background, place them in one group, then
-use **Choose background group…**. Its name can be anything; it need not be
-"Background". **Add selection to background group…** adds eligible manual areas.
-Polygon/ellipse sources use only real pixels inside their masks. Sources
-intersecting already modified pixels are rejected.
+All three fill methods compute in the background and open **Cleaning fill
+preview**. Inspect the generated pixels, then choose **Apply** or **Cancel**.
+Only Apply commits the fill. Removing an area is itself a reversible committed
+record, so canceling a fill keeps the preceding removal; use Undo or Restore
+to recover it. Processing's Denoise dialog uses its own Preview → Apply flow.
 
-**Clear background group selection** removes the source association.
-**Cleaning brush radius…** changes brush size independently of SAM point prompts.
+## 5. Background group: configure real patch sources
 
-## Restore pixels
+1. In Manual mode, draw clean background areas and put them in one Group.
+2. Choose **Cleaning → Choose background group…**. Any group name is allowed;
+   the source association is explicit, not inferred from the word "Background".
+3. **Add selection to background group…** adds eligible manual area annotations.
+4. Return to Clean, remove a target, then choose **Fill with background patches**.
+5. Use **Clear background group selection** if those sources are no longer valid.
 
-**Restore selected area / all edits** restores the requested region. Deleting a
-cleaning object restores its footprint while replaying other retained edits.
-**Show cleaning regions** toggles their display without removing the records.
-**Undo/Redo** also participates in normal image history.
+For ellipse/polygon patches, only pixels inside the true mask are sources; the
+app does not borrow arbitrary pixels outside their boundary. Patches intersecting
+already modified pixels are rejected. A patch source must not overlap the target.
 
-Example: fill a contamination spot from clean support patches, inspect the
-derived image, then delete that cleaning record if the fill is unsuitable.
-A separate denoising record remains part of the edit history.
+## 6. Objects and restoration: inspect the editing history
 
-Store native projects for complete reversible recovery. A flat exported TIFF
-contains pixels but not the editing history. See [saving](saving.md).
+Cleaning records appear in **Objects**. **Show cleaning regions** toggles their
+outlines without deleting edits. The **View / infer from processed image**
+checkbox chooses derived pixels when present; turning it off compares the
+retained acquired source. Display brightness/contrast is separate from pixel edits.
+
+- **Cleaning → Restore selected area / all edits** restores the requested pixels.
+- Deleting a cleaning record restores its footprint and replays retained edits.
+- **Undo / Redo** traverses committed history.
+
+If a later denoising record exists, removing one cleaning record does not mean
+all subsequent processing is discarded. Check the complete history and processed
+view before exporting.
+
+## 7. Save reproducible results
+
+Use **File → Save project now** for full editable `.sam.json` recovery. Use
+**Save original / processed images…** for TIFF pixel output and keep both
+versions when scientific interpretation depends on the acquired data.
+A flat TIFF does not preserve the reversible edit history. See
+[saving](saving.md) and the [Cleaning menu reference](../documentation/menus.md#cleaning).

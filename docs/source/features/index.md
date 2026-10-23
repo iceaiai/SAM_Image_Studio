@@ -27,7 +27,7 @@ Follow the dedicated SAM3.1 guide.
 :link: processing
 :link-type: doc
 
-Compare denoisers, smooth an image, add controlled noise, and preserve crops.
+Compare denoisers, follow illustrated compressed-sensing parameters, and preserve crops.
 :::
 
 :::{grid-item-card} Clean and restore regions
@@ -60,8 +60,9 @@ overlays, and original/processed images.
 ../quickstart
 annotation
 ../segmentation/index
-processing
 cleaning
+processing
+compressed-sensing
 measurements
 saving
 extensions

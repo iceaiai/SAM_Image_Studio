@@ -12,7 +12,7 @@ sys.path.insert(0,str(ROOT))
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--assets",type=Path,default=ROOT/"validation_assets")
-    parser.add_argument("--output",type=Path,default=ROOT/"validation/local_full_results.xml")
+    parser.add_argument("--output",type=Path,default=ROOT/"docs/validation/local_full_results.xml")
     args=parser.parse_args();assets=args.assets.resolve()
     required=[assets/"truck.jpg",assets/"models/sam_vit_b_01ec64.pth",assets/"models/sam2.1_hiera_tiny.pt",
               assets/"models/big-lama.pt",assets/"fixtures/test_STEM_image.dm3",assets/"fixtures/test-2.dm4",

@@ -36,6 +36,8 @@ def main(argv=None):
     parser.add_argument("--version",action="version",version=__version__)
     parser.add_argument("--no-restore",action="store_true",help="Do not reopen the previous image session")
     args=parser.parse_args(argv)
+    from .qt_runtime import configure_qt_platform
+    configure_qt_platform()
     directory=data_directory();directory.mkdir(parents=True,exist_ok=True)
     handler=RotatingFileHandler(directory/"samstudio.log",maxBytes=3_000_000,backupCount=3,encoding="utf-8")
     logging.basicConfig(level=logging.INFO,handlers=[handler],format="%(asctime)s %(levelname)s %(name)s %(message)s")

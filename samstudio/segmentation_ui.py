@@ -12,7 +12,9 @@ class SegmentationWorkflowMixin:
         previous.removeAction(self.text_prompt_action);previous.removeAction(self.aliases_action)
         toolbar=QToolBar('Segmentation prompts',self);toolbar.setObjectName('promptToolbar');toolbar.setMovable(False)
         self.addToolBarBreak(Qt.ToolBarArea.TopToolBarArea);self.addToolBar(Qt.ToolBarArea.TopToolBarArea,toolbar)
-        toolbar.addWidget(QLabel(' Text prompt '));self.text_prompt.setMaximumWidth(420);self.text_prompt.setMinimumWidth(220);self.text_prompt_action=toolbar.addWidget(self.text_prompt)
+        self.text_prompt_label = QLabel(' Text prompt ')
+        self.text_prompt_label_action = toolbar.addWidget(self.text_prompt_label)
+        self.text_prompt.setMaximumWidth(420);self.text_prompt.setMinimumWidth(220);self.text_prompt_action=toolbar.addWidget(self.text_prompt)
         self.text_run_button=QPushButton('Run text segmentation');self.text_run_button.setObjectName('runTextSegmentation');self.text_run_button.clicked.connect(self.run_text_segmentation);self.text_run_action=toolbar.addWidget(self.text_run_button)
         self.aliases_action=toolbar.addWidget(self.aliases_button)
         toolbar.addWidget(QLabel(' Shape prompt '));toolbar.addWidget(self.example_polarity)
@@ -29,17 +31,24 @@ class SegmentationWorkflowMixin:
     def _scope_tool_changed(self,*args):
         if not hasattr(self,'scope'):return
         point=self.canvas.tool=='point'
-        for value in ('roi','single'):
+        onnx=bool(self.engine.spec and self.engine.spec.family=='SAM3 ONNX')
+        self.example_polarity.setEnabled(not onnx)
+        for value in ('roi','single','automatic'):
             index=self.scope.findData(value)
             if index>=0:
                 item=self.scope.model().item(index)
-                if item:item.setEnabled(not point)
-                if hasattr(self.scope.view(),'setRowHidden'):self.scope.view().setRowHidden(index,point)
-        if point and self.scope.currentData() in ('roi','single'):
+                disabled=(point and value in ('roi','single')) or (onnx and value in ('single','automatic'))
+                if item:item.setEnabled(not disabled)
+                if hasattr(self.scope.view(),'setRowHidden'):self.scope.view().setRowHidden(index,disabled)
+        if (point and self.scope.currentData() in ('roi','single')) or (onnx and self.scope.currentData() in ('single','automatic')):
             self.scope.setCurrentIndex(self.scope.findData('prompt'))
     def _whole_image_examples(self,doc,roi=None):
         examples=copy.deepcopy(doc.draft.get('examples',[]))
         if roi is not None and doc.draft.get('roi') and doc.draft['roi'].get('kind')!='mask':examples.append({**doc.draft['roi'],'label':1})
+        if not examples and not doc.draft.get('points') and roi is None and self.engine.spec.family!='SAM3 ONNX':
+            from .domain import pack_mask
+            examples.extend({'kind':'mask','mask':pack_mask(obj.mask),'label':1,'object_id':obj.id}
+                            for obj in self.selected_objects() if obj.role=='object' and obj.mask is not None)
         return examples
     def _example_inference(self,engine,rgb,points,examples,protected,progress,cancel,text,options):
         return infer_examples(engine,rgb,points,examples,protected,progress=progress,cancel=cancel,text_prompt=text,**options)

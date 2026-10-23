@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -euo pipefail
-cd -- "$(dirname -- "$0")"
+cd -- "$(dirname -- "$0")/.."
 python3 scripts/install_environment.py --backend cpu

@@ -20,7 +20,12 @@ Entering Segment selects the point tool; reselect an area tool to use
 Manual/Edit start with selection. Mode changes therefore affect both the
 meaning of input and the initially active tool.
 
-## One rectangle, three different meanings
+## How scope changes Segment drawing
+
+See the [illustrated Seg scope walkthrough](../segmentation/scopes.md), with
+steps for ROI only, whole-image examples, single object and the separate grid.
+
+## One rectangle, different meanings
 
 - **Manual:** a completed rectangle is an annotation.
 - **Segment + whole image:** it is a positive/negative exemplar describing an

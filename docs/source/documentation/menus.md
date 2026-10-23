@@ -1,6 +1,6 @@
 # Menu-by-menu reference
 
-This reference covers every core menu action in the 1.4.2 main window. Labels
+This reference covers every core menu action in the 1.4.3 main window. Labels
 were checked against an offscreen application instance. Some actions depend on
 selection, mode, loaded model, or task state. Installed plugins add their own
 actions and are documented by their authors.
@@ -45,6 +45,10 @@ actions and are documented by their authors.
 | Smooth edges… | Preview smoother editable contours for selected masks; does not smooth image intensities. | — |
 
 ## Cleaning
+
+Follow the [illustrated data-cleaning walkthrough](../features/cleaning.md) in
+this menu order: remove → choose fill → preview/apply → restore.
+
 
 | Menu entry | What it does | Shortcut |
 | --- | --- | --- |
@@ -108,6 +112,10 @@ actions and are documented by their authors.
 | Diagnostics / versions | Inspect runtime/platform versions for troubleshooting. | — |
 
 ## Processing
+
+The [compressed-sensing guide](../features/compressed-sensing.md) follows the
+DCT/TV dialog controls in order and shows computed parameter comparisons.
+
 
 | Menu entry | What it does | Shortcut |
 | --- | --- | --- |

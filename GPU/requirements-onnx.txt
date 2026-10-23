@@ -1,0 +1,5 @@
+# CUDA 12.x / cuDNN 9 runtime, matching the application's PyTorch 2.7.1 stack.
+# Install only one ONNX Runtime distribution in an environment.
+onnxruntime-gpu==1.23.2
+ftfy==6.1.1
+regex>=2024.11.6

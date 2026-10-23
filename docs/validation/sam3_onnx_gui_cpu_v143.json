@@ -1,0 +1,23 @@
+{
+  "backend": "SAM3 ONNX",
+  "device": "cpu",
+  "image": "bundled synthetic_particles.ome.tif",
+  "text": "white dots",
+  "whole_image_count": 10,
+  "whole_image_seconds_including_gui_worker": 28.971432723999897,
+  "roi_accepted_count": 5,
+  "alias_resolved": true,
+  "no_masks_outside_roi": true,
+  "native_project_reopened": true,
+  "providers": {
+    "image_encoder": [
+      "CPUExecutionProvider"
+    ],
+    "language_encoder": [
+      "CPUExecutionProvider"
+    ],
+    "decoder": [
+      "CPUExecutionProvider"
+    ]
+  }
+}
