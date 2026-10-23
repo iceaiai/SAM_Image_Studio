@@ -1,0 +1,1075 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>User manual &#8212; SAM Image Studio 1.4.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/studio.css?v=6a68c8ed" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=23a965d7"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user-manual';</script>
+    <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/user-manual.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Denoising parameters" href="denoising.html" />
+    <link rel="prev" title="Folders, projects, and model files" href="documentation/files.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.4.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SAM Image Studio</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="features/index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="documentation/index.html">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="features/index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="documentation/index.html">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="documentation/workspace.html">Workspace and panels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/modes.html">The four modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/controls.html">Buttons, tools, and segmentation controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/menus.html">Menu-by-menu reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/dialogs.html">Dialogs and their controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/files.html">Folders, projects, and model files</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">User manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="denoising.html">Denoising parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="downloads.html">Original supplied files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="provenance.html">Sources, versions, and licenses</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="documentation/index.html" class="nav-link">Documentation: controls, modes, and files</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">User manual</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="user-manual">
+<h1>User manual<a class="headerlink" href="#user-manual" title="Link to this heading">#</a></h1>
+<section id="start-modes-and-workspace">
+<h2>Start, modes and workspace<a class="headerlink" href="#start-modes-and-workspace" title="Link to this heading">#</a></h2>
+<p>SAM Image Studio opens one or many images for annotation, segmentation, calibrated measurements and reversible image processing. Acquired pixels remain available separately from derived pixels. The top-right Objects list and the canvas select the same objects. Source filenames appear in the lower-right Image files list; stacks have child frame entries.</p>
+<p>Manual adds shapes. Segment creates disposable model previews. Clean edits derived image pixels through retained cleaning records. Edit changes existing shapes, rotates images, assigns morphology and scales masks. Switching mode with pending shapes/prompts/previews asks Yes to add, No to discard or Cancel to remain. An incomplete polygon cannot be added.</p>
+<p>Example: open two TIFFs, select the first in Image files, draw one Manual rectangle, then switch to Edit and select it in Objects. The Objects, Groups and Image files docks keep the v1.4 layout and can be resized.</p>
+<p>Startup asks whether to reopen previous images. No leaves the workspace empty and preserves annotation files. Removing an image from the workspace saves its annotations and does not delete its source image or annotation files.</p>
+</section>
+<section id="installation-python-and-conda-gpu-setup">
+<h2>Installation, Python and Conda GPU setup<a class="headerlink" href="#installation-python-and-conda-gpu-setup" title="Link to this heading">#</a></h2>
+<p>Use 64-bit Python 3.12. Extract the complete release into a writable folder. On Windows run Install_CPU.bat, then Start_GUI.bat. The CPU environment is local to the application. Run Install_Python_3_12.bat if Python 3.12 is missing; other Python versions may remain installed.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">winget</span> <span class="n">install</span> <span class="o">--</span><span class="n">exact</span> <span class="o">--</span><span class="nb">id</span> <span class="n">Python</span><span class="o">.</span><span class="n">Python</span><span class="mf">.3.12</span> <span class="o">--</span><span class="n">architecture</span> <span class="n">x64</span> <span class="o">--</span><span class="n">scope</span> <span class="n">user</span> <span class="o">--</span><span class="n">source</span> <span class="n">winget</span>
+</pre></div>
+</div>
+<p>For a GPU, install Miniforge/Conda, open its prompt, change to the extracted application folder and inspect the detected NVIDIA devices. GPU execution is permitted only inside Conda. The installer reads driver capability and GPU architecture; it does not install or change drivers. AMD/Intel hardware uses the CPU path in this release.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">install_conda_gpu</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">inspect</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">install_conda_gpu</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">name</span> <span class="n">sam</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">studio</span><span class="o">-</span><span class="n">gpu</span> <span class="o">--</span><span class="n">dry</span><span class="o">-</span><span class="n">run</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">install_conda_gpu</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">name</span> <span class="n">sam</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">studio</span><span class="o">-</span><span class="n">gpu</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">sam</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">studio</span><span class="o">-</span><span class="n">gpu</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">samstudio</span>
+</pre></div>
+</div>
+<p>If Python is not available in the initial prompt, use conda run -n base python for the installer command. Install_GPU_Conda.bat does this on Windows. A custom environment name must also be used when activating or running it. Start_GUI_GPU.bat targets the default environment name.</p>
+<p>For an existing dedicated environment: conda create -n sam-image-studio-gpu python=3.12 pip, then conda activate sam-image-studio-gpu, then python scripts/install_conda_gpu.py –current. Installation into the Conda base environment is rejected. The setup selects the supported PyTorch 2.7.1 CUDA 11.8, 12.6 or 12.8 wheel index from driver/architecture information.</p>
+<p>SAM3 CPU is not advertised as a verified backend. Optional native SAM3 uses Linux/WSL2 Conda, CUDA 12.6 or later and approved Hugging Face checkpoint access. Use –sam3 with the installer in Linux/WSL2. Native Windows Conda is supported by the setup path for SAM1/2; native SAM3 Windows inference is not verified. Access to gated model weights remains the user’s choice.</p>
+<p>CPU inference and native Qt events are tested on Linux. This machine has no NVIDIA GPU: simulated GPU reports test setup decisions, not CUDA execution. Run a real local model preview and acceptance check after GPU installation. See GPU_CONDA_GUIDE.md for commands, troubleshooting and environment removal.</p>
+</section>
+<section id="opening-images-and-native-autosaves">
+<h2>Opening images and native autosaves<a class="headerlink" href="#opening-images-and-native-autosaves" title="Link to this heading">#</a></h2>
+<p>Open images accepts PNG, JPEG, BMP, TIFF and supported EMD, DM3 and DM4 datasets. Each source filename appears in Image files; stack frames have separate entries. Supported physical calibration is read from the source; unavailable calibration remains in pixel units. Edit image calibration sets X/Y sizes and units manually.</p>
+<p>The v1.4 annotation workflow and COCO export representation are retained. A matching native SAM_Annotations project restores objects, prompts, groups, calibration, exact contours, original/derived pixels, cleaning history and rotation. Native schema 5 also stores the new exemplar prompts and retained crops and reads earlier schemas 1-4.</p>
+<p>Committed operations autosave atomically into a .sam.json project, with a previous valid backup. Save project now forces a save; Choose project folder selects another writable destination. Open project JSON can locate its source/frame after moving a project. Preserve the native project for complete editable recovery. Area-mask exports omit point annotations and report their count.</p>
+<p>Example: draw and accept two masks, close the image, then reopen the same TIFF. Its native project restores those masks. Removing selected entries from Image files saves the native projects and only removes them from the workspace. Source images and annotation files remain. At startup, choose Yes to reopen the previous images or No to start empty.</p>
+</section>
+<section id="excel-pixel-size-lookup">
+<h2>Excel pixel-size lookup<a class="headerlink" href="#excel-pixel-size-lookup" title="Link to this heading">#</a></h2>
+<p>Choose Statistics &gt; Read pixel sizes from Excel. Select an .xlsx/.xlsm workbook, its worksheet and the physical unit per pixel. The first row must contain converted_image_name and converted_size. Header whitespace and case are ignored. converted_size is a positive finite numeric size per pixel and is applied to both X and Y. Excel formulas need a cached numeric result saved by a spreadsheet application. Legacy binary .xls files must first be saved as .xlsx.</p>
+<p>Matching removes the last file extension, any Windows/Unix directory and surrounding whitespace, then ignores case. A row named Particle.001.png matches particle.001.tiff or PARTICLE.001.dm3. Internal dots remain part of the name. Conflicting rows with the same stem and different sizes are rejected; consistent duplicates are accepted. Blank names are skipped. Invalid numeric rows reject the table before documents change.</p>
+<p>Example: converted_image_name = Sample_07.png and converted_size = 0.25 with unit nm set both pixel sizes of Sample_07.tiff to 0.25 nm/pixel. All frames of a matching stack receive the same value. Unmatched images retain their existing calibration. The status bar reports matched and unmatched frame counts.</p>
+<p>Loaded documents are recalibrated in one undoable operation per frame and autosaved. The lookup also applies after native project restoration when matching images open later. Rotated coordinates rebuild their physical basis using all saved transforms; masks are unchanged. The table path, sheet and unit are remembered and re-read at next launch. Forget automatic Excel lookup removes the association and retains calibration already assigned. If the table is unavailable at startup, the status bar reports that it was not loaded; no image is assigned a guessed size.</p>
+</section>
+<section id="whole-image-exemplars-single-objects-and-roi">
+<h2>Whole-image exemplars, single objects and ROI<a class="headerlink" href="#whole-image-exemplars-single-objects-and-roi" title="Link to this heading">#</a></h2>
+<p>Prompt project, whole image means that examples describe the desired object type across the current image. The examples are searched across the current image. Before accepting, add multiple positive examples and negative examples. Left/right clicks add positive/negative points. Choose Positive example or Negative example for rectangle, circle, ellipse and polygon prompts.</p>
+<p>With Live prompt preview enabled, adding an example schedules a background update. Newer input supersedes older preview results; accepted objects remain protected. Preview masks are disposable until Accept masks. Cancel clears pending examples. CPU searches may take time; the status bar reports progress while the interface remains available.</p>
+<p>SAM3 uses native image concept prompting. SAM3.1 uses the official multiplex predictor on a lossless single PNG frame, with its own sam3.1_multiplex.pt checkpoint. SAM3.1 receives all positive/negative boxes together in normalized top-left XYWH format; point exemplars first produce an instance whose box becomes a concept prompt. SAM3.1 is GPU-only and requires the separate Linux/WSL2 Conda environment and approved facebook/sam3.1 weights. Other shapes and points first identify an exemplar object, whose bounding box becomes a SAM3 concept example. SAM1/2 use the application’s candidate-and-retrieval layer: propose masks, pool SAM features, compare image/shape descriptors and filter using positive/negative examples. Repeated small objects also receive template-based candidate seeds. This is a heuristic retrieval layer, not native SAM3 or a trained nanoparticle classifier.</p>
+<p>Example: mark one bright particle positive, then mark a contamination feature negative. The preview searches for similar particles throughout the image. Add another positive particle if size or appearance varies. A clearly negative type suppresses similar candidate types; an explicitly negative object is excluded. When positive and negative appearances cannot be distinguished, inspect and correct the preview.</p>
+<p>Single object (native SAM) keeps the ordinary point/box refinement behavior for one object. Inside ROI only predicts from an area prompt and clips its result to that region. With Point (dot) selected, Single object and Inside ROI only are hidden and disabled. A previously selected area-only scope switches to Prompt project, whole image. To use Single object or ROI only, choose an area tool. Point coordinates remain image pixels at every zoom.</p>
+<p>Accepted, hidden and locked foreground masks are protected from accidental replacement. Use Refine selected object explicitly to replace one unlocked foreground object while keeping its identity and group. An inverted exact region can constrain allowed inference pixels; background groups and cleaning objects are not foreground training targets.</p>
+</section>
+<section id="automatic-grid-and-text-prompts">
+<h2>Automatic grid and text prompts<a class="headerlink" href="#automatic-grid-and-text-prompts" title="Link to this heading">#</a></h2>
+<p>Automatic grid, unannotated only starts when selected in Segment with a loaded model, when entering Segment with that selection, or when the model finishes loading in that state. Run preview also starts it explicitly. It ignores any text field and samples unannotated pixels with native SAM point prompts.</p>
+<p>The status bar shows prompt counts and the number of candidate masks. After filtering, the preview reports the resulting count. Zero masks is a visible result, not a silent success; lower the minimum model score/area or increase grid density when appropriate. Larger grids cost more time, especially on CPU. Cancellation preserves accepted annotations.</p>
+<p>Text prompting has its own Run text segmentation button, in addition to the shared Run preview control. Enter in the text field also runs it. SAM2/2.1 resolve phrases through Grounding DINO Tiny detections and segment those boxes with SAM; SAM3 and SAM3.1 have native text paths. SAM1 hides text controls.</p>
+<p>Aliases map complete phrases and are case-insensitive. Example: nanoparticle -&gt; big dots, powder -&gt; big dots. Aliases can chain; cycles/duplicate conflicting names are rejected. They replace input phrases and do not train the detector. The effective phrase appears in the tooltip and accepted-mask provenance.</p>
+<p>Text does not establish scientific detection accuracy. The verified public text integration image contains vehicles, not nanoparticles. Use the review preview and compare against the acquired image.</p>
+</section>
+<section id="manual-geometry-and-edit-tools">
+<h2>Manual geometry and Edit tools<a class="headerlink" href="#manual-geometry-and-edit-tools" title="Link to this heading">#</a></h2>
+<p>Use Manual for points and closed shapes. A polygon closes when a click is within 3 original image pixels of its first point after at least three vertices; Enter and double-click also finish it. Point annotations remain points at every zoom.</p>
+<p>Use Edit to select an object by canvas or list and drag its existing handles. Dragging does not create extra vertices. The handle radius is 5.1 screen pixels, half the previous release’s large radius. The separate deletion radius defaults to 20 image pixels and is adjustable. Repeated Delete removes nearest eligible vertices around the chosen point only in that selected object, retaining at least three per contour.</p>
+<p>Fill holes and Smooth edges open previews. Smooth edges retains editable cubic curves rather than merely changing a jagged display. Batch changes are one undoable operation. Mask sizes and statistics update after applying changes.</p>
+<p>Rotation offers angle presets and arbitrary angles. No padding keeps original dimensions and may crop corners. Rectangle or square padding enlarges the canvas; choose black, neighbor, LaMa or a manually selected background-group fill. Review the result before Apply. Pixels, masks, cleaning records and the physical coordinate basis rotate together. Paste/remove retained crop snapshots before rotating.</p>
+<p>Scale masks / savepoints scales selected unlocked objects or all area objects in their groups, uniformly about each centroid. Enter a factor or use the slider. Clipping at image boundaries and overlaps can occur. Original geometry and result snapshots can be temporary in-memory list entries or local folders with exact JSON and binary masks. Temporary savepoints do not enter project files; local snapshots can be restored only when source/rotation coordinates match.</p>
+</section>
+<section id="cleaning-and-reversible-image-records">
+<h2>Cleaning and reversible image records<a class="headerlink" href="#cleaning-and-reversible-image-records" title="Link to this heading">#</a></h2>
+<p>In Clean mode select an area, draw a region or use the brush. Remove selected image area stores a visible cleaning object. Alternatively right-click an unlocked area object and choose Delete for cleaning. Choose neighbor interpolation, LaMa or manually selected background patches to fill removed pixels.</p>
+<p>Background-patch sources must be manually added area objects in one explicitly selected group. Any group name is allowed. Sources may be polygon, ellipse or rectangle regions; pixels outside irregular masks are not sampled. Sources intersecting already-modified image pixels are rejected.</p>
+<p>Preview the fill, then Apply or Cancel. Only the target pixels change. Show cleaning regions controls display. Delete a cleaning object to restore its footprint while replaying remaining edits. Native JSON and COCO cleaning extensions keep footprints, replacement pixels, methods and restoration history separately from foreground annotations.</p>
+<p>Example: remove a contamination spot, fill from clean support patches, then delete that cleaning record if the fill is unsuitable. A separate denoising operation remains replayable. Derived-image saving never overwrites the acquired source.</p>
+</section>
+<section id="processing-restoration-smoothing-and-noise">
+<h2>Processing: restoration, smoothing and noise<a class="headerlink" href="#processing-restoration-smoothing-and-noise" title="Link to this heading">#</a></h2>
+<p>Processing opens a fresh parameter dialog with method defaults on every open or method change. Choose the whole image or selected region/object masks, and choose original uncleaned pixels in the current orientation if needed. Removed pending pixels and protected retained crop rectangles are excluded. Preview, then Apply to commit an undoable image record.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Parameters and example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TV restoration</p></td>
+<td><p>Chambolle total variation: weight 0.08, iterations 100, tolerance 0.0002. Increase weight cautiously for stronger smoothing of noisy flat areas.</p></td>
+</tr>
+<tr class="row-odd"><td><p>TV Bregman restoration</p></td>
+<td><p>Split-Bregman TV: weight 5 and 100 iterations. Its weight convention differs from Chambolle; do not compare numbers directly.</p></td>
+</tr>
+<tr class="row-even"><td><p>Wavelet sparse restoration</p></td>
+<td><p>db2 wavelet BayesShrink with soft thresholding; sigma 0.04 and up to 2 levels. The image must be large enough for decomposition.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Non-local means</p></td>
+<td><p>Strength 0.08, sigma 0.03, patch 5 and search distance 6. Compare repeated texture carefully because real fine structure can be altered.</p></td>
+</tr>
+<tr class="row-even"><td><p>Bilateral denoise</p></td>
+<td><p>Color sigma 0.05 and spatial sigma 3. Preview edge retention versus small-feature loss.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Median denoise</p></td>
+<td><p>Odd kernel 3. Useful for an isolated impulse-noise comparison.</p></td>
+</tr>
+<tr class="row-even"><td><p>DCT sparsity</p></td>
+<td><p>Whole-image, orthonormal 2D DCT per channel; hard threshold retains about 8% of coefficients each iteration. Denoise default: 40 iterations, relaxed L2 fidelity 0.2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>TV iterative (notebook)</p></td>
+<td><p>Forward-difference gradient/divergence prior. Denoise default step 0.01; the reconstruction preset uses notebook step 0.08 and epsilon 1e-6.</p></td>
+</tr>
+<tr class="row-even"><td><p>Sparse dictionary learning</p></td>
+<td><p>SPORCO learns 64 atoms from up to 2048 mean-centered 8-pixel patches, then performs L1 sparse coding and overlap averaging.</p></td>
+</tr>
+<tr class="row-odd"><td><p>BM3D</p></td>
+<td><p>Official bm3d backend, Gaussian sigma 0.04, normal profile, both stages and one native thread. Upstream academic/non-commercial terms apply.</p></td>
+</tr>
+<tr class="row-even"><td><p>Noise2Void / N2V2</p></td>
+<td><p>CAREamics self-supervised blind-spot training or prediction with an existing .ckpt/model folder. Models are trained per image channel; no pretrained denoising weights are bundled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Gaussian smooth</p></td>
+<td><p>Odd kernel 5 and sigma 1. The kernel width and standard deviation are independently selectable.</p></td>
+</tr>
+<tr class="row-even"><td><p>Gaussian noise</p></td>
+<td><p>Sigma 0.03 of the processing intensity range and an explicit seed. Same seed/settings reproduce the same added noise.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Poisson noise</p></td>
+<td><p>Peak counts 50 and a seed. Lower counts increase relative shot noise; this is an intensity model, not detector calibration.</p></td>
+</tr>
+<tr class="row-even"><td><p>Salt and pepper noise</p></td>
+<td><p>Amount 0.01 and a seed. Creates synthetic impulse noise for algorithm comparisons.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Parameters that use intensity fractions operate on normalized real pixels: unsigned integers use their full type range; signed integers use their type range; floating images already in [0,1] retain that range; other floating images use their observed minimum/maximum. Integer results are rounded/clipped back to their original type. RGB channels are processed spatially and independently. Alpha and pixels outside the target remain exact.</p>
+<p>Each control has a ? button and a side-panel explanation with its default, allowed range/options and suggested starting values. Restore defaults resets the current method. Help &gt; Denoising parameter guide opens the separate complete parameter PDF.</p>
+<p>DCT and iterative TV offer Denoise and Reconstruct tasks. Denoise uses all input pixels with a relaxed fidelity update; it never hard-replaces all pixels with the original. Reconstruct simulates missing pixels from the chosen input. The Notebook reconstruction preset selects random 10% sampling without replacement, seed 7, nearest initialization, 40 L2 iterations and processing max side 256. With a resolution cap, output is interpolated back onto the original grid. Native-resolution processing is the ordinary default. The preset does not force a grayscale or integer source into RGB; applying the same spatial operation to each RGB channel matches the notebook channel handling.</p>
+<p>For Noise2Void/N2V2, Train fits and saves a model, then previews prediction. Start with the supplied defaults, suitable patch sizes and representative regions. A one-epoch trial only verifies execution. Models and checkpoints are saved before image Apply, and remain if you cancel the preview or undo the image operation. Empty output directory creates a unique application-data model directory, reported in progress/provenance. Predict accepts a compatible CAREamics checkpoint or the saved folder. Use only trusted checkpoint files. CPU is supported; CUDA requires a dedicated Conda environment. Training runs in a worker with cancellation between batches. Cancel for BM3D/other native solvers takes effect after the current native call returns.</p>
+<p>Denoising can change real TEM/SEM features, including lattice contrast and boundaries. Compare against acquired pixels and retain the method/parameters. The software does not claim one default is optimal for every specimen or detector.</p>
+</section>
+<section id="retained-crops-and-paste-back-workflow">
+<h2>Retained crops and paste-back workflow<a class="headerlink" href="#retained-crops-and-paste-back-workflow" title="Link to this heading">#</a></h2>
+<p>Select one or several area objects or a shared pixel region, then choose Crop selected region / masks. The crop is the union-mask bounding box expanded by 3 pixels on each side and clipped at image boundaries. It contains real image pixels, including background outside an irregular mask; corners are not filled with black or generated pixels.</p>
+<p>Example: select an irregular particle, retain a named crop, run TV restoration on the rest of the image, then choose Retained crops / paste back and Paste back. The complete crop rectangle is protected by default during Processing operations.</p>
+<p>Retained crops lists each name, coordinates and protection/paste state. Protect / release changes whether Processing skips its rectangle. Export TIFF writes the actual crop pixels. Paste back defaults to the full rectangle including real background; Mask pixels only pastes just the original selected footprint. Remove snapshot deletes the retained copy without deleting image pixels.</p>
+<p>Crop pixel snapshots and their coordinates persist in native autosave. Pasting is undoable. Paste/remove retained crops before image rotation so coordinates cannot silently become invalid.</p>
+</section>
+<section id="statistics-and-metric-applicability">
+<h2>Statistics and metric applicability<a class="headerlink" href="#statistics-and-metric-applicability" title="Link to this heading">#</a></h2>
+<p>Choose current, selected or all open images; filter groups and selected objects. Plot metrics selects at most nine metric choices. Resize the window or drag the divider; use the Matplotlib toolbar for pan, zoom and reset. Auto units separate calibrated physical cohorts from uncalibrated pixel measurements.</p>
+<p>Axes and colors edits the selected plot’s X/Y names, min/max, tick intervals, label/tick font sizes and bar color. Blank numeric fields use automatic values. Invalid or excessive tick settings are rejected. Export plot saves PNG, PDF or SVG.</p>
+<p>Export statistics independently selects all metrics or a subset with no nine-metric export limit. It writes per-object CSV, grouped mean/median/population standard deviation, histogram counts and definitions JSON. Angular arithmetic summaries require care around the 0/180 or 0/360 wrap.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric key</p></th>
+<th class="head"><p>Definition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>area</p></td>
+<td><p>Number of accepted mask pixels times pixel area. Projected area and area use this single metric.</p></td>
+</tr>
+<tr class="row-odd"><td><p>diameter</p></td>
+<td><p>ECD = sqrt(4 × area / pi). Diameter and size-distribution requests use this definition.</p></td>
+</tr>
+<tr class="row-even"><td><p>feret_max</p></td>
+<td><p>Largest distance between vertices of the convex hull of occupied pixel cells.</p></td>
+</tr>
+<tr class="row-odd"><td><p>feret_min</p></td>
+<td><p>Smallest width of that convex hull over its edge-normal directions.</p></td>
+</tr>
+<tr class="row-even"><td><p>perimeter</p></td>
+<td><p>Length of all 0.5-level marching-square boundaries, including holes. Resolution affects small objects.</p></td>
+</tr>
+<tr class="row-odd"><td><p>centroid_x</p></td>
+<td><p>Mean X coordinate of occupied pixel centers; physical coordinates include the rotated basis and origin.</p></td>
+</tr>
+<tr class="row-even"><td><p>centroid_y</p></td>
+<td><p>Mean Y coordinate of occupied pixel centers; image Y increases downward before rotation.</p></td>
+</tr>
+<tr class="row-odd"><td><p>orientation</p></td>
+<td><p>Major eigenvector angle from +X, modulo 180 degrees. Isotropic shapes have no unique orientation.</p></td>
+</tr>
+<tr class="row-even"><td><p>length</p></td>
+<td><p>Major axis of the equivalent second-moment ellipse: 4 × sqrt(largest covariance eigenvalue).</p></td>
+</tr>
+<tr class="row-odd"><td><p>width</p></td>
+<td><p>Minor axis of the equivalent second-moment ellipse: 4 × sqrt(smallest covariance eigenvalue).</p></td>
+</tr>
+<tr class="row-even"><td><p>aspect_ratio</p></td>
+<td><p>Major-axis length divided by minor-axis width.</p></td>
+</tr>
+<tr class="row-odd"><td><p>circularity</p></td>
+<td><p>4 × pi × area / perimeter². Pixel resolution can produce values above 1 for very small masks.</p></td>
+</tr>
+<tr class="row-even"><td><p>solidity</p></td>
+<td><p>Accepted pixel-cell area divided by its convex-hull area.</p></td>
+</tr>
+<tr class="row-odd"><td><p>side_length</p></td>
+<td><p>Side of an equal-area regular n-gon: sqrt(4 × area × tan(pi/n) / n). Set expected sides in Morphology.</p></td>
+</tr>
+<tr class="row-even"><td><p>corner_error</p></td>
+<td><p>RMS deviation from regular-polygon interior angles, in degrees. Requires a matching polygon fit at 2% perimeter tolerance; lower is better.</p></td>
+</tr>
+<tr class="row-odd"><td><p>edge_deviation</p></td>
+<td><p>RMS distance from boundary pixel centers to fitted polygon edges, divided by ECD; lower is better.</p></td>
+</tr>
+<tr class="row-even"><td><p>confidence</p></td>
+<td><p>Recorded backend mask score. SAM1/2 use predicted mask quality; this is not a calibrated probability. Manual and legacy objects are blank.</p></td>
+</tr>
+<tr class="row-odd"><td><p>border_status</p></td>
+<td><p>1 if any accepted pixel touches an image edge, otherwise 0.</p></td>
+</tr>
+<tr class="row-even"><td><p>particle_count</p></td>
+<td><p>1 for a particle annotation, 0 for a valid explicitly linked core/cavity. Point annotations are excluded.</p></td>
+</tr>
+<tr class="row-odd"><td><p>object_id</p></td>
+<td><p>Stable annotation UUID. The plot labels objects by name and short ID; CSV retains the full UUID.</p></td>
+</tr>
+<tr class="row-even"><td><p>outer_size</p></td>
+<td><p>ECD of the hole-filled outer envelope; requires a valid linked core or cavity.</p></td>
+</tr>
+<tr class="row-odd"><td><p>core_size</p></td>
+<td><p>ECD of the explicitly linked core mask.</p></td>
+</tr>
+<tr class="row-even"><td><p>shell_thickness</p></td>
+<td><p>Mean nearest outer-boundary distance from 0.5-level core-boundary samples; a 2-D estimate, not a radial or 3-D thickness.</p></td>
+</tr>
+<tr class="row-odd"><td><p>center_displacement</p></td>
+<td><p>Distance from outer-envelope centroid to core centroid.</p></td>
+</tr>
+<tr class="row-even"><td><p>normalized_displacement</p></td>
+<td><p>Core-center displacement divided by outer-envelope ECD.</p></td>
+</tr>
+<tr class="row-odd"><td><p>displacement_direction</p></td>
+<td><p>Direction from outer centroid to core centroid from +X, modulo 360 degrees; undefined for coincident centers.</p></td>
+</tr>
+<tr class="row-even"><td><p>shell_uniformity</p></td>
+<td><p>Coefficient of variation of sampled shell thickness (population standard deviation / mean); lower is more uniform.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cavity_size</p></td>
+<td><p>ECD of the explicitly linked cavity mask.</p></td>
+</tr>
+<tr class="row-even"><td><p>wall_thickness</p></td>
+<td><p>Mean nearest outer-boundary distance from cavity-boundary samples.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cavity_x</p></td>
+<td><p>X centroid of the explicitly linked cavity mask.</p></td>
+</tr>
+<tr class="row-even"><td><p>cavity_y</p></td>
+<td><p>Y centroid of the explicitly linked cavity mask.</p></td>
+</tr>
+<tr class="row-odd"><td><p>wall_uniformity</p></td>
+<td><p>Coefficient of variation of sampled wall thickness; lower is more uniform.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Core/shell and hollow measurements require an explicitly linked, fully enclosed, connected inner mask. Invalid/missing relationships produce notes/blank values and do not silently suppress particle counts. A valid linked core/cavity is not counted as a second outer particle. Polygon quality requires the expected side count and a corresponding contour fit. Confidence is a model mask-quality estimate; manual/legacy objects without a model score remain blank.</p>
+</section>
+<section id="masks-overlays-and-dataset-export">
+<h2>Masks, overlays and dataset export<a class="headerlink" href="#masks-overlays-and-dataset-export" title="Link to this heading">#</a></h2>
+<p>Save masks offers binary masks, overlap-weighted grayscale, group/object colors and integer labels. Binary remains available. Weighted grayscale adds equal per-object intensity in shared pixels, so two overlapping masks have double weight when the chosen range permits it. Keep separate binary masks when each overlapping owner must remain recoverable.</p>
+<p>Transparent background removes pixels outside objects by alpha. Mask transparency is independent and adjustable. Overlays can use the uncleaned image in the current orientation or the processed image after processing exists. PNG/TIFF preserve alpha; BMP24 does not. Integer ID maps disable display effects that would alter label values.</p>
+<p>Image-only export independently saves the original acquired TIFF, the current processed TIFF or both. Original means the exact acquired unrotated frame. Processed includes rotation/cleaning/denoising. Dataset and overlay uncleaned images use current orientation so annotations remain aligned.</p>
+<p>COCO saves exact RLE masks, attributes, categories, physical calibration and separate cleaning/background extensions. Standard COCO area stays in pixel squared; physical values are separate. YOLO polygons cannot exactly encode holes/disconnected masks; reject or explicitly accept reviewed lossy conversion and inspect its report. Create independent training/validation splits before training.</p>
+<p>Example: export an exact COCO dataset with both uncleaned and processed image copies, then save a transparent colored overlay for inspection. Keep native projects for complete editable recovery.</p>
+</section>
+<section id="menu-and-control-reference">
+<h2>Menu and control reference<a class="headerlink" href="#menu-and-control-reference" title="Link to this heading">#</a></h2>
+<p>Each row states what a control does and gives an example. Plugin implementation, model code and developer tests are intentionally in the separate For Developer manual.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Control</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>File &gt; Open images / Open folder</p></td>
+<td><p>Open one or many raster or microscopy files. Names in Image files retain their source filenames.</p></td>
+<td><p>Open sample.png and sample2.tiff; choose either entry in the lower-right list.</p></td>
+</tr>
+<tr class="row-odd"><td><p>File &gt; Open project JSON</p></td>
+<td><p>Restore a native project after verifying its source, frame and fingerprint.</p></td>
+<td><p>Locate the original TIFF if a project was moved.</p></td>
+</tr>
+<tr class="row-even"><td><p>File &gt; Save project now / Choose project folder</p></td>
+<td><p>Force a save or choose a writable project destination.</p></td>
+<td><p>Use another project folder when source images are read-only.</p></td>
+</tr>
+<tr class="row-odd"><td><p>File &gt; Close current image</p></td>
+<td><p>Remove the current frame from the workspace while preserving saved files.</p></td>
+<td><p>Close one frame of a TIFF stack; other frames remain open.</p></td>
+</tr>
+<tr class="row-even"><td><p>Image files &gt; Remove selected images</p></td>
+<td><p>Remove selected entries, including all frames beneath selected file entries. Annotation files remain.</p></td>
+<td><p>Select two source files and remove them without deleting either image or JSON.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edit &gt; Undo / Redo</p></td>
+<td><p>Reverse and reapply a committed operation. Large toolbar controls are available.</p></td>
+<td><p>Undo an accidental denoising apply or group mask resize.</p></td>
+</tr>
+<tr class="row-even"><td><p>Select / Ctrl+click / Ctrl+A</p></td>
+<td><p>Choose objects on the canvas or in the upper-right Objects list.</p></td>
+<td><p>Ctrl+click three particles before changing their group.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edit &gt; Invert region / Ctrl+I</p></td>
+<td><p>Select the remaining image pixels after the union of selected area masks.</p></td>
+<td><p>Select particles, invert, then clean only the background.</p></td>
+</tr>
+<tr class="row-even"><td><p>Edit &gt; Create object from region</p></td>
+<td><p>Create an exact annotation from a shared pixel selection, retaining holes and disconnected parts.</p></td>
+<td><p>Turn an inverted background selection into a named area object.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Drawing tools</p></td>
+<td><p>Manual point, polygon, rectangle, circle and ellipse tools add annotations.</p></td>
+<td><p>Draw a polygon around an irregular particle; click within 3 image pixels of its first vertex to close.</p></td>
+</tr>
+<tr class="row-even"><td><p>Hand / middle-button drag / mouse wheel</p></td>
+<td><p>Pan and zoom the displayed image. Zoom does not change pixel coordinates.</p></td>
+<td><p>Zoom to 40x and add a point; it remains a point rather than a one-pixel ROI.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reset magnification / F</p></td>
+<td><p>Fit the complete current image to the canvas.</p></td>
+<td><p>Reset the view after inspecting a small edge region.</p></td>
+</tr>
+<tr class="row-even"><td><p>Groups &gt; + Group / Rename / Color</p></td>
+<td><p>Organize objects and choose default group colors.</p></td>
+<td><p>Create Particle, Core and Cavity groups.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Object lock / visibility checkboxes</p></td>
+<td><p>Protect geometry or hide a mask without removing its annotation.</p></td>
+<td><p>Hide an accepted particle; automatic segmentation still protects its mask.</p></td>
+</tr>
+<tr class="row-even"><td><p>Edit &gt; Object properties / Change group</p></td>
+<td><p>Rename or regroup selected objects using the v1.4 properties dialog.</p></td>
+<td><p>Move one object into the Core group.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edit &gt; Brightness / contrast</p></td>
+<td><p>Change display normalization without modifying acquired pixels.</p></td>
+<td><p>Increase contrast for drawing an uncertain boundary.</p></td>
+</tr>
+<tr class="row-even"><td><p>Edit &gt; Object color / transparency</p></td>
+<td><p>Set object appearance separately from numeric labels and mask geometry.</p></td>
+<td><p>Make one object red at 40% opacity.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Assign mask colors</p></td>
+<td><p>Use default group colors or the fixed 20-color lookup table by object/group.</p></td>
+<td><p>Use distinct colors for overlapping particles, preserving their IDs.</p></td>
+</tr>
+<tr class="row-even"><td><p>Edit &gt; Vertices / deletion radius</p></td>
+<td><p>Move existing vertices; Delete removes the nearest vertex within a configurable radius in the selected object only.</p></td>
+<td><p>Use a 20-image-pixel deletion radius; neighboring objects stay unchanged.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edit &gt; Fill holes / Smooth edges</p></td>
+<td><p>Preview exact hole filling or smooth editable cubic contours.</p></td>
+<td><p>Smooth a jagged outline and compare the area before Apply.</p></td>
+</tr>
+<tr class="row-even"><td><p>Edit &gt; Rotate image</p></td>
+<td><p>Rotate pixels and annotations together; optionally enlarge to a rectangle/square and fill padding.</p></td>
+<td><p>Rotate 30 degrees, select square padding and neighbor fill, then inspect the preview.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edit &gt; Scale masks / savepoints</p></td>
+<td><p>Uniformly scale selected masks or a group about each object centroid.</p></td>
+<td><p>Create original and 1.10x savepoints; restore original if objects grow too far.</p></td>
+</tr>
+<tr class="row-even"><td><p>Edit &gt; Morphology / inner region</p></td>
+<td><p>Assign morphology and explicit outer/core/cavity links for applicable measurements.</p></td>
+<td><p>Link a separate core mask to its enclosing particle before measuring shell thickness.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Models &gt; Model manager</p></td>
+<td><p>Choose family, variant, compatible checkpoint and CPU or Conda CUDA device.</p></td>
+<td><p>Download SAM2.1 Tiny for CPU; a local checkpoint must match the selected architecture.</p></td>
+</tr>
+<tr class="row-even"><td><p>Models &gt; Segmentation options</p></td>
+<td><p>Set candidate-grid density, minimum model score/area and maximum masks.</p></td>
+<td><p>Increase grid density when small objects fall between sparse sample points.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Models &gt; Text prompt aliases</p></td>
+<td><p>Map complete phrases to an effective prompt, without retraining.</p></td>
+<td><p>Map nanoparticle and powder to big dots; the resolved phrase appears in the tooltip.</p></td>
+</tr>
+<tr class="row-even"><td><p>Run preview / Accept masks / Cancel</p></td>
+<td><p>Generate a disposable preview, commit eligible masks or cancel pending work.</p></td>
+<td><p>Add two positive examples and one negative example; Accept only after inspection.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cleaning &gt; Remove selected image area</p></td>
+<td><p>Retain removals as visible, reversible cleaning objects.</p></td>
+<td><p>Remove a contamination spot, then choose a fill method.</p></td>
+</tr>
+<tr class="row-even"><td><p>Object context &gt; Delete for cleaning</p></td>
+<td><p>Convert an unlocked area object into a cleaning region while in Clean mode.</p></td>
+<td><p>Use a drawn mask to remove an unwanted particle from the derived image.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cleaning &gt; Restore selected area / all edits</p></td>
+<td><p>Restore pixels while retaining other valid cleaning records.</p></td>
+<td><p>Restore a small removed area without erasing a separate filled region.</p></td>
+</tr>
+<tr class="row-even"><td><p>Cleaning &gt; Fill from neighboring pixels</p></td>
+<td><p>Estimate fill values from nearby available pixels.</p></td>
+<td><p>Fill a small isolated background spot.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cleaning &gt; Fill with LaMa</p></td>
+<td><p>Run asynchronous model-based inpainting inside the requested region.</p></td>
+<td><p>Preview a larger removed contamination region; pixels outside it stay exact.</p></td>
+</tr>
+<tr class="row-even"><td><p>Cleaning &gt; Background patches</p></td>
+<td><p>Tile source pixels from a selected manual background group.</p></td>
+<td><p>Choose a group named Clean support; its name need not be Background.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cleaning &gt; Choose / Add / Clear background group</p></td>
+<td><p>Select manually drawn polygon/rectangle/ellipse background areas, or clear that selection.</p></td>
+<td><p>Select several clean background patches; reject sources intersecting processed pixels.</p></td>
+</tr>
+<tr class="row-even"><td><p>Cleaning &gt; Brush radius</p></td>
+<td><p>Set the radius of the point cleaning brush, independently of SAM point prompts.</p></td>
+<td><p>Use a small brush to remove a thin mark in Clean mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Show cleaning regions</p></td>
+<td><p>Hide/show the display of cleaning objects; deleting a cleaning object restores its pixels.</p></td>
+<td><p>Hide the removal outline to inspect a filled region.</p></td>
+</tr>
+<tr class="row-even"><td><p>Processing &gt; Denoise</p></td>
+<td><p>Preview TV, TV Bregman, sparse wavelet, non-local means, bilateral or median restoration.</p></td>
+<td><p>Compare a TV weight of 0.08 against the original before Apply.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Processing &gt; Smooth (Gaussian)</p></td>
+<td><p>Select an odd kernel size and sigma.</p></td>
+<td><p>Use kernel 5 and sigma 1 for a small spatial smoothing operation.</p></td>
+</tr>
+<tr class="row-even"><td><p>Processing &gt; Crop selected region / masks</p></td>
+<td><p>Retain real pixels in the mask bounding rectangle plus 3 pixels of context.</p></td>
+<td><p>Store an irregular particle and its real surrounding background; no artificial black corners are added.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Processing &gt; Retained crops / paste back</p></td>
+<td><p>Protect/release, export, remove or paste retained crop snapshots.</p></td>
+<td><p>Denoise the rest of the image, then paste the preserved rectangular patch back.</p></td>
+</tr>
+<tr class="row-even"><td><p>Processing &gt; Add noise</p></td>
+<td><p>Add reproducible Gaussian, Poisson or salt-and-pepper noise with adjustable strength/seed.</p></td>
+<td><p>Use a fixed seed to compare two denoisers on the same synthetic noise.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Export &gt; COCO dataset</p></td>
+<td><p>Write exact masks, groups, calibration, attributes and cleaning extensions.</p></td>
+<td><p>Export all open images with an uncleaned image and a separate processed-image copy.</p></td>
+</tr>
+<tr class="row-even"><td><p>Export &gt; YOLO dataset</p></td>
+<td><p>Export polygons with explicit handling of holes/disconnected masks.</p></td>
+<td><p>Choose COCO for exact holes, or explicitly review a lossy YOLO conversion.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Save masks / Transparent mask images</p></td>
+<td><p>Choose binary, overlap-weighted grayscale, color masks, labels, overlay, opacity and alpha options.</p></td>
+<td><p>Keep binary masks for training and export a transparent colored overlay for presentation.</p></td>
+</tr>
+<tr class="row-even"><td><p>File &gt; Save original / processed images</p></td>
+<td><p>Save the acquired image, current processed image or both as TIFF.</p></td>
+<td><p>Keep the acquired TIFF and save a rotated/denoised derivative separately.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Statistics &gt; Plot Object Statistics</p></td>
+<td><p>Choose up to nine metrics, adjust axes/colors and resize the plotted area.</p></td>
+<td><p>Plot ECD, circularity and area together; rename X/Y axes and change bar colors.</p></td>
+</tr>
+<tr class="row-even"><td><p>Statistics &gt; Edit image calibration</p></td>
+<td><p>Enter X/Y physical pixel size and length unit.</p></td>
+<td><p>Use X=0.2 nm and Y=0.3 nm when pixels are anisotropic.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Statistics &gt; Export plot / Export statistics</p></td>
+<td><p>Save a visual plot or all/a subset of numeric metrics independently.</p></td>
+<td><p>Display three metrics but save all 32 available choices and summary tables.</p></td>
+</tr>
+<tr class="row-even"><td><p>View &gt; Masks / Contours / Prompts / Panels</p></td>
+<td><p>Adjust visibility and reopen hidden docks.</p></td>
+<td><p>Hide prompt markers while inspecting a mask, then reopen the Objects panel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>View &gt; Toolbar icon size</p></td>
+<td><p>Adjust drawing-tool icon sizes. Undo/Redo retain their enlarged controls.</p></td>
+<td><p>Use Large icons on a high-resolution display.</p></td>
+</tr>
+<tr class="row-even"><td><p>Plugin &gt; Install / Manage</p></td>
+<td><p>Install a local plugin folder; enable, disable, reload or remove it.</p></td>
+<td><p>Disable a plugin that fails to load, without changing images or annotations.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Help &gt; User manual (PDF) / Quick start</p></td>
+<td><p>Open this complete English manual inside the GUI or view a short reminder.</p></td>
+<td><p>Use the PDF fit-width and zoom controls to inspect an example.</p></td>
+</tr>
+<tr class="row-even"><td><p>Help &gt; Diagnostics / versions</p></td>
+<td><p>Inspect runtime versions and the current platform.</p></td>
+<td><p>Record diagnostics when reporting a model-loading failure.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="shortcuts-recovery-and-troubleshooting">
+<h2>Shortcuts, recovery and troubleshooting<a class="headerlink" href="#shortcuts-recovery-and-troubleshooting" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Shortcut / control</p></th>
+<th class="head"><p>Action</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Ctrl+O</p></td>
+<td><p>Open images</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ctrl+S</p></td>
+<td><p>Save masks</p></td>
+</tr>
+<tr class="row-even"><td><p>Ctrl+Z / Ctrl+Y</p></td>
+<td><p>Undo / Redo</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ctrl+A</p></td>
+<td><p>Select all objects</p></td>
+</tr>
+<tr class="row-even"><td><p>Ctrl+I</p></td>
+<td><p>Invert pixel region</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ctrl+D</p></td>
+<td><p>Remove selected image area</p></td>
+</tr>
+<tr class="row-even"><td><p>Ctrl+E</p></td>
+<td><p>Edit existing object</p></td>
+</tr>
+<tr class="row-odd"><td><p>Delete</p></td>
+<td><p>Delete selected object or an eligible selected vertex</p></td>
+</tr>
+<tr class="row-even"><td><p>Esc</p></td>
+<td><p>Cancel drawing / prompt preview / running task</p></td>
+</tr>
+<tr class="row-odd"><td><p>F</p></td>
+<td><p>Reset magnification / fit image</p></td>
+</tr>
+<tr class="row-even"><td><p>Mouse wheel / Hand / middle drag</p></td>
+<td><p>Zoom / pan</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ctrl+click</p></td>
+<td><p>Add or remove an object from a multiple selection</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If text controls are hidden, load SAM2/2.1 or an available SAM3 backend. Use Run text segmentation after entering text. For a native single-object correction choose Single object rather than whole-image exemplar retrieval. If Auto grid returns zero masks, inspect the displayed count and candidate thresholds.</p>
+<p>On save failure choose a writable project destination before closing. On recovery failure, retain the project and its backup and confirm the source/frame/fingerprint. Keep acquired images separate from cleaned output.</p>
+<p>Uninstall_CPU scripts remove only app-owned marked environments/build folders. Projects, images, exports and cached models are preserved. Remove an optional GPU environment explicitly with conda env remove -n sam-image-studio-gpu. Close the GUI first.</p>
+<p>Validation reports are supplied with the release. Defined regression cases do not prove every possible image or future dependency version is defect-free. Native Windows/macOS, CUDA and real SAM3 weights require local acceptance when not exercised by the release test machine.</p>
+</section>
+<section id="official-references">
+<h2>Official references<a class="headerlink" href="#official-references" title="Link to this heading">#</a></h2>
+<p>https://github.com/facebookresearch/segment-anything</p>
+<p>https://github.com/facebookresearch/sam2</p>
+<p>https://github.com/facebookresearch/sam3</p>
+<p>https://huggingface.co/docs/transformers/v4.53.3/en/model_doc/grounding-dino</p>
+<p>https://scikit-image.org/docs/stable/api/skimage.restoration.html</p>
+<p>https://pytorch.org/get-started/previous-versions/</p>
+<p>https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html</p>
+<p>https://github.com/cocodataset/cocoapi</p>
+<p>SAM3.1 release and multiplex API: https://github.com/facebookresearch/sam3/blob/main/README_SAM3.1.md</p>
+<p>CAREamics: https://careamics.github.io/</p>
+<p>SPORCO: https://sporco.readthedocs.io/</p>
+<p>BM3D package and licensing: https://pypi.org/project/bm3d/</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="documentation/files.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Folders, projects, and model files</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="denoising.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Denoising parameters</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start-modes-and-workspace">Start, modes and workspace</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-python-and-conda-gpu-setup">Installation, Python and Conda GPU setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-images-and-native-autosaves">Opening images and native autosaves</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#excel-pixel-size-lookup">Excel pixel-size lookup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whole-image-exemplars-single-objects-and-roi">Whole-image exemplars, single objects and ROI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-grid-and-text-prompts">Automatic grid and text prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-geometry-and-edit-tools">Manual geometry and Edit tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-and-reversible-image-records">Cleaning and reversible image records</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#processing-restoration-smoothing-and-noise">Processing: restoration, smoothing and noise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retained-crops-and-paste-back-workflow">Retained crops and paste-back workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistics-and-metric-applicability">Statistics and metric applicability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#masks-overlays-and-dataset-export">Masks, overlays and dataset export</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menu-and-control-reference">Menu and control reference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shortcuts-recovery-and-troubleshooting">Shortcuts, recovery and troubleshooting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#official-references">Official references</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, SAM Image Studio contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

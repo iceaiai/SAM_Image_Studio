@@ -1,0 +1,937 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Menu-by-menu reference &#8212; SAM Image Studio 1.4.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/studio.css?v=6a68c8ed" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=23a965d7"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'documentation/menus';</script>
+    <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/documentation/menus.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Dialogs and their controls" href="dialogs.html" />
+    <link rel="prev" title="Buttons, tools, and segmentation controls" href="controls.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.4.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SAM Image Studio</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../features/index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../features/index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="workspace.html">Workspace and panels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Menu-by-menu reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dialogs.html">Dialogs and their controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="files.html">Folders, projects, and model files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../denoising.html">Denoising parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../downloads.html">Original supplied files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Documentation: controls, modes, and files</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Menu-by-menu reference</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="menu-by-menu-reference">
+<h1>Menu-by-menu reference<a class="headerlink" href="#menu-by-menu-reference" title="Link to this heading">#</a></h1>
+<p>This reference covers every core menu action in the 1.4.2 main window. Labels
+were checked against an offscreen application instance. Some actions depend on
+selection, mode, loaded model, or task state. Installed plugins add their own
+actions and are documented by their authors.</p>
+<section id="file">
+<h2>File<a class="headerlink" href="#file" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Menu entry</p></th>
+<th class="head"><p>What it does</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Open images…</p></td>
+<td><p>Open one or multiple supported images. Each image/stack frame becomes an Image files entry.</p></td>
+<td><p>Ctrl+O</p></td>
+</tr>
+<tr class="row-odd"><td><p>Open folder…</p></td>
+<td><p>Select a folder of supported images for the workspace.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Open project JSON…</p></td>
+<td><p>Open a native annotation project and locate its source/frame when necessary.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Save masks…</p></td>
+<td><p>Export masks or overlays with binary/weighted/color/label options; Ctrl+S opens this dialog.</p></td>
+<td><p>Ctrl+S</p></td>
+</tr>
+<tr class="row-even"><td><p>Save project now</p></td>
+<td><p>Force a native editable .sam.json save; this differs from exporting a mask.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Choose project folder…</p></td>
+<td><p>Choose a writable destination for native autosaves.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Save original / processed images…</p></td>
+<td><p>Save acquired original TIFF, processed TIFF, or both.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Close current image</p></td>
+<td><p>Save and close the active workspace image.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Exit</p></td>
+<td><p>Close the application after its pending-work/save handling.</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="edit">
+<h2>Edit<a class="headerlink" href="#edit" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Menu entry</p></th>
+<th class="head"><p>What it does</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Undo</p></td>
+<td><p>Revert the latest committed operation in the current image history.</p></td>
+<td><p>Ctrl+Z</p></td>
+</tr>
+<tr class="row-odd"><td><p>Redo</p></td>
+<td><p>Reapply an undone operation.</p></td>
+<td><p>Ctrl+Y</p></td>
+</tr>
+<tr class="row-even"><td><p>Edit object vertices</p></td>
+<td><p>Edit existing selected geometry instead of adding another shape.</p></td>
+<td><p>Ctrl+E</p></td>
+</tr>
+<tr class="row-odd"><td><p>Delete object / selected vertex</p></td>
+<td><p>Delete the selected object or an eligible vertex in the active edit state.</p></td>
+<td><p>Del</p></td>
+</tr>
+<tr class="row-even"><td><p>Select all objects</p></td>
+<td><p>Select annotation/cleaning objects; image-smoothing records remain selectable in Objects.</p></td>
+<td><p>Ctrl+A</p></td>
+</tr>
+<tr class="row-odd"><td><p>Invert region</p></td>
+<td><p>Make an exact pixel region from the complement of selected area masks or the current region.</p></td>
+<td><p>Ctrl+I</p></td>
+</tr>
+<tr class="row-even"><td><p>Create object from region</p></td>
+<td><p>In Manual/Edit, create an exact mask annotation from the current nonempty region.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Object properties…</p></td>
+<td><p>Edit metadata for the selected annotation.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Change selected objects’ group…</p></td>
+<td><p>Move selected eligible objects to a different group.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Brightness / contrast…</p></td>
+<td><p>Adjust the display copy without modifying acquired pixel values.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Object color…</p></td>
+<td><p>Change selected object display colors.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Object transparency…</p></td>
+<td><p>Set mask display opacity independently of binary mask geometry.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Assign mask colors…</p></td>
+<td><p>Use default colors or assign the preset 20-color lookup table.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Smooth image pixels…</p></td>
+<td><p>Preview a smoothing operation on derived pixels; this is different from smoothing a contour.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Rotate image…</p></td>
+<td><p>Choose angle, optional rectangle/square padding and fill; transform pixels, masks and calibration together.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Scale masks / savepoints…</p></td>
+<td><p>Scale selected/group masks uniformly; keep original/result snapshots temporarily or in a local folder.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Morphology / inner region…</p></td>
+<td><p>Assign morphology and link an enclosed core/cavity or expected polygon side count for measurements.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vertex deletion radius…</p></td>
+<td><p>Set the eligible-vertex deletion search radius in image pixels.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Fill holes…</p></td>
+<td><p>Preview filling eligible holes in selected area masks.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Smooth edges…</p></td>
+<td><p>Preview smoother editable contours for selected masks; does not smooth image intensities.</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="cleaning">
+<h2>Cleaning<a class="headerlink" href="#cleaning" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Menu entry</p></th>
+<th class="head"><p>What it does</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Remove selected image area</p></td>
+<td><p>Create a reversible pixel-removal record from the current area in Clean mode.</p></td>
+<td><p>Ctrl+D</p></td>
+</tr>
+<tr class="row-odd"><td><p>Restore selected area / all edits</p></td>
+<td><p>Restore requested pixels while retaining/replaying other applicable edits.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Fill from neighboring pixels</p></td>
+<td><p>Fill removed target pixels from available neighboring image content.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fill with LaMa…</p></td>
+<td><p>Preview a separately loaded LaMa model fill for the target.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Fill with background patches</p></td>
+<td><p>Fill from real manual patch sources in the explicitly chosen background group.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Choose background group…</p></td>
+<td><p>Choose the group supplying clean manual background patches.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Add selection to background group…</p></td>
+<td><p>Add eligible selected manual area patches to the background group.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Clear background group selection</p></td>
+<td><p>Remove the current background source-group association.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Cleaning brush radius…</p></td>
+<td><p>Set the point brush size used in Clean, separately from SAM prompting.</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="models">
+<h2>Models<a class="headerlink" href="#models" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Menu entry</p></th>
+<th class="head"><p>What it does</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Model manager…</p></td>
+<td><p>Choose model family/variant, matching checkpoint and CPU/Conda CUDA device.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Segmentation options…</p></td>
+<td><p>Set grid density, minimum score/area and maximum objects, with path-dependent effects.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Text prompt aliases…</p></td>
+<td><p>Edit project aliases such as nanoparticle → black dots; aliases do not train a model.</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="export">
+<h2>Export<a class="headerlink" href="#export" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Menu entry</p></th>
+<th class="head"><p>What it does</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>COCO segmentation dataset…</p></td>
+<td><p>Export exact RLE masks plus annotation/calibration and application cleaning extensions.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>YOLO segmentation dataset…</p></td>
+<td><p>Export polygons with explicit hole/disconnected-mask conversion handling.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Transparent mask images…</p></td>
+<td><p>Export mask images with transparent backgrounds and independently configurable mask opacity.</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="statistics">
+<h2>Statistics<a class="headerlink" href="#statistics" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Menu entry</p></th>
+<th class="head"><p>What it does</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Plot Object Statistics…</p></td>
+<td><p>Choose up to nine displayed metrics and export plots or numerical statistics.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edit image calibration…</p></td>
+<td><p>Set physical X/Y pixel sizes and length unit.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Read pixel sizes from Excel…</p></td>
+<td><p>Select a worksheet/unit and match converted_image_name to converted_size after filename normalization.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Forget automatic Excel lookup</p></td>
+<td><p>Stop applying the saved lookup on later opens while retaining calibration already assigned.</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="view">
+<h2>View<a class="headerlink" href="#view" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Menu entry</p></th>
+<th class="head"><p>What it does</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reset magnification / fit image</p></td>
+<td><p>Fit the current image to the viewport.</p></td>
+<td><p>F</p></td>
+</tr>
+<tr class="row-odd"><td><p>Show masks</p></td>
+<td><p>Toggle mask rendering without deleting annotations.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Show contours</p></td>
+<td><p>Toggle annotation outlines.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Show prompt points</p></td>
+<td><p>Toggle prompt marker display.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Toolbar icon size → Small (default)</p></td>
+<td><p>Use 22-pixel drawing icons; enlarged Undo/Redo keep their special size.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Toolbar icon size → Medium</p></td>
+<td><p>Use 30-pixel drawing icons.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Toolbar icon size → Large</p></td>
+<td><p>Use 40-pixel drawing icons.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Objects</p></td>
+<td><p>Show/hide the Objects dock.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Groups</p></td>
+<td><p>Show/hide the Groups dock.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Image files</p></td>
+<td><p>Show/hide the image/dataset/frame dock.</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="help">
+<h2>Help<a class="headerlink" href="#help" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Menu entry</p></th>
+<th class="head"><p>What it does</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>User manual (PDF)</p></td>
+<td><p>Open bundled English user help with fit-width and zoom controls.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Denoising parameter guide (PDF)</p></td>
+<td><p>Open the separate complete parameter/default/recommendation guide.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Quick start</p></td>
+<td><p>Show the short built-in workflow reminder.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Diagnostics / versions</p></td>
+<td><p>Inspect runtime/platform versions for troubleshooting.</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="processing">
+<h2>Processing<a class="headerlink" href="#processing" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Menu entry</p></th>
+<th class="head"><p>What it does</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Denoise…</p></td>
+<td><p>Choose a restoration method, target, parameters and Preview/Apply workflow.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Smooth (Gaussian)…</p></td>
+<td><p>Choose an odd kernel size and spatial sigma for derived pixel smoothing.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Crop selected region / masks…</p></td>
+<td><p>Retain real pixels in the mask bounding box plus 3 pixels of context and protect them.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Retained crops / paste back…</p></td>
+<td><p>Paste, protect/release, export or remove retained snapshots.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Add noise…</p></td>
+<td><p>Add reproducible Poisson, Gaussian or salt-and-pepper noise with adjustable strength/seed.</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="plugin">
+<h2>Plugin<a class="headerlink" href="#plugin" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Menu entry</p></th>
+<th class="head"><p>What it does</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Install local plugin folder…</p></td>
+<td><p>Copy a trusted local plugin folder with plugin.json into the app profile and load it.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Manage / reload plugins…</p></td>
+<td><p>Enable/disable/reload/remove installed plugin source; dependencies are not installed automatically.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>For Developer (PDF)</p></td>
+<td><p>Open the separate plugin/API/U-Net example manual.</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For toolbar/panel buttons, see <a class="reference internal" href="controls.html"><span class="std std-doc">controls</span></a>. For parameter dialogs,
+see <a class="reference internal" href="dialogs.html"><span class="std std-doc">dialogs</span></a> and the <a class="reference internal" href="../denoising.html"><span class="std std-doc">denoising reference</span></a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="controls.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Buttons, tools, and segmentation controls</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="dialogs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Dialogs and their controls</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file">File</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#edit">Edit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning">Cleaning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#models">Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export">Export</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistics">Statistics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view">View</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#help">Help</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#processing">Processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plugin">Plugin</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, SAM Image Studio contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

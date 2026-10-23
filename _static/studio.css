@@ -1,0 +1,17 @@
+html {
+  --pst-color-primary: #087e8b;
+  --pst-color-secondary: #a65b00;
+}
+html[data-theme="dark"] {
+  --pst-color-primary: #68d4da;
+  --pst-color-secondary: #ffc86a;
+}
+.bd-main .bd-content .bd-article-container { max-width: 66rem; }
+.studio-intro { font-size: 1.2rem; line-height: 1.7; max-width: 52rem; }
+.studio-eyebrow { color: var(--pst-color-primary); font-weight: 700; letter-spacing: .09em; text-transform: uppercase; font-size: .85rem; }
+.sd-card { border-radius: .7rem; }
+.sd-card-title { font-weight: 650; }
+.sd-card-hover:hover { border-color: var(--pst-color-primary); }
+.studio-screen { border-radius: .65rem; border: 1px solid var(--pst-color-border); }
+table { font-size: .93rem; }
+.bd-header .navbar-brand { font-weight: 700; }

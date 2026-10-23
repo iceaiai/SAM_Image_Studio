@@ -1,0 +1,1243 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>samstudio.domain &#8212; SAM Image Studio 1.4.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/studio.css?v=6a68c8ed" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=23a965d7"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/samstudio/domain/index';</script>
+    <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/autoapi/samstudio/domain/index.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="samstudio.exemplars" href="../exemplars/index.html" />
+    <link rel="prev" title="samstudio.dialogs_v14" href="../dialogs_v14/index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.4.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SAM Image Studio</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../features/index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../documentation/index.html">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../../developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../features/index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../documentation/index.html">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../../developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../developer-manual.html">Developer manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../architecture.html">Application architecture</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../api.html">Python API reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../index.html">samstudio</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../app/index.html">samstudio.app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../calibration_table/index.html">samstudio.calibration_table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../canvas/index.html">samstudio.canvas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../compressed_sensing/index.html">samstudio.compressed_sensing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../denoise_config/index.html">samstudio.denoise_config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dialogs/index.html">samstudio.dialogs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dialogs_v14/index.html">samstudio.dialogs_v14</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">samstudio.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exemplars/index.html">samstudio.exemplars</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exports/index.html">samstudio.exports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hardware/index.html">samstudio.hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../help_viewer/index.html">samstudio.help_viewer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../image_processing/index.html">samstudio.image_processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../imageio/index.html">samstudio.imageio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../inference/index.html">samstudio.inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../main_window/index.html">samstudio.main_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neural_denoising/index.html">samstudio.neural_denoising</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../palette/index.html">samstudio.palette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plugin_api/index.html">samstudio.plugin_api</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plugin_ui/index.html">samstudio.plugin_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../processing/index.html">samstudio.processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../processing_ui/index.html">samstudio.processing_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sam31_backend/index.html">samstudio.sam31_backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../savepoints/index.html">samstudio.savepoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../segmentation_ui/index.html">samstudio.segmentation_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../selftest/index.html">samstudio.selftest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sparse_denoising/index.html">samstudio.sparse_denoising</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../statistics/index.html">samstudio.statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../statistics_dialog/index.html">samstudio.statistics_dialog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../text_prompts/index.html">samstudio.text_prompts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transforms/index.html">samstudio.transforms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../workspace_ui/index.html">samstudio.workspace_ui</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development and documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebook.html">Compressed sensing notebook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/publishing.html">Website build and GitHub Pages</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../developer/index.html" class="nav-link">Developer guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../../../api.html" class="nav-link">Python API reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">samstudio</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">samstudio.domain</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-samstudio.domain">
+<span id="samstudio-domain"></span><h1>samstudio.domain<a class="headerlink" href="#module-samstudio.domain" title="Link to this heading">#</a></h1>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.domain.SCHEMA_VERSION" title="samstudio.domain.SCHEMA_VERSION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SCHEMA_VERSION</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.domain.MAX_DECODED_BYTES" title="samstudio.domain.MAX_DECODED_BYTES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAX_DECODED_BYTES</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.domain.LENGTH_UNITS" title="samstudio.domain.LENGTH_UNITS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LENGTH_UNITS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.domain.Calibration" title="samstudio.domain.Calibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Calibration</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.domain.Group" title="samstudio.domain.Group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.domain.Annotation" title="samstudio.domain.Annotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Annotation</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.domain.ImageFrame" title="samstudio.domain.ImageFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImageFrame</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.domain.Document" title="samstudio.domain.Document"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Document</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.domain.ProjectStore" title="samstudio.domain.ProjectStore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProjectStore</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.domain.History" title="samstudio.domain.History"><code class="xref py py-obj docutils literal notranslate"><span class="pre">History</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.domain.pack_array" title="samstudio.domain.pack_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_array</span></code></a>(→ dict)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.domain.unpack_array" title="samstudio.domain.unpack_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unpack_array</span></code></a>(→ numpy.ndarray)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.domain.pack_mask" title="samstudio.domain.pack_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_mask</span></code></a>(→ dict)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.domain.unpack_mask" title="samstudio.domain.unpack_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unpack_mask</span></code></a>(→ numpy.ndarray)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.domain.atomic_write" title="samstudio.domain.atomic_write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atomic_write</span></code></a>(path, data[, keep_backup])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.domain.group_id" title="samstudio.domain.group_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group_id</span></code></a>(→ str)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="samstudio.domain.SCHEMA_VERSION">
+<span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">SCHEMA_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#samstudio.domain.SCHEMA_VERSION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="samstudio.domain.MAX_DECODED_BYTES">
+<span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">MAX_DECODED_BYTES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2000000000</span></em><a class="headerlink" href="#samstudio.domain.MAX_DECODED_BYTES" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="samstudio.domain.LENGTH_UNITS">
+<span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">LENGTH_UNITS</span></span><a class="headerlink" href="#samstudio.domain.LENGTH_UNITS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="samstudio.domain.Calibration">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">Calibration</span></span><a class="headerlink" href="#samstudio.domain.Calibration" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Calibration.pixel_size_x">
+<span class="sig-name descname"><span class="pre">pixel_size_x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Calibration.pixel_size_x" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Calibration.pixel_size_y">
+<span class="sig-name descname"><span class="pre">pixel_size_y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Calibration.pixel_size_y" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Calibration.length_unit">
+<span class="sig-name descname"><span class="pre">length_unit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'nm'</span></em><a class="headerlink" href="#samstudio.domain.Calibration.length_unit" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Calibration.source">
+<span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'unavailable'</span></em><a class="headerlink" href="#samstudio.domain.Calibration.source" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Calibration.valid">
+<span class="sig-name descname"><span class="pre">valid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#samstudio.domain.Calibration.valid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Calibration.basis">
+<span class="sig-name descname"><span class="pre">basis</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Calibration.basis" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Calibration.origin">
+<span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Calibration.origin" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="samstudio.domain.Calibration.pixel_area">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pixel_area</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Calibration.pixel_area" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Calibration.matrix">
+<span class="sig-name descname"><span class="pre">matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Calibration.matrix" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Calibration.area">
+<span class="sig-name descname"><span class="pre">area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pixels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#samstudio.domain.Calibration.area" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="samstudio.domain.pack_array">
+<span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">pack_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#samstudio.domain.pack_array" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="samstudio.domain.unpack_array">
+<span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">unpack_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_bytes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">MAX_DECODED_BYTES</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#samstudio.domain.unpack_array" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="samstudio.domain.pack_mask">
+<span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">pack_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#samstudio.domain.pack_mask" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="samstudio.domain.unpack_mask">
+<span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">unpack_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#samstudio.domain.unpack_mask" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="samstudio.domain.atomic_write">
+<span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">atomic_write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_backup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.atomic_write" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="samstudio.domain.group_id">
+<span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">group_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#samstudio.domain.group_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="samstudio.domain.Group">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">Group</span></span><a class="headerlink" href="#samstudio.domain.Group" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Group.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#samstudio.domain.Group.name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Group.color">
+<span class="sig-name descname"><span class="pre">color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'#148374'</span></em><a class="headerlink" href="#samstudio.domain.Group.color" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Group.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#samstudio.domain.Group.id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">Annotation</span></span><a class="headerlink" href="#samstudio.domain.Annotation" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#samstudio.domain.Annotation.name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.group_id">
+<span class="sig-name descname"><span class="pre">group_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#samstudio.domain.Annotation.group_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.kind">
+<span class="sig-name descname"><span class="pre">kind</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#samstudio.domain.Annotation.kind" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.points">
+<span class="sig-name descname"><span class="pre">points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#samstudio.domain.Annotation.points" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.mask">
+<span class="sig-name descname"><span class="pre">mask</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Annotation.mask" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#samstudio.domain.Annotation.id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.color">
+<span class="sig-name descname"><span class="pre">color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'#148374'</span></em><a class="headerlink" href="#samstudio.domain.Annotation.color" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.opacity">
+<span class="sig-name descname"><span class="pre">opacity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.42</span></em><a class="headerlink" href="#samstudio.domain.Annotation.opacity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.visible">
+<span class="sig-name descname"><span class="pre">visible</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#samstudio.domain.Annotation.visible" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.locked">
+<span class="sig-name descname"><span class="pre">locked</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#samstudio.domain.Annotation.locked" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.provenance">
+<span class="sig-name descname"><span class="pre">provenance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#samstudio.domain.Annotation.provenance" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.contours">
+<span class="sig-name descname"><span class="pre">contours</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Annotation.contours" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.role">
+<span class="sig-name descname"><span class="pre">role</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'object'</span></em><a class="headerlink" href="#samstudio.domain.Annotation.role" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.cleaning">
+<span class="sig-name descname"><span class="pre">cleaning</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Annotation.cleaning" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.pixel_area">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pixel_area</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Annotation.pixel_area" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Annotation.to_dict" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Annotation.from_dict">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Annotation.from_dict" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="samstudio.domain.ImageFrame">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">ImageFrame</span></span><a class="headerlink" href="#samstudio.domain.ImageFrame" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.ImageFrame.source_path">
+<span class="sig-name descname"><span class="pre">source_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#samstudio.domain.ImageFrame.source_path" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.ImageFrame.raw">
+<span class="sig-name descname"><span class="pre">raw</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#samstudio.domain.ImageFrame.raw" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.ImageFrame.dataset">
+<span class="sig-name descname"><span class="pre">dataset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'image'</span></em><a class="headerlink" href="#samstudio.domain.ImageFrame.dataset" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.ImageFrame.frame_index">
+<span class="sig-name descname"><span class="pre">frame_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#samstudio.domain.ImageFrame.frame_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.ImageFrame.frame_label">
+<span class="sig-name descname"><span class="pre">frame_label</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#samstudio.domain.ImageFrame.frame_label" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.ImageFrame.calibration">
+<span class="sig-name descname"><span class="pre">calibration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#samstudio.domain.Calibration" title="samstudio.domain.Calibration"><span class="pre">Calibration</span></a></em><a class="headerlink" href="#samstudio.domain.ImageFrame.calibration" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.ImageFrame.fingerprint">
+<span class="sig-name descname"><span class="pre">fingerprint</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#samstudio.domain.ImageFrame.fingerprint" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.ImageFrame.key">
+<span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#samstudio.domain.ImageFrame.key" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="samstudio.domain.ImageFrame.shape">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#samstudio.domain.ImageFrame.shape" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="samstudio.domain.Document">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">Document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#samstudio.domain.ImageFrame" title="samstudio.domain.ImageFrame"><span class="pre">ImageFrame</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.frame">
+<span class="sig-name descname"><span class="pre">frame</span></span><a class="headerlink" href="#samstudio.domain.Document.frame" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.source_raw">
+<span class="sig-name descname"><span class="pre">source_raw</span></span><a class="headerlink" href="#samstudio.domain.Document.source_raw" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.source_calibration">
+<span class="sig-name descname"><span class="pre">source_calibration</span></span><a class="headerlink" href="#samstudio.domain.Document.source_calibration" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.rotation">
+<span class="sig-name descname"><span class="pre">rotation</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#samstudio.domain.Document.rotation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.text_aliases">
+<span class="sig-name descname"><span class="pre">text_aliases</span></span><a class="headerlink" href="#samstudio.domain.Document.text_aliases" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.detached_crops">
+<span class="sig-name descname"><span class="pre">detached_crops</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#samstudio.domain.Document.detached_crops" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.calibration">
+<span class="sig-name descname"><span class="pre">calibration</span></span><a class="headerlink" href="#samstudio.domain.Document.calibration" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.groups">
+<span class="sig-name descname"><span class="pre">groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#samstudio.domain.Group" title="samstudio.domain.Group"><span class="pre">Group</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#samstudio.domain.Document.groups" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#samstudio.domain.Annotation" title="samstudio.domain.Annotation"><span class="pre">Annotation</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#samstudio.domain.Document.objects" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.active_group">
+<span class="sig-name descname"><span class="pre">active_group</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Document.active_group" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.next_object_number">
+<span class="sig-name descname"><span class="pre">next_object_number</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#samstudio.domain.Document.next_object_number" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.draft">
+<span class="sig-name descname"><span class="pre">draft</span></span><a class="headerlink" href="#samstudio.domain.Document.draft" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.working">
+<span class="sig-name descname"><span class="pre">working</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Document.working" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.removed">
+<span class="sig-name descname"><span class="pre">removed</span></span><a class="headerlink" href="#samstudio.domain.Document.removed" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.modified">
+<span class="sig-name descname"><span class="pre">modified</span></span><a class="headerlink" href="#samstudio.domain.Document.modified" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.cleaning_history">
+<span class="sig-name descname"><span class="pre">cleaning_history</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#samstudio.domain.Document.cleaning_history" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.background_group_id">
+<span class="sig-name descname"><span class="pre">background_group_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Document.background_group_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.color_scheme">
+<span class="sig-name descname"><span class="pre">color_scheme</span></span><a class="headerlink" href="#samstudio.domain.Document.color_scheme" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.revision">
+<span class="sig-name descname"><span class="pre">revision</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#samstudio.domain.Document.revision" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.saved_revision">
+<span class="sig-name descname"><span class="pre">saved_revision</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#samstudio.domain.Document.saved_revision" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.get_group">
+<span class="sig-name descname"><span class="pre">get_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ident</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#samstudio.domain.Group" title="samstudio.domain.Group"><span class="pre">Group</span></a></span></span><a class="headerlink" href="#samstudio.domain.Document.get_group" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.ensure_group">
+<span class="sig-name descname"><span class="pre">ensure_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'#148374'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#samstudio.domain.Group" title="samstudio.domain.Group"><span class="pre">Group</span></a></span></span><a class="headerlink" href="#samstudio.domain.Document.ensure_group" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.add_object">
+<span class="sig-name descname"><span class="pre">add_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">provenance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.add_object" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.set_region">
+<span class="sig-name descname"><span class="pre">set_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.set_region" title="Link to this definition">#</a></dt>
+<dd><p>An exact shared selection, including holes and disconnected components.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.apply_image_smoothing">
+<span class="sig-name descname"><span class="pre">apply_image_smoothing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.apply_image_smoothing" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.protected_mask">
+<span class="sig-name descname"><span class="pre">protected_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">except_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.protected_mask" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.foreground_objects">
+<span class="sig-name descname"><span class="pre">foreground_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.foreground_objects" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.background_regions">
+<span class="sig-name descname"><span class="pre">background_regions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.background_regions" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.remove_for_cleaning">
+<span class="sig-name descname"><span class="pre">remove_for_cleaning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.remove_for_cleaning" title="Link to this definition">#</a></dt>
+<dd><p>Keep every removal as an object. Saved pixel values make replay deterministic.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.rebuild_cleaning">
+<span class="sig-name descname"><span class="pre">rebuild_cleaning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.rebuild_cleaning" title="Link to this definition">#</a></dt>
+<dd><p>Replay remaining objects in order; removing one cannot erase another’s edit.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.apply_cleaning_fill">
+<span class="sig-name descname"><span class="pre">apply_cleaning_fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_group_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.apply_cleaning_fill" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.delete_objects">
+<span class="sig-name descname"><span class="pre">delete_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.delete_objects" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.restore_cleaning_area">
+<span class="sig-name descname"><span class="pre">restore_cleaning_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.restore_cleaning_area" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.state">
+<span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.state" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.restore">
+<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.restore" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="samstudio.domain.ProjectStore">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">ProjectStore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.ProjectStore" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.ProjectStore.directory">
+<span class="sig-name descname"><span class="pre">directory</span></span><a class="headerlink" href="#samstudio.domain.ProjectStore.directory" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.ProjectStore.path">
+<span class="sig-name descname"><span class="pre">path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#samstudio.domain.Document" title="samstudio.domain.Document"><span class="pre">Document</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.ProjectStore.path" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.ProjectStore.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#samstudio.domain.Document" title="samstudio.domain.Document"><span class="pre">Document</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.ProjectStore.save" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.ProjectStore.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#samstudio.domain.Document" title="samstudio.domain.Document"><span class="pre">Document</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.ProjectStore.load" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="samstudio.domain.History">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.domain.</span></span><span class="sig-name descname"><span class="pre">History</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#samstudio.domain.Document" title="samstudio.domain.Document"><span class="pre">Document</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.History" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.History.undo_stack">
+<span class="sig-name descname"><span class="pre">undo_stack</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#samstudio.domain.History.undo_stack" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.History.redo_stack">
+<span class="sig-name descname"><span class="pre">redo_stack</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#samstudio.domain.History.redo_stack" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.History.max_bytes">
+<span class="sig-name descname"><span class="pre">max_bytes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">134217728</span></em><a class="headerlink" href="#samstudio.domain.History.max_bytes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.History.snapshot">
+<span class="sig-name descname"><span class="pre">snapshot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.History.snapshot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.History.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.History.apply" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.History.undo">
+<span class="sig-name descname"><span class="pre">undo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.History.undo" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.History.redo">
+<span class="sig-name descname"><span class="pre">redo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.History.redo" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../dialogs_v14/index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">samstudio.dialogs_v14</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../exemplars/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">samstudio.exemplars</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.SCHEMA_VERSION"><code class="docutils literal notranslate"><span class="pre">SCHEMA_VERSION</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.MAX_DECODED_BYTES"><code class="docutils literal notranslate"><span class="pre">MAX_DECODED_BYTES</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.LENGTH_UNITS"><code class="docutils literal notranslate"><span class="pre">LENGTH_UNITS</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Calibration"><code class="docutils literal notranslate"><span class="pre">Calibration</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Calibration.pixel_size_x"><code class="docutils literal notranslate"><span class="pre">Calibration.pixel_size_x</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Calibration.pixel_size_y"><code class="docutils literal notranslate"><span class="pre">Calibration.pixel_size_y</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Calibration.length_unit"><code class="docutils literal notranslate"><span class="pre">Calibration.length_unit</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Calibration.source"><code class="docutils literal notranslate"><span class="pre">Calibration.source</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Calibration.valid"><code class="docutils literal notranslate"><span class="pre">Calibration.valid</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Calibration.basis"><code class="docutils literal notranslate"><span class="pre">Calibration.basis</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Calibration.origin"><code class="docutils literal notranslate"><span class="pre">Calibration.origin</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Calibration.pixel_area"><code class="docutils literal notranslate"><span class="pre">Calibration.pixel_area</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Calibration.matrix"><code class="docutils literal notranslate"><span class="pre">Calibration.matrix()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Calibration.area"><code class="docutils literal notranslate"><span class="pre">Calibration.area()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.pack_array"><code class="docutils literal notranslate"><span class="pre">pack_array()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.unpack_array"><code class="docutils literal notranslate"><span class="pre">unpack_array()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.pack_mask"><code class="docutils literal notranslate"><span class="pre">pack_mask()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.unpack_mask"><code class="docutils literal notranslate"><span class="pre">unpack_mask()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.atomic_write"><code class="docutils literal notranslate"><span class="pre">atomic_write()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.group_id"><code class="docutils literal notranslate"><span class="pre">group_id()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Group"><code class="docutils literal notranslate"><span class="pre">Group</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Group.name"><code class="docutils literal notranslate"><span class="pre">Group.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Group.color"><code class="docutils literal notranslate"><span class="pre">Group.color</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Group.id"><code class="docutils literal notranslate"><span class="pre">Group.id</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation"><code class="docutils literal notranslate"><span class="pre">Annotation</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.name"><code class="docutils literal notranslate"><span class="pre">Annotation.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.group_id"><code class="docutils literal notranslate"><span class="pre">Annotation.group_id</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.kind"><code class="docutils literal notranslate"><span class="pre">Annotation.kind</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.points"><code class="docutils literal notranslate"><span class="pre">Annotation.points</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.mask"><code class="docutils literal notranslate"><span class="pre">Annotation.mask</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.id"><code class="docutils literal notranslate"><span class="pre">Annotation.id</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.color"><code class="docutils literal notranslate"><span class="pre">Annotation.color</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.opacity"><code class="docutils literal notranslate"><span class="pre">Annotation.opacity</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.visible"><code class="docutils literal notranslate"><span class="pre">Annotation.visible</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.locked"><code class="docutils literal notranslate"><span class="pre">Annotation.locked</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.provenance"><code class="docutils literal notranslate"><span class="pre">Annotation.provenance</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.contours"><code class="docutils literal notranslate"><span class="pre">Annotation.contours</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.role"><code class="docutils literal notranslate"><span class="pre">Annotation.role</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.cleaning"><code class="docutils literal notranslate"><span class="pre">Annotation.cleaning</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.pixel_area"><code class="docutils literal notranslate"><span class="pre">Annotation.pixel_area</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.to_dict"><code class="docutils literal notranslate"><span class="pre">Annotation.to_dict()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Annotation.from_dict"><code class="docutils literal notranslate"><span class="pre">Annotation.from_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ImageFrame"><code class="docutils literal notranslate"><span class="pre">ImageFrame</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ImageFrame.source_path"><code class="docutils literal notranslate"><span class="pre">ImageFrame.source_path</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ImageFrame.raw"><code class="docutils literal notranslate"><span class="pre">ImageFrame.raw</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ImageFrame.dataset"><code class="docutils literal notranslate"><span class="pre">ImageFrame.dataset</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ImageFrame.frame_index"><code class="docutils literal notranslate"><span class="pre">ImageFrame.frame_index</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ImageFrame.frame_label"><code class="docutils literal notranslate"><span class="pre">ImageFrame.frame_label</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ImageFrame.calibration"><code class="docutils literal notranslate"><span class="pre">ImageFrame.calibration</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ImageFrame.fingerprint"><code class="docutils literal notranslate"><span class="pre">ImageFrame.fingerprint</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ImageFrame.key"><code class="docutils literal notranslate"><span class="pre">ImageFrame.key</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ImageFrame.shape"><code class="docutils literal notranslate"><span class="pre">ImageFrame.shape</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document"><code class="docutils literal notranslate"><span class="pre">Document</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.frame"><code class="docutils literal notranslate"><span class="pre">Document.frame</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.source_raw"><code class="docutils literal notranslate"><span class="pre">Document.source_raw</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.source_calibration"><code class="docutils literal notranslate"><span class="pre">Document.source_calibration</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.rotation"><code class="docutils literal notranslate"><span class="pre">Document.rotation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.text_aliases"><code class="docutils literal notranslate"><span class="pre">Document.text_aliases</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.detached_crops"><code class="docutils literal notranslate"><span class="pre">Document.detached_crops</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.calibration"><code class="docutils literal notranslate"><span class="pre">Document.calibration</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.groups"><code class="docutils literal notranslate"><span class="pre">Document.groups</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.objects"><code class="docutils literal notranslate"><span class="pre">Document.objects</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.active_group"><code class="docutils literal notranslate"><span class="pre">Document.active_group</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.next_object_number"><code class="docutils literal notranslate"><span class="pre">Document.next_object_number</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.draft"><code class="docutils literal notranslate"><span class="pre">Document.draft</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.working"><code class="docutils literal notranslate"><span class="pre">Document.working</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.removed"><code class="docutils literal notranslate"><span class="pre">Document.removed</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.modified"><code class="docutils literal notranslate"><span class="pre">Document.modified</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.cleaning_history"><code class="docutils literal notranslate"><span class="pre">Document.cleaning_history</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.background_group_id"><code class="docutils literal notranslate"><span class="pre">Document.background_group_id</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.color_scheme"><code class="docutils literal notranslate"><span class="pre">Document.color_scheme</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.revision"><code class="docutils literal notranslate"><span class="pre">Document.revision</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.saved_revision"><code class="docutils literal notranslate"><span class="pre">Document.saved_revision</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.get_group"><code class="docutils literal notranslate"><span class="pre">Document.get_group()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.ensure_group"><code class="docutils literal notranslate"><span class="pre">Document.ensure_group()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.add_object"><code class="docutils literal notranslate"><span class="pre">Document.add_object()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.set_region"><code class="docutils literal notranslate"><span class="pre">Document.set_region()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.apply_image_smoothing"><code class="docutils literal notranslate"><span class="pre">Document.apply_image_smoothing()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.protected_mask"><code class="docutils literal notranslate"><span class="pre">Document.protected_mask()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.foreground_objects"><code class="docutils literal notranslate"><span class="pre">Document.foreground_objects()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.background_regions"><code class="docutils literal notranslate"><span class="pre">Document.background_regions()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.remove_for_cleaning"><code class="docutils literal notranslate"><span class="pre">Document.remove_for_cleaning()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.rebuild_cleaning"><code class="docutils literal notranslate"><span class="pre">Document.rebuild_cleaning()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.apply_cleaning_fill"><code class="docutils literal notranslate"><span class="pre">Document.apply_cleaning_fill()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.delete_objects"><code class="docutils literal notranslate"><span class="pre">Document.delete_objects()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.restore_cleaning_area"><code class="docutils literal notranslate"><span class="pre">Document.restore_cleaning_area()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.state"><code class="docutils literal notranslate"><span class="pre">Document.state()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.restore"><code class="docutils literal notranslate"><span class="pre">Document.restore()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ProjectStore"><code class="docutils literal notranslate"><span class="pre">ProjectStore</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ProjectStore.directory"><code class="docutils literal notranslate"><span class="pre">ProjectStore.directory</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ProjectStore.path"><code class="docutils literal notranslate"><span class="pre">ProjectStore.path()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ProjectStore.save"><code class="docutils literal notranslate"><span class="pre">ProjectStore.save()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.ProjectStore.load"><code class="docutils literal notranslate"><span class="pre">ProjectStore.load()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.History"><code class="docutils literal notranslate"><span class="pre">History</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.History.undo_stack"><code class="docutils literal notranslate"><span class="pre">History.undo_stack</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.History.redo_stack"><code class="docutils literal notranslate"><span class="pre">History.redo_stack</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.History.max_bytes"><code class="docutils literal notranslate"><span class="pre">History.max_bytes</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.History.snapshot"><code class="docutils literal notranslate"><span class="pre">History.snapshot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.History.apply"><code class="docutils literal notranslate"><span class="pre">History.apply()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.History.undo"><code class="docutils literal notranslate"><span class="pre">History.undo()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.History.redo"><code class="docutils literal notranslate"><span class="pre">History.redo()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, SAM Image Studio contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

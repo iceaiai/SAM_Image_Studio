@@ -1,0 +1,611 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Application architecture &#8212; SAM Image Studio 1.4.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/studio.css?v=6a68c8ed" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=23a965d7"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'architecture';</script>
+    <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/architecture.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Python API reference" href="api.html" />
+    <link rel="prev" title="Developer manual" href="developer-manual.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.4.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SAM Image Studio</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="features/index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="documentation/index.html">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="features/index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="documentation/index.html">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="developer-manual.html">Developer manual</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Application architecture</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api.html">Python API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/samstudio/index.html">samstudio</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/app/index.html">samstudio.app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/calibration_table/index.html">samstudio.calibration_table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/canvas/index.html">samstudio.canvas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/compressed_sensing/index.html">samstudio.compressed_sensing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/denoise_config/index.html">samstudio.denoise_config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/dialogs/index.html">samstudio.dialogs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/dialogs_v14/index.html">samstudio.dialogs_v14</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/domain/index.html">samstudio.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/exemplars/index.html">samstudio.exemplars</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/exports/index.html">samstudio.exports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/hardware/index.html">samstudio.hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/help_viewer/index.html">samstudio.help_viewer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/image_processing/index.html">samstudio.image_processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/imageio/index.html">samstudio.imageio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/inference/index.html">samstudio.inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/main_window/index.html">samstudio.main_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/neural_denoising/index.html">samstudio.neural_denoising</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/palette/index.html">samstudio.palette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/plugin_api/index.html">samstudio.plugin_api</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/plugin_ui/index.html">samstudio.plugin_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/processing/index.html">samstudio.processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/processing_ui/index.html">samstudio.processing_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/sam31_backend/index.html">samstudio.sam31_backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/savepoints/index.html">samstudio.savepoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/segmentation_ui/index.html">samstudio.segmentation_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/selftest/index.html">samstudio.selftest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/sparse_denoising/index.html">samstudio.sparse_denoising</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/statistics/index.html">samstudio.statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/statistics_dialog/index.html">samstudio.statistics_dialog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/text_prompts/index.html">samstudio.text_prompts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/transforms/index.html">samstudio.transforms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/workspace_ui/index.html">samstudio.workspace_ui</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development and documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebook.html">Compressed sensing notebook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/publishing.html">Website build and GitHub Pages</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="developer/index.html" class="nav-link">Developer guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Application architecture</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="application-architecture">
+<h1>Application architecture<a class="headerlink" href="#application-architecture" title="Link to this heading">#</a></h1>
+<p>The application is a PySide6 desktop GUI. <code class="docutils literal notranslate"><span class="pre">samstudio.app.main()</span></code> parses image
+arguments and <code class="docutils literal notranslate"><span class="pre">--no-restore</span></code>, initializes logging and Qt, and constructs
+<code class="docutils literal notranslate"><span class="pre">MainWindow</span></code>. <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">samstudio</span></code> and <code class="docutils literal notranslate"><span class="pre">sam-image-studio</span></code> use that entry point.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modules</p></th>
+<th class="head"><p>Responsibilities</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">domain</span></code>, <code class="docutils literal notranslate"><span class="pre">imageio</span></code>, <code class="docutils literal notranslate"><span class="pre">calibration_table</span></code></p></td>
+<td><p>Images and physical calibration, annotations/groups, histories, atomic native project storage, Excel lookup</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">main_window</span></code>, <code class="docutils literal notranslate"><span class="pre">canvas</span></code>, <code class="docutils literal notranslate"><span class="pre">dialogs</span></code>, <code class="docutils literal notranslate"><span class="pre">*_ui</span></code></p></td>
+<td><p>Desktop controls, canvas interaction, dialogs and background jobs</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">inference</span></code>, <code class="docutils literal notranslate"><span class="pre">exemplars</span></code>, <code class="docutils literal notranslate"><span class="pre">text_prompts</span></code>, <code class="docutils literal notranslate"><span class="pre">sam31_backend</span></code></p></td>
+<td><p>Model catalog/checkpoints, native inference, exemplar matching, text-to-box prompts and optional SAM3.1 adapter</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">processing</span></code>, <code class="docutils literal notranslate"><span class="pre">image_processing</span></code>, <code class="docutils literal notranslate"><span class="pre">denoise_config</span></code></p></td>
+<td><p>Processing targets, parameter validation, intensity normalization, preview/apply dispatch and shared parameter descriptions</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">compressed_sensing</span></code>, <code class="docutils literal notranslate"><span class="pre">sparse_denoising</span></code>, <code class="docutils literal notranslate"><span class="pre">neural_denoising</span></code></p></td>
+<td><p>Iterative DCT/TV, SPORCO/BM3D, CAREamics N2V/N2V2</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">transforms</span></code>, <code class="docutils literal notranslate"><span class="pre">savepoints</span></code></p></td>
+<td><p>Coordinated pixel/geometry/calibration transformations and annotation snapshots</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">statistics</span></code>, <code class="docutils literal notranslate"><span class="pre">exports</span></code>, <code class="docutils literal notranslate"><span class="pre">palette</span></code></p></td>
+<td><p>Applicable measurements, dataset/image output, and display colors</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plugin_api</span></code>, <code class="docutils literal notranslate"><span class="pre">plugin_ui</span></code>, <code class="docutils literal notranslate"><span class="pre">hardware</span></code></p></td>
+<td><p>Plugin registration/validation, desktop integration, and NVIDIA/Conda planning</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="state-and-transactions">
+<h2>State and transactions<a class="headerlink" href="#state-and-transactions" title="Link to this heading">#</a></h2>
+<p>An <code class="docutils literal notranslate"><span class="pre">ImageFrame</span></code> carries acquired pixels and calibration; a <code class="docutils literal notranslate"><span class="pre">Document</span></code> holds
+objects, groups, geometry, and editing/processing records. <code class="docutils literal notranslate"><span class="pre">History</span></code> supports
+Undo/Redo; <code class="docutils literal notranslate"><span class="pre">ProjectStore</span></code> persists native state. Native schema 5 reads earlier
+schemas 1–4. Source images, native projects, dataset exports, app caches, and
+neural training outputs have different lifetimes.</p>
+<p>Segmentation and processing generate previews before commit. GUI actions use
+the normal transaction/autosave path. Background processors work on snapshots
+and must not access Qt widgets. Keep heavy computation in workers and
+cancellation checks between iterations or batches.</p>
+<p><code class="docutils literal notranslate"><span class="pre">process_pixels()</span></code> normalizes intensities, processes independent spatial
+channels, preserves alpha and dtype, and composites only target pixels.
+<code class="docutils literal notranslate"><span class="pre">denoise_config.METHODS</span></code> defines defaults, bounds/choices, help, and suggested
+starting points used by controls and documentation. Validate cross-field
+constraints through <code class="docutils literal notranslate"><span class="pre">image_processing.parameters()</span></code>.</p>
+</section>
+<section id="plugin-contract">
+<h2>Plugin contract<a class="headerlink" href="#plugin-contract" title="Link to this heading">#</a></h2>
+<p>Plugin API v1 loads a local folder with <code class="docutils literal notranslate"><span class="pre">plugin.json</span></code> and a module exporting
+<code class="docutils literal notranslate"><span class="pre">register(api)</span></code>. Image processors receive <code class="docutils literal notranslate"><span class="pre">ProcessorContext</span></code>, including an image
+copy, target mask, parameter dictionary, calibration/annotation snapshots,
+progress callback, and cancellation event. Output must preserve shape and dtype
+and contain finite values. <code class="docutils literal notranslate"><span class="pre">run_processor()</span></code> restores outside-target pixels and
+alpha. GUI actions receive <code class="docutils literal notranslate"><span class="pre">PluginAPI</span></code> and can use <code class="docutils literal notranslate"><span class="pre">api.commit()</span></code>.</p>
+<p>The <a class="reference internal" href="developer-manual.html"><span class="std std-doc">developer manual</span></a> contains executable plugin examples
+and the tiled TorchScript U-Net contract. Direct <code class="docutils literal notranslate"><span class="pre">api.window</span></code> calls are internal
+interfaces whose signatures can change; the <a class="reference internal" href="api.html"><span class="std std-doc">generated API</span></a> reflects
+this source tree. No trained U-Net weights are bundled.</p>
+</section>
+<section id="source-derived-api">
+<h2>Source-derived API<a class="headerlink" href="#source-derived-api" title="Link to this heading">#</a></h2>
+<p>Sphinx AutoAPI parses the Python source without importing the app. Documentation
+can therefore build with only its documentation dependencies, without Qt,
+PyTorch, Conda, model downloads, or a display. The generated reference describes
+available callables and data; it does not certify model quality or turn internal
+APIs into stable public contracts.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="developer-manual.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Developer manual</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Python API reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#state-and-transactions">State and transactions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plugin-contract">Plugin contract</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-derived-api">Source-derived API</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, SAM Image Studio contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

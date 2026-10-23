@@ -1,0 +1,581 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Documentation: controls, modes, and files &#8212; SAM Image Studio 1.4.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/studio.css?v=6a68c8ed" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=23a965d7"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'documentation/index';</script>
+    <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/documentation/index.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Workspace and panels" href="workspace.html" />
+    <link rel="prev" title="Local plugins and custom processing" href="../features/extensions.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.4.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SAM Image Studio</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../features/index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../features/index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="workspace.html">Workspace and panels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="menus.html">Menu-by-menu reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dialogs.html">Dialogs and their controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="files.html">Folders, projects, and model files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../denoising.html">Denoising parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../downloads.html">Original supplied files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Documentation: controls, modes, and files</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="documentation-controls-modes-and-files">
+<h1>Documentation: controls, modes, and files<a class="headerlink" href="#documentation-controls-modes-and-files" title="Link to this heading">#</a></h1>
+<p>Use this section as a lookup while the desktop application is open. Control
+names match the core version 1.4.2 interface; some are visible/enabled only for
+the current mode, model, selection, or running-task state.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="workspace.html">Workspace and panels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modes.html#switching-modes">Switching modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modes.html#one-rectangle-three-different-meanings">One rectangle, three different meanings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="controls.html#workflow-and-image-controls">Workflow and image controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controls.html#segmentation-prompts-toolbar">Segmentation prompts toolbar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controls.html#drawing-tools">Drawing tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controls.html#panel-buttons">Panel buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controls.html#object-context-menu">Object context menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controls.html#keyboard-and-mouse">Keyboard and mouse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="menus.html">Menu-by-menu reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="menus.html#file">File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html#edit">Edit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html#cleaning">Cleaning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html#export">Export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html#statistics">Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html#view">View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html#help">Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html#processing">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html#plugin">Plugin</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dialogs.html">Dialogs and their controls</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dialogs.html#model-manager-and-inference-options">Model manager and inference options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs.html#processing-and-preview">Processing and preview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs.html#retained-crops">Retained crops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs.html#rotation-and-mask-scaling">Rotation and mask scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs.html#morphology-and-object-properties">Morphology and object properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs.html#statistics-and-export-dialogs">Statistics and export dialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs.html#aliases-plugins-and-pdf-help">Aliases, plugins, and PDF help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="files.html">Folders, projects, and model files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="files.html#repository-directory-map">Repository directory map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="files.html#sam-checkpoint-names">SAM checkpoint names</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#start-modes-and-workspace">Start, modes and workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#installation-python-and-conda-gpu-setup">Installation, Python and Conda GPU setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#opening-images-and-native-autosaves">Opening images and native autosaves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#excel-pixel-size-lookup">Excel pixel-size lookup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#whole-image-exemplars-single-objects-and-roi">Whole-image exemplars, single objects and ROI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#automatic-grid-and-text-prompts">Automatic grid and text prompts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#manual-geometry-and-edit-tools">Manual geometry and Edit tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#cleaning-and-reversible-image-records">Cleaning and reversible image records</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#processing-restoration-smoothing-and-noise">Processing: restoration, smoothing and noise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#retained-crops-and-paste-back-workflow">Retained crops and paste-back workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#statistics-and-metric-applicability">Statistics and metric applicability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#masks-overlays-and-dataset-export">Masks, overlays and dataset export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#menu-and-control-reference">Menu and control reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#shortcuts-recovery-and-troubleshooting">Shortcuts, recovery and troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#official-references">Official references</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../denoising.html">Denoising parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#workflow-and-physical-interpretation">Workflow and physical interpretation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#dct-and-tv-reconstruction-versus-denoising">DCT and TV: reconstruction versus denoising</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#how-to-read-each-parameter-entry">How to read each parameter entry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#tv-restoration">TV restoration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#tv-bregman-restoration">TV Bregman restoration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#wavelet-sparse-restoration">Wavelet sparse restoration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#non-local-means">Non-local means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#bilateral-denoise">Bilateral denoise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#median-denoise">Median denoise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#dct-sparsity">DCT sparsity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#tv-iterative-notebook">TV iterative (notebook)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#sparse-dictionary-learning">Sparse dictionary learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#bm3d">BM3D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#noise2void">Noise2Void</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#n2v2">N2V2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#blind-spot-training-models-and-resource-constraints">Blind-spot training, models and resource constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#smoothing-and-synthetic-noise-controls">Smoothing and synthetic noise controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoising.html#official-references-and-validation-limits">Official references and validation limits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#installation-stops">Installation stops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#qt-cannot-open-a-display">Qt cannot open a display</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#gpu-detection-or-model-loading-fails">GPU detection or model loading fails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#prompts-do-not-create-the-expected-result">Prompts do not create the expected result</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#saving-or-recovery-fails">Saving or recovery fails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#a-plugin-or-restoration-operation-fails">A plugin or restoration operation fails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#full-validation-cannot-download-fixtures">Full validation cannot download fixtures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../downloads.html">Original supplied files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a></li>
+</ul>
+</div>
+<p>For a sequential task rather than a control lookup, start with
+<a class="reference internal" href="../features/index.html"><span class="std std-doc">Image workflows</span></a>. For the most detailed model-prompt
+recipes, use <a class="reference internal" href="../segmentation/sam31.html"><span class="std std-doc">SAM3.1 text and shape prompts</span></a>.</p>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../features/extensions.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Local plugins and custom processing</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="workspace.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Workspace and panels</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, SAM Image Studio contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

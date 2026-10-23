@@ -1,0 +1,630 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Detection and segmentation across SAM families &#8212; SAM Image Studio 1.4.2</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/studio.css?v=6a68c8ed" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=23a965d7"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'segmentation/model-families';</script>
+    <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/segmentation/model-families.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SAM3.1: text and shape prompts" href="sam31.html" />
+    <link rel="prev" title="Segment objects with SAM" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.4.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SAM Image Studio</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../features/index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../documentation/index.html">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../features/index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../documentation/index.html">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">First annotation and export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/annotation.html">Manual annotation and editing</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Segment objects with SAM</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Detection and segmentation across SAM families</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sam31.html">SAM3.1: text and shape prompts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application-tools.html">Application additions: scope, aliases, and review</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/processing.html">Image restoration and processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/cleaning.html">Reversible cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/measurements.html">Calibration and statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/saving.html">Native projects, masks, and exports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/extensions.html">Local plugins and custom processing</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../features/index.html" class="nav-link">Image workflows</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Segment objects with SAM</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Detection and segmentation across SAM families</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="detection-and-segmentation-across-sam-families">
+<h1>Detection and segmentation across SAM families<a class="headerlink" href="#detection-and-segmentation-across-sam-families" title="Link to this heading">#</a></h1>
+<section id="detection-answers-where-segmentation-answers-which-pixels">
+<h2>Detection answers “where?”; segmentation answers “which pixels?”<a class="headerlink" href="#detection-answers-where-segmentation-answers-which-pixels" title="Link to this heading">#</a></h2>
+<p>A detector proposes target locations, often boxes and scores. A segmenter
+predicts a pixel mask from image features and prompts. SAM Image Studio combines
+these differently for each family; the presence of a text box does not make
+every underlying SAM version a native text detector.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Family</p></th>
+<th class="head"><p>Point/shape mask prediction</p></th>
+<th class="head"><p>Text-driven target finding</p></th>
+<th class="head"><p>Whole-image similar-object search</p></th>
+<th class="head"><p>Runtime in this release</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SAM1</p></td>
+<td><p>Native point/box-prompt segmentation</p></td>
+<td><p>Not available</p></td>
+<td><p>Application candidate generation and exemplar retrieval</p></td>
+<td><p>CPU or Conda CUDA</p></td>
+</tr>
+<tr class="row-odd"><td><p>SAM2 / SAM2.1</p></td>
+<td><p>Native point/box-prompt segmentation</p></td>
+<td><p>External Grounding DINO Tiny detects boxes, then SAM2 segments them</p></td>
+<td><p>Application exemplar retrieval; text can supply candidate boxes</p></td>
+<td><p>CPU or Conda CUDA</p></td>
+</tr>
+<tr class="row-even"><td><p>SAM3</p></td>
+<td><p>Native interactive mask path</p></td>
+<td><p>Native image concept prompting</p></td>
+<td><p>Native image concept/geometric prompts, prepared by the app</p></td>
+<td><p>Optional Linux/WSL2 Conda CUDA</p></td>
+</tr>
+<tr class="row-odd"><td><p>SAM3.1</p></td>
+<td><p>Official multiplex predictor adapted to a single image</p></td>
+<td><p>Native multiplex text/concept request</p></td>
+<td><p>Multiple concept boxes sent together in a single prompt request</p></td>
+<td><p>Optional Linux/WSL2 Conda CUDA; own weights</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="sam1-object-prompts-grid-candidates-and-retrieval">
+<h2>SAM1: object prompts, grid candidates, and retrieval<a class="headerlink" href="#sam1-object-prompts-grid-candidates-and-retrieval" title="Link to this heading">#</a></h2>
+<p>For one object, a point or area-derived box prompts the native predictor.
+The model returns a mask and quality score. It does not directly understand
+<code class="docutils literal notranslate"><span class="pre">black</span> <span class="pre">dots</span></code> in this application; SAM1 hides the text controls.</p>
+<p>For <strong>Prompt project, whole image</strong>, the app builds candidate masks using
+grid prompts and positive exemplars, supplements small-object candidates using
+template-correlation seeds, pools SAM features, and compares appearance/shape
+descriptors with positive and negative examples. Filters remove unsuitable,
+protected, too-small, or duplicate proposals. This is an application retrieval
+heuristic; it is not native semantic concept propagation or a trained
+nanoparticle classifier.</p>
+</section>
+<section id="sam2-2-1-the-text-detection-mask-pipeline">
+<h2>SAM2/2.1: the text detection → mask pipeline<a class="headerlink" href="#sam2-2-1-the-text-detection-mask-pipeline" title="Link to this heading">#</a></h2>
+<p>With a text prompt, the app resolves aliases and sends the phrase/image to the
+pinned <strong>Grounding DINO Tiny</strong> detector. Its text-conditioned boxes are passed
+to the selected SAM2/2.1 predictor, which supplies the pixel masks. The app then
+applies region/protection/area/duplicate filtering and presents a preview.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Typed phrase → project alias resolution → Grounding DINO boxes
+             → SAM2/2.1 masks → application filters → review → accept
+</pre></div>
+</div>
+<p>The detector and SAM checkpoints are separate downloads. A box detection is
+not yet a particle mask. Prompts that work for photographs may transfer poorly
+to TEM/SEM. A threshold cannot repair a concept the detector does not locate.
+Point/shape whole-image exemplar search uses the application’s retrieval layer
+described above.</p>
+</section>
+<section id="sam3-native-image-concepts">
+<h2>SAM3: native image concepts<a class="headerlink" href="#sam3-native-image-concepts" title="Link to this heading">#</a></h2>
+<p>The app’s SAM3 processor sets an image, applies an optional native text prompt,
+and adds positive/negative geometric prompts. Shape/point exemplars first
+produce an instance mask whose bounding box becomes the concept example.
+The native image processor uses normalized <strong>center-X, center-Y, width, height</strong>
+boxes. This coordinate contract is different from the SAM3.1 adapter.</p>
+</section>
+<section id="sam3-1-native-multiplex-concepts-on-one-frame">
+<h2>SAM3.1: native multiplex concepts on one frame<a class="headerlink" href="#sam3-1-native-multiplex-concepts-on-one-frame" title="Link to this heading">#</a></h2>
+<p>The app loads <code class="docutils literal notranslate"><span class="pre">sam3.1_multiplex.pt</span></code> through
+<code class="docutils literal notranslate"><span class="pre">build_sam3_multiplex_video_predictor</span></code>, with compilation, FA3, and warm-up
+disabled. Each request creates a lossless PNG frame, starts a native session,
+sends a frame-0 <code class="docutils literal notranslate"><span class="pre">add_prompt</span></code>, copies masks/scores, and closes the session.
+This is a single-image adaptation, not a GUI video tracking workflow.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Text and/or positive/negative examples → one native SAM3.1 concept request
+                                      → masks/scores → app filters → preview
+</pre></div>
+</div>
+<p>All concept boxes are passed <strong>together</strong> in normalized top-left
+<strong>X, Y, width, height</strong> format. Area shapes become enclosing boxes; their exact
+contours are not sent as arbitrary polygon prompts. Each point exemplar first
+identifies a native instance, then its box describes the positive/negative
+concept. The <a class="reference internal" href="sam31.html"><span class="std std-doc">SAM3.1 guide</span></a> explains the visible workflow and its scope.</p>
+</section>
+<section id="automatic-grid-is-a-separate-operation">
+<h2>Automatic grid is a separate operation<a class="headerlink" href="#automatic-grid-is-a-separate-operation" title="Link to this heading">#</a></h2>
+<p><strong>Automatic grid, unannotated only</strong> places native positive point prompts on a
+grid over unprotected pixels. It ignores the text field. The grid is not a
+second invocation of text detection and does not use the active text alias.
+The displayed count reports actual filtered proposals; zero is a result to
+inspect, not proof of a successful particle detector.</p>
+</section>
+<section id="review-the-outputs">
+<h2>Review the outputs<a class="headerlink" href="#review-the-outputs" title="Link to this heading">#</a></h2>
+<p>The model’s score is not a calibrated scientific probability. Check split/merged
+instances, faint particles, contamination, overlap, and image edges. Measure
+pixel and instance agreement against independently reviewed annotations for
+your own data. No new GPU benchmark or general microscopy accuracy claim is
+made by these descriptions.</p>
+<p>Implementation reference: <code class="docutils literal notranslate"><span class="pre">inference.py</span></code>, <code class="docutils literal notranslate"><span class="pre">exemplars.py</span></code>, <code class="docutils literal notranslate"><span class="pre">text_prompts.py</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sam31_backend.py</span></code>, and <code class="docutils literal notranslate"><span class="pre">processing.filter_proposals()</span></code> in the
+<a class="reference internal" href="../api.html"><span class="std std-doc">source-generated API</span></a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Segment objects with SAM</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="sam31.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">SAM3.1: text and shape prompts</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detection-answers-where-segmentation-answers-which-pixels">Detection answers “where?”; segmentation answers “which pixels?”</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sam1-object-prompts-grid-candidates-and-retrieval">SAM1: object prompts, grid candidates, and retrieval</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sam2-2-1-the-text-detection-mask-pipeline">SAM2/2.1: the text detection → mask pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sam3-native-image-concepts">SAM3: native image concepts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sam3-1-native-multiplex-concepts-on-one-frame">SAM3.1: native multiplex concepts on one frame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-grid-is-a-separate-operation">Automatic grid is a separate operation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-the-outputs">Review the outputs</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, SAM Image Studio contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
