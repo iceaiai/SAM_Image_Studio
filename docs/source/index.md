@@ -13,6 +13,13 @@ measurements. A desktop workflow with editable projects and reversible changes.<
 Install SAM Image Studio
 ```
 
+```{button-ref} downloads
+:color: secondary
+:outline:
+
+Download CPU versions
+```
+
 ```{button-ref} segmentation/sam31
 :color: secondary
 :outline:
@@ -29,8 +36,8 @@ SAM3.1 text & shape prompts
 :link: installation
 :link-type: doc
 
-Set up a dedicated Anaconda GPU environment, choose the right checkpoint,
-or install the CPU application. Learn how to update without uninstalling.
+Download/extract or clone the complete project first. Then choose CPU or a
+dedicated Anaconda GPU environment and learn how to update without uninstalling.
 :::
 
 :::{grid-item-card} 2. Image workflows

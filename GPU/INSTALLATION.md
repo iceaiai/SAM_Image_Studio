@@ -5,13 +5,34 @@ installation paths. **Native SAM3 / SAM3.1** use Linux or WSL2 Ubuntu and their
 separate optional dependency set. They require approved compatible weights.
 SAM3 ONNX public text weights do not require Hugging Face login.
 
-## 1. Open the correct terminal and project folder
+## 1. Download and extract, or clone, the complete source
+
+Do this before every installation route below. Choose **one** option:
+
+- **ZIP:** [Download the complete v1.4.3 source](https://github.com/iceaiai/SAM_Image_Studio/releases/download/v1.4.3/SAM_Image_Studio_v1.4.3_CPU.zip),
+  extract the whole archive, and find its inner folder containing
+  `pyproject.toml`, `samstudio/` and `GPU/`. The CPU-named source bundle also
+  contains all GPU setup files; it is the same shared application.
+- **Git:** in your chosen parent folder, run the following in the terminal
+  you will use for installation (inside Ubuntu for native SAM3.1):
+
+```sh
+git clone https://github.com/iceaiai/SAM_Image_Studio.git
+cd SAM_Image_Studio
+```
+
+ZIP users do not need to run Git commands. Keep the complete source tree
+rather than downloading individual installers. The [CPU download list](https://iceaiai.github.io/SAM_Image_Studio/downloads.html)
+also describes the original v1.4.2 archive; use the current release for these GPU steps.
+
+## 2. Open the correct terminal and project folder
 
 On Windows, open **Anaconda PowerShell Prompt** or an initialized Conda prompt.
-Quote paths containing spaces:
+The path below is a fictional example; replace it with your actual extracted
+or cloned folder. Quote paths containing spaces:
 
 ```powershell
-Set-Location -LiteralPath 'C:\work\AI works\SAM_Image_Studio'
+Set-Location -LiteralPath 'C:\Projects\Example Folder\SAM_Image_Studio'
 Test-Path .\GPU\install.py
 Test-Path .\pyproject.toml
 ```
@@ -28,7 +49,7 @@ wsl -d Ubuntu-22.04
 Then use Linux paths and the Linux Conda installation:
 
 ```bash
-cd '/mnt/c/work/AI works/SAM_Image_Studio'
+cd '/mnt/c/Projects/Example Folder/SAM_Image_Studio'
 test -f GPU/install.py && echo 'Project folder OK'
 conda --version
 nvidia-smi
@@ -39,7 +60,10 @@ Anaconda alone does not create a Linux Conda installation. Install Anaconda or
 Miniforge for Linux inside WSL if `conda` is missing there. WSLg supplies the GUI
 display; keep WSL updated through Windows when its display service is unavailable.
 
-## 2. Create one dedicated environment
+## 3. Create one dedicated environment
+
+First complete source download/extraction or cloning, enter the project root,
+and check `GPU/install.py` exists as above. Then choose one environment:
 
 **Windows or Linux, SAM1/2 + SAM3 ONNX:**
 
@@ -72,7 +96,7 @@ python GPU/install.py --current --sam3 --dry-run
 Omit `--sam3` for the ordinary GPU environment. An existing named environment
 must use `--current`; the default automatic creation command is for new names.
 
-## 3. What installation handles automatically
+## 4. What installation handles automatically
 
 The installer detects the driver/GPU, selects compatible PyTorch 2.7.1 and
 Torchvision 0.22.1 wheels (CUDA 12.8, 12.6 or 11.8 where supported), installs
@@ -94,7 +118,7 @@ availability are external prerequisites. CUDA maximum shown by `nvidia-smi`
 is driver capability; it need not equal the CUDA runtime bundled with Torch.
 Native SAM3 requires driver support for CUDA 12.6 or newer in this release.
 
-## 4. Start and load a model
+## 5. Start and load a model
 
 From the same activated environment and project root:
 
@@ -122,7 +146,7 @@ Enter. Answer **n** to adding a Git credential; `hf auth whoami` checks the
 account. Login validity and model-access approval are separate checks.
 Never put a token in a command argument, project, screenshot, chat or repository.
 
-## 5. Validate environment, then model execution
+## 6. Validate environment, then model execution
 
 ```sh
 python -m pip check
@@ -137,7 +161,7 @@ preview to validate that model. A 6 GB GPU can pass CUDA checks yet run out of
 memory loading or executing a large model. Close other GPU applications and
 use a smaller model when necessary; ONNX does not guarantee smaller memory use.
 
-## 6. Update without uninstalling
+## 7. Update without uninstalling
 
 Close the GUI. Download/pull the complete new source into your chosen folder,
 enter that folder, then reuse the environment:
@@ -155,7 +179,7 @@ these together. Existing model caches, native projects and local login remain.
 Create a new environment only for an incompatible stack migration or unresolved
 conflicts, keeping the old working one until the replacement is validated.
 
-## 7. Problems that still require user action
+## 8. Problems that still require user action
 
 | Symptom | Action |
 | --- | --- |

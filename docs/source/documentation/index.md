@@ -14,6 +14,7 @@ modes
 ../segmentation/scopes
 dialogs
 files
+../installation-gpu
 ../user-manual
 ../denoising
 ../troubleshooting

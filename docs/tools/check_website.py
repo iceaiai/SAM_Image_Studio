@@ -49,6 +49,24 @@ with sync_playwright() as p:
  assert page.get_by_role('heading',name='Text prompt recipe: black dots',exact=True).count()==1
  assert page.get_by_role('heading',name='Shape prompt recipe',exact=True).count()==1
  page.screenshot(path='/tmp/samstudio-website-sam31.png',full_page=False)
+ page.goto(base+'/index.html',wait_until='networkidle')
+ page.get_by_role('link',name='Download CPU versions',exact=True).click()
+ page.wait_for_load_state('networkidle')
+ assert page.url.endswith('/downloads.html')
+ downloads=page.locator('article').get_by_role('link',name='Download ZIP',exact=True)
+ assert downloads.count()==2
+ assert downloads.nth(0).get_attribute('href').endswith('/v1.4.3/SAM_Image_Studio_v1.4.3_CPU.zip')
+ assert downloads.nth(1).get_attribute('href').endswith('/uploads/SAM_Image_Studio_v1.4.2_CPU.zip')
+ page.screenshot(path='/tmp/samstudio-downloads-desktop.png',full_page=True)
+ page.goto(base+'/installation.html',wait_until='networkidle')
+ headings=page.locator('article h2').all_text_contents()
+ assert headings[0].startswith('First for every route:'),headings
+ assert ':maxdepth:' not in page.locator('article').inner_text()
+ assert 'conda activate sam-image-studio-gpu' in page.locator('article').inner_text()
+ page.goto(base+'/installation-gpu.html',wait_until='networkidle')
+ assert page.get_by_role('heading',name='1. Obtain the complete project first',exact=True).count()==1
+ assert 'python GPU/install.py --current --sam3' in page.locator('article').inner_text()
+ assert '{include}' not in page.locator('article').inner_text()
  page.goto(base+'/documentation/menus.html',wait_until='networkidle')
  assert page.get_by_role('heading',name='Processing',exact=True).count()==1
  assert page.get_by_text('Read pixel sizes from Excel…',exact=True).count()>=1
@@ -65,8 +83,12 @@ with sync_playwright() as p:
  width=mobile.evaluate('({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth})')
  assert width['scroll']<=width['client']+1,width
  mobile.screenshot(path='/tmp/samstudio-website-mobile.png',full_page=True)
+ mobile.goto(base+'/downloads.html',wait_until='networkidle')
+ width=mobile.evaluate('({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth})')
+ assert width['scroll']<=width['client']+1,width
+ mobile.screenshot(path='/tmp/samstudio-downloads-mobile.png',full_page=True)
  assert not errors,errors
  assert not bad_resources,bad_resources
- print('Browser validation passed: desktop navigation, SAM3.1 guide, menu reference, search, mobile layout; no JS errors or missing local resources.')
+ print('Browser validation passed: download list, shared source acquisition, readable GPU guide, desktop navigation, SAM3.1 guide, menu reference, search, mobile layout; no JS errors or missing local resources.')
  browser.close()
 server.shutdown()

@@ -14,18 +14,41 @@ All application environments use **64-bit Python 3.12**.
 SAM3 ONNX downloads public text-only weights without HF login. Native SAM3.1
 has a separate installation and gated weights; it is not an ONNX mode switch.
 
+## First for every route: download, extract or clone
+
+CPU and GPU installations both need the complete project first. Choose **one**:
+
+- **Download:** open the [CPU version download list](downloads.md), click
+  **Download ZIP** for v1.4.3, and extract the entire archive. The same source
+  bundle includes optional GPU setup. Enter the inner folder containing
+  `pyproject.toml`, `samstudio/`, `packaging/` and `GPU/`.
+- **Clone:** open a terminal in your chosen parent folder and run:
+
+```sh
+git clone https://github.com/iceaiai/SAM_Image_Studio.git
+cd SAM_Image_Studio
+```
+
+ZIP users do not need Git or another clone. For native SAM3.1, use Linux/WSL2
+for the environment and installation commands. After obtaining the source,
+continue with exactly one CPU or GPU route below.
+
 ## CPU: Windows
 
-1. Install Python 3.12 64-bit, if absent. The helper
+1. Download/extract the complete current source or clone it using the shared
+   steps above. Open the inner folder containing `pyproject.toml`.
+2. Install Python 3.12 64-bit, if absent. The helper
    `packaging/Install_Python_3_12.bat` uses the official WinGet package.
-2. Open the complete source folder, then open **packaging**.
-3. Double-click **Install_CPU.bat** and wait for the installation self-test.
-4. Double-click **Start_GUI.bat**.
+3. Open **packaging** in that source folder.
+4. Double-click **Install_CPU.bat** and wait for the installation self-test.
+5. Double-click **Start_GUI.bat**.
 
-For a command-line install, first enter your real project folder, quoting spaces:
+For command-line installation, obtain/extract the source first, then enter its
+root. The path below is a fictional example; substitute your chosen folder and
+quote paths containing spaces:
 
 ```powershell
-Set-Location -LiteralPath 'C:\work\AI works\SAM_Image_Studio'
+Set-Location -LiteralPath 'C:\Projects\Example Folder\SAM_Image_Studio'
 Test-Path .\pyproject.toml
 py -3.12 scripts/install_environment.py --backend cpu
 .\.venv\Scripts\python.exe -m samstudio
@@ -37,7 +60,8 @@ source tree and then run installation helpers.
 
 ## CPU: Linux
 
-With Python 3.12 available, enter the repository root:
+First download/extract the complete current source or clone it using the shared
+steps above. With Python 3.12 available, enter that project root:
 
 ```bash
 cd '/path/with spaces/SAM_Image_Studio'
@@ -53,7 +77,9 @@ wheels are available; this release has not been acceptance-tested on macOS.
 
 ## Existing dedicated CPU environment
 
-If using a dedicated Conda/virtual environment, activate its Python 3.12 first:
+First download/extract or clone the complete current project and enter its
+root as above. If using a dedicated Conda/virtual environment, activate its
+Python 3.12 before running:
 
 ```sh
 python scripts/install_environment.py --backend cpu --current
@@ -67,16 +93,34 @@ the provided helper selects the correct distribution for the environment.
 
 ## NVIDIA GPU with Conda
 
-All GPU setup files live under `GPU/`. Follow the
-[complete GPU installation and updates guide](installation-gpu.md), including
-quoted PowerShell paths, WSL2, authentication and routine updates without
-uninstalling. No application packages are installed into Conda base.
+First download/extract or clone the complete current source using the common
+steps above and enter its root. All GPU setup files live under `GPU/`.
 
-```{toctree}
-:maxdepth: 1
+For **SAM1/2 and SAM3 ONNX** on Windows or Linux, open an initialized Conda
+terminal in that folder, then run:
 
-installation-gpu
+```sh
+conda create -n sam-image-studio-gpu python=3.12 pip -y
+conda activate sam-image-studio-gpu
+python GPU/install.py --current
+python -m samstudio
 ```
+
+For **native SAM3/SAM3.1**, obtain/extract the source inside Linux/WSL2 or where
+Ubuntu can access it, enter its root in Ubuntu, and use Linux Conda:
+
+```sh
+conda create -n sam-image-studio-sam3 python=3.12 pip -y
+conda activate sam-image-studio-sam3
+python GPU/install.py --current --sam3
+python -m samstudio
+```
+
+These creation steps are for first installation only. No application packages
+are installed into Conda base. For complete prerequisites, quoted paths,
+authentication and update steps, read the
+[GPU installation guide](installation-gpu.md), or the
+[full guide on GitHub](https://github.com/iceaiai/SAM_Image_Studio/blob/main/GPU/INSTALLATION.md).
 
 ## Choose a model after installation
 

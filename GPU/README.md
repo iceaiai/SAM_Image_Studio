@@ -12,12 +12,32 @@ the folder containing `pyproject.toml`, `samstudio/` and `GPU/`.
 - `requirements-sam3.txt`: native SAM3/3.1 Linux dependencies.
 - `requirements-onnx.txt`: CUDA ONNX Runtime; installed automatically.
 
+## First: download/extract or clone the source
+
+Before either GPU route, [download the complete v1.4.3 ZIP](https://github.com/iceaiai/SAM_Image_Studio/releases/download/v1.4.3/SAM_Image_Studio_v1.4.3_CPU.zip)
+and extract **all** files. The source bundle's CPU filename describes its default
+installer; it also contains this `GPU/` folder and the same shared application.
+Open the inner folder containing `pyproject.toml`, `samstudio/`, `packaging/`
+and `GPU/`.
+
+Alternatively, use Git in the terminal where you will install the app:
+
+```sh
+git clone https://github.com/iceaiai/SAM_Image_Studio.git
+cd SAM_Image_Studio
+```
+
+Choose one route; ZIP users do not need to clone again. Use Windows Conda for
+native Windows, or Linux Conda inside WSL2 for native SAM3.1. All absolute paths
+below are fictional examples: substitute your own extracted/clone folder.
+
 ## Windows: SAM1/2 and public SAM3 ONNX
 
-Open an Anaconda/Miniforge PowerShell prompt and substitute your project path:
+First download/extract or clone the complete project as above. Then open an
+Anaconda/Miniforge PowerShell prompt and enter that project folder:
 
 ```powershell
-Set-Location -LiteralPath 'C:\work\AI works\SAM_Image_Studio'
+Set-Location -LiteralPath 'C:\Projects\Example Folder\SAM_Image_Studio'
 Test-Path .\GPU\install.py
 conda create -n sam-image-studio-gpu python=3.12 pip -y
 conda activate sam-image-studio-gpu
@@ -27,10 +47,12 @@ python -m samstudio
 
 ## Linux/WSL2: native SAM3.1 as well
 
-Use Linux Conda **inside Ubuntu**, rather than the Windows Conda executable:
+First download/extract the complete source where Ubuntu can access it, or clone
+it inside Ubuntu as above. Then use Linux Conda **inside Ubuntu**, rather than
+the Windows Conda executable:
 
 ```bash
-cd '/mnt/c/work/AI works/SAM_Image_Studio'
+cd '/mnt/c/Projects/Example Folder/SAM_Image_Studio'
 conda create -n sam-image-studio-sam3 python=3.12 pip -y
 conda activate sam-image-studio-sam3
 python GPU/install.py --current --sam3

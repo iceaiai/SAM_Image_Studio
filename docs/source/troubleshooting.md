@@ -8,16 +8,18 @@ environment is usually unnecessary.
 ## 1. Confirm the folder and environment
 
 A PowerShell error saying "A positional parameter cannot be found" usually means
-an unquoted path with spaces. Enter the real project root:
+an unquoted path with spaces. First download/extract or clone the complete
+project. Then enter its root. The following paths are fictional examples;
+replace them with your chosen folder:
 
 ```powershell
-Set-Location -LiteralPath 'C:\work\AI works\SAM_Image_Studio'
+Set-Location -LiteralPath 'C:\Projects\Example Folder\SAM_Image_Studio'
 Test-Path .\GPU\install.py
 Test-Path .\pyproject.toml
 ```
 
 Both should return `True`. Linux/WSL needs its own path, for example
-`cd '/mnt/c/work/AI works/SAM_Image_Studio'`. Use Linux Conda inside WSL for native
+`cd '/mnt/c/Projects/Example Folder/SAM_Image_Studio'`. Use Linux Conda inside WSL for native
 SAM3.1. Windows Anaconda alone is not Linux Conda. Activate the dedicated
 `sam-image-studio-sam3` or `sam-image-studio-gpu` environment before `--current`.
 Application installation into Conda base is rejected.

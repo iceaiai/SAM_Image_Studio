@@ -3,6 +3,7 @@
 Desktop microscopy annotation, SAM segmentation, reversible data cleaning and
 compressed-sensing restoration, with calibrated measurements and editable projects.
 
+[CPU version downloads](https://iceaiai.github.io/SAM_Image_Studio/downloads.html) ·
 **[Documentation website](https://iceaiai.github.io/SAM_Image_Studio/)** ·
 [Installation](https://iceaiai.github.io/SAM_Image_Studio/installation.html) ·
 [Cleaning](https://iceaiai.github.io/SAM_Image_Studio/features/cleaning.html) ·
@@ -14,14 +15,40 @@ Version **1.4.3** adds public SAM3 ONNX text segmentation, optional model-manage
 Hugging Face token entry, automatic Ubuntu/WSL Qt dependency setup, and organized
 installation files. Original v1.4.2 uploads remain unchanged.
 
-## Install and start on CPU
+## First: download or clone the complete project (CPU and GPU)
 
-Use **64-bit Python 3.12**. Clone or extract the complete project into a writable folder.
+Choose **one** method below before following any CPU or GPU installation route.
+You do not need Git if you download a ZIP.
+
+| CPU version | Download | Package / next step |
+| --- | --- | --- |
+| **1.4.3 — recommended** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/releases/download/v1.4.3/SAM_Image_Studio_v1.4.3_CPU.zip)** | Complete source bundle for Windows/Linux CPU; extract, then use `packaging/Install_CPU.bat` or `bash packaging/install_cpu.sh`. |
+| 1.4.2 — original archive | **[Download ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip)** | Historical CPU source bundle; extract, then use `Install_CPU.bat` or `bash install_cpu.sh` inside its `SAM_Image_Studio` folder. |
+
+These are source packages, not standalone executables. Install **64-bit Python
+3.12** when required, then run the included installer. Model weights download
+separately. The v1.4.3 source bundle also contains the optional GPU setup files;
+you do not need to download a second source package for GPU installation.
+
+**Download route:** click Download ZIP, extract the entire archive, and open the
+inner folder containing `pyproject.toml` and `samstudio/`. Keep the folder contents
+together. For v1.4.3 it also contains `GPU/` and `packaging/`.
+
+**Git alternative, shared by CPU and GPU:** open a terminal in the parent folder
+where you want to keep the project, then run:
 
 ```sh
 git clone https://github.com/iceaiai/SAM_Image_Studio.git
 cd SAM_Image_Studio
 ```
+
+After either route, continue below. See the [download list](https://iceaiai.github.io/SAM_Image_Studio/downloads.html)
+for version details and checksums.
+
+## Install and start on CPU
+
+First complete the download/extraction or Git steps above and enter the v1.4.3
+project root. Then:
 
 - **Windows:** double-click [`packaging/Install_CPU.bat`](packaging/Install_CPU.bat),
   then [`packaging/Start_GUI.bat`](packaging/Start_GUI.bat).
@@ -34,7 +61,9 @@ separately when you choose **Load model…**.
 
 ## GPU installation, launch and updates
 
-All GPU setup entry points, dependency files and instructions are in **[GPU/](GPU/README.md)**.
+First download and extract the current complete source, or clone it using the
+shared steps above, and enter its root. All GPU setup entry points, dependency
+files and instructions are in **[GPU/](GPU/README.md)**.
 Use a dedicated Anaconda/Conda environment. Native SAM3.1 requires Linux/WSL2;
 SAM1/2 and SAM3 ONNX also have a native Windows GPU installation path.
 Routine updates reuse the environment; uninstalling is unnecessary.
