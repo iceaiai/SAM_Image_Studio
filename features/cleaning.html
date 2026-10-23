@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Reversible cleaning &#8212; SAM Image Studio 1.4.2</title>
+    <title>Data cleaning: remove, fill and restore &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=23a965d7"></script>
+    <script src="../_static/documentation_options.js?v=4766b593"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -49,11 +49,11 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/features/cleaning.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Calibration and statistics" href="measurements.html" />
-    <link rel="prev" title="Image restoration and processing" href="processing.html" />
+    <link rel="next" title="Image restoration and processing" href="processing.html" />
+    <link rel="prev" title="Application additions: scope, aliases, and review" href="../segmentation/application-tools.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -319,13 +319,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">First annotation and export</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotation.html">Manual annotation and editing</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../segmentation/index.html">Segment objects with SAM</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/model-families.html">Detection and segmentation across SAM families</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/sam3-onnx.html">SAM3 ONNX: public text segmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/sam31.html">SAM3.1: text and shape prompts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/application-tools.html">Application additions: scope, aliases, and review</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Data cleaning: remove, fill and restore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processing.html">Image restoration and processing</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Reversible cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compressed-sensing.html">Compressed sensing: controls and suggested parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="measurements.html">Calibration and statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="saving.html">Native projects, masks, and exports</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extensions.html">Local plugins and custom processing</a></li>
@@ -372,7 +375,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Image workflows</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Reversible cleaning</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Data cleaning: remove, fill and restore</span></li>
   </ul>
 </nav>
 </div>
@@ -389,65 +392,118 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="reversible-cleaning">
-<h1>Reversible cleaning<a class="headerlink" href="#reversible-cleaning" title="Link to this heading">#</a></h1>
-<p>Cleaning modifies derived pixels while retaining the acquired image. A removal
-or fill is stored as an edit record, visible in <strong>Objects</strong>, so it can be
-restored later.</p>
-<section id="remove-and-fill-a-region">
-<h2>Remove and fill a region<a class="headerlink" href="#remove-and-fill-a-region" title="Link to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p>Choose <strong>Clean</strong> and draw an area or use the point cleaning brush.</p></li>
-<li><p>Choose <strong>Remove selected image area</strong>, or right-click an eligible unlocked
-area object and choose <strong>Delete for cleaning</strong>.</p></li>
-<li><p>Select a fill method and inspect its preview.</p></li>
-<li><p>Apply the result or cancel it.</p></li>
-</ol>
+  <section class="tex2jax_ignore mathjax_ignore" id="data-cleaning-remove-fill-and-restore">
+<h1>Data cleaning: remove, fill and restore<a class="headerlink" href="#data-cleaning-remove-fill-and-restore" title="Link to this heading">#</a></h1>
+<p>Use cleaning to remove contamination or unwanted regions from <strong>derived pixels</strong>.
+The acquired image is retained. Native projects store cleaning records so you
+can undo, restore a region, or remove one record later. Cleaning changes image
+intensities; deleting an ordinary annotation only removes geometry.</p>
+<a class="reference internal image-reference" href="../_images/cleaning-comparison.png"><img alt="Synthetic contaminant and cleaning target, followed by actual neighbor-fill and background-patch-fill results" src="../_images/cleaning-comparison.png" style="width: 100%;" />
+</a>
+<p><em>Computed with the application’s real neighbor/patch algorithms on synthetic
+data. The same intensity scale is used in every panel. These are illustrative
+fills, not recovered observations of an unknown specimen.</em></p>
+<section id="file-and-group-prepare-the-image">
+<h2>1. File and Group: prepare the image<a class="headerlink" href="#file-and-group-prepare-the-image" title="Link to this heading">#</a></h2>
+<p>Open the image through <strong>File → Open images…</strong>. Keep a writable native project
+folder. Inspect the original image before editing and keep original/processed
+exports distinct. If accepted masks already identify the unwanted material,
+you can select those area objects instead of redrawing the target.</p>
+<p>For patch filling, create a group containing only manually marked <strong>clean
+background</strong> regions. Choose several patches with appropriate texture, avoiding
+particles, gradients or damaged pixels that should not be copied.</p>
+</section>
+<section id="mode-and-drawing-tools-define-what-to-remove">
+<h2>2. Mode and drawing tools: define what to remove<a class="headerlink" href="#mode-and-drawing-tools-define-what-to-remove" title="Link to this heading">#</a></h2>
+<p>Choose <strong>Mode → Clean</strong>. Rectangle is initially selected; Polygon, Circle and
+Ellipse also define area targets. <strong>Point / cleaning brush</strong> becomes a brush
+in this mode. Set its radius through <strong>Cleaning → Cleaning brush radius…</strong>;
+this is unrelated to SAM’s point prompt size.</p>
+<p>For a complement target, select area objects then choose <strong>Edit → Invert region</strong>.
+The resulting exact region includes all pixels outside the selected masks.
+Inspect it carefully before removing a large area.</p>
+</section>
+<section id="cleaning-menu-remove-the-selected-area">
+<h2>3. Cleaning menu: remove the selected area<a class="headerlink" href="#cleaning-menu-remove-the-selected-area" title="Link to this heading">#</a></h2>
+<p>Choose <strong>Cleaning → Remove selected image area</strong> (Ctrl+D). The operation creates
+a reversible removal record. Alternatively right-click an unlocked foreground
+area object in Clean mode and choose <strong>Delete for cleaning</strong>; this removes its
+pixels and records the operation, rather than merely deleting an annotation.</p>
+<p>Inspect the target outline before filling. A temporary removed region is not
+an acceptable final scientific measurement or evidence of what was originally
+there. Retained/protected crops remain excluded from processing operations.</p>
+</section>
+<section id="cleaning-menu-choose-a-fill">
+<h2>4. Cleaning menu: choose a fill<a class="headerlink" href="#cleaning-menu-choose-a-fill" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Fill</p></th>
-<th class="head"><p>What it uses</p></th>
-<th class="head"><p>Example</p></th>
+<tr class="row-odd"><th class="head"><p>Entry</p></th>
+<th class="head"><p>Use it for</p></th>
+<th class="head"><p>What to inspect</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Fill from neighboring pixels</p></td>
-<td><p>Available image content near the target</p></td>
-<td><p>A small isolated background defect</p></td>
+<td><p>Small isolated defects with nearby usable pixels</p></td>
+<td><p>Diffusion seams, gradients and copied neighboring structure</p></td>
 </tr>
-<tr class="row-odd"><td><p>Fill with LaMa…</p></td>
-<td><p>Separately loaded model-based inpainting</p></td>
-<td><p>A larger contamination region requiring a reviewed fill</p></td>
+<tr class="row-odd"><td><p>Fill with background patches</p></td>
+<td><p>Texture matched to manually selected real support/background</p></td>
+<td><p>Patch repetition, texture mismatch, artificial specimen features</p></td>
 </tr>
-<tr class="row-even"><td><p>Fill with background patches</p></td>
-<td><p>Real pixels from manually marked background areas</p></td>
-<td><p>Copy the appearance of clean support material</p></td>
+<tr class="row-even"><td><p>Fill with LaMa…</p></td>
+<td><p>A separately loaded learned-inpainting model</p></td>
+<td><p>Invented structure; model compatibility and provenance</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>Neighbor filling uses nearest available pixels followed by local diffusion.
+It requires some unremoved content. Patch filling copies actual source pixels;
+it does not infer the material behind contamination. LaMa needs its own compatible
+checkpoint; no LaMa weights are bundled.</p>
+<p>All three fill methods compute in the background and open <strong>Cleaning fill
+preview</strong>. Inspect the generated pixels, then choose <strong>Apply</strong> or <strong>Cancel</strong>.
+Only Apply commits the fill. Removing an area is itself a reversible committed
+record, so canceling a fill keeps the preceding removal; use Undo or Restore
+to recover it. Processing’s Denoise dialog uses its own Preview → Apply flow.</p>
 </section>
-<section id="background-patch-sources">
-<h2>Background patch sources<a class="headerlink" href="#background-patch-sources" title="Link to this heading">#</a></h2>
-<p>Create area annotations over clean background, place them in one group, then
-use <strong>Choose background group…</strong>. Its name can be anything; it need not be
-“Background”. <strong>Add selection to background group…</strong> adds eligible manual areas.
-Polygon/ellipse sources use only real pixels inside their masks. Sources
-intersecting already modified pixels are rejected.</p>
-<p><strong>Clear background group selection</strong> removes the source association.
-<strong>Cleaning brush radius…</strong> changes brush size independently of SAM point prompts.</p>
+<section id="background-group-configure-real-patch-sources">
+<h2>5. Background group: configure real patch sources<a class="headerlink" href="#background-group-configure-real-patch-sources" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>In Manual mode, draw clean background areas and put them in one Group.</p></li>
+<li><p>Choose <strong>Cleaning → Choose background group…</strong>. Any group name is allowed;
+the source association is explicit, not inferred from the word “Background”.</p></li>
+<li><p><strong>Add selection to background group…</strong> adds eligible manual area annotations.</p></li>
+<li><p>Return to Clean, remove a target, then choose <strong>Fill with background patches</strong>.</p></li>
+<li><p>Use <strong>Clear background group selection</strong> if those sources are no longer valid.</p></li>
+</ol>
+<p>For ellipse/polygon patches, only pixels inside the true mask are sources; the
+app does not borrow arbitrary pixels outside their boundary. Patches intersecting
+already modified pixels are rejected. A patch source must not overlap the target.</p>
 </section>
-<section id="restore-pixels">
-<h2>Restore pixels<a class="headerlink" href="#restore-pixels" title="Link to this heading">#</a></h2>
-<p><strong>Restore selected area / all edits</strong> restores the requested region. Deleting a
-cleaning object restores its footprint while replaying other retained edits.
-<strong>Show cleaning regions</strong> toggles their display without removing the records.
-<strong>Undo/Redo</strong> also participates in normal image history.</p>
-<p>Example: fill a contamination spot from clean support patches, inspect the
-derived image, then delete that cleaning record if the fill is unsuitable.
-A separate denoising record remains part of the edit history.</p>
-<p>Store native projects for complete reversible recovery. A flat exported TIFF
-contains pixels but not the editing history. See <a class="reference internal" href="saving.html"><span class="std std-doc">saving</span></a>.</p>
+<section id="objects-and-restoration-inspect-the-editing-history">
+<h2>6. Objects and restoration: inspect the editing history<a class="headerlink" href="#objects-and-restoration-inspect-the-editing-history" title="Link to this heading">#</a></h2>
+<p>Cleaning records appear in <strong>Objects</strong>. <strong>Show cleaning regions</strong> toggles their
+outlines without deleting edits. The <strong>View / infer from processed image</strong>
+checkbox chooses derived pixels when present; turning it off compares the
+retained acquired source. Display brightness/contrast is separate from pixel edits.</p>
+<ul class="simple">
+<li><p><strong>Cleaning → Restore selected area / all edits</strong> restores the requested pixels.</p></li>
+<li><p>Deleting a cleaning record restores its footprint and replays retained edits.</p></li>
+<li><p><strong>Undo / Redo</strong> traverses committed history.</p></li>
+</ul>
+<p>If a later denoising record exists, removing one cleaning record does not mean
+all subsequent processing is discarded. Check the complete history and processed
+view before exporting.</p>
+</section>
+<section id="save-reproducible-results">
+<h2>7. Save reproducible results<a class="headerlink" href="#save-reproducible-results" title="Link to this heading">#</a></h2>
+<p>Use <strong>File → Save project now</strong> for full editable <code class="docutils literal notranslate"><span class="pre">.sam.json</span></code> recovery. Use
+<strong>Save original / processed images…</strong> for TIFF pixel output and keep both
+versions when scientific interpretation depends on the acquired data.
+A flat TIFF does not preserve the reversible edit history. See
+<a class="reference internal" href="saving.html"><span class="std std-doc">saving</span></a> and the <a class="reference internal" href="../documentation/menus.html#cleaning"><span class="std std-ref">Cleaning menu reference</span></a>.</p>
 </section>
 </section>
 
@@ -462,20 +518,20 @@ contains pixels but not the editing history. See <a class="reference internal" h
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="processing.html"
+       href="../segmentation/application-tools.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Image restoration and processing</p>
+        <p class="prev-next-title">Application additions: scope, aliases, and review</p>
       </div>
     </a>
     <a class="right-next"
-       href="measurements.html"
+       href="processing.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Calibration and statistics</p>
+        <p class="prev-next-title">Image restoration and processing</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -498,9 +554,13 @@ contains pixels but not the editing history. See <a class="reference internal" h
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remove-and-fill-a-region">Remove and fill a region</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background-patch-sources">Background patch sources</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#restore-pixels">Restore pixels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-and-group-prepare-the-image">1. File and Group: prepare the image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mode-and-drawing-tools-define-what-to-remove">2. Mode and drawing tools: define what to remove</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-menu-remove-the-selected-area">3. Cleaning menu: remove the selected area</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-menu-choose-a-fill">4. Cleaning menu: choose a fill</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background-group-configure-real-patch-sources">5. Background group: configure real patch sources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objects-and-restoration-inspect-the-editing-history">6. Objects and restoration: inspect the editing history</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#save-reproducible-results">7. Save reproducible results</a></li>
 </ul>
   </nav></div>
 

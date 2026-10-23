@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>SAM Image Studio &#8212; SAM Image Studio 1.4.2</title>
+    <title>SAM Image Studio &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=23a965d7"></script>
+    <script src="_static/documentation_options.js?v=4766b593"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -49,10 +49,10 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/index.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="next" title="Installation and updates" href="installation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -359,7 +359,7 @@ measurements. A desktop workflow with editable projects and reversible changes.<
 <p class="sd-card-text">Set up a dedicated Anaconda GPU environment, choose the right checkpoint,
 or install the CPU application. Learn how to update without uninstalling.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="installation.html"><span class="doc">Installation</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="installation.html"><span class="doc">Installation and updates</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
@@ -387,6 +387,20 @@ panel. Keep the full manuals and parameter reference close at hand.</p>
 </a>
 <p><em>Synthetic demo with manually supplied reference masks; this illustrates the
 workspace and is not a SAM3.1 inference result.</em></p>
+</section>
+<section id="illustrated-workflow-guides">
+<h2>Illustrated workflow guides<a class="headerlink" href="#illustrated-workflow-guides" title="Link to this heading">#</a></h2>
+<p>Follow the interface from the workspace and menus to the relevant controls.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="features/cleaning.html"><span class="std std-doc">Data cleaning</span></a>: choose a target, compare fill methods,
+preview, apply and restore original pixels.</p></li>
+<li><p><a class="reference internal" href="segmentation/scopes.html"><span class="std std-doc">Three prompted Seg scopes</span></a>: ROI only, whole-image
+examples and a single native object; automatic grid is explained separately.</p></li>
+<li><p><a class="reference internal" href="features/compressed-sensing.html"><span class="std std-doc">Compressed sensing</span></a>: dialog order, DCT/TV
+parameter suggestions and computed synthetic comparisons.</p></li>
+<li><p><a class="reference internal" href="segmentation/sam3-onnx.html"><span class="std std-doc">SAM3 ONNX</span></a>: public text weights without HF login,
+aliases and exact application ROI clipping.</p></li>
+</ul>
 </section>
 <section id="a-practical-guide-to-sam3-1">
 <h2>A practical guide to SAM3.1<a class="headerlink" href="#a-practical-guide-to-sam3-1" title="Link to this heading">#</a></h2>
@@ -428,9 +442,9 @@ and negative examples, review-before-accept, protected annotations, native
 autosave, calibrated measurements, and reversible processing. Read the
 <a class="reference internal" href="segmentation/application-tools.html"><span class="std std-doc">application additions guide</span></a> to understand
 their scope and limitations.</p>
-<p>Version <strong>1.4.2</strong>, based on the v1.4 application line. The optional SAM3/3.1
+<p>Version <strong>1.4.3</strong>, based on the v1.4 application line. The optional SAM3/3.1
 backend requires NVIDIA CUDA, a dedicated Linux/WSL2 Conda environment, and
-approved compatible weights. CPU supports SAM1 and SAM2/2.1. This website
+approved compatible weights. CPU supports SAM1, SAM2/2.1 and public SAM3 ONNX text segmentation. This website
 documents implementation and recorded checks; it does not claim new CUDA
 benchmarks or microscopy detection accuracy.</p>
 <div class="toctree-wrapper compound">
@@ -453,7 +467,7 @@ benchmarks or microscopy detection accuracy.</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Installation</p>
+        <p class="prev-next-title">Installation and updates</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -477,6 +491,7 @@ benchmarks or microscopy detection accuracy.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-in-this-order">Learn in this order</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#illustrated-workflow-guides">Illustrated workflow guides</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-practical-guide-to-sam3-1">A practical guide to SAM3.1</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-the-application-adds">What the application adds</a></li>
 </ul>

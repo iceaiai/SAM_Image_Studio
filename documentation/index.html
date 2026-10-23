@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Documentation: controls, modes, and files &#8212; SAM Image Studio 1.4.2</title>
+    <title>Documentation: controls, modes, and files &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=23a965d7"></script>
+    <script src="../_static/documentation_options.js?v=4766b593"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Local plugins and custom processing" href="../features/extensions.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -313,14 +313,15 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="workspace.html">Workspace and panels</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="menus.html">Menu-by-menu reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dialogs.html">Dialogs and their controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="files.html">Folders, projects, and model files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../denoising.html">Denoising parameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting installation and operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../downloads.html">Original supplied files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a></li>
 </ul>
@@ -383,25 +384,11 @@
   <section class="tex2jax_ignore mathjax_ignore" id="documentation-controls-modes-and-files">
 <h1>Documentation: controls, modes, and files<a class="headerlink" href="#documentation-controls-modes-and-files" title="Link to this heading">#</a></h1>
 <p>Use this section as a lookup while the desktop application is open. Control
-names match the core version 1.4.2 interface; some are visible/enabled only for
+names match the core version 1.4.3 interface; some are visible/enabled only for
 the current mode, model, selection, or running-task state.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workspace.html">Workspace and panels</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modes.html#switching-modes">Switching modes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modes.html#one-rectangle-three-different-meanings">One rectangle, three different meanings</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="controls.html#workflow-and-image-controls">Workflow and image controls</a></li>
-<li class="toctree-l2"><a class="reference internal" href="controls.html#segmentation-prompts-toolbar">Segmentation prompts toolbar</a></li>
-<li class="toctree-l2"><a class="reference internal" href="controls.html#drawing-tools">Drawing tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="controls.html#panel-buttons">Panel buttons</a></li>
-<li class="toctree-l2"><a class="reference internal" href="controls.html#object-context-menu">Object context menu</a></li>
-<li class="toctree-l2"><a class="reference internal" href="controls.html#keyboard-and-mouse">Keyboard and mouse</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="menus.html">Menu-by-menu reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="menus.html#file">File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="menus.html#edit">Edit</a></li>
@@ -413,6 +400,30 @@ the current mode, model, selection, or running-task state.</p>
 <li class="toctree-l2"><a class="reference internal" href="menus.html#help">Help</a></li>
 <li class="toctree-l2"><a class="reference internal" href="menus.html#processing">Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="menus.html#plugin">Plugin</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="controls.html#workflow-and-image-controls">Workflow and image controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controls.html#segmentation-prompts-toolbar">Segmentation prompts toolbar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controls.html#drawing-tools">Drawing tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controls.html#panel-buttons">Panel buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controls.html#object-context-menu">Object context menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controls.html#keyboard-and-mouse">Keyboard and mouse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modes.html#switching-modes">Switching modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modes.html#how-scope-changes-segment-drawing">How scope changes Segment drawing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modes.html#one-rectangle-different-meanings">One rectangle, different meanings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html#inside-roi-only">1. Inside ROI only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html#prompt-project-whole-image">2. Prompt project, whole image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html#single-object-native-sam">3. Single object (native SAM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html#automatic-grid-unannotated-only">4. Automatic grid, unannotated only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html#invert-a-selected-region">Invert a selected region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html#quick-comparison">Quick comparison</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dialogs.html">Dialogs and their controls</a><ul>
@@ -469,19 +480,22 @@ the current mode, model, selection, or running-task state.</p>
 <li class="toctree-l2"><a class="reference internal" href="../denoising.html#official-references-and-validation-limits">Official references and validation limits</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#installation-stops">Installation stops</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#powershell-cannot-change-into-a-folder-containing-spaces">PowerShell cannot change into a folder containing spaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#qt-cannot-open-a-display">Qt cannot open a display</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#gpu-detection-or-model-loading-fails">GPU detection or model loading fails</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#prompts-do-not-create-the-expected-result">Prompts do not create the expected result</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#saving-or-recovery-fails">Saving or recovery fails</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#a-plugin-or-restoration-operation-fails">A plugin or restoration operation fails</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#full-validation-cannot-download-fixtures">Full validation cannot download fixtures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting installation and operation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#confirm-the-folder-and-environment">1. Confirm the folder and environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#dependency-problems-handled-by-installation">2. Dependency problems handled by installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#display-failures-remaining-after-installation">3. Display failures remaining after installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#hugging-face-login-and-gated-model-access">4. Hugging Face login and gated model access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#gpu-and-model-errors">5. GPU and model errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#unexpected-masks-cleaning-or-reconstruction">6. Unexpected masks, cleaning or reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html#saving-plugins-and-external-fixtures">7. Saving, plugins and external fixtures</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../downloads.html">Original supplied files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../provenance.html#figure-provenance">Figure provenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../provenance.html#public-onnx-adapter">Public ONNX adapter</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <p>For a sequential task rather than a control lookup, start with

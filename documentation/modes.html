@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>The four modes &#8212; SAM Image Studio 1.4.2</title>
+    <title>The four modes &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=23a965d7"></script>
+    <script src="../_static/documentation_options.js?v=4766b593"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -49,11 +49,11 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/documentation/modes.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Buttons, tools, and segmentation controls" href="controls.html" />
-    <link rel="prev" title="Workspace and panels" href="workspace.html" />
+    <link rel="next" title="Dialogs and their controls" href="dialogs.html" />
+    <link rel="prev" title="Buttons, tools, and segmentation controls" href="controls.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -317,14 +317,15 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="workspace.html">Workspace and panels</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">The four modes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="menus.html">Menu-by-menu reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">The four modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dialogs.html">Dialogs and their controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="files.html">Folders, projects, and model files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../denoising.html">Denoising parameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting installation and operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../downloads.html">Original supplied files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a></li>
 </ul>
@@ -428,8 +429,13 @@ canceled and its old preview is cleared.</p>
 Manual/Edit start with selection. Mode changes therefore affect both the
 meaning of input and the initially active tool.</p>
 </section>
-<section id="one-rectangle-three-different-meanings">
-<h2>One rectangle, three different meanings<a class="headerlink" href="#one-rectangle-three-different-meanings" title="Link to this heading">#</a></h2>
+<section id="how-scope-changes-segment-drawing">
+<h2>How scope changes Segment drawing<a class="headerlink" href="#how-scope-changes-segment-drawing" title="Link to this heading">#</a></h2>
+<p>See the <a class="reference internal" href="../segmentation/scopes.html"><span class="std std-doc">illustrated Seg scope walkthrough</span></a>, with
+steps for ROI only, whole-image examples, single object and the separate grid.</p>
+</section>
+<section id="one-rectangle-different-meanings">
+<h2>One rectangle, different meanings<a class="headerlink" href="#one-rectangle-different-meanings" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><strong>Manual:</strong> a completed rectangle is an annotation.</p></li>
 <li><p><strong>Segment + whole image:</strong> it is a positive/negative exemplar describing an
@@ -455,20 +461,20 @@ is rectangular. Choose the scope explicitly. See
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="workspace.html"
+       href="controls.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Workspace and panels</p>
+        <p class="prev-next-title">Buttons, tools, and segmentation controls</p>
       </div>
     </a>
     <a class="right-next"
-       href="controls.html"
+       href="dialogs.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Buttons, tools, and segmentation controls</p>
+        <p class="prev-next-title">Dialogs and their controls</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -492,7 +498,8 @@ is rectangular. Choose the scope explicitly. See
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#switching-modes">Switching modes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-rectangle-three-different-meanings">One rectangle, three different meanings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-scope-changes-segment-drawing">How scope changes Segment drawing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-rectangle-different-meanings">One rectangle, different meanings</a></li>
 </ul>
   </nav></div>
 

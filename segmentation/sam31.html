@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>SAM3.1: text and shape prompts &#8212; SAM Image Studio 1.4.2</title>
+    <title>SAM3.1: text and shape prompts &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=23a965d7"></script>
+    <script src="../_static/documentation_options.js?v=4766b593"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -50,10 +50,10 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Application additions: scope, aliases, and review" href="application-tools.html" />
-    <link rel="prev" title="Detection and segmentation across SAM families" href="model-families.html" />
+    <link rel="prev" title="SAM3 ONNX: public text segmentation" href="sam3-onnx.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -319,13 +319,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">First annotation and export</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features/annotation.html">Manual annotation and editing</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Segment objects with SAM</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html">Detection and segmentation across SAM families</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html">SAM3 ONNX: public text segmentation</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">SAM3.1: text and shape prompts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="application-tools.html">Application additions: scope, aliases, and review</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/cleaning.html">Data cleaning: remove, fill and restore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features/processing.html">Image restoration and processing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../features/cleaning.html">Reversible cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/compressed-sensing.html">Compressed sensing: controls and suggested parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features/measurements.html">Calibration and statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features/saving.html">Native projects, masks, and exports</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features/extensions.html">Local plugins and custom processing</a></li>
@@ -394,28 +397,34 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="sam3-1-text-and-shape-prompts">
 <h1>SAM3.1: text and shape prompts<a class="headerlink" href="#sam3-1-text-and-shape-prompts" title="Link to this heading">#</a></h1>
-<p>This guide describes the <strong>SAM3.1 Multiplex · GPU only</strong> family in version 1.4.2.
+<p>This guide describes the <strong>SAM3.1 Multiplex · GPU only</strong> family in version 1.4.3.
 It uses the official native predictor, wrapped for a single still image.</p>
 <section id="before-you-start">
 <h2>Before you start<a class="headerlink" href="#before-you-start" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p>Use a dedicated <strong>Anaconda/Conda GPU environment</strong> on Linux or WSL2, with a
-compatible NVIDIA driver. Follow <a class="reference internal" href="../installation.html"><span class="std std-doc">installation</span></a>.</p></li>
+compatible NVIDIA driver. Follow <a class="reference internal" href="../installation-gpu.html"><span class="std std-doc">GPU installation</span></a>.</p></li>
 <li><p>Obtain approved access to <code class="docutils literal notranslate"><span class="pre">facebook/sam3.1</span></code> and its authentic
 <strong><code class="docutils literal notranslate"><span class="pre">sam3.1_multiplex.pt</span></code></strong>. SAM3’s <code class="docutils literal notranslate"><span class="pre">sam3.pt</span></code> cannot be renamed/substituted.</p></li>
 <li><p>Start the app from that environment. Open the image and choose/create a group.</p></li>
 <li><p>In <strong>Load model…</strong>, choose <strong>SAM3.1</strong>, matching weights, and <strong>NVIDIA CUDA
-(Conda)</strong> or <strong>Automatic device</strong>. Wait for the loaded status.</p></li>
+(Conda)</strong> or <strong>Automatic device</strong>. Paste an approved read token in the optional masked field if needed, or leave
+it empty to reuse local HF login. Wait for the loaded status.</p></li>
 <li><p>Choose <strong>Segment</strong>. Select <strong>Prompt project, whole image</strong> for concept search.</p></li>
 </ol>
 <p>The GPU recipe is provided, but actual CUDA execution and model quality must
 be checked on the target machine. A CPU installation cannot run this backend.</p>
+<a class="reference internal image-reference" href="../_images/model-manager-sam31.png"><img alt="Actual SAM3.1 Model manager with CUDA selected and an empty masked optional Hugging Face token field" src="../_images/model-manager-sam31.png" style="width: 100%;" />
+</a>
+<p>The token field is used for the download and is not saved. Approved model access
+is still required. A valid token alone does not approve a gated model. For public
+text segmentation without login, use the separate <a class="reference internal" href="sam3-onnx.html"><span class="std std-doc">SAM3 ONNX backend</span></a>.</p>
 </section>
 <section id="text-prompt-recipe-black-dots">
 <h2>Text prompt recipe: <code class="docutils literal notranslate"><span class="pre">black</span> <span class="pre">dots</span></code><a class="headerlink" href="#text-prompt-recipe-black-dots" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Enter <strong><code class="docutils literal notranslate"><span class="pre">black</span> <span class="pre">dots</span></code></strong> in the <strong>Text prompt / alias (SAM2+)</strong> field. The
-“SAM2+” label includes SAM3 and SAM3.1.</p></li>
+<li><p>Enter <strong><code class="docutils literal notranslate"><span class="pre">black</span> <span class="pre">dots</span></code></strong> in the <strong>SAM3.1 text prompt / alias</strong> field.
+The label/placeholder follows the loaded model family.</p></li>
 <li><p>Click <strong>Run text segmentation</strong>, or press Enter in that field.</p></li>
 <li><p>Watch the status/progress area and inspect the provisional masks across
 the current image. No annotations are committed yet.</p></li>
@@ -490,6 +499,8 @@ prompt settings on a fresh image/project state or explicitly record that state.<
 </section>
 <section id="restrict-text-results-to-an-roi">
 <h2>Restrict text results to an ROI<a class="headerlink" href="#restrict-text-results-to-an-roi" title="Link to this heading">#</a></h2>
+<p>The <a class="reference internal" href="scopes.html"><span class="std std-doc">illustrated scope comparison</span></a> shows how the same area tool changes
+meaning across ROI only, whole-image examples and single-object segmentation.</p>
 <ol class="arabic simple">
 <li><p>Choose an <strong>area tool</strong> and <strong>Inside ROI only</strong>.</p></li>
 <li><p>Draw the region in which output is allowed. It is now a region, not a stored
@@ -581,12 +592,12 @@ take time, and cancellation may finish after an active call returns.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="model-families.html"
+       href="sam3-onnx.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Detection and segmentation across SAM families</p>
+        <p class="prev-next-title">SAM3 ONNX: public text segmentation</p>
       </div>
     </a>
     <a class="right-next"

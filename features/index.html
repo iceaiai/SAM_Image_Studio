@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Image workflows &#8212; SAM Image Studio 1.4.2</title>
+    <title>Image workflows &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=23a965d7"></script>
+    <script src="../_static/documentation_options.js?v=4766b593"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -50,10 +50,10 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="First annotation and export" href="../quickstart.html" />
-    <link rel="prev" title="Installation" href="../installation.html" />
+    <link rel="prev" title="NVIDIA GPU with Anaconda / Conda" href="../installation-gpu.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -315,13 +315,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">First annotation and export</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotation.html">Manual annotation and editing</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../segmentation/index.html">Segment objects with SAM</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/model-families.html">Detection and segmentation across SAM families</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/sam3-onnx.html">SAM3 ONNX: public text segmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/sam31.html">SAM3.1: text and shape prompts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/application-tools.html">Application additions: scope, aliases, and review</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="cleaning.html">Data cleaning: remove, fill and restore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processing.html">Image restoration and processing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cleaning.html">Reversible cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compressed-sensing.html">Compressed sensing: controls and suggested parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="measurements.html">Calibration and statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="saving.html">Native projects, masks, and exports</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extensions.html">Local plugins and custom processing</a></li>
@@ -414,7 +417,7 @@ Follow the dedicated SAM3.1 guide.</p>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Restore and process pixels</div>
-<p class="sd-card-text">Compare denoisers, smooth an image, add controlled noise, and preserve crops.</p>
+<p class="sd-card-text">Compare denoisers, follow illustrated compressed-sensing parameters, and preserve crops.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="processing.html"><span class="doc">Image restoration and processing</span></a></div>
 </div>
@@ -426,7 +429,7 @@ Clean and restore regions</div>
 <p class="sd-card-text">Remove contamination, fill from neighbors/LaMa/background patches, and restore
 pixels by removing an edit record.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="cleaning.html"><span class="doc">Reversible cleaning</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="cleaning.html"><span class="doc">Data cleaning: remove, fill and restore</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
@@ -467,9 +470,21 @@ overlays, and original/processed images.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../segmentation/index.html">Segment objects with SAM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/model-families.html">Detection and segmentation across SAM families</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/sam3-onnx.html">SAM3 ONNX: public text segmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/sam31.html">SAM3.1: text and shape prompts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/application-tools.html">Application additions: scope, aliases, and review</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cleaning.html">Data cleaning: remove, fill and restore</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cleaning.html#file-and-group-prepare-the-image">1. File and Group: prepare the image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaning.html#mode-and-drawing-tools-define-what-to-remove">2. Mode and drawing tools: define what to remove</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaning.html#cleaning-menu-remove-the-selected-area">3. Cleaning menu: remove the selected area</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaning.html#cleaning-menu-choose-a-fill">4. Cleaning menu: choose a fill</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaning.html#background-group-configure-real-patch-sources">5. Background group: configure real patch sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaning.html#objects-and-restoration-inspect-the-editing-history">6. Objects and restoration: inspect the editing history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleaning.html#save-reproducible-results">7. Save reproducible results</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="processing.html">Image restoration and processing</a><ul>
@@ -481,10 +496,13 @@ overlays, and original/processed images.</p>
 <li class="toctree-l2"><a class="reference internal" href="processing.html#neural-models-and-image-history">Neural models and image history</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="cleaning.html">Reversible cleaning</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cleaning.html#remove-and-fill-a-region">Remove and fill a region</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cleaning.html#background-patch-sources">Background patch sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cleaning.html#restore-pixels">Restore pixels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compressed-sensing.html">Compressed sensing: controls and suggested parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compressed-sensing.html#processing-denoise-choose-a-method">1. Processing → Denoise… → choose a method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressed-sensing.html#task-and-preset-decide-which-experiment-to-run">2. Task and preset: decide which experiment to run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressed-sensing.html#shared-controls-in-dialog-order">3. Shared controls, in dialog order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressed-sensing.html#method-specific-controls">4. Method-specific controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressed-sensing.html#target-source-preview-and-apply">5. Target, source, Preview and Apply</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressed-sensing.html#how-to-judge-a-parameter-choice">6. How to judge a parameter choice</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="measurements.html">Calibration and statistics</a><ul>
@@ -513,12 +531,12 @@ overlays, and original/processed images.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../installation.html"
+       href="../installation-gpu.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Installation</p>
+        <p class="prev-next-title">NVIDIA GPU with Anaconda / Conda</p>
       </div>
     </a>
     <a class="right-next"

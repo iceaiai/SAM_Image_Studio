@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Menu-by-menu reference &#8212; SAM Image Studio 1.4.2</title>
+    <title>Menu-by-menu reference &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=23a965d7"></script>
+    <script src="../_static/documentation_options.js?v=4766b593"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -49,11 +49,11 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/documentation/menus.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Dialogs and their controls" href="dialogs.html" />
-    <link rel="prev" title="Buttons, tools, and segmentation controls" href="controls.html" />
+    <link rel="next" title="Buttons, tools, and segmentation controls" href="controls.html" />
+    <link rel="prev" title="Workspace and panels" href="workspace.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -317,14 +317,15 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="workspace.html">Workspace and panels</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Menu-by-menu reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dialogs.html">Dialogs and their controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="files.html">Folders, projects, and model files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../denoising.html">Denoising parameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting installation and operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../downloads.html">Original supplied files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a></li>
 </ul>
@@ -389,7 +390,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="menu-by-menu-reference">
 <h1>Menu-by-menu reference<a class="headerlink" href="#menu-by-menu-reference" title="Link to this heading">#</a></h1>
-<p>This reference covers every core menu action in the 1.4.2 main window. Labels
+<p>This reference covers every core menu action in the 1.4.3 main window. Labels
 were checked against an offscreen application instance. Some actions depend on
 selection, mode, loaded model, or task state. Installed plugins add their own
 actions and are documented by their authors.</p>
@@ -539,6 +540,8 @@ actions and are documented by their authors.</p>
 </section>
 <section id="cleaning">
 <h2>Cleaning<a class="headerlink" href="#cleaning" title="Link to this heading">#</a></h2>
+<p>Follow the <a class="reference internal" href="../features/cleaning.html"><span class="std std-doc">illustrated data-cleaning walkthrough</span></a> in
+this menu order: remove → choose fill → preview/apply → restore.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Menu entry</p></th>
@@ -755,6 +758,8 @@ actions and are documented by their authors.</p>
 </section>
 <section id="processing">
 <h2>Processing<a class="headerlink" href="#processing" title="Link to this heading">#</a></h2>
+<p>The <a class="reference internal" href="../features/compressed-sensing.html"><span class="std std-doc">compressed-sensing guide</span></a> follows the
+DCT/TV dialog controls in order and shows computed parameter comparisons.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Menu entry</p></th>
@@ -828,20 +833,20 @@ see <a class="reference internal" href="dialogs.html"><span class="std std-doc">
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="controls.html"
+       href="workspace.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Buttons, tools, and segmentation controls</p>
+        <p class="prev-next-title">Workspace and panels</p>
       </div>
     </a>
     <a class="right-next"
-       href="dialogs.html"
+       href="controls.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Dialogs and their controls</p>
+        <p class="prev-next-title">Buttons, tools, and segmentation controls</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

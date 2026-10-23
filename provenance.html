@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Sources, versions, and licenses &#8212; SAM Image Studio 1.4.2</title>
+    <title>Sources, versions, and licenses &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=23a965d7"></script>
+    <script src="_static/documentation_options.js?v=4766b593"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Original supplied files" href="downloads.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -215,6 +215,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -313,14 +317,15 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="documentation/workspace.html">Workspace and panels</a></li>
-<li class="toctree-l1"><a class="reference internal" href="documentation/modes.html">The four modes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="documentation/controls.html">Buttons, tools, and segmentation controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation/menus.html">Menu-by-menu reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/controls.html">Buttons, tools, and segmentation controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/modes.html">The four modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation/dialogs.html">Dialogs and their controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation/files.html">Folders, projects, and model files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-manual.html">User manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="denoising.html">Denoising parameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting installation and operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="downloads.html">Original supplied files</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Sources, versions, and licenses</a></li>
 </ul>
@@ -393,14 +398,15 @@ The PDFs identify an English edition dated October 22, 2026.</p>
 <code class="docutils literal notranslate"><span class="pre">uploads/SHA256SUMS</span></code> records their SHA-256 digests. Source code, installers,
 tests, bundled wheels, packaged PDFs, and historical validation files were
 extracted from the ZIP. The repository README and Sphinx/CI configuration are
-new repository documentation; application algorithms and dependency lockfiles
-are unchanged.</p>
-<p><code class="docutils literal notranslate"><span class="pre">FILE_MANIFEST_SHA256.json</span></code> is the <strong>original release archive manifest</strong>. Its
+new repository documentation. Version 1.4.3 adds the SAM3 ONNX adapter,
+model-manager token entry, installation repairs and repository organization.
+Current code/requirements therefore differ from the original archive.</p>
+<p><code class="docutils literal notranslate"><span class="pre">uploads/FILE_MANIFEST_SHA256_v142.json</span></code> is the <strong>original release archive manifest</strong>. Its
 paths refer to files in that archive, including the original README, not to
 the newly authored repository README or other documentation additions. Verify
 it against the ZIP’s <code class="docutils literal notranslate"><span class="pre">SAM_Image_Studio/</span></code> contents. It is not a manifest of the
 current Git checkout.</p>
-<p>Historical reports in <code class="docutils literal notranslate"><span class="pre">TEST_REPORT.md</span></code> and <code class="docutils literal notranslate"><span class="pre">validation/</span></code> retain their original
+<p>Historical reports in <code class="docutils literal notranslate"><span class="pre">docs/archive/TEST_REPORT_v142.md</span></code> and <code class="docutils literal notranslate"><span class="pre">docs/validation/</span></code> retain their original
 scope and claims. A Sphinx build validates documentation generation. It does
 not rerun those application tests or prove model accuracy, CUDA compatibility,
 or native Windows execution. See the development page for current validation
@@ -411,6 +417,24 @@ Third-party model/dependency licenses and notices are separate; see
 academic/non-commercial terms. Review the applicable terms for each backend
 and checkpoint. The app license does not automatically relicense the supplied
 notebook, workshop assets, model weights, or third-party packages.</p>
+<section id="figure-provenance">
+<h2>Figure provenance<a class="headerlink" href="#figure-provenance" title="Link to this heading">#</a></h2>
+<p>Workflow figures use public synthetic particles generated by
+<code class="docutils literal notranslate"><span class="pre">docs/tools/generate_workflow_figures.py</span></code>. Scope outlines are manual reference-mask
+schematics. Cleaning and DCT/TV figures execute the application’s actual algorithms.
+The SAM3 ONNX screenshot uses genuine CPU inference on the bundled synthetic image.
+No uploaded private microscopy image, HF token, or SAM3.1 GPU prediction is published
+in these new figures. Raw GUI screenshots show current controls without credentials.</p>
+</section>
+<section id="public-onnx-adapter">
+<h2>Public ONNX adapter<a class="headerlink" href="#public-onnx-adapter" title="Link to this heading">#</a></h2>
+<p>The six export files come from the public X-AnyLabeling v3.0.0 release, with pinned
+SHA-256 digests in <code class="docutils literal notranslate"><span class="pre">samstudio/sam3_onnx.py</span></code>. Application integration was implemented
+independently; GPL application code is not vendored. The CLIP tokenizer source has
+its original MIT notice and a separate <code class="docutils literal notranslate"><span class="pre">third_party/CLIP_LICENSE.txt</span></code>; its vocabulary
+is downloaded and verified separately. Checkpoint redistribution and use remain
+subject to the upstream SAM license.</p>
+</section>
 </section>
 
 
@@ -447,6 +471,25 @@ notebook, workshop assets, model weights, or third-party packages.</p>
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-provenance">Figure provenance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#public-onnx-adapter">Public ONNX adapter</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

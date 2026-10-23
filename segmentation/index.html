@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Segment objects with SAM &#8212; SAM Image Studio 1.4.2</title>
+    <title>Segment objects with SAM &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=23a965d7"></script>
+    <script src="../_static/documentation_options.js?v=4766b593"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -49,11 +49,11 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/segmentation/index.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Detection and segmentation across SAM families" href="model-families.html" />
+    <link rel="next" title="Seg scope: ROI, whole image and single object" href="scopes.html" />
     <link rel="prev" title="Manual annotation and editing" href="../features/annotation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -315,13 +315,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">First annotation and export</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features/annotation.html">Manual annotation and editing</a></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Segment objects with SAM</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html">Detection and segmentation across SAM families</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html">SAM3 ONNX: public text segmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sam31.html">SAM3.1: text and shape prompts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="application-tools.html">Application additions: scope, aliases, and review</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/cleaning.html">Data cleaning: remove, fill and restore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features/processing.html">Image restoration and processing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../features/cleaning.html">Reversible cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/compressed-sensing.html">Compressed sensing: controls and suggested parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features/measurements.html">Calibration and statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features/saving.html">Native projects, masks, and exports</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features/extensions.html">Local plugins and custom processing</a></li>
@@ -397,6 +400,12 @@ the output. A disposable preview becomes an annotation only after <strong>Accept
 </tr>
 </thead>
 <tbody>
+<tr class="row-even"><td><p>Understand ROI / whole-image / single-object choices</p></td>
+<td><p><a class="reference internal" href="scopes.html"><span class="std std-doc">Illustrated Seg scopes</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Public SAM3 text without HF login</p></td>
+<td><p><a class="reference internal" href="sam3-onnx.html"><span class="std std-doc">SAM3 ONNX</span></a></p></td>
+</tr>
 <tr class="row-even"><td><p>Learn SAM1/2/3 detection and segmentation differences</p></td>
 <td><p><a class="reference internal" href="model-families.html"><span class="std std-doc">Model families</span></a></p></td>
 </tr>
@@ -420,14 +429,32 @@ the output. A disposable preview becomes an annotation only after <strong>Accept
 </div>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="scopes.html">Seg scope: ROI, whole image and single object</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scopes.html#inside-roi-only">1. Inside ROI only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scopes.html#prompt-project-whole-image">2. Prompt project, whole image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scopes.html#single-object-native-sam">3. Single object (native SAM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scopes.html#automatic-grid-unannotated-only">4. Automatic grid, unannotated only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scopes.html#invert-a-selected-region">Invert a selected region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scopes.html#quick-comparison">Quick comparison</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="model-families.html">Detection and segmentation across SAM families</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html#detection-answers-where-segmentation-answers-which-pixels">Detection answers “where?”; segmentation answers “which pixels?”</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html#sam1-object-prompts-grid-candidates-and-retrieval">SAM1: object prompts, grid candidates, and retrieval</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html#sam2-2-1-the-text-detection-mask-pipeline">SAM2/2.1: the text detection → mask pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model-families.html#sam3-onnx-exported-text-inference">SAM3 ONNX: exported text inference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html#sam3-native-image-concepts">SAM3: native image concepts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html#sam3-1-native-multiplex-concepts-on-one-frame">SAM3.1: native multiplex concepts on one frame</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html#automatic-grid-is-a-separate-operation">Automatic grid is a separate operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html#review-the-outputs">Review the outputs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sam3-onnx.html">SAM3 ONNX: public text segmentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html#install-and-select">Install and select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html#text-aliases-and-roi">Text, aliases and ROI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html#capabilities-and-limits">Capabilities and limits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html#check-execution-without-qt">Check execution without Qt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html#files-and-provenance">Files and provenance</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sam31.html">SAM3.1: text and shape prompts</a><ul>
@@ -475,11 +502,11 @@ the output. A disposable preview becomes an annotation only after <strong>Accept
       </div>
     </a>
     <a class="right-next"
-       href="model-families.html"
+       href="scopes.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Detection and segmentation across SAM families</p>
+        <p class="prev-next-title">Seg scope: ROI, whole image and single object</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

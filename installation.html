@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Installation &#8212; SAM Image Studio 1.4.2</title>
+    <title>Installation and updates &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=23a965d7"></script>
+    <script src="_static/documentation_options.js?v=4766b593"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -49,11 +49,11 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/installation.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Image workflows" href="features/index.html" />
+    <link rel="next" title="NVIDIA GPU with Anaconda / Conda" href="installation-gpu.html" />
     <link rel="prev" title="SAM Image Studio" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -315,7 +315,10 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"></div>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation-gpu.html">NVIDIA GPU with Anaconda / Conda</a></li>
+</ul>
+</div>
 </nav></div>
     </div>
   
@@ -354,7 +357,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Installation</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Installation and updates</span></li>
   </ul>
 </nav>
 </div>
@@ -371,272 +374,134 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
-<p>Run all commands from the repository root, the directory containing
-<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, <code class="docutils literal notranslate"><span class="pre">samstudio/</span></code>, and <code class="docutils literal notranslate"><span class="pre">scripts/</span></code>. Use a writable local folder and
-<strong>64-bit Python 3.12</strong>: this release requires <code class="docutils literal notranslate"><span class="pre">&gt;=3.12,&lt;3.13</span></code>.</p>
-<p>For <strong>Anaconda GPU testing</strong>, go to <a class="reference internal" href="#nvidia-gpu-with-conda">NVIDIA GPU with Conda</a>
-and <a class="reference internal" href="#optional-sam3-and-sam3-1">optional SAM3/SAM3.1</a>. After first installation,
-use <a class="reference internal" href="#updating-an-existing-conda-environment">Updating an existing Conda environment</a>.
-The ordinary CPU route remains available for SAM1/SAM2.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/iceaiai/SAM_Image_Studio.git
-<span class="nb">cd</span><span class="w"> </span>SAM_Image_Studio
-</pre></div>
-</div>
-<p>Alternatively, extract the original CPU ZIP from the <a class="reference internal" href="downloads.html"><span class="std std-doc">downloads</span></a>
-page. It contains its own <code class="docutils literal notranslate"><span class="pre">SAM_Image_Studio/</span></code> top-level folder. Preserve the
-complete tree, including <code class="docutils literal notranslate"><span class="pre">vendor/</span></code>, because the installer checks the bundled
-SAM2 wheel’s SHA-256 digest.</p>
-<section id="choose-a-backend">
-<h2>Choose a backend<a class="headerlink" href="#choose-a-backend" title="Link to this heading">#</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="installation-and-updates">
+<h1>Installation and updates<a class="headerlink" href="#installation-and-updates" title="Link to this heading">#</a></h1>
+<p>Install once, then reuse the environment for updates. Use the complete source
+folder containing <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, <code class="docutils literal notranslate"><span class="pre">samstudio/</span></code>, <code class="docutils literal notranslate"><span class="pre">packaging/</span></code> and <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>.
+All application environments use <strong>64-bit Python 3.12</strong>.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Workflow</p></th>
-<th class="head"><p>Environment</p></th>
-<th class="head"><p>Models</p></th>
-<th class="head"><p>Requirements</p></th>
+<tr class="row-odd"><th class="head"><p>What you want</p></th>
+<th class="head"><p>Installation</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>CPU</p></td>
-<td><p>App-owned <code class="docutils literal notranslate"><span class="pre">.venv</span></code> or dedicated existing virtual/Conda environment</p></td>
-<td><p>SAM1, SAM2/2.1</p></td>
-<td><p>Python 3.12; no NVIDIA hardware needed</p></td>
+<tr class="row-even"><td><p>CPU annotation, SAM1/2, public SAM3 ONNX text</p></td>
+<td><p>CPU instructions below</p></td>
 </tr>
-<tr class="row-odd"><td><p>NVIDIA GPU</p></td>
-<td><p>Dedicated non-base Conda environment</p></td>
-<td><p>SAM1, SAM2/2.1</p></td>
-<td><p>NVIDIA driver and compatible CUDA PyTorch wheels</p></td>
+<tr class="row-odd"><td><p>NVIDIA GPU, SAM1/2 or public SAM3 ONNX</p></td>
+<td><p><a class="reference internal" href="installation-gpu.html"><span class="std std-doc">GPU / Anaconda guide</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p>Optional SAM3 / SAM3.1</p></td>
-<td><p>Separate Linux/WSL2 Conda environment</p></td>
-<td><p>Matching SAM3 or SAM3.1 weights</p></td>
-<td><p>Driver supporting CUDA 12.6+ and approved checkpoint access</p></td>
+<tr class="row-even"><td><p>Native SAM3.1 text and positive/negative shapes</p></td>
+<td><p><a class="reference internal" href="installation-gpu.html"><span class="std std-doc">Linux/WSL2 GPU guide</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Website development only</p></td>
+<td><p><a class="reference internal" href="development.html#build-the-sphinx-documentation"><span class="std std-ref">Documentation build</span></a></p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The installer does not install system NVIDIA drivers. AMD/Intel GPUs use the
-CPU path in this release. Native Windows CUDA and real SAM3/SAM3.1 inference
-require acceptance testing on the target hardware.</p>
-</section>
-<section id="cpu-on-windows">
-<h2>CPU on Windows<a class="headerlink" href="#cpu-on-windows" title="Link to this heading">#</a></h2>
+<p>SAM3 ONNX downloads public text-only weights without HF login. Native SAM3.1
+has a separate installation and gated weights; it is not an ONNX mode switch.</p>
+<section id="cpu-windows">
+<h2>CPU: Windows<a class="headerlink" href="#cpu-windows" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Install 64-bit Python 3.12, if needed, using the official installer or
-<code class="docutils literal notranslate"><span class="pre">Install_Python_3_12.bat</span></code>.</p></li>
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">Install_CPU.bat</span></code> from the writable source/release folder.</p></li>
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">Start_GUI.bat</span></code>.</p></li>
+<li><p>Install Python 3.12 64-bit, if absent. The helper
+<code class="docutils literal notranslate"><span class="pre">packaging/Install_Python_3_12.bat</span></code> uses the official WinGet package.</p></li>
+<li><p>Open the complete source folder, then open <strong>packaging</strong>.</p></li>
+<li><p>Double-click <strong>Install_CPU.bat</strong> and wait for the installation self-test.</p></li>
+<li><p>Double-click <strong>Start_GUI.bat</strong>.</p></li>
 </ol>
-<p>To install Python per user from PowerShell:</p>
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">winget</span> <span class="n">install</span> <span class="p">-</span><span class="o">-exact</span> <span class="p">-</span><span class="n">-id</span> <span class="n">Python</span><span class="p">.</span><span class="n">Python</span><span class="p">.</span><span class="n">3</span><span class="p">.</span><span class="n">12</span> <span class="p">-</span><span class="n">-architecture</span> <span class="n">x64</span> <span class="p">-</span><span class="n">-scope</span> <span class="n">user</span> <span class="p">-</span><span class="n">-source</span> <span class="n">winget</span>
+<p>For a command-line install, first enter your real project folder, quoting spaces:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-Location</span> <span class="n">-LiteralPath</span> <span class="s1">'C:\work\AI works\SAM_Image_Studio'</span>
+<span class="nb">Test-Path</span> <span class="p">.\</span><span class="n">pyproject</span><span class="p">.</span><span class="n">toml</span>
+<span class="n">py</span> <span class="p">-</span><span class="n">3</span><span class="p">.</span><span class="n">12</span> <span class="n">scripts</span><span class="p">/</span><span class="n">install_environment</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-backend</span> <span class="n">cpu</span>
+<span class="p">.\.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">python</span><span class="p">.</span><span class="n">exe</span> <span class="n">-m</span> <span class="n">samstudio</span>
 </pre></div>
 </div>
-<p>Reopen the terminal and check <code class="docutils literal notranslate"><span class="pre">py</span> <span class="pre">-3.12</span> <span class="pre">--version</span></code>. The batch launcher uses the
-app-owned environment; no administrator shell is required for that per-user
-Python installation.</p>
+<p>The installer creates an app-owned <code class="docutils literal notranslate"><span class="pre">.venv</span></code> at the repository root. It keeps
+system Python and Conda base separate. Do not move only <code class="docutils literal notranslate"><span class="pre">samstudio/</span></code> out of the
+source tree and then run installation helpers.</p>
 </section>
-<section id="cpu-on-linux">
-<h2>CPU on Linux<a class="headerlink" href="#cpu-on-linux" title="Link to this heading">#</a></h2>
-<p>Check that <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">--version</span></code> reports Python 3.12, then run:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>install_cpu.sh
-bash<span class="w"> </span>start_gui.sh
+<section id="cpu-linux">
+<h2>CPU: Linux<a class="headerlink" href="#cpu-linux" title="Link to this heading">#</a></h2>
+<p>With Python 3.12 available, enter the repository root:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="s1">'/path/with spaces/SAM_Image_Studio'</span>
+bash<span class="w"> </span>packaging/install_cpu.sh
+bash<span class="w"> </span>packaging/start_gui.sh
 </pre></div>
 </div>
-<p>If <code class="docutils literal notranslate"><span class="pre">python3</span></code> is a different version but <code class="docutils literal notranslate"><span class="pre">python3.12</span></code> is installed, use the
-installer explicitly:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python3.12<span class="w"> </span>scripts/install_environment.py<span class="w"> </span>--backend<span class="w"> </span>cpu
-bash<span class="w"> </span>start_gui.sh
-</pre></div>
-</div>
-<p>The installer creates <code class="docutils literal notranslate"><span class="pre">.venv</span></code>, installs CPU PyTorch 2.7.1 and torchvision 0.22.1,
-installs <code class="docutils literal notranslate"><span class="pre">requirements.lock.txt</span></code> and the bundled SAM2 wheel, installs the app,
-runs <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">check</span></code>, and runs <code class="docutils literal notranslate"><span class="pre">samstudio.selftest</span> <span class="pre">--device</span> <span class="pre">cpu</span></code>. System Python
-packages remain separate. If <code class="docutils literal notranslate"><span class="pre">.venv</span></code> already exists without the app’s ownership
-marker, the installer stops rather than replacing it.</p>
+<p>Ubuntu/WSL Qt libraries are detected and installed automatically. A non-root
+user may be asked for their Ubuntu <code class="docutils literal notranslate"><span class="pre">sudo</span></code> password. On another distribution,
+an administrator must supply equivalent Qt system libraries if unavailable.
+The Python installer supports macOS CPU setup where the pinned dependency
+wheels are available; this release has not been acceptance-tested on macOS.</p>
 </section>
-<section id="cpu-in-an-existing-dedicated-environment">
-<h2>CPU in an existing dedicated environment<a class="headerlink" href="#cpu-in-an-existing-dedicated-environment" title="Link to this heading">#</a></h2>
-<p>Activate a Python 3.12 virtual environment or create a CPU Conda environment:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-cpu<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip
-conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-cpu
-python<span class="w"> </span>scripts/install_environment.py<span class="w"> </span>--backend<span class="w"> </span>cpu<span class="w"> </span>--current
+<section id="existing-dedicated-cpu-environment">
+<h2>Existing dedicated CPU environment<a class="headerlink" href="#existing-dedicated-cpu-environment" title="Link to this heading">#</a></h2>
+<p>If using a dedicated Conda/virtual environment, activate its Python 3.12 first:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>scripts/install_environment.py<span class="w"> </span>--backend<span class="w"> </span>cpu<span class="w"> </span>--current
 python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">--current</span></code> requires an activated virtual or Conda environment. When using it,
-start with <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">samstudio</span></code>; the default shell/batch launchers target the
-app-owned <code class="docutils literal notranslate"><span class="pre">.venv</span></code> instead.</p>
+<p>The installer supplies dependencies, the verified SAM2 wheel, app code, CPU
+ONNX runtime, <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">check</span></code> and installation self-test. Model weights are loaded
+separately. Do not install both CPU and GPU ONNX Runtime distributions together;
+the provided helper selects the correct distribution for the environment.</p>
 </section>
 <section id="nvidia-gpu-with-conda">
 <h2>NVIDIA GPU with Conda<a class="headerlink" href="#nvidia-gpu-with-conda" title="Link to this heading">#</a></h2>
-<p>Install Anaconda, Miniforge, or another Conda distribution from its official source. Open
-its Conda prompt, change to this repository, and inspect the detected hardware
-and installation plan:</p>
-<section id="first-choose-the-correct-project-folder">
-<h3>First choose the correct project folder<a class="headerlink" href="#first-choose-the-correct-project-folder" title="Link to this heading">#</a></h3>
-<p>The working directory must be the <strong>inner <code class="docutils literal notranslate"><span class="pre">SAM_Image_Studio</span></code> folder containing
-<code class="docutils literal notranslate"><span class="pre">scripts/</span></code>, <code class="docutils literal notranslate"><span class="pre">samstudio/</span></code>, and <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></strong>. Do not run installer commands
-from <code class="docutils literal notranslate"><span class="pre">C:\Users\yourname</span></code>, the parent ZIP extraction folder, or inside <code class="docutils literal notranslate"><span class="pre">scripts/</span></code>.
-The CPU-named release archive also contains the GPU installer; you can use that
-complete source tree for the dedicated GPU installation.</p>
-<p>In <strong>Anaconda PowerShell Prompt</strong>, put paths containing spaces in quotes.
-For example, replace this sample path with your actual extracted folder:</p>
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-Location</span> <span class="n">-LiteralPath</span> <span class="s1">'C:\work\AI works\Desktop_SAM3\SAM_Image_Studio_v1.4.2_CPU\SAM_Image_Studio'</span>
-<span class="nb">Test-Path</span> <span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">install_conda_gpu</span><span class="p">.</span><span class="n">py</span>
-<span class="nb">Test-Path</span> <span class="p">.\</span><span class="n">pyproject</span><span class="p">.</span><span class="n">toml</span>
-</pre></div>
+<p>All GPU setup files live under <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>. Follow the
+<a class="reference internal" href="installation-gpu.html"><span class="std std-doc">complete GPU installation and updates guide</span></a>, including
+quoted PowerShell paths, WSL2, authentication and routine updates without
+uninstalling. No application packages are installed into Conda base.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation-gpu.html">NVIDIA GPU with Anaconda / Conda</a></li>
+</ul>
 </div>
-<p>Both checks must return <strong><code class="docutils literal notranslate"><span class="pre">True</span></code></strong>. An unquoted path such as <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">C:\work\AI</span> <span class="pre">works\...</span></code>
-is split at the space, producing PowerShell’s “A positional parameter cannot
-be found” error. <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">'C:\path</span> <span class="pre">with</span> <span class="pre">spaces\SAM_Image_Studio'</span></code> is also valid;
-<code class="docutils literal notranslate"><span class="pre">Set-Location</span> <span class="pre">-LiteralPath</span></code> is explicit and avoids wildcard interpretation.</p>
 </section>
-<section id="first-installation-native-windows-sam1-2-gpu">
-<h3>First installation: native Windows SAM1/2 GPU<a class="headerlink" href="#first-installation-native-windows-sam1-2-gpu" title="Link to this heading">#</a></h3>
-<p>After the folder checks above, run:</p>
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">run</span> <span class="n">-n</span> <span class="n">base</span> <span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">install_conda_gpu</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-inspect</span>
-<span class="n">conda</span> <span class="n">run</span> <span class="n">-n</span> <span class="n">base</span> <span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">install_conda_gpu</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-name</span> <span class="n">sam-image-studio-gpu</span> <span class="p">-</span><span class="n">-dry-run</span>
-<span class="n">conda</span> <span class="n">run</span> <span class="n">-n</span> <span class="n">base</span> <span class="n">python</span> <span class="n">scripts</span><span class="p">/</span><span class="n">install_conda_gpu</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-name</span> <span class="n">sam-image-studio-gpu</span>
-<span class="n">conda</span> <span class="n">activate</span> <span class="n">sam-image-studio-gpu</span>
-<span class="n">python</span> <span class="n">-m</span> <span class="n">pip</span> <span class="n">check</span>
-<span class="n">python</span> <span class="n">-m</span> <span class="n">samstudio</span><span class="p">.</span><span class="n">selftest</span> <span class="p">-</span><span class="n">-device</span> <span class="n">cuda</span>
-<span class="n">python</span> <span class="n">-m</span> <span class="n">samstudio</span>
-</pre></div>
-</div>
-<p>This creates a <strong>new</strong> environment. <code class="docutils literal notranslate"><span class="pre">(base)</span></code> in the prompt is normal for the
-first three outer commands; the app runs after activating the dedicated GPU
-environment. If that name already exists and you are updating, use the
-<a class="reference internal" href="#updating-an-existing-conda-environment">existing-environment update steps</a>
-instead of recreating it.</p>
-<p>On Linux, change to the corresponding project path first, then use the same
-Conda commands for SAM1/2 GPU. For SAM3/SAM3.1 use the separate recipe below.</p>
-<p>On Windows, <code class="docutils literal notranslate"><span class="pre">Install_GPU_Conda.bat</span></code> and <code class="docutils literal notranslate"><span class="pre">Start_GUI_GPU.bat</span></code> use this default
-environment name. An existing Conda environment is not silently replaced.</p>
-<p>The planner selects PyTorch 2.7.1 / torchvision 0.22.1 from <code class="docutils literal notranslate"><span class="pre">cu128</span></code>, <code class="docutils literal notranslate"><span class="pre">cu126</span></code>, or
-<code class="docutils literal notranslate"><span class="pre">cu118</span></code> according to the driver’s reported capability. GPUs with compute
-capability 10 or newer require the CUDA 12.8 build; outdated drivers are
-rejected. A driver-reported CUDA version is its maximum supported runtime,
-not evidence of working CUDA inference or sufficient free VRAM.</p>
-<p>Select <strong>NVIDIA CUDA (Conda)</strong> or <strong>Automatic device</strong> in Model manager.
-Automatic chooses the visible CUDA device with most total memory inside Conda;
-otherwise it uses CPU. This application rejects CUDA outside Conda and in the
-GPU installer’s base environment. Do not add GPU packages to the CPU <code class="docutils literal notranslate"><span class="pre">.venv</span></code>.</p>
-<p>The CUDA self-test exercises a matrix product, torchvision NMS, recovery, and
-GUI construction. Model inference still requires compatible checkpoints and a
-representative preview/save/reopen test with actual images.</p>
+<section id="choose-a-model-after-installation">
+<h2>Choose a model after installation<a class="headerlink" href="#choose-a-model-after-installation" title="Link to this heading">#</a></h2>
+<p>Use <strong>Load model…</strong>. SAM1/2 checkpoints download on demand. For SAM3 ONNX, choose
+that family, leave the folder blank and allow about 3.53 GiB plus a small tokenizer
+for first download. Later loads reuse verified local files. Text aliases and
+ROI clipping work with this backend; native shape/point prompts do not.</p>
+<p>For SAM3/3.1, choose the matching family and authentic weights. You can paste
+an approved read token in the masked optional Model manager field or reuse
+local HF login. See <a class="reference internal" href="segmentation/sam31.html"><span class="std std-doc">SAM3.1 prompting</span></a>.</p>
 </section>
+<section id="update-without-uninstalling">
+<h2>Update without uninstalling<a class="headerlink" href="#update-without-uninstalling" title="Link to this heading">#</a></h2>
+<p>Close the GUI, update/extract the <strong>complete</strong> new source, and enter its root.
+For the existing app-owned CPU environment, rerun its installer. For an activated
+dedicated CPU environment, use <code class="docutils literal notranslate"><span class="pre">--current</span></code>. GPU uses <code class="docutils literal notranslate"><span class="pre">GPU/install.py</span> <span class="pre">--current</span></code>
+and, for native SAM3.1, <code class="docutils literal notranslate"><span class="pre">--sam3</span></code>. Do not recreate the same Conda environment for
+every update, and do not install only a requirements file as an app update.</p>
+<p>Version 1.4.3 automatically handles the Qt/font/XCB libraries and
+<code class="docutils literal notranslate"><span class="pre">pkg_resources</span></code> compatibility encountered with the earlier v1.4.2 installation.
+The installer performs these repairs; normal users need no per-library commands.
+Keep source images, <code class="docutils literal notranslate"><span class="pre">.sam.json</span></code> projects, exports and model caches separately.</p>
 </section>
-<section id="optional-sam3-and-sam3-1">
-<h2>Optional SAM3 and SAM3.1<a class="headerlink" href="#optional-sam3-and-sam3-1" title="Link to this heading">#</a></h2>
-<p>Use Linux or WSL2, Conda, and a driver supporting CUDA 12.6 or later:</p>
-<p><strong>Native Windows Anaconda is not the SAM3.1 installation path in this release.</strong>
-If you are at a <code class="docutils literal notranslate"><span class="pre">(base)</span> <span class="pre">PS</span> <span class="pre">C:\...&gt;</span></code> prompt on Windows, the ordinary commands
-above prepare SAM1/2 GPU. For SAM3.1, open a <strong>Linux/WSL2 terminal</strong> and use a
-Linux Anaconda/Conda installation inside WSL2. Windows and WSL Conda
-environments are separate; do not try to activate the Windows environment from
-the Linux shell.</p>
-<p>For the sample Windows folder above, the corresponding WSL path is:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="s1">'/mnt/c/work/AI works/Desktop_SAM3/SAM_Image_Studio_v1.4.2_CPU/SAM_Image_Studio'</span>
-<span class="nb">test</span><span class="w"> </span>-f<span class="w"> </span>scripts/install_conda_gpu.py<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">test</span><span class="w"> </span>-f<span class="w"> </span>pyproject.toml
-</pre></div>
-</div>
-<p>Keep the path quoted because it contains a space. Confirm that NVIDIA detection
-works in WSL2 and that Linux Conda is available, then create the separate
-SAM3/SAM3.1 environment:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>run<span class="w"> </span>-n<span class="w"> </span>base<span class="w"> </span>python<span class="w"> </span>scripts/install_conda_gpu.py<span class="w"> </span>--inspect
-conda<span class="w"> </span>run<span class="w"> </span>-n<span class="w"> </span>base<span class="w"> </span>python<span class="w"> </span>scripts/install_conda_gpu.py<span class="w"> </span>--name<span class="w"> </span>sam-image-studio-sam3<span class="w"> </span>--sam3
-conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-sam3
-python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>check
-python<span class="w"> </span>-m<span class="w"> </span>samstudio.selftest<span class="w"> </span>--device<span class="w"> </span>cuda
-hf<span class="w"> </span>auth<span class="w"> </span>login
-python<span class="w"> </span>-m<span class="w"> </span>samstudio
-</pre></div>
-</div>
-<p>Obtain access separately at <a class="reference external" href="https://huggingface.co/facebook/sam3">https://huggingface.co/facebook/sam3</a> or
-<a class="reference external" href="https://huggingface.co/facebook/sam3.1">https://huggingface.co/facebook/sam3.1</a>. Select the matching model family and
-authorized checkpoint in Model manager. <code class="docutils literal notranslate"><span class="pre">sam3.pt</span></code> and
-<code class="docutils literal notranslate"><span class="pre">sam3.1_multiplex.pt</span></code> are different architectures and are not interchangeable.
-SAM3 CPU and native Windows SAM3 are not enabled as verified installation paths.</p>
-<p><code class="docutils literal notranslate"><span class="pre">requirements-sam3-experimental.txt</span></code> pins the official SAM3 source commit and a
-separate NumPy 1.26-compatible dependency graph. The default CPU recipe uses
-NumPy 2. Do not merge these environments or independently upgrade their
-NumPy/TIFF/codec dependencies. See the source release’s
-<a class="reference download internal" download="" href="_downloads/6155f54efa3c33e07a25dc0c2e480d25/GPU_CONDA_GUIDE.md"><code class="xref download docutils literal notranslate"><span class="pre">GPU</span> <span class="pre">guide</span></code></a> for the recorded validation limits.</p>
-</section>
-<section id="updating-an-existing-conda-environment">
-<h2>Updating an existing Conda environment<a class="headerlink" href="#updating-an-existing-conda-environment" title="Link to this heading">#</a></h2>
-<p><strong>A routine GPU application update does not require uninstalling Anaconda or
-deleting the existing environment.</strong> Close the GUI, obtain the new source
-version, activate the same dedicated GPU environment, and run the installer
-from the new version’s directory.</p>
-<p>For SAM3/SAM3.1:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-sam3
-git<span class="w"> </span>pull<span class="w"> </span>--ff-only
-python<span class="w"> </span>scripts/install_conda_gpu.py<span class="w"> </span>--current<span class="w"> </span>--sam3
-python<span class="w"> </span>-m<span class="w"> </span>samstudio
-</pre></div>
-</div>
-<p>Replace the environment name with your actual name. If using a new release ZIP,
-extract the complete new release to a fresh folder and change to it <strong>instead
-of</strong> running <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code>. The same <code class="docutils literal notranslate"><span class="pre">--current</span> <span class="pre">--sam3</span></code> command updates the app and
-dependencies in the existing activated environment. Do not run the
-environment-creation command with the existing name for routine updates.</p>
-<p>For a SAM1/2-only GPU environment, use
-<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">scripts/install_conda_gpu.py</span> <span class="pre">--current</span></code> without <code class="docutils literal notranslate"><span class="pre">--sam3</span></code>.
-For an existing CPU environment, use
-<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">scripts/install_environment.py</span> <span class="pre">--backend</span> <span class="pre">cpu</span> <span class="pre">--current</span></code>.</p>
-<p>Installing only a requirements file does not update all of the application,
-verified vendor wheel, or hardware-selected PyTorch installation steps. The
-project installer performs those steps, checks dependency consistency, and
-runs the self-test. Keep model weights/projects in their existing separate
-locations and select weights matching the chosen architecture.</p>
-<p>Create a <strong>new parallel environment</strong> when a release explicitly requires an
-incompatible stack or dependency conflicts cannot be resolved. Keep the old
-working environment until the new one passes your GPU/model acceptance checks.
-That is a migration decision, not a requirement for every version update.</p>
-</section>
-<section id="models-storage-and-network">
-<h2>Models, storage, and network<a class="headerlink" href="#models-storage-and-network" title="Link to this heading">#</a></h2>
-<p>Model weights are <strong>not bundled</strong>. Model manager can download supported SAM1/2
-weights separately, or use a matching local checkpoint. Text prompting for
-SAM2/2.1 additionally downloads the pinned Grounding DINO model. No hosted API
-key is needed for ordinary local CPU annotation. Gated SAM3/SAM3.1 weights need
-the user’s own approved access.</p>
-<p>Installation uses PyPI (<code class="docutils literal notranslate"><span class="pre">pypi.org</span></code>, <code class="docutils literal notranslate"><span class="pre">files.pythonhosted.org</span></code>) and
-<code class="docutils literal notranslate"><span class="pre">download.pytorch.org</span></code> and its official redirects. Model downloads use hosts
-specified in <code class="docutils literal notranslate"><span class="pre">samstudio/inference.py</span></code>, including
-<code class="docutils literal notranslate"><span class="pre">dl.fbaipublicfiles.com</span></code>; optional Hugging Face models also need
-<code class="docutils literal notranslate"><span class="pre">huggingface.co</span></code> and the download destinations returned by that service.
-Restricted cloud environments must allow the actual required destinations.
-Keep TLS and artifact checksum verification enabled.</p>
-<p>Application state/model caches normally live at
-<code class="docutils literal notranslate"><span class="pre">%LOCALAPPDATA%/SAMImageStudio</span></code> on Windows or
-<code class="docutils literal notranslate"><span class="pre">~/.local/share/sam-image-studio</span></code> on Linux. <code class="docutils literal notranslate"><span class="pre">SAM_STUDIO_DATA_DIR</span></code> overrides the
-location. Choose a writable <strong>project folder</strong> for native <code class="docutils literal notranslate"><span class="pre">.sam.json</span></code> saves.</p>
-</section>
-<section id="headless-cloud-checks">
-<h2>Headless cloud checks<a class="headerlink" href="#headless-cloud-checks" title="Link to this heading">#</a></h2>
-<p>The app is a Qt desktop GUI. A local desktop needs a working display. On a
-headless Linux machine, run installation diagnostics offscreen:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">QT_QPA_PLATFORM</span><span class="o">=</span>offscreen<span class="w"> </span>.venv/bin/python<span class="w"> </span>-m<span class="w"> </span>samstudio.selftest<span class="w"> </span>--device<span class="w"> </span>cpu
-</pre></div>
-</div>
-<p>Offscreen checks construct the GUI and exercise persistence; they do not
-provide an interactive desktop or verify GPU model inference.</p>
+<section id="storage-network-and-diagnostics">
+<h2>Storage, network and diagnostics<a class="headerlink" href="#storage-network-and-diagnostics" title="Link to this heading">#</a></h2>
+<p>The installation uses PyPI and official PyTorch indexes. Public ONNX files use
+GitHub Releases; optional native/text models use Hugging Face and its download
+hosts. Keep TLS and model checksum verification enabled.</p>
+<p>Application state defaults to <code class="docutils literal notranslate"><span class="pre">%LOCALAPPDATA%/SAMImageStudio</span></code> on Windows and
+<code class="docutils literal notranslate"><span class="pre">~/.local/share/sam-image-studio</span></code> on Linux; <code class="docutils literal notranslate"><span class="pre">SAM_STUDIO_DATA_DIR</span></code> overrides it.
+Native projects use the folder selected through File. HF CLI login uses its
+own local cache; app token-field input is not saved.</p>
+<p>On a machine without a display, <code class="docutils literal notranslate"><span class="pre">QT_QPA_PLATFORM=offscreen</span></code> supports installation
+self-tests. It does not open an interactive window or prove model inference.
+See <a class="reference internal" href="troubleshooting.html"><span class="std std-doc">troubleshooting</span></a> if an installer check fails.</p>
 </section>
 <section id="uninstall">
 <h2>Uninstall<a class="headerlink" href="#uninstall" title="Link to this heading">#</a></h2>
-<p>Close the GUI, then use <code class="docutils literal notranslate"><span class="pre">Uninstall.bat</span></code> or <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">uninstall.sh</span></code> for app-owned
-local environments. For the dedicated GPU environment:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>deactivate
-conda<span class="w"> </span>env<span class="w"> </span>remove<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-gpu
-</pre></div>
-</div>
-<p>Use its actual name. Source images, annotation projects, exports, and model
-caches are preserved by the supported uninstallers. See
-<a class="reference internal" href="troubleshooting.html"><span class="std std-doc">troubleshooting</span></a> for recovery and dependency failures.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">packaging/Uninstall.bat</span></code> or <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">packaging/uninstall.sh</span></code> for app-owned CPU
+environments. Dedicated Conda environments are removed with <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">remove</span></code>
+after deactivation. User images, annotation projects and model caches are retained
+by the supported uninstallers.</p>
 </section>
 </section>
 
@@ -660,11 +525,11 @@ caches are preserved by the supported uninstallers. See
       </div>
     </a>
     <a class="right-next"
-       href="features/index.html"
+       href="installation-gpu.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Image workflows</p>
+        <p class="prev-next-title">NVIDIA GPU with Anaconda / Conda</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -687,19 +552,13 @@ caches are preserved by the supported uninstallers. See
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-a-backend">Choose a backend</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-on-windows">CPU on Windows</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-on-linux">CPU on Linux</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-in-an-existing-dedicated-environment">CPU in an existing dedicated environment</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpu-with-conda">NVIDIA GPU with Conda</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-choose-the-correct-project-folder">First choose the correct project folder</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-installation-native-windows-sam1-2-gpu">First installation: native Windows SAM1/2 GPU</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-sam3-and-sam3-1">Optional SAM3 and SAM3.1</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-an-existing-conda-environment">Updating an existing Conda environment</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#models-storage-and-network">Models, storage, and network</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#headless-cloud-checks">Headless cloud checks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-windows">CPU: Windows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-linux">CPU: Linux</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#existing-dedicated-cpu-environment">Existing dedicated CPU environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpu-with-conda">NVIDIA GPU with Conda</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-a-model-after-installation">Choose a model after installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-without-uninstalling">Update without uninstalling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#storage-network-and-diagnostics">Storage, network and diagnostics</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uninstall">Uninstall</a></li>
 </ul>
   </nav></div>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Denoising parameters &#8212; SAM Image Studio 1.4.2</title>
+    <title>Denoising parameters &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=23a965d7"></script>
+    <script src="_static/documentation_options.js?v=4766b593"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -49,11 +49,11 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/denoising.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Troubleshooting" href="troubleshooting.html" />
+    <link rel="next" title="Troubleshooting installation and operation" href="troubleshooting.html" />
     <link rel="prev" title="User manual" href="user-manual.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -317,14 +317,15 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="documentation/workspace.html">Workspace and panels</a></li>
-<li class="toctree-l1"><a class="reference internal" href="documentation/modes.html">The four modes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="documentation/controls.html">Buttons, tools, and segmentation controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation/menus.html">Menu-by-menu reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/controls.html">Buttons, tools, and segmentation controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation/modes.html">The four modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation/dialogs.html">Dialogs and their controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation/files.html">Folders, projects, and model files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-manual.html">User manual</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Denoising parameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting installation and operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="downloads.html">Original supplied files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="provenance.html">Sources, versions, and licenses</a></li>
 </ul>
@@ -389,6 +390,11 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="denoising-parameters">
 <h1>Denoising parameters<a class="headerlink" href="#denoising-parameters" title="Link to this heading">#</a></h1>
+<p>This is the <strong>original v1.4.2 manual</strong>, preserved for reference. For current
+installation paths and automatic repairs, use <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>.
+Current illustrated <a class="reference internal" href="features/cleaning.html"><span class="std std-doc">cleaning</span></a>,
+<a class="reference internal" href="segmentation/scopes.html"><span class="std std-doc">Seg scopes</span></a>, <a class="reference internal" href="segmentation/sam31.html"><span class="std std-doc">SAM3.1</span></a> and
+<a class="reference internal" href="features/compressed-sensing.html"><span class="std std-doc">compressed-sensing parameters</span></a> describe v1.4.3.</p>
 <section id="workflow-and-physical-interpretation">
 <h2>Workflow and physical interpretation<a class="headerlink" href="#workflow-and-physical-interpretation" title="Link to this heading">#</a></h2>
 <p>Choose Processing &gt; Denoise, select a method and review the controls. Each parameter has an in-dialog ? explanation. The side panel and this guide contain all exposed controls, defaults and suggested values. These are starting points for comparisons, not specimen-specific optimal settings. Defaults reload on each open or method change. Preview first; Apply creates a reversible image record. Keep the acquired source for comparison and save the native .sam.json for exact editable recovery.</p>
@@ -1049,7 +1055,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Troubleshooting</p>
+        <p class="prev-next-title">Troubleshooting installation and operation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

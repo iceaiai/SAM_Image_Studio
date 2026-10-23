@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Development and documentation &#8212; SAM Image Studio 1.4.2</title>
+    <title>Development and documentation &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=23a965d7"></script>
+    <script src="_static/documentation_options.js?v=4766b593"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="samstudio.workspace_ui" href="autoapi/samstudio/workspace_ui/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -342,7 +342,9 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/plugin_ui/index.html">samstudio.plugin_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/processing/index.html">samstudio.processing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/processing_ui/index.html">samstudio.processing_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/qt_runtime/index.html">samstudio.qt_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/sam31_backend/index.html">samstudio.sam31_backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/sam3_onnx/index.html">samstudio.sam3_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/savepoints/index.html">samstudio.savepoints</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/segmentation_ui/index.html">samstudio.segmentation_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/selftest/index.html">samstudio.selftest</a></li>
@@ -425,7 +427,7 @@
 <h2>Application development<a class="headerlink" href="#application-development" title="Link to this heading">#</a></h2>
 <p>Install the CPU or dedicated GPU environment first. Activate it, then install
 the supplied development requirements:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>packaging/requirements/dev.txt
 python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>check
 python<span class="w"> </span>-m<span class="w"> </span>samstudio.selftest<span class="w"> </span>--device<span class="w"> </span>cpu
 python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>-q<span class="w"> </span>tests/test_v141_processing_workspace.py<span class="w"> </span>tests/test_v141_segmentation_plugins_gpu.py
@@ -444,7 +446,7 @@ On headless Linux, use <code class="docutils literal notranslate"><span class="p
 <h2>Full model/reader validation<a class="headerlink" href="#full-model-reader-validation" title="Link to this heading">#</a></h2>
 <p>The release documents these commands:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>scripts/fetch_validation_assets.py<span class="w"> </span>--models<span class="w"> </span>--text<span class="w"> </span>--directory<span class="w"> </span>/local/validation_assets
-python<span class="w"> </span>scripts/run_full_validation.py<span class="w"> </span>--assets<span class="w"> </span>/local/validation_assets<span class="w"> </span>--output<span class="w"> </span>validation/local_full_results.xml
+python<span class="w"> </span>scripts/run_full_validation.py<span class="w"> </span>--assets<span class="w"> </span>/local/validation_assets<span class="w"> </span>--output<span class="w"> </span>docs/validation/local_full_results.xml
 </pre></div>
 </div>
 <p>The full runner requires actual SAM1/SAM2.1, LaMa, microscopy reader fixtures,
@@ -452,17 +454,23 @@ and the pinned Grounding DINO cache. It rejects skipped tests.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The supplied 1.4.2 archive does <strong>not</strong> contain
-<code class="docutils literal notranslate"><span class="pre">validation/external_assets.json</span></code>, which <code class="docutils literal notranslate"><span class="pre">fetch_validation_assets.py</span></code> reads.
+<code class="docutils literal notranslate"><span class="pre">docs/validation/external_assets.json</span></code>, which <code class="docutils literal notranslate"><span class="pre">fetch_validation_assets.py</span></code> reads.
 Consequently, the fetch command cannot complete from this distribution as-is.
 Obtain the authoritative manifest with expected asset hashes from the release
 maintainer before using that helper. Do not invent hashes or disable checks.
 If genuine fixtures are already available, provide their directory to the full
 runner and ensure its separate text-model cache requirement is satisfied.</p>
 </div>
-<p>The uploaded ZIP’s <code class="docutils literal notranslate"><span class="pre">TEST_REPORT.md</span></code> and <code class="docutils literal notranslate"><span class="pre">validation/</span></code> describe the original
+<p>The uploaded ZIP’s original <code class="docutils literal notranslate"><span class="pre">TEST_REPORT.md</span></code> and <code class="docutils literal notranslate"><span class="pre">validation/</span></code> (now archived under <code class="docutils literal notranslate"><span class="pre">docs/</span></code>) describe the original
 release’s checks. They are historical artifacts, not results from a current
 checkout or this documentation build. Real CUDA and SAM3/SAM3.1 checks remain
 hardware/access dependent.</p>
+</section>
+<section id="current-1-4-3-checks">
+<h2>Current 1.4.3 checks<a class="headerlink" href="#current-1-4-3-checks" title="Link to this heading">#</a></h2>
+<p>See <a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/blob/main/docs/validation/ONNX_VALIDATION_v143.md">current validation</a>
+for actual runtime/model tests and their scope. The historical import results below
+refer only to the earlier checkout.</p>
 </section>
 <section id="repository-import-checks">
 <h2>Repository import checks<a class="headerlink" href="#repository-import-checks" title="Link to this heading">#</a></h2>
@@ -571,6 +579,7 @@ they are not regenerated from Sphinx by this workflow.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-development">Application development</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-model-reader-validation">Full model/reader validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#current-1-4-3-checks">Current 1.4.3 checks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-import-checks">Repository import checks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-the-sphinx-documentation">Build the Sphinx documentation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-integration-and-hosting">Continuous integration and hosting</a></li>

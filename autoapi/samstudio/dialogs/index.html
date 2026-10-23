@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.dialogs &#8212; SAM Image Studio 1.4.2</title>
+    <title>samstudio.dialogs &#8212; SAM Image Studio 1.4.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=23a965d7"></script>
+    <script src="../../../_static/documentation_options.js?v=4766b593"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="samstudio.denoise_config" href="../denoise_config/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.2" />
+  <meta name="docsearch:version" content="1.4.3" />
   </head>
   
   
@@ -342,7 +342,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../plugin_ui/index.html">samstudio.plugin_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../processing/index.html">samstudio.processing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../processing_ui/index.html">samstudio.processing_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qt_runtime/index.html">samstudio.qt_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sam31_backend/index.html">samstudio.sam31_backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sam3_onnx/index.html">samstudio.sam3_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../savepoints/index.html">samstudio.savepoints</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../segmentation_ui/index.html">samstudio.segmentation_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../selftest/index.html">samstudio.selftest</a></li>
@@ -555,8 +557,23 @@
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.dialogs.ModelDialog.browse_button">
+<span class="sig-name descname"><span class="pre">browse_button</span></span><a class="headerlink" href="#samstudio.dialogs.ModelDialog.browse_button" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.dialogs.ModelDialog.info">
 <span class="sig-name descname"><span class="pre">info</span></span><a class="headerlink" href="#samstudio.dialogs.ModelDialog.info" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.dialogs.ModelDialog.hf_token_label">
+<span class="sig-name descname"><span class="pre">hf_token_label</span></span><a class="headerlink" href="#samstudio.dialogs.ModelDialog.hf_token_label" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.dialogs.ModelDialog.hf_token">
+<span class="sig-name descname"><span class="pre">hf_token</span></span><a class="headerlink" href="#samstudio.dialogs.ModelDialog.hf_token" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -577,6 +594,17 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="samstudio.dialogs.ModelDialog.values">
 <span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.ModelDialog.values" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.dialogs.ModelDialog.take_hf_token">
+<span class="sig-name descname"><span class="pre">take_hf_token</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.ModelDialog.take_hf_token" title="Link to this definition">#</a></dt>
+<dd><p>Remove the password from the widget; caller retains it only for the job.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.dialogs.ModelDialog.reject">
+<span class="sig-name descname"><span class="pre">reject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.ModelDialog.reject" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -975,11 +1003,16 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.variant"><code class="docutils literal notranslate"><span class="pre">ModelDialog.variant</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.device"><code class="docutils literal notranslate"><span class="pre">ModelDialog.device</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.path"><code class="docutils literal notranslate"><span class="pre">ModelDialog.path</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.browse_button"><code class="docutils literal notranslate"><span class="pre">ModelDialog.browse_button</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.info"><code class="docutils literal notranslate"><span class="pre">ModelDialog.info</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.hf_token_label"><code class="docutils literal notranslate"><span class="pre">ModelDialog.hf_token_label</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.hf_token"><code class="docutils literal notranslate"><span class="pre">ModelDialog.hf_token</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.controls"><code class="docutils literal notranslate"><span class="pre">ModelDialog.controls</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.change_family"><code class="docutils literal notranslate"><span class="pre">ModelDialog.change_family()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.browse"><code class="docutils literal notranslate"><span class="pre">ModelDialog.browse()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.values"><code class="docutils literal notranslate"><span class="pre">ModelDialog.values()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.take_hf_token"><code class="docutils literal notranslate"><span class="pre">ModelDialog.take_hf_token()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.reject"><code class="docutils literal notranslate"><span class="pre">ModelDialog.reject()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.CalibrationDialog"><code class="docutils literal notranslate"><span class="pre">CalibrationDialog</span></code></a><ul class="nav section-nav flex-column">

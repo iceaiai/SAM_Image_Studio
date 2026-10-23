@@ -1,0 +1,682 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Compressed sensing: controls and suggested parameters &#8212; SAM Image Studio 1.4.3</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/studio.css?v=6a68c8ed" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'features/compressed-sensing';</script>
+    <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/features/compressed-sensing.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Calibration and statistics" href="measurements.html" />
+    <link rel="prev" title="Image restoration and processing" href="processing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.4.3" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SAM Image Studio</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../documentation/index.html">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Image workflows
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../documentation/index.html">
+    Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer/index.html">
+    Developer guide
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iceaiai/SAM_Image_Studio" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">First annotation and export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="annotation.html">Manual annotation and editing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../segmentation/index.html">Segment objects with SAM</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/model-families.html">Detection and segmentation across SAM families</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/sam3-onnx.html">SAM3 ONNX: public text segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/sam31.html">SAM3.1: text and shape prompts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/application-tools.html">Application additions: scope, aliases, and review</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="cleaning.html">Data cleaning: remove, fill and restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">Image restoration and processing</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Compressed sensing: controls and suggested parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="measurements.html">Calibration and statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="saving.html">Native projects, masks, and exports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">Local plugins and custom processing</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Image workflows</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Compressed sensing: controls and suggested parameters</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="compressed-sensing-controls-and-suggested-parameters">
+<h1>Compressed sensing: controls and suggested parameters<a class="headerlink" href="#compressed-sensing-controls-and-suggested-parameters" title="Link to this heading">#</a></h1>
+<p>Compressed sensing here is a <strong>sampled reconstruction experiment</strong> based on the
+supplied notebook. It is different from denoising a complete acquired image.
+The DCT and iterative-TV methods share the same dialog and sampling controls.
+This implementation simulates missing positions from a complete input; it does
+not import a detector acquisition sampling pattern.</p>
+<a class="reference internal image-reference" href="../_images/compressed-sensing-overview.png"><img alt="Synthetic reference, noisy input, ten-percent sampled data and actual DCT and TV reconstruction outputs" src="../_images/compressed-sensing-overview.png" style="width: 100%;" />
+</a>
+<p><em>Actual app algorithms, synthetic 192 × 256 data, seed 7, 40 iterations, native
+grid. The notebook’s optional 256-pixel resolution cap was not applied in this
+figure. Output appearance is not a claim about microscopy reconstruction quality.</em></p>
+<section id="processing-denoise-choose-a-method">
+<h2>1. Processing → Denoise… → choose a method<a class="headerlink" href="#processing-denoise-choose-a-method" title="Link to this heading">#</a></h2>
+<p>Choose <strong>DCT sparsity</strong> or <strong>TV iterative (notebook)</strong>. Despite the menu name,
+their <strong>Task</strong> control selects either ordinary denoising or sampled reconstruction.
+The <strong>?</strong> beside each parameter shows its meaning, units, bounds and suggested
+starting range in the right-hand panel.</p>
+<a class="reference internal image-reference" href="../_images/compressed-sensing-dialog.png"><img alt="Actual DCT dialog after the notebook reconstruction preset, showing task, iterations, fidelity, sampling, initialization and sparsity controls" src="../_images/compressed-sensing-dialog.png" style="width: 100%;" />
+</a>
+</section>
+<section id="task-and-preset-decide-which-experiment-to-run">
+<h2>2. Task and preset: decide which experiment to run<a class="headerlink" href="#task-and-preset-decide-which-experiment-to-run" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Input/question</p></th>
+<th class="head"><p>Task</p></th>
+<th class="head"><p>Start here</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Complete noisy SEM/TEM image</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">denoise</span></code></p></td>
+<td><p>40 iterations, relaxed fidelity 0.20, native grid (<code class="docutils literal notranslate"><span class="pre">max_side=0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>What can be reconstructed from simulated missing positions?</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reconstruct</span></code></p></td>
+<td><p>Random sample 0.10, seed 7, nearest initialization, 40 L2 iterations</p></td>
+</tr>
+<tr class="row-even"><td><p>Reproduce the notebook-sized trial</p></td>
+<td><p>Notebook reconstruction preset button</p></td>
+<td><p>Same reconstruction settings with max side 256; DCT 0.08 or TV step 0.08</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Restore defaults</strong> resets the current method, including Task. Changing the
+method or reopening the dialog also resets parameters. The preset deliberately
+switches Task to reconstruct; do not use it as a universal denoising preset.</p>
+<p>For full-image denoising, every pixel is observed but fidelity is relaxed.
+For reconstruction, fidelity is applied at the sampled positions. With L2
+and 100% sampling, hard consistency restores every input value each iteration:
+it returns the input and therefore cannot denoise it.</p>
+</section>
+<section id="shared-controls-in-dialog-order">
+<h2>3. Shared controls, in dialog order<a class="headerlink" href="#shared-controls-in-dialog-order" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Control / internal key</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Suggested comparison and interpretation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Task / <code class="docutils literal notranslate"><span class="pre">task</span></code></p></td>
+<td><p>denoise</p></td>
+<td><p>Choose according to the table above before changing other parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Iterations / <code class="docutils literal notranslate"><span class="pre">iterations</span></code></p></td>
+<td><p>40</p></td>
+<td><p>Compare 20, 40 and 100 with everything else fixed. More iterations do not guarantee better weak-feature preservation.</p></td>
+</tr>
+<tr class="row-even"><td><p>Data loss / <code class="docutils literal notranslate"><span class="pre">data_loss</span></code></p></td>
+<td><p>l2</p></td>
+<td><p>Start with L2; compare Huber when large residuals matter. L1 uses a constant-magnitude residual update.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fidelity step / <code class="docutils literal notranslate"><span class="pre">fidelity_step</span></code></p></td>
+<td><p>0.20</p></td>
+<td><p>Denoise only. Compare 0.10–0.40. Higher pulls more strongly toward noisy input; lower gives the prior more influence.</p></td>
+</tr>
+<tr class="row-even"><td><p>Huber delta / <code class="docutils literal notranslate"><span class="pre">huber_delta</span></code></p></td>
+<td><p>0.05</p></td>
+<td><p>Used by L1 and Huber; compare 0.01–0.10 on normalized intensities. Disabled for L2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sample fraction / <code class="docutils literal notranslate"><span class="pre">sample_fraction</span></code></p></td>
+<td><p>0.10</p></td>
+<td><p>Reconstruct only. Fraction of observed positions, not a denoising strength. Compare 0.05, 0.10, 0.20 using controlled masks/seeds.</p></td>
+</tr>
+<tr class="row-even"><td><p>Sampling method / <code class="docutils literal notranslate"><span class="pre">sampling_method</span></code></p></td>
+<td><p>random</p></td>
+<td><p>Random positions without replacement, or regular grid. Grid counts are approximate; RGB uses one shared sampling mask.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Random seed / <code class="docutils literal notranslate"><span class="pre">random_seed</span></code></p></td>
+<td><p>7</p></td>
+<td><p>Keep fixed within a parameter comparison; use multiple independent seeds to assess robustness.</p></td>
+</tr>
+<tr class="row-even"><td><p>Initialization / <code class="docutils literal notranslate"><span class="pre">initialization</span></code></p></td>
+<td><p>nearest</p></td>
+<td><p>Compare nearest and zeros only after fixing the sampling mask. Denoise always starts from the full observed input.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Max side / <code class="docutils literal notranslate"><span class="pre">max_side</span></code></p></td>
+<td><p>0</p></td>
+<td><p>0 uses native resolution. 256 reproduces notebook-sized processing, then interpolates back; it can lose fine detail.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Integer input intensities are normalized using their dtype range, not a display
+brightness stretch. Floating-point images already in [0,1] keep that scale;
+other float ranges are normalized by their data range. Parameter strengths
+therefore need not match visually similar screenshots from differently scaled data.</p>
+</section>
+<section id="method-specific-controls">
+<h2>4. Method-specific controls<a class="headerlink" href="#method-specific-controls" title="Link to this heading">#</a></h2>
+<section id="dct-sparsity-retain-a-fraction-of-coefficients">
+<h3>DCT sparsity: retain a fraction of coefficients<a class="headerlink" href="#dct-sparsity-retain-a-fraction-of-coefficients" title="Link to this heading">#</a></h3>
+<p><strong>Sparsity fraction</strong> defaults to <strong>0.08</strong>. Compare <strong>0.04–0.20</strong> first.
+A smaller value retains fewer full-image 2D DCT coefficients; it can suppress
+noise, but may remove small/faint objects and introduce ringing near edges.
+Larger values retain more detail and more noise. Threshold ties can retain
+slightly more coefficients than the requested fraction. This is global
+per-channel DCT, not block JPEG compression or a learned dictionary.</p>
+</section>
+<section id="tv-iterative-notebook-choose-an-iteration-step">
+<h3>TV iterative (notebook): choose an iteration step<a class="headerlink" href="#tv-iterative-notebook-choose-an-iteration-step" title="Link to this heading">#</a></h3>
+<p><strong>TV step</strong> defaults to <strong>0.01 for denoise</strong>; compare <strong>0.005–0.02</strong>.
+The notebook reconstruction preset uses <strong>0.08</strong>. Larger steps can oscillate
+or distort edges. This is a gradient/divergence update step, <strong>not</strong> the
+regularization weight in the separate <strong>TV restoration</strong> (Chambolle) method.</p>
+<p><strong>Gradient epsilon</strong> defaults to <strong>0.000001</strong>, added inside
+<code class="docutils literal notranslate"><span class="pre">sqrt(gx²</span> <span class="pre">+</span> <span class="pre">gy²</span> <span class="pre">+</span> <span class="pre">epsilon)</span></code>. Keep it fixed for a first comparison; it stabilizes
+the gradient magnitude near flat regions rather than setting the sample fraction.</p>
+<a class="reference internal image-reference" href="../_images/compressed-sensing-parameters.png"><img alt="Fixed-noise synthetic comparison of DCT retained fractions four, eight and twenty percent, and TV steps 0.005, 0.01 and 0.02" src="../_images/compressed-sensing-parameters.png" style="width: 100%;" />
+</a>
+<p><em>Computed denoising examples with all pixels observed, 40 iterations, fidelity
+0.20 and a fixed display scale. Compare the same weak boundaries and background;
+no setting is declared optimal from this synthetic illustration.</em></p>
+</section>
+</section>
+<section id="target-source-preview-and-apply">
+<h2>5. Target, source, Preview and Apply<a class="headerlink" href="#target-source-preview-and-apply" title="Link to this heading">#</a></h2>
+<p>After choosing parameters:</p>
+<ol class="arabic simple">
+<li><p>Select <strong>Process selected region / object masks only</strong> if a region or selected
+masks should receive the change; otherwise the target is the whole image.</p></li>
+<li><p>Select <strong>Use original uncleaned pixels (current orientation)</strong> when you want
+the acquired source instead of current derived pixels.</p></li>
+<li><p>Click <strong>Preview</strong>, compare original and result, then <strong>Apply</strong> or <strong>Cancel</strong>.</p></li>
+<li><p>Inspect small-object edges, weak contrast, texture and artificial ringing.
+Keep the seed, input state, normalization and full parameter set with results.</p></li>
+</ol>
+<p>Apply changes only the target; algorithms can use surrounding/full-image context.
+Protected retained crops and pending removed regions are excluded. Cancel leaves
+image pixels unchanged. Native projects retain processing records for recovery.</p>
+</section>
+<section id="how-to-judge-a-parameter-choice">
+<h2>6. How to judge a parameter choice<a class="headerlink" href="#how-to-judge-a-parameter-choice" title="Link to this heading">#</a></h2>
+<p>Use a representative crop and change one parameter at a time. With synthetic
+reference data you can measure error against the known reference. With a real
+image, a smoother result alone does not prove that specimen information was
+preserved. Review independent annotations, edge profiles and downstream
+measurements. Prefer native resolution for scientific comparisons.</p>
+<p>For all allowable bounds and other methods, see the
+<a class="reference internal" href="../denoising.html"><span class="std std-doc">complete parameter reference</span></a>. The
+<a class="reference internal" href="../notebook.html"><span class="std std-doc">notebook page</span></a> explains the unchanged original upload and its
+external teaching-image dependencies. Figures can be reproduced with
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">docs/tools/generate_workflow_figures.py</span></code> from the repository root.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="processing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Image restoration and processing</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="measurements.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Calibration and statistics</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#processing-denoise-choose-a-method">1. Processing → Denoise… → choose a method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-and-preset-decide-which-experiment-to-run">2. Task and preset: decide which experiment to run</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shared-controls-in-dialog-order">3. Shared controls, in dialog order</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#method-specific-controls">4. Method-specific controls</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dct-sparsity-retain-a-fraction-of-coefficients">DCT sparsity: retain a fraction of coefficients</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tv-iterative-notebook-choose-an-iteration-step">TV iterative (notebook): choose an iteration step</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#target-source-preview-and-apply">5. Target, source, Preview and Apply</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-judge-a-parameter-choice">6. How to judge a parameter choice</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, SAM Image Studio contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
