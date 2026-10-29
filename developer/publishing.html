@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Website build and GitHub Pages &#8212; SAM Image Studio 1.4.3</title>
+    <title>Website build and GitHub Pages &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../_static/documentation_options.js?v=a278820e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -52,7 +52,7 @@
     <link rel="prev" title="Compressed sensing notebook" href="../notebook.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -131,6 +131,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -252,6 +259,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../features/index.html">
     Image workflows
   </a>
@@ -319,14 +333,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Application architecture</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api.html">Python API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../autoapi/samstudio/index.html">samstudio</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/analysis_dialogs/index.html">samstudio.analysis_dialogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/app/index.html">samstudio.app</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/calibration_table/index.html">samstudio.calibration_table</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/canvas/index.html">samstudio.canvas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/classical_segmentation/index.html">samstudio.classical_segmentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/compressed_sensing/index.html">samstudio.compressed_sensing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/denoise_config/index.html">samstudio.denoise_config</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/dialogs/index.html">samstudio.dialogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/dialogs_v14/index.html">samstudio.dialogs_v14</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/domain/index.html">samstudio.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/edition/index.html">samstudio.edition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/exemplars/index.html">samstudio.exemplars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/exports/index.html">samstudio.exports</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../autoapi/samstudio/hardware/index.html">samstudio.hardware</a></li>
@@ -424,7 +441,8 @@
 <h1>Website build and GitHub Pages<a class="headerlink" href="#website-build-and-github-pages" title="Link to this heading">#</a></h1>
 <p>The public project website is <strong><a class="reference external" href="https://iceaiai.github.io/SAM_Image_Studio/">https://iceaiai.github.io/SAM_Image_Studio/</a></strong>.
 It is a static Sphinx site, not an online instance of the desktop application.
-No user images, model credentials, or GPU session are served by the site.</p>
+Only the explicitly supplied public examples and their derived figures are
+included; model credentials and interactive GPU sessions are never served.</p>
 <section id="build-locally">
 <h2>Build locally<a class="headerlink" href="#build-locally" title="Link to this heading">#</a></h2>
 <p>From the source repository, install <code class="docutils literal notranslate"><span class="pre">docs/requirements.txt</span></code> in the documentation
@@ -464,6 +482,20 @@ worktree or rewrite the application checkout. Authenticate through the normal
 Git platform integration; do not put credentials in documentation files.</p>
 <p>The workflow does not use a <code class="docutils literal notranslate"><span class="pre">CNAME</span></code>, custom domain, paid service, or external
 analytics. <code class="docutils literal notranslate"><span class="pre">.readthedocs.yaml</span></code> remains an optional alternative hosting recipe.</p>
+</section>
+<section id="normal-and-offline-source-downloads">
+<h2>Normal and offline source downloads<a class="headerlink" href="#normal-and-offline-source-downloads" title="Link to this heading">#</a></h2>
+<p>The download list links to immutable Git tag ZIPs. The normal <code class="docutils literal notranslate"><span class="pre">v1.4.4</span></code> tag has
+no <code class="docutils literal notranslate"><span class="pre">samstudio/resources/offline_profile.json</span></code>. The <code class="docutils literal notranslate"><span class="pre">v1.4.4-offline</span></code> tag adds that
+marker from <code class="docutils literal notranslate"><span class="pre">offline/profile.json</span></code> and uses the offline guide as its root README.
+Its application version and source are otherwise shared with the normal release.
+Create the offline commit in a temporary ordinary clone, never by modifying the
+normal working checkout. Preserve existing tags; push new tags without force.</p>
+<p>Neither source archive includes <code class="docutils literal notranslate"><span class="pre">.venv*</span></code>, <code class="docutils literal notranslate"><span class="pre">.python312</span></code>, <code class="docutils literal notranslate"><span class="pre">offline-cache</span></code> or model
+weights. Verify both ZIPs after publishing, including CRCs, entry points, edition
+marker presence/absence and comparable initial sizes. The user then prepares
+the offline runtime/wheels/checkpoints on a matching connected platform. Do not
+label the source ZIP itself as an already prepared dependency bundle.</p>
 </section>
 </section>
 
@@ -507,6 +539,7 @@ analytics. <code class="docutils literal notranslate"><span class="pre">.readthe
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-locally">Build locally</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#publish">Publish</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-and-offline-source-downloads">Normal and offline source downloads</a></li>
 </ul>
   </nav></div>
 

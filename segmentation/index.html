@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Segment objects with SAM &#8212; SAM Image Studio 1.4.3</title>
+    <title>Segment objects with SAM &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../_static/documentation_options.js?v=a278820e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Manual annotation and editing" href="../features/annotation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -248,6 +255,13 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../features/index.html">
     Image workflows
@@ -313,9 +327,11 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">First annotation and export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/examples.html">Example microscopy images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features/annotation.html">Manual annotation and editing</a></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Segment objects with SAM</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="scopes.html">Seg scope: ROI, whole image and single object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watershed.html">Otsu + watershed: parameters and preview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html">Detection and segmentation across SAM families</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html">SAM3 ONNX: public text segmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sam31.html">SAM3.1: text and shape prompts</a></li>
@@ -403,25 +419,28 @@ the output. A disposable preview becomes an annotation only after <strong>Accept
 <tr class="row-even"><td><p>Understand ROI / whole-image / single-object choices</p></td>
 <td><p><a class="reference internal" href="scopes.html"><span class="std std-doc">Illustrated Seg scopes</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p>Public SAM3 text without HF login</p></td>
+<tr class="row-odd"><td><p>Intensity-based splitting without a model</p></td>
+<td><p><a class="reference internal" href="watershed.html"><span class="std std-doc">Otsu + watershed</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Public SAM3 text without HF login</p></td>
 <td><p><a class="reference internal" href="sam3-onnx.html"><span class="std std-doc">SAM3 ONNX</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p>Learn SAM1/2/3 detection and segmentation differences</p></td>
+<tr class="row-odd"><td><p>Learn SAM1/2/3 detection and segmentation differences</p></td>
 <td><p><a class="reference internal" href="model-families.html"><span class="std std-doc">Model families</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p>Find dark particles using <code class="docutils literal notranslate"><span class="pre">black</span> <span class="pre">dots</span></code></p></td>
+<tr class="row-even"><td><p>Find dark particles using <code class="docutils literal notranslate"><span class="pre">black</span> <span class="pre">dots</span></code></p></td>
 <td><p><a class="reference internal" href="sam31.html#text-prompt-recipe-black-dots"><span class="std std-ref">SAM3.1 text prompt recipe</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p>Find similar particles from positive/negative shapes</p></td>
+<tr class="row-odd"><td><p>Find similar particles from positive/negative shapes</p></td>
 <td><p><a class="reference internal" href="sam31.html#shape-prompt-recipe"><span class="std std-ref">SAM3.1 shape prompt recipe</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p>Restrict results to an ROI or an inverse region</p></td>
+<tr class="row-even"><td><p>Restrict results to an ROI or an inverse region</p></td>
 <td><p><a class="reference internal" href="application-tools.html"><span class="std std-doc">Scope and application tools</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p>Give effective phrases memorable aliases</p></td>
+<tr class="row-odd"><td><p>Give effective phrases memorable aliases</p></td>
 <td><p><a class="reference internal" href="application-tools.html#text-prompt-aliases"><span class="std std-ref">Project aliases</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p>Interpret the workflow controls</p></td>
+<tr class="row-even"><td><p>Interpret the workflow controls</p></td>
 <td><p><a class="reference internal" href="../documentation/modes.html"><span class="std std-doc">Modes</span></a> and <a class="reference internal" href="../documentation/controls.html"><span class="std std-doc">toolbar</span></a></p></td>
 </tr>
 </tbody>
@@ -438,6 +457,12 @@ the output. A disposable preview becomes an annotation only after <strong>Accept
 <li class="toctree-l2"><a class="reference internal" href="scopes.html#quick-comparison">Quick comparison</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="watershed.html">Otsu + watershed: parameters and preview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="watershed.html#menu-region-parameters-preview-accept">Menu, region, parameters, preview, accept</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watershed.html#controls-in-dialog-order">Controls in dialog order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watershed.html#starting-presets-on-the-supplied-examples">Starting presets on the supplied examples</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="model-families.html">Detection and segmentation across SAM families</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html#detection-answers-where-segmentation-answers-which-pixels">Detection answers “where?”; segmentation answers “which pixels?”</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html#sam1-object-prompts-grid-candidates-and-retrieval">SAM1: object prompts, grid candidates, and retrieval</a></li>
@@ -452,6 +477,7 @@ the output. A disposable preview becomes an annotation only after <strong>Accept
 <li class="toctree-l1"><a class="reference internal" href="sam3-onnx.html">SAM3 ONNX: public text segmentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html#install-and-select">Install and select</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html#text-aliases-and-roi">Text, aliases and ROI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html#when-computation-finishes-with-no-masks">When computation finishes with no masks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html#capabilities-and-limits">Capabilities and limits</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html#check-execution-without-qt">Check execution without Qt</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sam3-onnx.html#files-and-provenance">Files and provenance</a></li>

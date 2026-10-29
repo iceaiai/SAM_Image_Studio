@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.canvas &#8212; SAM Image Studio 1.4.3</title>
+    <title>samstudio.canvas &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../../../_static/documentation_options.js?v=a278820e"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -49,11 +49,11 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/autoapi/samstudio/canvas/index.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="samstudio.compressed_sensing" href="../compressed_sensing/index.html" />
+    <link rel="next" title="samstudio.classical_segmentation" href="../classical_segmentation/index.html" />
     <link rel="prev" title="samstudio.calibration_table" href="../calibration_table/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -253,6 +260,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation-offline.html">
+    Offline CPU installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../features/index.html">
     Image workflows
   </a>
@@ -320,14 +334,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../architecture.html">Application architecture</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../api.html">Python API reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../index.html">samstudio</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../analysis_dialogs/index.html">samstudio.analysis_dialogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../app/index.html">samstudio.app</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../calibration_table/index.html">samstudio.calibration_table</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">samstudio.canvas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classical_segmentation/index.html">samstudio.classical_segmentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../compressed_sensing/index.html">samstudio.compressed_sensing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../denoise_config/index.html">samstudio.denoise_config</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../dialogs/index.html">samstudio.dialogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../dialogs_v14/index.html">samstudio.dialogs_v14</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../domain/index.html">samstudio.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../edition/index.html">samstudio.edition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exemplars/index.html">samstudio.exemplars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exports/index.html">samstudio.exports</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hardware/index.html">samstudio.hardware</a></li>
@@ -508,6 +525,11 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.object_context_requested">
 <span class="sig-name descname"><span class="pre">object_context_requested</span></span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.object_context_requested" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.preview_count_changed">
+<span class="sig-name descname"><span class="pre">preview_count_changed</span></span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.preview_count_changed" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -725,11 +747,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="../compressed_sensing/index.html"
+       href="../classical_segmentation/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">samstudio.compressed_sensing</p>
+        <p class="prev-next-title">samstudio.classical_segmentation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -766,6 +788,7 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.zoom_changed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.zoom_changed</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.tool_changed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.tool_changed</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.object_context_requested"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.object_context_requested</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.preview_count_changed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.preview_count_changed</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.document"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.document</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.mode"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.mode</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.tool"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.tool</span></code></a></li>

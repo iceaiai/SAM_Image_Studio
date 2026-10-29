@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.image_processing &#8212; SAM Image Studio 1.4.3</title>
+    <title>samstudio.image_processing &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../../../_static/documentation_options.js?v=a278820e"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="samstudio.help_viewer" href="../help_viewer/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -253,6 +260,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation-offline.html">
+    Offline CPU installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../features/index.html">
     Image workflows
   </a>
@@ -320,14 +334,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../architecture.html">Application architecture</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../api.html">Python API reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../index.html">samstudio</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../analysis_dialogs/index.html">samstudio.analysis_dialogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../app/index.html">samstudio.app</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../calibration_table/index.html">samstudio.calibration_table</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../canvas/index.html">samstudio.canvas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classical_segmentation/index.html">samstudio.classical_segmentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../compressed_sensing/index.html">samstudio.compressed_sensing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../denoise_config/index.html">samstudio.denoise_config</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../dialogs/index.html">samstudio.dialogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../dialogs_v14/index.html">samstudio.dialogs_v14</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../domain/index.html">samstudio.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../edition/index.html">samstudio.edition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exemplars/index.html">samstudio.exemplars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exports/index.html">samstudio.exports</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hardware/index.html">samstudio.hardware</a></li>
@@ -434,22 +451,25 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.image_processing.parameters" title="samstudio.image_processing.parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code></a>(method[, values])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.image_processing.add_signal_noise" title="samstudio.image_processing.add_signal_noise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_signal_noise</span></code></a>(raw, method, params, target)</p></td>
+<td><p>Add residual noise in signal units, without replacing a narrow signal by dtype-scale noise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.image_processing.parameters" title="samstudio.image_processing.parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code></a>(method[, values])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.image_processing.process_pixels" title="samstudio.image_processing.process_pixels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_pixels</span></code></a>(raw, method[, values, target, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.image_processing.process_pixels" title="samstudio.image_processing.process_pixels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_pixels</span></code></a>(raw, method[, values, target, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.image_processing.processing_target" title="samstudio.image_processing.processing_target"><code class="xref py py-obj docutils literal notranslate"><span class="pre">processing_target</span></code></a>(doc[, selected])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.image_processing.processing_target" title="samstudio.image_processing.processing_target"><code class="xref py py-obj docutils literal notranslate"><span class="pre">processing_target</span></code></a>(doc[, selected])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.image_processing.apply_processing" title="samstudio.image_processing.apply_processing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_processing</span></code></a>(doc, result, target, method, params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.image_processing.apply_processing" title="samstudio.image_processing.apply_processing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_processing</span></code></a>(doc, result, target, method, params)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.image_processing.retain_crop" title="samstudio.image_processing.retain_crop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retain_crop</span></code></a>(doc, mask[, name, protect, padding])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.image_processing.retain_crop" title="samstudio.image_processing.retain_crop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retain_crop</span></code></a>(doc, mask[, name, protect, padding])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.image_processing.paste_crop" title="samstudio.image_processing.paste_crop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paste_crop</span></code></a>(doc, ident[, mask_only])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.image_processing.paste_crop" title="samstudio.image_processing.paste_crop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paste_crop</span></code></a>(doc, ident[, mask_only])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -458,6 +478,12 @@
 </section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="samstudio.image_processing.add_signal_noise">
+<span class="sig-prename descclassname"><span class="pre">samstudio.image_processing.</span></span><span class="sig-name descname"><span class="pre">add_signal_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.image_processing.add_signal_noise" title="Link to this definition">#</a></dt>
+<dd><p>Add residual noise in signal units, without replacing a narrow signal by dtype-scale noise.</p>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="samstudio.image_processing.parameters">
 <span class="sig-prename descclassname"><span class="pre">samstudio.image_processing.</span></span><span class="sig-name descname"><span class="pre">parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.image_processing.parameters" title="Link to this definition">#</a></dt>
@@ -540,6 +566,7 @@
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.image_processing.add_signal_noise"><code class="docutils literal notranslate"><span class="pre">add_signal_noise()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.image_processing.parameters"><code class="docutils literal notranslate"><span class="pre">parameters()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.image_processing.process_pixels"><code class="docutils literal notranslate"><span class="pre">process_pixels()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.image_processing.processing_target"><code class="docutils literal notranslate"><span class="pre">processing_target()</span></code></a></li>

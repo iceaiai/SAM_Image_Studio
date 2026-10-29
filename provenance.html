@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Sources, versions, and licenses &#8212; SAM Image Studio 1.4.3</title>
+    <title>Sources, versions, and licenses &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=4766b593"></script>
+    <script src="_static/documentation_options.js?v=a278820e"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="CPU version downloads and manuals" href="downloads.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -248,6 +255,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -401,6 +415,8 @@ tests, bundled wheels, packaged PDFs, and historical validation files were
 extracted from the ZIP. The repository README and Sphinx/CI configuration are
 new repository documentation. Version 1.4.3 adds the SAM3 ONNX adapter,
 model-manager token entry, installation repairs and repository organization.
+Version 1.4.4 adds the classical watershed, signal-scaled noise, per-image input
+state, automatic Python preparation and restricted offline CPU distribution.
 Current code/requirements therefore differ from the original archive.</p>
 <p><code class="docutils literal notranslate"><span class="pre">uploads/FILE_MANIFEST_SHA256_v142.json</span></code> is the <strong>original release archive manifest</strong>. Its
 paths refer to files in that archive, including the original README, not to
@@ -424,8 +440,12 @@ notebook, workshop assets, model weights, or third-party packages.</p>
 <code class="docutils literal notranslate"><span class="pre">docs/tools/generate_workflow_figures.py</span></code>. Scope outlines are manual reference-mask
 schematics. Cleaning and DCT/TV figures execute the application’s actual algorithms.
 The SAM3 ONNX screenshot uses genuine CPU inference on the bundled synthetic image.
-No uploaded private microscopy image, HF token, or SAM3.1 GPU prediction is published
-in these new figures. Raw GUI screenshots show current controls without credentials.</p>
+The 1.4.4 EMD/TIFF originals were explicitly supplied for public examples. Their
+ONNX screenshots show actual CPU inference; noise/watershed comparisons run the
+application algorithms on those files. They are not ground-truth masks or native
+SAM3.1 GPU predictions. Their source data is not automatically relicensed by the
+application MIT license. Raw GUI screenshots contain no credentials. The five
+inline chat images are not included without their original source files.</p>
 </section>
 <section id="public-onnx-adapter">
 <h2>Public ONNX adapter<a class="headerlink" href="#public-onnx-adapter" title="Link to this heading">#</a></h2>

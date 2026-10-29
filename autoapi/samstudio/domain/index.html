@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.domain &#8212; SAM Image Studio 1.4.3</title>
+    <title>samstudio.domain &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../../../_static/documentation_options.js?v=a278820e"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -49,11 +49,11 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/autoapi/samstudio/domain/index.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="samstudio.exemplars" href="../exemplars/index.html" />
+    <link rel="next" title="samstudio.edition" href="../edition/index.html" />
     <link rel="prev" title="samstudio.dialogs_v14" href="../dialogs_v14/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -253,6 +260,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation-offline.html">
+    Offline CPU installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../features/index.html">
     Image workflows
   </a>
@@ -320,14 +334,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../architecture.html">Application architecture</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../api.html">Python API reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../index.html">samstudio</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../analysis_dialogs/index.html">samstudio.analysis_dialogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../app/index.html">samstudio.app</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../calibration_table/index.html">samstudio.calibration_table</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../canvas/index.html">samstudio.canvas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classical_segmentation/index.html">samstudio.classical_segmentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../compressed_sensing/index.html">samstudio.compressed_sensing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../denoise_config/index.html">samstudio.denoise_config</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../dialogs/index.html">samstudio.dialogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../dialogs_v14/index.html">samstudio.dialogs_v14</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">samstudio.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../edition/index.html">samstudio.edition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exemplars/index.html">samstudio.exemplars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exports/index.html">samstudio.exports</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hardware/index.html">samstudio.hardware</a></li>
@@ -787,6 +804,16 @@
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.rotation_reset_state">
+<span class="sig-name descname"><span class="pre">rotation_reset_state</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.domain.Document.rotation_reset_state" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.domain.Document.use_processed">
+<span class="sig-name descname"><span class="pre">use_processed</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#samstudio.domain.Document.use_processed" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.domain.Document.text_aliases">
 <span class="sig-name descname"><span class="pre">text_aliases</span></span><a class="headerlink" href="#samstudio.domain.Document.text_aliases" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -940,6 +967,12 @@
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="samstudio.domain.Document.forget_processing">
+<span class="sig-name descname"><span class="pre">forget_processing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.forget_processing" title="Link to this definition">#</a></dt>
+<dd><p>Discard derived pixel edits; keep annotations and the current orientation.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="samstudio.domain.Document.restore">
 <span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.domain.Document.restore" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -1034,11 +1067,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="../exemplars/index.html"
+       href="../edition/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">samstudio.exemplars</p>
+        <p class="prev-next-title">samstudio.edition</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1130,6 +1163,8 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.source_raw"><code class="docutils literal notranslate"><span class="pre">Document.source_raw</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.source_calibration"><code class="docutils literal notranslate"><span class="pre">Document.source_calibration</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.rotation"><code class="docutils literal notranslate"><span class="pre">Document.rotation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.rotation_reset_state"><code class="docutils literal notranslate"><span class="pre">Document.rotation_reset_state</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.use_processed"><code class="docutils literal notranslate"><span class="pre">Document.use_processed</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.text_aliases"><code class="docutils literal notranslate"><span class="pre">Document.text_aliases</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.detached_crops"><code class="docutils literal notranslate"><span class="pre">Document.detached_crops</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.calibration"><code class="docutils literal notranslate"><span class="pre">Document.calibration</span></code></a></li>
@@ -1160,6 +1195,7 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.delete_objects"><code class="docutils literal notranslate"><span class="pre">Document.delete_objects()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.restore_cleaning_area"><code class="docutils literal notranslate"><span class="pre">Document.restore_cleaning_area()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.state"><code class="docutils literal notranslate"><span class="pre">Document.state()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.forget_processing"><code class="docutils literal notranslate"><span class="pre">Document.forget_processing()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.domain.Document.restore"><code class="docutils literal notranslate"><span class="pre">Document.restore()</span></code></a></li>
 </ul>
 </li>

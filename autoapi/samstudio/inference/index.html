@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.inference &#8212; SAM Image Studio 1.4.3</title>
+    <title>samstudio.inference &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../../../_static/documentation_options.js?v=a278820e"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="samstudio.imageio" href="../imageio/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -253,6 +260,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation-offline.html">
+    Offline CPU installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../features/index.html">
     Image workflows
   </a>
@@ -320,14 +334,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../architecture.html">Application architecture</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../api.html">Python API reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../index.html">samstudio</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../analysis_dialogs/index.html">samstudio.analysis_dialogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../app/index.html">samstudio.app</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../calibration_table/index.html">samstudio.calibration_table</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../canvas/index.html">samstudio.canvas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classical_segmentation/index.html">samstudio.classical_segmentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../compressed_sensing/index.html">samstudio.compressed_sensing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../denoise_config/index.html">samstudio.denoise_config</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../dialogs/index.html">samstudio.dialogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../dialogs_v14/index.html">samstudio.dialogs_v14</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../domain/index.html">samstudio.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../edition/index.html">samstudio.edition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exemplars/index.html">samstudio.exemplars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exports/index.html">samstudio.exports</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hardware/index.html">samstudio.hardware</a></li>
@@ -482,7 +499,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.inference.download_file" title="samstudio.inference.download_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download_file</span></code></a>(url, destination[, sha256, progress, cancel])</p></td>
 <td><p>No partially downloaded file is ever promoted to a usable checkpoint.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.inference.lama_fill" title="samstudio.inference.lama_fill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lama_fill</span></code></a>(rgb, target[, checkpoint, progress, cancel])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.inference.lama_fill" title="samstudio.inference.lama_fill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lama_fill</span></code></a>(rgb, target[, checkpoint, progress, cancel, ...])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -609,6 +626,11 @@ construction/embedding/prediction still run in the background worker.</p>
 <span class="sig-name descname"><span class="pre">last_proposal_scores</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#samstudio.inference.InferenceEngine.last_proposal_scores" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.inference.InferenceEngine.last_diagnostics">
+<span class="sig-name descname"><span class="pre">last_diagnostics</span></span><a class="headerlink" href="#samstudio.inference.InferenceEngine.last_diagnostics" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="samstudio.inference.InferenceEngine.ready">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ready</span></span><a class="headerlink" href="#samstudio.inference.InferenceEngine.ready" title="Link to this definition">#</a></dt>
@@ -643,7 +665,7 @@ construction/embedding/prediction still run in the background worker.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="samstudio.inference.lama_fill">
-<span class="sig-prename descclassname"><span class="pre">samstudio.inference.</span></span><span class="sig-name descname"><span class="pre">lama_fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rgb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.inference.lama_fill" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">samstudio.inference.</span></span><span class="sig-name descname"><span class="pre">lama_fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rgb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_dilation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_margin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blend_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.inference.lama_fill" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -725,6 +747,7 @@ construction/embedding/prediction still run in the background worker.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.inference.InferenceEngine.processor"><code class="docutils literal notranslate"><span class="pre">InferenceEngine.processor</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.inference.InferenceEngine.text_grounder"><code class="docutils literal notranslate"><span class="pre">InferenceEngine.text_grounder</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.inference.InferenceEngine.last_proposal_scores"><code class="docutils literal notranslate"><span class="pre">InferenceEngine.last_proposal_scores</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.inference.InferenceEngine.last_diagnostics"><code class="docutils literal notranslate"><span class="pre">InferenceEngine.last_diagnostics</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.inference.InferenceEngine.ready"><code class="docutils literal notranslate"><span class="pre">InferenceEngine.ready</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.inference.InferenceEngine.load"><code class="docutils literal notranslate"><span class="pre">InferenceEngine.load()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.inference.InferenceEngine.predict"><code class="docutils literal notranslate"><span class="pre">InferenceEngine.predict()</span></code></a></li>

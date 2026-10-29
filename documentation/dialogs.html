@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Dialogs and their controls &#8212; SAM Image Studio 1.4.3</title>
+    <title>Dialogs and their controls &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../_static/documentation_options.js?v=a278820e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="The four modes" href="modes.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -248,6 +255,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -446,6 +460,14 @@ the device, training/patch settings, checkpoint or output directory as needed.
 Saved model files remain even when image Apply is canceled. Every exposed
 restoration parameter is documented in the <a class="reference internal" href="../denoising.html"><span class="std std-doc">parameter reference</span></a>.</p>
 </section>
+<section id="otsu-watershed-and-lama">
+<h2>Otsu + watershed and LaMa<a class="headerlink" href="#otsu-watershed-and-lama" title="Link to this heading">#</a></h2>
+<p>Both parameter dialogs offer <strong>Restore defaults</strong>, per-control <strong>?</strong> help and
+<strong>Preview</strong>. Watershed returns provisional annotation masks to the canvas for
+<strong>Accept masks</strong>; LaMa opens a pixel comparison with <strong>Apply</strong>. Their complete
+controls are in the <a class="reference internal" href="../segmentation/watershed.html"><span class="std std-doc">watershed guide</span></a> and
+<a class="reference internal" href="../features/cleaning.html"><span class="std std-doc">cleaning guide</span></a>.</p>
+</section>
 <section id="retained-crops">
 <h2>Retained crops<a class="headerlink" href="#retained-crops" title="Link to this heading">#</a></h2>
 <p>Select a crop in the list. <strong>Paste back</strong> restores its snapshot; <strong>Paste mask
@@ -458,6 +480,11 @@ saves the real retained pixels; <strong>Remove snapshot</strong> removes the sto
 <p>The rotation dialog offers angle presets/custom angle, optional padding shape,
 and padding fill methods. Review how dimensions and corners change before
 Apply. Rotations update calibration as well as geometry.</p>
+<p><strong>Reset rotation</strong> in this dialog or <strong>Edit → Reset rotation…</strong> restores the
+exact snapshot taken before the first rotation, rather than applying an inverse
+interpolation. Confirmation explains that edits made after that rotation also
+revert. The native project retains this savepoint; Undo can recover the rotated
+state. Older rotated projects without such a savepoint cannot restore lost pixels.</p>
 <p>The scale dialog selects objects/group, factor/spin control/slider,
 temporary/local savepoint storage and a name. <strong>Restore selected</strong> and
 <strong>Restore local snapshot…</strong> recover compatible snapshots; <strong>Apply scale</strong>
@@ -540,6 +567,7 @@ information for bug reports; it is not a full scientific validation run.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-manager-and-inference-options">Model manager and inference options</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#processing-and-preview">Processing and preview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#otsu-watershed-and-lama">Otsu + watershed and LaMa</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retained-crops">Retained crops</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation-and-mask-scaling">Rotation and mask scaling</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#morphology-and-object-properties">Morphology and object properties</a></li>

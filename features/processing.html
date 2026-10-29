@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Image restoration and processing &#8212; SAM Image Studio 1.4.3</title>
+    <title>Image restoration and processing &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../_static/documentation_options.js?v=a278820e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Data cleaning: remove, fill and restore" href="cleaning.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -252,6 +259,13 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="index.html">
     Image workflows
@@ -317,9 +331,11 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">First annotation and export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Example microscopy images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotation.html">Manual annotation and editing</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../segmentation/index.html">Segment objects with SAM</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/watershed.html">Otsu + watershed: parameters and preview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/model-families.html">Detection and segmentation across SAM families</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/sam3-onnx.html">SAM3 ONNX: public text segmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/sam31.html">SAM3.1: text and shape prompts</a></li>
@@ -479,6 +495,55 @@ processing and interpolates back, whereas normal processing uses the native grid
 amount, each with an explicit seed. Keep the seed fixed when comparing
 restoration methods. Synthetic Poisson counts are not detector calibration.</p>
 </section>
+<section id="noise-strength-in-image-data-units">
+<h2>Noise strength in image data units<a class="headerlink" href="#noise-strength-in-image-data-units" title="Link to this heading">#</a></h2>
+<p>Gaussian and Poisson noise are added to the existing image; their output is not
+an independent noise frame. Version 1.4.4 fixes the use of a full int16 storage
+range for images whose actual signal occupies only a small fraction of it.
+Before/after previews use the same original intensity scale.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method/control</p></th>
+<th class="head"><p>Default and meaning</p></th>
+<th class="head"><p>Suggested comparison</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Gaussian sigma</p></td>
+<td><p>0.03 × selected span</p></td>
+<td><p>Start 0.01–0.05 with <strong>image_range</strong>; 0 preserves pixels.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Gaussian scale</p></td>
+<td><p>image_range</p></td>
+<td><p>Robust 0.5–99.5 percentile span of input; dtype_range uses the full storage range, and data_units treats sigma as absolute pixel units.</p></td>
+</tr>
+<tr class="row-even"><td><p>Poisson peak counts</p></td>
+<td><p>1,000</p></td>
+<td><p>Larger counts reduce relative noise; compare 100, 1,000, 10,000. These are synthetic counts, not instrument calibration.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Poisson strength</p></td>
+<td><p>1</p></td>
+<td><p>Multiplier for the zero-mean sampled residual; 0 preserves pixels.</p></td>
+</tr>
+<tr class="row-even"><td><p>Poisson scale</p></td>
+<td><p>image_range</p></td>
+<td><p>Maps the observed span to synthetic counts, then adds the residual back to original values, preserving the baseline. dtype_range is an explicit alternative.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Seed</p></td>
+<td><p>explicit per run</p></td>
+<td><p>Keep fixed for reproducible comparisons.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<a class="reference internal image-reference" href="../_images/v144-noise-comparison.png"><img alt="Original signed int16 EMD image compared with Gaussian sigma 0.03 and Poisson peak 1000, all shown on the original intensity scale" src="../_images/v144-noise-comparison.png" style="width: 100%;" />
+</a>
+<p>The supplied EMD’s central signal range is roughly 4–115 although int16 storage
+spans 65,536 values. Scaling sigma by storage range overwhelmed the signal.
+The default now follows image contrast. Final compositing preserves pixels
+outside the target and any alpha channel. Integer clipping still applies at the
+actual dtype limits. Use <strong>Preview</strong>, then <strong>Apply</strong> only after inspection.</p>
+</section>
 <section id="retain-a-crop-while-processing-its-surroundings">
 <h2>Retain a crop while processing its surroundings<a class="headerlink" href="#retain-a-crop-while-processing-its-surroundings" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
@@ -557,6 +622,7 @@ execution only.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-a-denoiser">Choose a denoiser</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#denoising-versus-compressed-sensing-reconstruction">Denoising versus compressed-sensing reconstruction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-pixels-and-add-noise">Smooth pixels and add noise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-strength-in-image-data-units">Noise strength in image data units</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retain-a-crop-while-processing-its-surroundings">Retain a crop while processing its surroundings</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-models-and-image-history">Neural models and image history</a></li>
 </ul>

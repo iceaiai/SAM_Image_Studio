@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Troubleshooting installation and operation &#8212; SAM Image Studio 1.4.3</title>
+    <title>Troubleshooting installation and operation &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=4766b593"></script>
+    <script src="_static/documentation_options.js?v=a278820e"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Denoising parameters" href="denoising.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -248,6 +255,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -391,7 +405,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="troubleshooting-installation-and-operation">
 <h1>Troubleshooting installation and operation<a class="headerlink" href="#troubleshooting-installation-and-operation" title="Link to this heading">#</a></h1>
-<p>Use current installers from a complete version 1.4.3 source tree. They now handle
+<p>Use current installers from a complete version 1.4.4 source tree. They now handle
 the repeated dependency fixes encountered during v1.4.2 WSL installation. Rerunning
 in an existing dedicated environment is a supported repair; deleting that
 environment is usually unnecessary.</p>
@@ -421,19 +435,22 @@ Application installation into Conda base is rejected.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">libxkbcommon.so.0</span></code>, <code class="docutils literal notranslate"><span class="pre">libfontconfig.so.1</span></code> or <code class="docutils literal notranslate"><span class="pre">libxcb-shape.so.0</span></code> missing</p></td>
+<tr class="row-even"><td><p>Default/background Python is not 3.12</p></td>
+<td><p>Current CPU helpers choose 64-bit 3.12 or prepare a verified local runtime. Run the helper from the complete extracted folder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">libxkbcommon.so.0</span></code>, <code class="docutils literal notranslate"><span class="pre">libfontconfig.so.1</span></code> or <code class="docutils literal notranslate"><span class="pre">libxcb-shape.so.0</span></code> missing</p></td>
 <td><p>Ubuntu helper detects Qt system libraries and installs the missing packages.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Wayland/xcb Qt plugin fails because of a missing library</p></td>
+<tr class="row-even"><td><p>Wayland/xcb Qt plugin fails because of a missing library</p></td>
 <td><p>Installer supplies XCB dependencies; WSLg launch selects X11 when a display is present.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">pkg_resources</span></code> from native SAM3.1</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">pkg_resources</span></code> from native SAM3.1</p></td>
 <td><p>Installer and native requirements select setuptools 80.9.0.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CPU and GPU ONNX distributions conflict</p></td>
+<tr class="row-even"><td><p>CPU and GPU ONNX distributions conflict</p></td>
 <td><p>Runtime helper removes the opposite known distribution and installs the selected one.</p></td>
 </tr>
-<tr class="row-even"><td><p>Torch CUDA wheel does not match driver capability</p></td>
+<tr class="row-odd"><td><p>Torch CUDA wheel does not match driver capability</p></td>
 <td><p>GPU planner chooses a supported official Torch index or explains why the driver is too old.</p></td>
 </tr>
 </tbody>
@@ -529,6 +546,15 @@ before filling, and use unaffected manual background patches.</p></li>
 <li><p>A 100%-sampled L2 reconstruction returns its input. Choose denoise with relaxed
 fidelity for ordinary noisy complete images. See <a class="reference internal" href="features/compressed-sensing.html"><span class="std std-doc">parameter examples</span></a>.</p></li>
 </ul>
+<p>For apparently inverted/poor masks, first turn <strong>View / infer from processed
+image</strong> off and inspect the original. The choice now starts off for newly opened
+images and is separate per image during the session. Toggling preserves edits;
+<strong>Forget processed image…</strong> explicitly clears processing and retained crops, with
+confirmation and Undo. It preserves annotations and current orientation.</p>
+<p>For SAM3 ONNX, inspect the persistent preview count and its tooltip. A model
+returning zero differs from proposals removed by score/ROI/protection. On the
+bundled STEM example, <code class="docutils literal notranslate"><span class="pre">particles</span></code> returned zero while <code class="docutils literal notranslate"><span class="pre">white</span> <span class="pre">dots</span></code> returned 16.
+See the <a class="reference internal" href="segmentation/sam3-onnx.html#when-computation-finishes-with-no-masks"><span class="std std-ref">real-example results</span></a>.</p>
 </section>
 <section id="saving-plugins-and-external-fixtures">
 <h2>7. Saving, plugins and external fixtures<a class="headerlink" href="#saving-plugins-and-external-fixtures" title="Link to this heading">#</a></h2>

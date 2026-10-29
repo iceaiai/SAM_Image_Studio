@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Menu-by-menu reference &#8212; SAM Image Studio 1.4.3</title>
+    <title>Menu-by-menu reference &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../_static/documentation_options.js?v=a278820e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Workspace and panels" href="workspace.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -248,6 +255,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -391,7 +405,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="menu-by-menu-reference">
 <h1>Menu-by-menu reference<a class="headerlink" href="#menu-by-menu-reference" title="Link to this heading">#</a></h1>
-<p>This reference covers every core menu action in the 1.4.3 main window. Labels
+<p>This reference covers every core menu action in the 1.4.4 main window. Labels
 were checked against an offscreen application instance. Some actions depend on
 selection, mode, loaded model, or task state. Installed plugins add their own
 actions and are documented by their authors.</p>
@@ -515,23 +529,27 @@ actions and are documented by their authors.</p>
 <td><p>Choose angle, optional rectangle/square padding and fill; transform pixels, masks and calibration together.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-odd"><td><p>Scale masks / savepoints…</p></td>
+<tr class="row-odd"><td><p>Reset rotation…</p></td>
+<td><p>Restore the exact pre-first-rotation savepoint, including pixels, masks and calibration; later changes are reverted after confirmation. Undo is available.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Scale masks / savepoints…</p></td>
 <td><p>Scale selected/group masks uniformly; keep original/result snapshots temporarily or in a local folder.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p>Morphology / inner region…</p></td>
+<tr class="row-odd"><td><p>Morphology / inner region…</p></td>
 <td><p>Assign morphology and link an enclosed core/cavity or expected polygon side count for measurements.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-odd"><td><p>Vertex deletion radius…</p></td>
+<tr class="row-even"><td><p>Vertex deletion radius…</p></td>
 <td><p>Set the eligible-vertex deletion search radius in image pixels.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p>Fill holes…</p></td>
+<tr class="row-odd"><td><p>Fill holes…</p></td>
 <td><p>Preview filling eligible holes in selected area masks.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-odd"><td><p>Smooth edges…</p></td>
+<tr class="row-even"><td><p>Smooth edges…</p></td>
 <td><p>Preview smoother editable contours for selected masks; does not smooth image intensities.</p></td>
 <td><p>—</p></td>
 </tr>
@@ -605,11 +623,15 @@ this menu order: remove → choose fill → preview/apply → restore.</p>
 <td><p>Choose model family/variant, matching checkpoint and CPU/Conda CUDA device.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-odd"><td><p>Segmentation options…</p></td>
+<tr class="row-odd"><td><p>Otsu + watershed…</p></td>
+<td><p>Adjust threshold/splitting parameters, preview classical masks without SAM, then accept.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Segmentation options…</p></td>
 <td><p>Set grid density, minimum score/area and maximum objects, with path-dependent effects.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p>Text prompt aliases…</p></td>
+<tr class="row-odd"><td><p>Text prompt aliases…</p></td>
 <td><p>Edit project aliases such as nanoparticle → black dots; aliases do not train a model.</p></td>
 <td><p>—</p></td>
 </tr>

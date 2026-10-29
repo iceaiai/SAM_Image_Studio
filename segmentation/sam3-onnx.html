@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>SAM3 ONNX: public text segmentation &#8212; SAM Image Studio 1.4.3</title>
+    <title>SAM3 ONNX: public text segmentation &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../_static/documentation_options.js?v=a278820e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Detection and segmentation across SAM families" href="model-families.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -252,6 +259,13 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../features/index.html">
     Image workflows
@@ -317,9 +331,11 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">First annotation and export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features/examples.html">Example microscopy images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../features/annotation.html">Manual annotation and editing</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Segment objects with SAM</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="scopes.html">Seg scope: ROI, whole image and single object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watershed.html">Otsu + watershed: parameters and preview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model-families.html">Detection and segmentation across SAM families</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">SAM3 ONNX: public text segmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sam31.html">SAM3.1: text and shape prompts</a></li>
@@ -446,6 +462,48 @@ not establish general detection accuracy.</em></p>
 for reused phrases. First-request time therefore differs from a cached prompt
 update. Each request still decodes masks and applies application filters.</p>
 </section>
+<section id="when-computation-finishes-with-no-masks">
+<h2>When computation finishes with no masks<a class="headerlink" href="#when-computation-finishes-with-no-masks" title="Link to this heading">#</a></h2>
+<p>The status bar now retains <strong>Preview: N masks</strong>. Its tooltip distinguishes raw
+model proposals from score/area/scope/protection filtering. For an unchanged
+shipped threshold, selecting ONNX starts at <strong>0.50</strong>; an explicitly customized
+score remains yours. Check <strong>Options…</strong>, the active ROI and accepted/protected
+annotations before deciding that rendering failed.</p>
+<p>Real CPU tests on the <a class="reference internal" href="../features/examples.html"><span class="std std-doc">supplied examples</span></a>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Input / phrase</p></th>
+<th class="head"><p>Raw model proposals</p></th>
+<th class="head"><p>Interpretation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>EMD / <code class="docutils literal notranslate"><span class="pre">black</span> <span class="pre">dots</span></code></p></td>
+<td><p>52; 51 meet score 0.70</p></td>
+<td><p>GUI at 0.50 displayed 52 previews.</p></td>
+</tr>
+<tr class="row-odd"><td><p>STEM / <code class="docutils literal notranslate"><span class="pre">particles</span></code></p></td>
+<td><p>0</p></td>
+<td><p>No model proposals to display, even with lower application score.</p></td>
+</tr>
+<tr class="row-even"><td><p>STEM / <code class="docutils literal notranslate"><span class="pre">white</span> <span class="pre">dots</span></code></p></td>
+<td><p>16</p></td>
+<td><p>GUI displayed 16; scores approximately 0.824–0.965.</p></td>
+</tr>
+<tr class="row-odd"><td><p>STEM / <code class="docutils literal notranslate"><span class="pre">white</span> <span class="pre">circles</span></code> or <code class="docutils literal notranslate"><span class="pre">spheres</span></code></p></td>
+<td><p>16 each</p></td>
+<td><p>Wording describes visible bright round objects.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The app does not silently replace your phrase. Try a short literal visual
+phrase, then inspect the result. Turn <strong>View / infer from processed image</strong> off
+to test the original data. New images default to original input, and toggling
+preserves processing until you explicitly choose <strong>Forget processed image…</strong>.
+These tests verify execution/display; without ground-truth masks they do not
+measure segmentation error or guarantee detection for other images.</p>
+</section>
 <section id="capabilities-and-limits">
 <h2>Capabilities and limits<a class="headerlink" href="#capabilities-and-limits" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -549,6 +607,7 @@ also verified. See <a class="reference internal" href="../provenance.html"><span
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-and-select">Install and select</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-aliases-and-roi">Text, aliases and ROI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-computation-finishes-with-no-masks">When computation finishes with no masks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capabilities-and-limits">Capabilities and limits</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-execution-without-qt">Check execution without Qt</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#files-and-provenance">Files and provenance</a></li>

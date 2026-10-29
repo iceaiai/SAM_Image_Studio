@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>CPU version downloads and manuals &#8212; SAM Image Studio 1.4.3</title>
+    <title>CPU version downloads and manuals &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=4766b593"></script>
+    <script src="_static/documentation_options.js?v=a278820e"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Troubleshooting installation and operation" href="troubleshooting.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -248,6 +255,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -404,7 +418,17 @@ for that version. No Git account or clone command is required for ZIP downloads.
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>1.4.3 — recommended</strong></p></td>
+<tr class="row-even"><td><p><strong>1.4.4 — recommended</strong></p></td>
+<td><p><strong><a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip">Download ZIP</a></strong> · <a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.4">Source tag</a></p></td>
+<td><p>Windows/Linux CPU source, automatic Python 3.12 selection/bootstrap; optional GPU setup included</p></td>
+<td><p>Extract <code class="docutils literal notranslate"><span class="pre">SAM_Image_Studio-1.4.4/</span></code>; Windows: <code class="docutils literal notranslate"><span class="pre">packaging/Install_CPU.bat</span></code>, then <code class="docutils literal notranslate"><span class="pre">packaging/Start_GUI.bat</span></code>; Linux: <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">packaging/install_cpu.sh</span></code>, then <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">packaging/start_gui.sh</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>1.4.4 — offline CPU</strong></p></td>
+<td><p><strong><a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4-offline.zip">Download ZIP</a></strong> · <a class="reference internal" href="installation-offline.html"><span class="std std-doc">Offline guide</span></a></p></td>
+<td><p>CPU only: SAM1 ViT-B, SAM2.1 Small and Base+; source-sized initial ZIP</p></td>
+<td><p>Extract <code class="docutils literal notranslate"><span class="pre">SAM_Image_Studio-1.4.4-offline/</span></code>; first run <code class="docutils literal notranslate"><span class="pre">offline/Prepare_Offline.bat</span></code> or <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">offline/prepare_offline.sh</span></code> while online. Copy the whole prepared folder, then use the normal CPU installer offline.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>1.4.3 — previous</strong></p></td>
 <td><p><strong><a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip">Download ZIP</a></strong> · <a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.3">Source tag</a></p></td>
 <td><p>Complete Windows/Linux CPU source bundle, including shared optional GPU setup</p></td>
 <td><p>Open <code class="docutils literal notranslate"><span class="pre">SAM_Image_Studio-1.4.3/</span></code>, containing <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>; Windows: <code class="docutils literal notranslate"><span class="pre">packaging/Install_CPU.bat</span></code>, then <code class="docutils literal notranslate"><span class="pre">packaging/Start_GUI.bat</span></code>; Linux: <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">packaging/install_cpu.sh</span></code>, then <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">packaging/start_gui.sh</span></code>.</p></td>
@@ -419,9 +443,12 @@ for that version. No Git account or clone command is required for ZIP downloads.
 </div>
 <p>These are the CPU application archives currently available in this repository.
 The table does not advertise unprovided older versions or standalone executables.
-Both source packages need <strong>64-bit Python 3.12</strong> and an installation step after
-extraction. Model weights are separate, on-demand downloads.</p>
-<p>The v1.4.3 archive contains the full shared application, including <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>, and
+Every source package needs installation after extraction. The v1.4.4 CPU helpers
+automatically use or prepare <strong>64-bit Python 3.12</strong> on Windows/Linux x86-64.
+Older versions need Python 3.12 beforehand. Normal-edition model weights download
+on demand. The offline edition must pre-download its complete cache first; its
+initial ZIP does not contain those large dependencies/checkpoints.</p>
+<p>The normal v1.4.4 archive contains the full shared application, including <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>, and
 can be used with either the CPU installer or its optional GPU installer. Follow the
 <a class="reference internal" href="installation.html#first-for-every-route-download-extract-or-clone"><span class="std std-ref">common download/clone step</span></a>
 before choosing any CPU/GPU installation route. If you use Git instead, run the
@@ -429,8 +456,10 @@ clone commands once; do not both clone and download unless you want two copies.<
 </section>
 <section id="which-cpu-package-should-i-choose">
 <h2>Which CPU package should I choose?<a class="headerlink" href="#which-cpu-package-should-i-choose" title="Link to this heading">#</a></h2>
-<p>Use <strong>1.4.3</strong> for new installations. It adds public SAM3 ONNX text segmentation,
-current UI/docs, automatic Ubuntu/WSL Qt dependency repairs and reorganized helpers.
+<p>Use <strong>1.4.4 normal</strong> for new connected installations, or <strong>1.4.4 offline CPU</strong>
+for a fully prepared disconnected installation. Both add Otsu + watershed,
+signal-scaled noise, processing-input controls and automatic Python preparation.
+The normal edition also includes public SAM3 ONNX text segmentation.
 CPU also supports SAM1 and SAM2/2.1. Native SAM3/SAM3.1 require the separate
 <a class="reference internal" href="installation-gpu.html"><span class="std std-doc">GPU installation route</span></a>; they are not CPU model options.</p>
 <p>The <strong>1.4.2</strong> ZIP remains available for reproducing the original release. Its

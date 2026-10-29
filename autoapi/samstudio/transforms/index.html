@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.transforms &#8212; SAM Image Studio 1.4.3</title>
+    <title>samstudio.transforms &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../../../_static/documentation_options.js?v=a278820e"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="samstudio.text_prompts" href="../text_prompts/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -253,6 +260,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation-offline.html">
+    Offline CPU installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../features/index.html">
     Image workflows
   </a>
@@ -320,14 +334,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../architecture.html">Application architecture</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../api.html">Python API reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../index.html">samstudio</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../analysis_dialogs/index.html">samstudio.analysis_dialogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../app/index.html">samstudio.app</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../calibration_table/index.html">samstudio.calibration_table</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../canvas/index.html">samstudio.canvas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classical_segmentation/index.html">samstudio.classical_segmentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../compressed_sensing/index.html">samstudio.compressed_sensing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../denoise_config/index.html">samstudio.denoise_config</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../dialogs/index.html">samstudio.dialogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../dialogs_v14/index.html">samstudio.dialogs_v14</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../domain/index.html">samstudio.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../edition/index.html">samstudio.edition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exemplars/index.html">samstudio.exemplars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exports/index.html">samstudio.exports</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hardware/index.html">samstudio.hardware</a></li>
@@ -449,10 +466,13 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.transforms.rotate_document" title="samstudio.transforms.rotate_document"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate_document</span></code></a>(document, angle[, padding])</p></td>
 <td><p>Return the padding footprint. Caller commits this operation with History.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.transforms.scaled_objects" title="samstudio.transforms.scaled_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled_objects</span></code></a>(document, object_ids, factor)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.transforms.reset_rotation" title="samstudio.transforms.reset_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_rotation</span></code></a>(document)</p></td>
+<td><p>Restore the exact pre-first-rotation savepoint, including cropped pixels and geometry.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.transforms.scaled_objects" title="samstudio.transforms.scaled_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled_objects</span></code></a>(document, object_ids, factor)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.transforms.apply_scaled_objects" title="samstudio.transforms.apply_scaled_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_scaled_objects</span></code></a>(document, replacements)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.transforms.apply_scaled_objects" title="samstudio.transforms.apply_scaled_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_scaled_objects</span></code></a>(document, replacements)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -485,6 +505,12 @@
 <dt class="sig sig-object py" id="samstudio.transforms.rotate_document">
 <span class="sig-prename descclassname"><span class="pre">samstudio.transforms.</span></span><span class="sig-name descname"><span class="pre">rotate_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.transforms.rotate_document" title="Link to this definition">#</a></dt>
 <dd><p>Return the padding footprint. Caller commits this operation with History.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="samstudio.transforms.reset_rotation">
+<span class="sig-prename descclassname"><span class="pre">samstudio.transforms.</span></span><span class="sig-name descname"><span class="pre">reset_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.transforms.reset_rotation" title="Link to this definition">#</a></dt>
+<dd><p>Restore the exact pre-first-rotation savepoint, including cropped pixels and geometry.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -554,6 +580,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.transforms.transform_points"><code class="docutils literal notranslate"><span class="pre">transform_points()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.transforms.transform_object"><code class="docutils literal notranslate"><span class="pre">transform_object()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.transforms.rotate_document"><code class="docutils literal notranslate"><span class="pre">rotate_document()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.transforms.reset_rotation"><code class="docutils literal notranslate"><span class="pre">reset_rotation()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.transforms.scaled_objects"><code class="docutils literal notranslate"><span class="pre">scaled_objects()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.transforms.apply_scaled_objects"><code class="docutils literal notranslate"><span class="pre">apply_scaled_objects()</span></code></a></li>
 </ul>

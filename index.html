@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>SAM Image Studio &#8212; SAM Image Studio 1.4.3</title>
+    <title>SAM Image Studio &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=4766b593"></script>
+    <script src="_static/documentation_options.js?v=a278820e"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -52,7 +52,7 @@
     <link rel="next" title="Installation and updates" href="installation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -131,6 +131,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -249,6 +256,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -399,6 +413,8 @@ preview, apply and restore original pixels.</p></li>
 examples and a single native object; automatic grid is explained separately.</p></li>
 <li><p><a class="reference internal" href="features/compressed-sensing.html"><span class="std std-doc">Compressed sensing</span></a>: dialog order, DCT/TV
 parameter suggestions and computed synthetic comparisons.</p></li>
+<li><p><a class="reference internal" href="segmentation/watershed.html"><span class="std std-doc">Otsu + watershed</span></a>: threshold, splitting parameters and preview without a model.</p></li>
+<li><p><a class="reference internal" href="features/examples.html"><span class="std std-doc">Example images</span></a>: supplied EMD/TIFF and measured CPU outputs.</p></li>
 <li><p><a class="reference internal" href="segmentation/sam3-onnx.html"><span class="std std-doc">SAM3 ONNX</span></a>: public text weights without HF login,
 aliases and exact application ROI clipping.</p></li>
 </ul>
@@ -443,7 +459,7 @@ and negative examples, review-before-accept, protected annotations, native
 autosave, calibrated measurements, and reversible processing. Read the
 <a class="reference internal" href="segmentation/application-tools.html"><span class="std std-doc">application additions guide</span></a> to understand
 their scope and limitations.</p>
-<p>Version <strong>1.4.3</strong>, based on the v1.4 application line. The optional SAM3/3.1
+<p>Version <strong>1.4.4</strong>, based on the v1.4 application line. The optional SAM3/3.1
 backend requires NVIDIA CUDA, a dedicated Linux/WSL2 Conda environment, and
 approved compatible weights. CPU supports SAM1, SAM2/2.1 and public SAM3 ONNX text segmentation. This website
 documents implementation and recorded checks; it does not claim new CUDA

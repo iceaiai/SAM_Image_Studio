@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Buttons, tools, and segmentation controls &#8212; SAM Image Studio 1.4.3</title>
+    <title>Buttons, tools, and segmentation controls &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=4766b593"></script>
+    <script src="../_static/documentation_options.js?v=a278820e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Menu-by-menu reference" href="menus.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.3" />
+  <meta name="docsearch:version" content="1.4.4" />
   </head>
   
   
@@ -132,6 +132,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -248,6 +255,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../installation.html">
     Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation-offline.html">
+    Offline CPU installation
   </a>
 </li>
 
@@ -436,10 +450,13 @@ important Segment choices before you run a preview.</p>
 <tr class="row-even"><td><p>View / infer from processed image</p></td>
 <td><p>Choose derived pixels for display/inference when present; the acquired source is retained.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Live prompt preview</p></td>
+<tr class="row-odd"><td><p>Forget processed image…</p></td>
+<td><p>Confirm clearing derived pixels, processing records and retained crops. Keeps annotations/orientation; undoable.</p></td>
+</tr>
+<tr class="row-even"><td><p>Live prompt preview</p></td>
 <td><p>Schedule a background preview after eligible prompt edits.</p></td>
 </tr>
-<tr class="row-even"><td><p>Background: not selected… / Background group…</p></td>
+<tr class="row-odd"><td><p>Background: not selected… / Background group…</p></td>
 <td><p>Choose the explicit manual background-patch source group for cleaning.</p></td>
 </tr>
 </tbody>
@@ -526,13 +543,16 @@ For detailed text/shape interaction and output scope, see the
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Show cleaning regions</p></td>
+<tr class="row-even"><td><p>Select all / Deselect all</p></td>
+<td><p>Available independently in Objects, Groups and Image files. Selecting group rows does not change the active drawing Group in the toolbar.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Show cleaning regions</p></td>
 <td><p>Toggle cleaning record outlines without deleting the records.</p></td>
 </tr>
-<tr class="row-odd"><td><p>+ Group / Rename / Color</p></td>
+<tr class="row-even"><td><p>+ Group / Rename / Color</p></td>
 <td><p>Create/rename groups and choose their colors.</p></td>
 </tr>
-<tr class="row-even"><td><p>Remove selected images</p></td>
+<tr class="row-odd"><td><p>Remove selected images</p></td>
 <td><p>Save and remove selected image/frame entries from this session. Source files and saved projects remain.</p></td>
 </tr>
 </tbody>
