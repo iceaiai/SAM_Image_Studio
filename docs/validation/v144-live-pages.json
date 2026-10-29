@@ -1,0 +1,10 @@
+[
+  {
+    "url": "https://iceaiai.github.io/SAM_Image_Studio/",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "url": "https://iceaiai.github.io/SAM_Image_Studio/downloads.html",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  }
+]

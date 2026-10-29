@@ -1,0 +1,26 @@
+[
+  {
+    "tag": "v1.4.4",
+    "url": "https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip",
+    "bytes": 22443716,
+    "sha256": "20f0fe0ff491cc2db8864b81293b1b875135aec9e72cd63d257accff336212e6",
+    "files": 248,
+    "root_folder": "SAM_Image_Studio-1.4.4",
+    "crc_ok": true,
+    "offline_marker": false,
+    "cache_absent": true,
+    "examples_byte_preserved": true
+  },
+  {
+    "tag": "v1.4.4-offline",
+    "url": "https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4-offline.zip",
+    "bytes": 22447969,
+    "sha256": "7f7699f2703a483b92af484dfce1bd41741c49b4f9155f994c2a5f712845b7dc",
+    "files": 249,
+    "root_folder": "SAM_Image_Studio-1.4.4-offline",
+    "crc_ok": true,
+    "offline_marker": true,
+    "cache_absent": true,
+    "examples_byte_preserved": true
+  }
+]

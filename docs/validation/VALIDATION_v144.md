@@ -46,5 +46,15 @@ Noise examples share the acquired image intensity scale.
 
 This cloud has no NVIDIA GPU. Native SAM3/3.1 CUDA, Windows GUI/install execution,
 and real LaMa inference remain outside this validation. The strict Sphinx build and desktop/mobile browser checks passed (81 pages,
-8,953 local references, no broken local links/anchors, no missing local resources
-or browser JavaScript errors). Normal/offline source archive checks follow publication.
+8,956 local references, no broken local links/anchors, no missing local resources
+or browser JavaScript errors). Normal/offline tag ZIPs were downloaded from the advertised GitHub URLs and
+passed complete CRC checks, expected entry-point/edition-marker checks and
+byte-for-byte example checks. Initial sizes: 22,443,716 bytes normal and
+22,447,969 bytes offline (difference below 0.02%). See
+`v144-source-archives.json` for SHA-256 digests. The offline tag adds only its
+profile marker and root guide to the normal release source.
+
+Sphinx files were pushed without force to the existing `gh-pages` branch.
+Both attempted live Pages URLs were blocked at the proxy tunnel with HTTP 403,
+so branch publication and local browser checks passed but the deployed public
+HTTP response could not be verified from this cloud. See `v144-live-pages.json`.
