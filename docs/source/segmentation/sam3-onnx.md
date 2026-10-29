@@ -58,6 +58,30 @@ The image embedding is cached until pixels change; text features are cached
 for reused phrases. First-request time therefore differs from a cached prompt
 update. Each request still decodes masks and applies application filters.
 
+## When computation finishes with no masks
+
+The status bar now retains **Preview: N masks**. Its tooltip distinguishes raw
+model proposals from score/area/scope/protection filtering. For an unchanged
+shipped threshold, selecting ONNX starts at **0.50**; an explicitly customized
+score remains yours. Check **Options…**, the active ROI and accepted/protected
+annotations before deciding that rendering failed.
+
+Real CPU tests on the [supplied examples](../features/examples.md):
+
+| Input / phrase | Raw model proposals | Interpretation |
+| --- | --- | --- |
+| EMD / `black dots` | 52; 51 meet score 0.70 | GUI at 0.50 displayed 52 previews. |
+| STEM / `particles` | 0 | No model proposals to display, even with lower application score. |
+| STEM / `white dots` | 16 | GUI displayed 16; scores approximately 0.824–0.965. |
+| STEM / `white circles` or `spheres` | 16 each | Wording describes visible bright round objects. |
+
+The app does not silently replace your phrase. Try a short literal visual
+phrase, then inspect the result. Turn **View / infer from processed image** off
+to test the original data. New images default to original input, and toggling
+preserves processing until you explicitly choose **Forget processed image…**.
+These tests verify execution/display; without ground-truth masks they do not
+measure segmentation error or guarantee detection for other images.
+
 ## Capabilities and limits
 
 | Supported | Unavailable in this export |

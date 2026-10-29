@@ -1,16 +1,26 @@
 """Image-list removal and opt-in reopening of the previous v1.4 workspace."""
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QMenu, QMessageBox, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QMenu, QMessageBox, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QTreeWidget
 
 
 class WorkspaceWorkflowMixin:
     def _init_workspace_ui(self):
+        self.groups_tree.setSelectionMode(QTreeWidget.SelectionMode.ExtendedSelection)
+        for tree,panel,name in [(self.objects_tree,self.objects_dock.widget(),'objects'),(self.groups_tree,self.groups_dock.widget(),'groups')]:
+            row=QHBoxLayout()
+            for label,callback in [('Select all',tree.selectAll),('Deselect all',tree.clearSelection)]:
+                button=QPushButton(label);button.setObjectName(name+label.replace(' ',''));button.clicked.connect(callback);row.addWidget(button)
+            panel.layout().insertLayout(0,row)
         self.files_tree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.files_tree.customContextMenuRequested.connect(self._image_context_menu)
         panel = QWidget(self)
         layout = QVBoxLayout(panel)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.files_tree)
+        row=QHBoxLayout()
+        for label,callback in [('Select all',self.files_tree.selectAll),('Deselect all',self.files_tree.clearSelection)]:
+            button=QPushButton(label);button.setObjectName('images'+label.replace(' ',''));button.clicked.connect(callback);row.addWidget(button)
+        layout.addLayout(row)
         self.remove_images_button = QPushButton('Remove selected images')
         self.remove_images_button.setObjectName('removeWorkspaceImages')
         self.remove_images_button.setToolTip('Save annotations and remove images from this session. Source files remain available.')
@@ -20,6 +30,8 @@ class WorkspaceWorkflowMixin:
 
     def _image_context_menu(self, position):
         menu = QMenu(self)
+        menu.addAction('Select all images',self.files_tree.selectAll)
+        menu.addAction('Deselect all images',self.files_tree.clearSelection)
         menu.addAction('Remove selected images (keep annotations)', self.remove_workspace_images)
         menu.exec(self.files_tree.viewport().mapToGlobal(position))
 

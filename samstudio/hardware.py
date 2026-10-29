@@ -66,6 +66,8 @@ def conda_gpu_plan(root,report,name='sam-image-studio-gpu',current=False,sam3=Fa
     return commands
 
 def automatic_device():
+    from .edition import offline_profile
+    if offline_profile():return 'cpu'
     import torch
     if not os.environ.get('CONDA_PREFIX') or not torch.cuda.is_available():return 'cpu'
     devices=[(torch.cuda.get_device_properties(i).total_memory,i) for i in range(torch.cuda.device_count())]

@@ -79,6 +79,11 @@ for version, stamp, prefix in [("SAM2", "072824", "sam2"), ("SAM2.1", "092824", 
 CATALOG.append(ModelSpec("SAM3 ONNX", "ViT-H · text prompts", "sam3-onnx-v3", config="sam3-onnx-v3"))
 CATALOG.append(ModelSpec("SAM3", "Native interactive", "sam3.pt", config="sam3"))
 CATALOG.append(ModelSpec("SAM3.1", "Multiplex · GPU only", "sam3.1_multiplex.pt", config="sam3.1"))
+from .edition import offline_profile
+_offline=offline_profile()
+if _offline:
+    _allowed={(m['family'],m['variant']) for m in _offline['models']}
+    CATALOG[:]=[s for s in CATALOG if (s.family,s.variant) in _allowed]
 
 
 def check_cancel(cancel):
@@ -104,6 +109,8 @@ def download_file(url: str, destination: Path, sha256="", progress=None, cancel=
             return destination
         raise ValueError(f"Checksum mismatch in cached model {destination.name}. Remove this file and retry.")
     temporary = destination.with_suffix(destination.suffix + ".part")
+    if offline_profile():
+        raise RuntimeError('Network model downloads are disabled in the offline CPU edition. Prepare and transfer its complete offline-cache first.')
     done = temporary.stat().st_size if temporary.exists() else 0
     headers = {"User-Agent": "SAMImageStudio/1.0"}
     if done:
@@ -165,12 +172,20 @@ class InferenceEngine:
         self._lock = threading.RLock()
         self.text_grounder = None
         self.last_proposal_scores = []
+        self.last_diagnostics = {}
 
     @property
     def ready(self):
         return self.predictor is not None
 
     def load(self, spec: ModelSpec, device="cpu", checkpoint=None, progress=None, cancel=None, hf_token=None):
+        if offline_profile():
+            if device not in ('cpu','auto'):raise ValueError('The offline edition is CPU only.')
+            device='cpu'
+            if (spec.family,spec.variant) not in {(s.family,s.variant) for s in CATALOG}:raise ValueError('Model not included in the offline CPU edition.')
+            if not checkpoint:
+                from .edition import local_model
+                checkpoint=local_model(spec)
         if spec.family == "SAM3 ONNX":
             from .sam3_onnx import Sam3OnnxBackend, model_directory
             if device == "auto":
@@ -320,6 +335,7 @@ class InferenceEngine:
         if protected.shape != shape or roi is not None and roi.shape != shape:
             raise ValueError("ROI/protected masks do not match the image dimensions.")
         self.last_proposal_scores = []
+        self.last_diagnostics = {}
         def finish(candidates, scores, clip):
             output = filter_proposals(candidates, protected, clip, min_area)
             self.last_proposal_scores = []
@@ -338,8 +354,12 @@ class InferenceEngine:
             pairs = [(mask, score) for mask, score in zip(candidates, scores) if score >= min_score]
             result = finish([p[0] for p in pairs], [p[1] for p in pairs], None if whole else roi)[:max_objects]
             self.last_proposal_scores = self.last_proposal_scores[:len(result)]
+            self.last_diagnostics={'raw_candidates':len(candidates),'after_score':len(pairs),'eligible':len(result),
+                'min_score':min_score,'maximum_score':max(scores) if scores else None,'text':text_prompt,
+                'input':'Provided RGB pixels'}
             return result
         if text_prompt.strip():
+            if offline_profile():raise ValueError('Text detection is not included in the offline CPU edition. Use points, shapes, exemplar search, grid or Otsu + watershed.')
             if self.spec.family == "SAM3.1":
                 with self._lock:
                     masks,scores = self.predictor.concepts(rgb,text=text_prompt,cancel=cancel)
@@ -415,11 +435,26 @@ LAMA_URL = "https://github.com/enesmsahin/simple-lama-inpainting/releases/downlo
 LAMA_SHA256 = "7ba7aa7ac37a4d41fdbbeba3a2af7ead18058552997e3a3cd1a3b2210c9e6b4c"
 
 
-def lama_fill(rgb, target, checkpoint=None, progress=None, cancel=None):
+def lama_fill(rgb, target, checkpoint=None, progress=None, cancel=None, *, mask_dilation=0, context_margin=0, max_side=0, blend_width=0):
     import torch
     import torch.nn.functional as F
+    import cv2
+    from scipy import ndimage as ndi
     if target.all() or not target.any():
         raise ValueError("LaMa needs a nonempty removal region and some remaining background.")
+    for value,limit in [(mask_dilation,64),(context_margin,2048),(max_side,8192),(blend_width,128)]:
+        if isinstance(value,bool) or int(value)!=value or not 0<=value<=limit:raise ValueError('Invalid LaMa context/mask parameter.')
+    original_rgb=rgb;original_target=np.asarray(target,bool)
+    expanded=ndi.binary_dilation(target,iterations=int(mask_dilation)) if mask_dilation else target
+    y0,x0,y1,x1=0,0,*rgb.shape[:2]
+    if context_margin:
+        bx,by,bw,bh=bounding_box(expanded);margin=int(context_margin)
+        x0=max(0,bx-margin);y0=max(0,by-margin);x1=min(rgb.shape[1],bx+bw+margin);y1=min(rgb.shape[0],by+bh+margin)
+    rgb=rgb[y0:y1,x0:x1];target=expanded[y0:y1,x0:x1]
+    crop_shape=rgb.shape[:2]
+    if max_side and max(crop_shape)>max_side:
+        scale=max_side/max(crop_shape);size=(max(1,round(crop_shape[1]*scale)),max(1,round(crop_shape[0]*scale)))
+        rgb=cv2.resize(rgb,size,interpolation=cv2.INTER_AREA);target=cv2.resize(target.astype(np.uint8),size,interpolation=cv2.INTER_NEAREST).astype(bool)
     path = Path(checkpoint) if checkpoint else download_file(LAMA_URL, data_directory() / "models/big-lama.pt", LAMA_SHA256, progress=progress, cancel=cancel)
     if progress:
         progress("Loading LaMa inpainting model…")
@@ -439,7 +474,12 @@ def lama_fill(rgb, target, checkpoint=None, progress=None, cancel=None):
         check_cancel(cancel)
     if output.shape != rgb.shape or not np.isfinite(output).all():
         raise ValueError("LaMa returned an invalid image.")
-    result = rgb.copy()
-    result[target] = np.rint(np.clip(output[target], 0, 1) * 255).astype(np.uint8)
+    if output.shape[:2]!=crop_shape:output=cv2.resize(output,(crop_shape[1],crop_shape[0]),interpolation=cv2.INTER_LINEAR)
+    candidate=original_rgb.copy();candidate[y0:y1,x0:x1]=np.rint(np.clip(output,0,1)*255).astype(np.uint8)
+    result=original_rgb.copy()
+    if blend_width:
+        alpha=np.clip(ndi.distance_transform_edt(original_target)/blend_width,0,1)[...,None]
+        candidate=np.rint(candidate*alpha+original_rgb*(1-alpha)).astype(np.uint8)
+    result[original_target]=candidate[original_target]
     return result
 

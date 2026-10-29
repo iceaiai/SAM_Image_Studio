@@ -1,0 +1,38 @@
+[
+  {
+    "file": "0058-Ceta_190_kx_1615.emd",
+    "parameters": {
+      "polarity": "dark",
+      "gaussian_sigma": 2.0,
+      "threshold_offset": 0.0,
+      "minimum_area": 300,
+      "opening_radius": 0,
+      "fill_holes": true,
+      "seed_distance": 35,
+      "seed_height": 2.0,
+      "distance_sigma": 1.0,
+      "compactness": 0.0,
+      "watershed_line": false,
+      "maximum_objects": 300
+    },
+    "count": 51
+  },
+  {
+    "file": "STEM_image.tif",
+    "parameters": {
+      "polarity": "bright",
+      "gaussian_sigma": 2.0,
+      "threshold_offset": 0.0,
+      "minimum_area": 1000,
+      "opening_radius": 0,
+      "fill_holes": true,
+      "seed_distance": 100,
+      "seed_height": 2.0,
+      "distance_sigma": 1.0,
+      "compactness": 0.0,
+      "watershed_line": false,
+      "maximum_objects": 300
+    },
+    "count": 16
+  }
+]

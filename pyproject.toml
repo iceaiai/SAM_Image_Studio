@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sam-image-studio"
-version = "1.4.3"
+version = "1.4.4"
 description = "Desktop microscopy annotation, SAM segmentation, calibrated measurements and reversible cleaning"
 requires-python = ">=3.12,<3.13"
 license = "MIT"
@@ -23,4 +23,4 @@ markers = ["integration: requires downloaded real model weights", "microscopy: u
 
 
 [tool.setuptools.package-data]
-samstudio = ["resources/*.pdf"]
+samstudio = ["resources/*.pdf", "resources/*.json"]

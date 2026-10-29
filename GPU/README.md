@@ -14,7 +14,7 @@ the folder containing `pyproject.toml`, `samstudio/` and `GPU/`.
 
 ## First: download/extract or clone the source
 
-Before either GPU route, [download the complete v1.4.3 ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip)
+Before either GPU route, [download the complete v1.4.4 ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip)
 and extract **all** files. The same source bundle supports CPU and GPU; it contains this `GPU/` folder
 and the shared application.
 Open the extracted project folder containing `pyproject.toml`, `samstudio/`, `packaging/`

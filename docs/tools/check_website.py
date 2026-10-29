@@ -54,9 +54,9 @@ with sync_playwright() as p:
  page.wait_for_load_state('networkidle')
  assert page.url.endswith('/downloads.html')
  downloads=page.locator('article').get_by_role('link',name='Download ZIP',exact=True)
- assert downloads.count()==2
- assert downloads.nth(0).get_attribute('href').endswith('/archive/refs/tags/v1.4.3.zip')
- assert downloads.nth(1).get_attribute('href').endswith('/uploads/SAM_Image_Studio_v1.4.2_CPU.zip')
+ assert downloads.count()==4
+ for i, suffix in enumerate(['/archive/refs/tags/v1.4.4.zip','/archive/refs/tags/v1.4.4-offline.zip','/archive/refs/tags/v1.4.3.zip','/uploads/SAM_Image_Studio_v1.4.2_CPU.zip']):
+  assert downloads.nth(i).get_attribute('href').endswith(suffix)
  page.screenshot(path='/tmp/samstudio-downloads-desktop.png',full_page=True)
  page.goto(base+'/installation.html',wait_until='networkidle')
  headings=page.locator('article h2').all_text_contents()
@@ -70,11 +70,14 @@ with sync_playwright() as p:
  page.goto(base+'/documentation/menus.html',wait_until='networkidle')
  assert page.get_by_role('heading',name='Processing',exact=True).count()==1
  assert page.get_by_text('Read pixel sizes from Excel…',exact=True).count()>=1
- for path,heading in [('/features/cleaning.html','Data cleaning: remove, fill and restore'),('/segmentation/scopes.html','Seg scope: ROI, whole image and single object'),('/features/compressed-sensing.html','Compressed sensing: controls and suggested parameters'),('/segmentation/sam3-onnx.html','SAM3 ONNX: public text segmentation')]:
+ for path,heading in [('/features/cleaning.html','Data cleaning: remove, fill and restore'),('/segmentation/scopes.html','Seg scope: ROI, whole image and single object'),('/features/compressed-sensing.html','Compressed sensing: controls and suggested parameters'),('/segmentation/sam3-onnx.html','SAM3 ONNX: public text segmentation'),('/segmentation/watershed.html','Otsu + watershed: parameters and preview'),('/features/examples.html','Example microscopy images'),('/features/processing.html','Image restoration and processing')]:
   page.goto(base+path,wait_until='networkidle')
   assert page.get_by_role('heading',name=heading,exact=True).count()==1
   images=page.locator('article img').evaluate_all('(images) => images.map(i => ({src:i.src,loaded:i.complete && i.naturalWidth>0}))')
   assert images and all(i['loaded'] for i in images),images
+ page.goto(base+'/installation-offline.html',wait_until='networkidle')
+ assert 'offline-cache/READY' in page.locator('article').inner_text()
+ assert 'SAM2.1 Base+' in page.locator('article').inner_text()
  page.goto(base+'/search.html?q=SAM3.1',wait_until='networkidle')
  page.wait_for_selector('.search li a',timeout=20000)
  print('Browser search returned:',page.locator('.search li a').count(),'result links.')

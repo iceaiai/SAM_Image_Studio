@@ -2,7 +2,8 @@
 
 The public project website is **<https://iceaiai.github.io/SAM_Image_Studio/>**.
 It is a static Sphinx site, not an online instance of the desktop application.
-No user images, model credentials, or GPU session are served by the site.
+Only the explicitly supplied public examples and their derived figures are
+included; model credentials and interactive GPU sessions are never served.
 
 ## Build locally
 
@@ -51,3 +52,18 @@ Git platform integration; do not put credentials in documentation files.
 
 The workflow does not use a `CNAME`, custom domain, paid service, or external
 analytics. `.readthedocs.yaml` remains an optional alternative hosting recipe.
+
+## Normal and offline source downloads
+
+The download list links to immutable Git tag ZIPs. The normal `v1.4.4` tag has
+no `samstudio/resources/offline_profile.json`. The `v1.4.4-offline` tag adds that
+marker from `offline/profile.json` and uses the offline guide as its root README.
+Its application version and source are otherwise shared with the normal release.
+Create the offline commit in a temporary ordinary clone, never by modifying the
+normal working checkout. Preserve existing tags; push new tags without force.
+
+Neither source archive includes `.venv*`, `.python312`, `offline-cache` or model
+weights. Verify both ZIPs after publishing, including CRCs, entry points, edition
+marker presence/absence and comparable initial sizes. The user then prepares
+the offline runtime/wheels/checkpoints on a matching connected platform. Do not
+label the source ZIP itself as an already prepared dependency bundle.

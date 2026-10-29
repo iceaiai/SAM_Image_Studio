@@ -1,3 +1,18 @@
+# SAM Image Studio 1.4.4
+
+- Add model-free Otsu + watershed, exact-region preview, documented parameters and mask acceptance.
+- Scale Gaussian/Poisson noise to observed image signal by default; add residuals to original data and compare previews on a shared intensity scale.
+- Default newly opened images to original inference input; retain per-image session choice, and add undoable Forget processed image.
+- Show persistent ONNX preview counts and raw/filter diagnostics. Real EMD `black dots` displays 52 previews; STEM `white dots` displays 16, while `particles` yields zero.
+- Add exact pre-rotation snapshot reset, Select all/Deselect all in three panels, and real LaMa mask/context/resize/blend controls.
+- Automatically select/bootstrap project-local Python 3.12 on Windows/Linux x86-64.
+- Add a source-sized offline CPU edition: prepare complete packages/runtime/checkpoints online, then install with the normal CPU helper offline. Restrict to SAM1 ViT-B and SAM2.1 Small/Base+.
+- Include supplied EMD/TIFF originals and illustrated workflows. Original historical uploads remain unchanged.
+
+Validation: 484 passed, 35 external-asset checks skipped; genuine ONNX CPU Qt/ROI/native-project tests; fresh 126-wheel no-network dependency install and CPU self-test. Full checkpoint/OS-package offline preparation was blocked by cloud host restrictions; native Windows and CUDA execution were not run. See `validation/VALIDATION_v144.md`.
+
+---
+
 # SAM Image Studio 1.4.3
 
 ## Installation and repository organization

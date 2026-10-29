@@ -9,6 +9,7 @@ All application environments use **64-bit Python 3.12**.
 | CPU annotation, SAM1/2, public SAM3 ONNX text | CPU instructions below |
 | NVIDIA GPU, SAM1/2 or public SAM3 ONNX | [GPU / Anaconda guide](installation-gpu.md) |
 | Native SAM3.1 text and positive/negative shapes | [Linux/WSL2 GPU guide](installation-gpu.md) |
+| Disconnected CPU, SAM1 + SAM2.1 Small/Base+ | [Offline source edition and preparation](installation-offline.md) |
 | Website development only | [Documentation build](development.md#build-the-sphinx-documentation) |
 
 SAM3 ONNX downloads public text-only weights without HF login. Native SAM3.1
@@ -19,7 +20,7 @@ has a separate installation and gated weights; it is not an ONNX mode switch.
 CPU and GPU installations both need the complete project first. Choose **one**:
 
 - **Download:** open the [CPU version download list](downloads.md), click
-  **Download ZIP** for v1.4.3, and extract the entire archive. The same source
+  **Download ZIP** for v1.4.4, and extract the entire archive. The same source
   bundle includes optional GPU setup. Enter the extracted project folder containing
   `pyproject.toml`, `samstudio/`, `packaging/` and `GPU/`.
 - **Clone:** open a terminal in your chosen parent folder and run:
@@ -37,8 +38,9 @@ continue with exactly one CPU or GPU route below.
 
 1. Download/extract the complete current source or clone it using the shared
    steps above. Open the extracted project folder containing `pyproject.toml`.
-2. Install Python 3.12 64-bit, if absent. The helper
-   `packaging/Install_Python_3_12.bat` uses the official WinGet package.
+2. No separate Python installation is needed: the installer chooses a compatible
+   64-bit Python 3.12 or prepares a verified project-local runtime automatically.
+   An older/default Python does not receive the application packages.
 3. Open **packaging** in that source folder.
 4. Double-click **Install_CPU.bat** and wait for the installation self-test.
 5. Double-click **Start_GUI.bat**.
@@ -50,7 +52,7 @@ quote paths containing spaces:
 ```powershell
 Set-Location -LiteralPath 'C:\Projects\Example Folder\SAM_Image_Studio'
 Test-Path .\pyproject.toml
-py -3.12 scripts/install_environment.py --backend cpu
+.\packaging\Install_CPU.bat
 .\.venv\Scripts\python.exe -m samstudio
 ```
 
@@ -61,7 +63,9 @@ source tree and then run installation helpers.
 ## CPU: Linux
 
 First download/extract the complete current source or clone it using the shared
-steps above. With Python 3.12 available, enter that project root:
+steps above. On Linux x86-64, the helper uses an existing Python 3.12 or prepares
+a verified local runtime. A distribution-provided `python3` is needed to run the
+bootstrap. Enter that project root:
 
 ```bash
 cd '/path/with spaces/SAM_Image_Studio'
@@ -74,6 +78,14 @@ user may be asked for their Ubuntu `sudo` password. On another distribution,
 an administrator must supply equivalent Qt system libraries if unavailable.
 The Python installer supports macOS CPU setup where the pinned dependency
 wheels are available; this release has not been acceptance-tested on macOS.
+
+The automatic runtime is stored under `.python312/`, and packages stay inside
+`.venv/`. Neither system Python nor Conda base is modified. Windows uses the PSF
+Python NuGet distribution; Linux x86-64 uses python-build-standalone. Other CPU
+architectures need an existing compatible Python 3.12.
+
+For a disconnected machine, first download the **offline CPU** ZIP and complete
+[online preparation](installation-offline.md) on a matching platform.
 
 ## Existing dedicated CPU environment
 

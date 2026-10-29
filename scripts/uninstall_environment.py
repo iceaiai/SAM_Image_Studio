@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def uninstall(root=ROOT,dry_run=False):
     removed=[]
-    for name in (".venv",".venv-gpu","build","dist"):
+    for name in (".venv",".venv-offline",".venv-gpu","build","dist"):
         target=Path(root)/name
         marker=target/".samstudio-owned"
         if not target.exists():continue

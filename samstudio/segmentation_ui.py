@@ -7,6 +7,10 @@ from .exemplars import infer_examples
 
 class SegmentationWorkflowMixin:
     def _init_segmentation_ui(self):
+        self.watershed_options={}
+        self.watershed_action=self._action('Otsu + watershed…',self.watershed_dialog)
+        for action in self.menuBar().actions():
+            if action.text()=='Models':action.menu().addAction(self.watershed_action);break
         self.example_polarity=combo([('Positive example',1),('Negative example',0)],'examplePolarity')
         previous=self.findChild(QToolBar,'imageToolbar')
         previous.removeAction(self.text_prompt_action);previous.removeAction(self.aliases_action)
@@ -52,3 +56,30 @@ class SegmentationWorkflowMixin:
         return examples
     def _example_inference(self,engine,rgb,points,examples,protected,progress,cancel,text,options):
         return infer_examples(engine,rgb,points,examples,protected,progress=progress,cancel=cancel,text_prompt=text,**options)
+
+    def watershed_dialog(self):
+        from PySide6.QtWidgets import QDialog
+        from .analysis_dialogs import ParameterPreviewDialog
+        from .classical_segmentation import WATERSHED_PARAMETERS,watershed_masks
+        from .processing import filter_proposals
+        if not self.document or self.busy:return
+        dialog=ParameterPreviewDialog('Otsu + watershed',WATERSHED_PARAMETERS,self.watershed_options,
+            'No SAM model is required. A current region limits output. Preview creates provisional masks on the canvas; review them and use Accept masks.',self)
+        if dialog.exec()!=QDialog.DialogCode.Accepted:return
+        self.watershed_options=dialog.values();self.preview_timer.stop();self._prompt_version+=1
+        doc=self.document;key=self.current_key;version=self._prompt_version
+        raw=(doc.working if doc.use_processed and doc.working is not None else doc.frame.raw).copy()
+        roi=self._selection_mask() if doc.draft.get('roi') else None
+        protected=doc.protected_mask();self.canvas.set_preview([]);self._preview_context=None
+        def calculate(progress,cancel):
+            masks,info=watershed_masks(raw,self.watershed_options,roi,progress,cancel)
+            return filter_proposals(masks,protected,roi,int(self.watershed_options['minimum_area'])),info
+        def finished(result):
+            if self.current_key!=key or self._prompt_version!=version:return
+            masks,info=result
+            self._preview_context={'method':'Otsu + watershed','parameters':copy.deepcopy(self.watershed_options),'input':'processed' if doc.use_processed else 'original','diagnostics':info}
+            self.canvas.set_preview(masks)
+            self.preview_count_label.setText(f'Preview: {len(masks)}')
+            self.preview_count_label.setToolTip(str(info))
+            self.statusBar().showMessage(f'{len(masks)} watershed mask(s). Review and Accept masks; change polarity/seeds if needed.',20000)
+        self._start_job('Otsu + watershed…',calculate,finished)

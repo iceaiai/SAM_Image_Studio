@@ -8,6 +8,31 @@ from .processing import cast_like,bounding_box
 from .denoise_config import METHODS
 
 
+def add_signal_noise(raw, method, params, target):
+    """Add residual noise in signal units, without replacing a narrow signal by dtype-scale noise."""
+    a=np.asarray(raw);output=a.copy();rng=np.random.default_rng(params['seed'])
+    channels=[None] if a.ndim==2 else range(min(3,a.shape[-1]))
+    for channel in channels:
+        source=a if channel is None else a[...,channel]
+        values=source.astype(np.float64)
+        mode=params.get('scale','image_range')
+        if mode=='dtype_range' and a.dtype.kind in 'iu':
+            info=np.iinfo(a.dtype);low=float(info.min);span=float(info.max)-low
+        elif mode=='data_units':low=0.;span=1.
+        else:
+            low,high=np.percentile(values,[.5,99.5]);span=float(high-low)
+            if span<=0:low=min(0.,float(low));span=max(1.,abs(float(values.flat[0])))
+        if method=='Gaussian noise':
+            result=values+rng.normal(0,float(params['sigma'])*span,values.shape)
+        else:
+            rate=np.maximum((values-low)/span,0)*params['peak_counts']
+            residual=(rng.poisson(rate)-rate)/params['peak_counts']
+            result=values+params['strength']*span*residual
+        dest=output if channel is None else output[...,channel]
+        dest[target]=cast_like(result[target],a.dtype)
+    return output
+
+
 def parameters(method,values=None):
     if method not in METHODS:raise ValueError('Unknown processing method.')
     spec=METHODS[method];result={k:v['default'] for k,v in spec.items()}
@@ -46,6 +71,9 @@ def process_pixels(raw,method,values=None,target=None,progress=None,cancel=None)
     if a.ndim not in (2,3) or a.ndim==3 and a.shape[2] not in (3,4):raise ValueError('Expected grayscale, RGB or RGBA pixels.')
     mask=np.ones(a.shape[:2],bool) if target is None else np.asarray(target,bool)
     if mask.shape!=a.shape[:2] or not mask.any():raise ValueError('Choose a nonempty processing region.')
+    if method in ('Gaussian noise','Poisson noise'):
+        if cancel and cancel.is_set():raise InterruptedError('Processing cancelled.')
+        return add_signal_noise(a,method,p,mask)
     work=a[...,:3] if a.ndim==3 else a
     if a.dtype.kind in 'bu':low=0.;high=1. if a.dtype.kind=='b' else float(np.iinfo(a.dtype).max)
     elif a.dtype.kind=='i':low=float(np.iinfo(a.dtype).min);high=float(np.iinfo(a.dtype).max)

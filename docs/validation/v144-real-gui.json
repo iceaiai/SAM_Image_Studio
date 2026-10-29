@@ -1,0 +1,11 @@
+{
+  "device": "cpu",
+  "emd_black_dots_eligible": 52,
+  "stem_particles_candidates": 0,
+  "stem_white_dots_eligible": 16,
+  "stem_roi_accepted": 10,
+  "source_checkbox_defaults_per_image": true,
+  "visible_preview_counter": true,
+  "roi_limits": true,
+  "native_reopen": true
+}

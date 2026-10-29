@@ -24,3 +24,9 @@ SAM_Annotations/
 .pages-publish/
 
 .cache/
+.python312/
+.install-cache/
+offline-cache/
+.venv-offline/
+.offline-prep-env/
+.offline-build/

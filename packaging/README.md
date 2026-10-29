@@ -1,7 +1,7 @@
 # CPU install, launch and packaging
 
-First [download the current CPU source ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip),
-extract the complete archive and open `SAM_Image_Studio-1.4.3/`, containing
+First [download the current CPU source ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip),
+extract the complete archive and open `SAM_Image_Studio-1.4.4/`, containing
 `pyproject.toml`.
 Alternatively, clone the full repository and enter its root using the
 [shared download/clone steps](../README.md#first-download-or-clone-the-complete-project-cpu-and-gpu).
@@ -22,3 +22,9 @@ a native Windows acceptance check is required before distributing its output.
 The portable build uses `launch.py` here and the application package at the root.
 
 All GPU setup is collected separately in [GPU/](../GPU/README.md).
+
+
+Current CPU helpers automatically select 64-bit Python 3.12 or prepare a verified
+project-local runtime on Windows/Linux x86-64. For a disconnected CPU machine,
+first download the separate offline edition and complete [online preparation](../offline/README.md).
+Then use these same Install_CPU / Start_GUI entry points; they detect the edition.

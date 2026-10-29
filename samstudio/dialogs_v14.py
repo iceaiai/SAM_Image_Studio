@@ -59,6 +59,12 @@ class RotationDialog(QDialog):
         self.status=QLabel();layout.addWidget(self.status)
         self.angle.valueChanged.connect(self.refresh);self.padding.currentIndexChanged.connect(self.refresh)
         controls=buttons(self,layout);controls.button(QDialogButtonBox.StandardButton.Ok).setText('Rotate')
+        self.reset_requested=False
+        self.reset_button=QPushButton('Reset to before rotation')
+        self.reset_button.setObjectName('resetRotation')
+        self.reset_button.setEnabled(bool(document.rotation) and document.rotation_reset_state is not None)
+        def reset():self.reset_requested=True;self.accept()
+        self.reset_button.clicked.connect(reset);layout.addWidget(self.reset_button)
         self.refresh()
     def sync_preset(self,angle):
         index=self.preset.findData(float(angle))

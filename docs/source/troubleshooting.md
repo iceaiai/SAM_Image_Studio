@@ -1,6 +1,6 @@
 # Troubleshooting installation and operation
 
-Use current installers from a complete version 1.4.3 source tree. They now handle
+Use current installers from a complete version 1.4.4 source tree. They now handle
 the repeated dependency fixes encountered during v1.4.2 WSL installation. Rerunning
 in an existing dedicated environment is a supported repair; deleting that
 environment is usually unnecessary.
@@ -28,6 +28,7 @@ Application installation into Conda base is rejected.
 
 | Earlier symptom | Current automatic handling |
 | --- | --- |
+| Default/background Python is not 3.12 | Current CPU helpers choose 64-bit 3.12 or prepare a verified local runtime. Run the helper from the complete extracted folder. |
 | `libxkbcommon.so.0`, `libfontconfig.so.1` or `libxcb-shape.so.0` missing | Ubuntu helper detects Qt system libraries and installs the missing packages. |
 | Wayland/xcb Qt plugin fails because of a missing library | Installer supplies XCB dependencies; WSLg launch selects X11 when a display is present. |
 | `No module named pkg_resources` from native SAM3.1 | Installer and native requirements select setuptools 80.9.0. |
@@ -118,6 +119,17 @@ memory on large models. Capture the actual error instead of assuming CPU fallbac
   before filling, and use unaffected manual background patches.
 - A 100%-sampled L2 reconstruction returns its input. Choose denoise with relaxed
   fidelity for ordinary noisy complete images. See [parameter examples](features/compressed-sensing.md).
+
+For apparently inverted/poor masks, first turn **View / infer from processed
+image** off and inspect the original. The choice now starts off for newly opened
+images and is separate per image during the session. Toggling preserves edits;
+**Forget processed image…** explicitly clears processing and retained crops, with
+confirmation and Undo. It preserves annotations and current orientation.
+
+For SAM3 ONNX, inspect the persistent preview count and its tooltip. A model
+returning zero differs from proposals removed by score/ROI/protection. On the
+bundled STEM example, `particles` returned zero while `white dots` returned 16.
+See the [real-example results](segmentation/sam3-onnx.md#when-computation-finishes-with-no-masks).
 
 ## 7. Saving, plugins and external fixtures
 

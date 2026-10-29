@@ -91,6 +91,7 @@ def rotate_document(document, angle, padding="none"):
     for obj in objects:
         transform_object(obj,matrix,shape,rotate=True)
     if not document.rotation:
+        document.rotation_reset_state = document.state()
         document.source_calibration=copy.deepcopy(document.calibration)
     document.frame.raw = base
     document.objects = [o for o in objects if o.mask is None or o.mask.any()]
@@ -108,6 +109,16 @@ def rotate_document(document, angle, padding="none"):
                               "padding_region":pack_mask(~valid)})
     document.rebuild_cleaning()
     return ~valid
+
+
+def reset_rotation(document):
+    """Restore the exact pre-first-rotation savepoint, including cropped pixels and geometry."""
+    if not document.rotation or document.rotation_reset_state is None:
+        raise ValueError('No exact rotation savepoint is available. Older projects can use Undo or reopen the original image.')
+    state=copy.deepcopy(document.rotation_reset_state)
+    revision=document.revision
+    document.restore(state)
+    document.revision=revision
 
 
 def scaled_objects(document, object_ids, factor):

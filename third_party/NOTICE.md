@@ -88,3 +88,14 @@ zero-token or approximate tokenizer fallback.
 ONNX Runtime: https://github.com/microsoft/onnxruntime (MIT).
 ftfy: https://github.com/rspeer/python-ftfy (Apache-2.0).
 Retain the installed dependency notices when redistributing a packaged build.
+
+
+## Optional local Python runtimes
+
+The Windows CPU bootstrap uses the Python Software Foundation's official
+Python 3.12.10 NuGet distribution under the PSF license. The Linux x86-64
+bootstrap uses Astral python-build-standalone's CPython 3.12.15 distribution;
+its runtime and bundled components retain their upstream licenses/notices.
+Neither runtime is bundled in the source ZIP. Verified archives and their
+included license files remain in the project-local runtime/preparation cache.
+`packaging/python-runtimes.json` records the exact URLs and SHA-256 digests.

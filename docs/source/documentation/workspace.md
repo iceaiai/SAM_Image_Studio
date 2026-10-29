@@ -12,6 +12,11 @@
 | Region tools | Select all, invert, create an object from a region, and reach appearance/transformation tools. |
 | Status bar | Shows progress, filtered-mask counts, errors, save state, and zoom. Model loading and processing run as background jobs. |
 
+Each of **Objects**, **Groups** and **Image files** has **Select all** and
+**Deselect all**. Group row selection is separate from the active toolbar Group;
+use that dropdown to choose where new objects are stored. The status bar retains
+a preview mask count; its tooltip explains applicable proposal/filter diagnostics.
+
 Docks can be resized or hidden. Reopen **Objects**, **Groups**, or **Image files**
 through **View**. This release retains the v1.4 Objects/Groups/Image files layout.
 

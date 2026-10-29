@@ -58,6 +58,7 @@ overlays, and original/processed images.
 :maxdepth: 2
 
 ../quickstart
+examples
 annotation
 ../segmentation/index
 cleaning

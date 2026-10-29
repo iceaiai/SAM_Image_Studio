@@ -60,6 +60,25 @@ It requires some unremoved content. Patch filling copies actual source pixels;
 it does not infer the material behind contamination. LaMa needs its own compatible
 checkpoint; no LaMa weights are bundled.
 
+**Fill with LaMa…** first opens adjustable application controls. All defaults
+are zero, preserving full-image/native-resolution replacement:
+
+| Parameter | Default / range | Purpose and first comparison |
+| --- | --- | --- |
+| Mask dilation | 0 / 0–64 px | Expand the mask supplied to the network; compare 1–4 for contaminated edges. Final output still changes only the original removal region. |
+| Context margin | 0 / 0–2,048 px | 0 uses the full image. Compare 32–256 to process local context around the target. |
+| Max side | 0 / 0–8,192 px | 0 keeps native resolution; compare 1,024 to reduce model input memory. A reduced result is interpolated back. |
+| Blend width | 0 / 0–128 px | Blend inside the original boundary; compare 1–4 for seams. Original contamination may remain in this band. |
+
+```{image} ../_static/workflows/v144-lama-dialog.png
+:alt: Actual LaMa mask dilation, context, resolution and blend parameter dialog
+:width: 100%
+```
+
+These control mask/context preparation and compositing; LaMa's fixed inference
+graph has no invented training/iteration controls. Each **?** explains the option.
+Click **Preview** to compute and inspect the fill before committing it.
+
 All three fill methods compute in the background and open **Cleaning fill
 preview**. Inspect the generated pixels, then choose **Apply** or **Cancel**.
 Only Apply commits the fill. Removing an area is itself a reversible committed
@@ -84,7 +103,12 @@ already modified pixels are rejected. A patch source must not overlap the target
 Cleaning records appear in **Objects**. **Show cleaning regions** toggles their
 outlines without deleting edits. The **View / infer from processed image**
 checkbox chooses derived pixels when present; turning it off compares the
-retained acquired source. Display brightness/contrast is separate from pixel edits.
+retained acquired source. It starts **off** for newly opened/reopened images;
+each image remembers its own session choice. Toggling does not erase processing.
+An explicit processing Apply may select the processed view to show its result.
+**Forget processed image…** separately clears cleaning/processing records and
+retained crops after confirmation, while keeping annotations/current orientation;
+Undo recovers the previous state. Display brightness/contrast is separate from pixel edits.
 
 - **Cleaning → Restore selected area / all edits** restores the requested pixels.
 - Deleting a cleaning record restores its footprint and replays retained edits.

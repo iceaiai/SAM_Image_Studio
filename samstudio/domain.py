@@ -242,6 +242,8 @@ class Document:
         self.source_raw = frame.raw
         self.source_calibration = copy.deepcopy(frame.calibration)
         self.rotation = []
+        self.rotation_reset_state = None
+        self.use_processed = False  # Session-only, per image; never restore a previous session's choice.
         self.text_aliases = {}
         self.detached_crops = []
         self.calibration = copy.deepcopy(frame.calibration)
@@ -447,6 +449,7 @@ class Document:
                           "dataset": self.frame.dataset, "frame_index": self.frame.frame_index},
                 "derived_base": pack_array(self.frame.raw) if self.rotation else None,
                 "rotation": copy.deepcopy(self.rotation), "text_aliases": copy.deepcopy(self.text_aliases),
+                "rotation_reset_state": copy.deepcopy(self.rotation_reset_state),
                 "source_calibration": asdict(self.source_calibration),
                 "calibration": asdict(self.calibration), "groups": [asdict(g) for g in self.groups],
                 "objects": [a.to_dict() for a in self.objects], "active_group": self.active_group,
@@ -457,7 +460,23 @@ class Document:
                 "color_scheme": copy.deepcopy(self.color_scheme),
                 "detached_crops": copy.deepcopy(self.detached_crops), "revision": self.revision}
 
+    def forget_processing(self):
+        """Discard derived pixel edits; keep annotations and the current orientation."""
+        self.objects=[o for o in self.objects if o.role!='cleaning']
+        self.cleaning_history=[];self.detached_crops=[]
+        self.removed=np.zeros(self.frame.shape,bool);self.modified=np.zeros(self.frame.shape,bool)
+        self.working=None;self.use_processed=False
+        if self.rotation_reset_state:
+            state=self.rotation_reset_state
+            state['objects']=[o for o in state['objects'] if o.get('role','object')!='cleaning']
+            state['working']=None;state['cleaning_history']=[];state['detached_crops']=[]
+            shape=tuple(state['image']['shape'])
+            state['removed']=pack_mask(np.zeros(shape,bool));state['modified']=pack_mask(np.zeros(shape,bool))
+
     def restore(self, data: dict):
+        rotation_reset = copy.deepcopy(data.get('rotation_reset_state'))
+        if rotation_reset is not None and (not isinstance(rotation_reset,dict) or rotation_reset.get('rotation') or rotation_reset.get('rotation_reset_state') is not None):
+            raise ValueError('Invalid pre-rotation savepoint.')
         if data.get("schema_version") not in (1, 2, 3, 4, SCHEMA_VERSION):
             raise ValueError("Unsupported project version.")
         im = data.get("image", {})
@@ -534,6 +553,7 @@ class Document:
             if not crop.get("pasted") and (tuple(crop_shape)!=tuple(shape) or crop.get("rotation_count")!=len(rotation)):raise ValueError("An active retained crop does not match the current image coordinates.")
         self.detached_crops = crops
         self.frame.raw, self.rotation, self.text_aliases = base, rotation, aliases
+        self.rotation_reset_state = rotation_reset
         self.groups, self.objects, self.working = groups, objects, working
         self.calibration = calibration
         self.source_calibration = source_calibration

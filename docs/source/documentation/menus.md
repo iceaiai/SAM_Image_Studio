@@ -1,6 +1,6 @@
 # Menu-by-menu reference
 
-This reference covers every core menu action in the 1.4.3 main window. Labels
+This reference covers every core menu action in the 1.4.4 main window. Labels
 were checked against an offscreen application instance. Some actions depend on
 selection, mode, loaded model, or task state. Installed plugins add their own
 actions and are documented by their authors.
@@ -38,6 +38,7 @@ actions and are documented by their authors.
 | Assign mask colors… | Use default colors or assign the preset 20-color lookup table. | — |
 | Smooth image pixels… | Preview a smoothing operation on derived pixels; this is different from smoothing a contour. | — |
 | Rotate image… | Choose angle, optional rectangle/square padding and fill; transform pixels, masks and calibration together. | — |
+| Reset rotation… | Restore the exact pre-first-rotation savepoint, including pixels, masks and calibration; later changes are reverted after confirmation. Undo is available. | — |
 | Scale masks / savepoints… | Scale selected/group masks uniformly; keep original/result snapshots temporarily or in a local folder. | — |
 | Morphology / inner region… | Assign morphology and link an enclosed core/cavity or expected polygon side count for measurements. | — |
 | Vertex deletion radius… | Set the eligible-vertex deletion search radius in image pixels. | — |
@@ -67,6 +68,7 @@ this menu order: remove → choose fill → preview/apply → restore.
 | Menu entry | What it does | Shortcut |
 | --- | --- | --- |
 | Model manager… | Choose model family/variant, matching checkpoint and CPU/Conda CUDA device. | — |
+| Otsu + watershed… | Adjust threshold/splitting parameters, preview classical masks without SAM, then accept. | — |
 | Segmentation options… | Set grid density, minimum score/area and maximum objects, with path-dependent effects. | — |
 | Text prompt aliases… | Edit project aliases such as nanoparticle → black dots; aliases do not train a model. | — |
 

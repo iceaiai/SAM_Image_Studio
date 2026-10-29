@@ -31,6 +31,7 @@ class ImageCanvas(QWidget):
     zoom_changed = Signal(float)
     tool_changed = Signal(str)
     object_context_requested = Signal(object)
+    preview_count_changed = Signal(int)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -138,6 +139,7 @@ class ImageCanvas(QWidget):
 
     def set_preview(self, masks):
         self.preview_masks = list(masks)
+        self.preview_count_changed.emit(len(self.preview_masks))
         if self.document and masks:
             mask = np.logical_or.reduce(masks)
             out = np.zeros((*mask.shape, 4), np.uint8)

@@ -81,6 +81,9 @@ class ModelDialog(QDialog):
         self.variant = QComboBox()
         self.variant.setObjectName("modelVariant")
         self.device = combo([("CPU (default)", "cpu"), ("NVIDIA CUDA GPU (Conda)", "cuda"), ("Automatic device (GPU only in Conda)", "auto")], "modelDevice")
+        from .edition import offline_profile
+        if offline_profile():
+            self.device.clear();self.device.addItem('CPU (offline edition)','cpu')
         self.path = QLineEdit()
         self.path.setObjectName("modelCheckpoint")
         self.path.setPlaceholderText("Empty = download official weights on demand")
@@ -125,6 +128,11 @@ class ModelDialog(QDialog):
             self.hf_token.clear()
         self.browse_button.setText("Browse ONNX model folder…" if onnx else "Browse .pt / .pth…")
         self.path.setPlaceholderText("Empty = download public ONNX export (~3.53 GiB); no HF token" if onnx else "Empty = download official weights on demand")
+        from .edition import offline_profile
+        if offline_profile():
+            self.path.setPlaceholderText('Empty = verified model in the prepared offline-cache')
+            self.info.setText('Offline CPU edition. Only the prepared SAM1 ViT-B and SAM2 Small/Base+ variants are offered. No text detector, SAM3, GPU provider or network model download is used.')
+            return
         if onnx:
             self.info.setText("SAM3 ONNX uses the public X-AnyLabeling ViT-H export, verified by SHA-256. No Hugging Face login is required. Download is about 3.53 GiB plus a small tokenizer. Supports text, aliases and application ROI clipping; this export does not support native point/shape prompting. CPU works on Windows/Linux; CUDA requires the ONNX GPU runtime in a dedicated Conda environment. For native geometric prompts use optional SAM3.1 on Linux/WSL2.")
             return
@@ -367,13 +375,24 @@ class ImagePreviewDialog(QDialog):
     def __init__(self, before, after, title, parent=None):
         super().__init__(parent);self.setWindowTitle(title);self.resize(1000,530)
         layout = QVBoxLayout(self);images = QHBoxLayout()
+        reference=np.abs(before) if np.iscomplexobj(before) else np.asarray(before)
+        if reference.ndim==3:reference=reference[...,:3]
+        finite=reference[np.isfinite(reference)]
+        lo,hi=(0.,255.) if reference.dtype==np.uint8 else (np.percentile(finite,[.5,99.5]) if finite.size else (0.,1.))
+        if hi<=lo:lo,hi=(float(finite.min()),float(finite.max())) if finite.size else (0.,1.)
+        self.shared_range=(float(lo),float(hi))
         for caption, pixels in (("Before", before), ("Preview", after)):
             column = QVBoxLayout();column.addWidget(QLabel(caption))
             image = QLabel();image.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            image.setPixmap(QPixmap.fromImage(rgb_image(display_rgb(pixels))).scaled(470,400,Qt.AspectRatioMode.KeepAspectRatio,Qt.TransformationMode.SmoothTransformation))
+            values=np.abs(pixels) if np.iscomplexobj(pixels) else np.asarray(pixels)
+            values=values[...,:3] if values.ndim==3 else values
+            normalized=np.nan_to_num((values.astype(float)-lo)/(hi-lo if hi>lo else 1.))
+            rgb=np.rint(np.clip(normalized,0,1)*255).astype(np.uint8)
+            if rgb.ndim==2:rgb=np.repeat(rgb[...,None],3,axis=2)
+            image.setPixmap(QPixmap.fromImage(rgb_image(rgb)).scaled(470,400,Qt.AspectRatioMode.KeepAspectRatio,Qt.TransformationMode.SmoothTransformation))
             column.addWidget(image);images.addLayout(column)
         layout.addLayout(images)
-        layout.addWidget(QLabel("Apply records a reversible image edit. Original acquired pixels remain available."))
+        layout.addWidget(QLabel("Both panels use the original intensity scale. Apply records a reversible edit; acquired pixels remain available."))
         controls = QDialogButtonBox(QDialogButtonBox.StandardButton.Apply|QDialogButtonBox.StandardButton.Cancel)
         controls.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(self.accept);controls.rejected.connect(self.reject);layout.addWidget(controls)
 

@@ -44,6 +44,14 @@ the device, training/patch settings, checkpoint or output directory as needed.
 Saved model files remain even when image Apply is canceled. Every exposed
 restoration parameter is documented in the [parameter reference](../denoising.md).
 
+## Otsu + watershed and LaMa
+
+Both parameter dialogs offer **Restore defaults**, per-control **?** help and
+**Preview**. Watershed returns provisional annotation masks to the canvas for
+**Accept masks**; LaMa opens a pixel comparison with **Apply**. Their complete
+controls are in the [watershed guide](../segmentation/watershed.md) and
+[cleaning guide](../features/cleaning.md).
+
 ## Retained crops
 
 Select a crop in the list. **Paste back** restores its snapshot; **Paste mask
@@ -56,6 +64,12 @@ saves the real retained pixels; **Remove snapshot** removes the stored crop.
 The rotation dialog offers angle presets/custom angle, optional padding shape,
 and padding fill methods. Review how dimensions and corners change before
 Apply. Rotations update calibration as well as geometry.
+
+**Reset rotation** in this dialog or **Edit → Reset rotation…** restores the
+exact snapshot taken before the first rotation, rather than applying an inverse
+interpolation. Confirmation explains that edits made after that rotation also
+revert. The native project retains this savepoint; Undo can recover the rotated
+state. Older rotated projects without such a savepoint cannot restore lost pixels.
 
 The scale dialog selects objects/group, factor/spin control/slider,
 temporary/local savepoint storage and a name. **Restore selected** and

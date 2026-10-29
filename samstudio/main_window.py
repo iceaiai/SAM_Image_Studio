@@ -32,7 +32,7 @@ from .processing import bounding_box, brush_mask, cast_like, display_rgb, filter
 from .palette import assign_colors
 from .dialogs_v14 import PromptAliasesDialog, RotationDialog, MaskScaleDialog, MorphologyDialog
 from .text_prompts import resolve_prompt
-from .transforms import rotate_document, apply_scaled_objects
+from .transforms import rotate_document, apply_scaled_objects, reset_rotation
 from . import savepoints as mask_savepoints
 from .workspace_ui import WorkspaceWorkflowMixin
 from .calibration_table import CalibrationTableMixin
@@ -120,6 +120,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self._mode_guard = False
         self._palette = {}
         self.options = {"grid":8,"min_score":.70,"min_area":8,"max_objects":300}
+        self._score_customized = False
         self.pool = QThreadPool(self);self.pool.setMaxThreadCount(1)
         data_directory().mkdir(parents=True,exist_ok=True)
         self.settings=QSettings(str(data_directory()/"settings.ini"),QSettings.Format.IniFormat)
@@ -176,6 +177,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.region_object_action=self._action("Create object from region",self.create_region_object)
         self.smooth_image_action=self._action("Smooth image pixels…",self.smooth_image_dialog)
         self.rotation_action=self._action("Rotate image…",self.rotate_image_dialog)
+        self.reset_rotation_action=self._action("Reset rotation…",self.reset_image_rotation)
         self.scale_masks_action=self._action("Scale masks / savepoints…",self.scale_masks_dialog)
         self.morphology_action=self._action("Morphology / inner region…",self.morphology_dialog)
         self.mask_colors_action=self._action("Assign mask colors…",self.assign_mask_colors)
@@ -210,7 +212,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         edit.addSeparator();edit.addAction(self._action("Object properties…",self.object_properties));edit.addAction(self._action("Change selected objects' group…",self.change_group))
         edit.addAction(self._action("Brightness / contrast…",self.adjust_display));edit.addAction(self._action("Object color…",self.change_color));edit.addAction(self._action("Object transparency…",self.change_transparency))
         edit.addAction(self.mask_colors_action);edit.addAction(self.smooth_image_action)
-        for action in (self.rotation_action,self.scale_masks_action,self.morphology_action):edit.addAction(action)
+        for action in (self.rotation_action,self.reset_rotation_action,self.scale_masks_action,self.morphology_action):edit.addAction(action)
         edit.addAction(self._action("Vertex deletion radius…",self.change_vertex_delete_radius))
         edit.addSeparator();edit.addAction(self._action("Fill holes…",lambda:self.refine_masks("holes")));edit.addAction(self._action("Smooth edges…",lambda:self.refine_masks("smooth")))
         cleaning=self.menuBar().addMenu("Cleaning");cleaning.addAction(self.remove_action)
@@ -249,10 +251,13 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         for widget in (QLabel("Mode "),self.mode,self.model_button,self.model_label,QLabel(" Group "),self.group_combo,self.scope,self.run_button,self.accept_button,self.cancel_button,self.options_button):bar.addWidget(widget)
         second=QToolBar("Image and prompts",self);second.setObjectName("imageToolbar");second.setMovable(False);self.addToolBarBreak(Qt.ToolBarArea.TopToolBarArea);self.addToolBar(Qt.ToolBarArea.TopToolBarArea,second)
         self.calibration_label=QLabel("No image")
-        self.cleaned_checkbox=QCheckBox("View / infer from processed image");self.cleaned_checkbox.toggled.connect(lambda checked:self.set_canvas_option("use_cleaned",checked))
+        self.cleaned_checkbox=QCheckBox("View / infer from processed image");self.cleaned_checkbox.toggled.connect(self._processed_input_changed)
+        self.forget_processing_button=QPushButton("Forget processed image…")
+        self.forget_processing_button.setObjectName("forgetProcessedImage")
+        self.forget_processing_button.clicked.connect(self.forget_processed_image)
         self.auto_checkbox=QCheckBox("Live point preview");self.auto_checkbox.setChecked(True)
         self.text_prompt=QLineEdit();self.text_prompt.setMaximumWidth(250);self.text_prompt.setPlaceholderText("Text prompt / alias (SAM2+)");self.text_prompt.setVisible(False)
-        for widget in (self.calibration_label,QLabel("   "),self.cleaned_checkbox,QLabel("   "),self.auto_checkbox,QLabel("   "),self.text_prompt):
+        for widget in (self.calibration_label,QLabel("   "),self.cleaned_checkbox,self.forget_processing_button,QLabel("   "),self.auto_checkbox,QLabel("   "),self.text_prompt):
             added=second.addWidget(widget)
             if widget is self.text_prompt:self.text_prompt_action=added
         self.aliases_button=QPushButton("Prompt aliases…");self.aliases_button.clicked.connect(self.prompt_aliases_dialog);self.aliases_action=second.addWidget(self.aliases_button)
@@ -299,6 +304,9 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
     def _build_status(self):
         self.save_label=QLabel("Ready");self.zoom_label=QLabel("Zoom —");self.progress=QProgressBar();self.progress.setMaximumWidth(180);self.progress.setRange(0,0);self.progress.hide()
         self.statusBar().addPermanentWidget(self.save_label);self.statusBar().addPermanentWidget(self.zoom_label);self.statusBar().addPermanentWidget(self.progress)
+        self.preview_count_label=QLabel('Preview: 0');self.preview_count_label.setObjectName('previewMaskCount')
+        self.statusBar().addPermanentWidget(self.preview_count_label)
+        self.canvas.preview_count_changed.connect(lambda count:self.preview_count_label.setText(f'Preview: {count}'))
 
     def _start_job(self,title,function,callback,prompt_editable=False):
         if self.busy:
@@ -355,6 +363,10 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             QTimer.singleShot(0,self._refresh)
             return
         doc=self.document;selected=set(self.canvas.selected);self._updating=True
+        self.cleaned_checkbox.blockSignals(True)
+        self.cleaned_checkbox.setChecked(bool(doc and doc.use_processed))
+        self.cleaned_checkbox.blockSignals(False)
+        self.canvas.use_cleaned=bool(doc and doc.use_processed)
         self.objects_tree.clear();self.groups_tree.clear();self.group_combo.clear()
         if doc:
             for group in doc.groups:
@@ -386,6 +398,9 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         doc=self.document
         has=bool(doc)
         self.run_button.setEnabled(has and self.engine.ready and not self.busy)
+        self.watershed_action.setEnabled(has and not self.busy)
+        self.forget_processing_button.setEnabled(has and bool(doc.working is not None or doc.cleaning_history or doc.detached_crops) and not self.busy)
+        self.reset_rotation_action.setEnabled(has and bool(doc.rotation) and doc.rotation_reset_state is not None and not self.busy)
         self.accept_button.setEnabled(has and bool(self.canvas.preview_masks) and not self.busy)
         self.save_action.setEnabled(has and not self.busy);self.remove_action.setEnabled(has and not self.busy)
         for action in (self.select_all_action,self.invert_region_action,self.smooth_image_action,self.mask_colors_action):action.setEnabled(has and not self.busy)
@@ -405,6 +420,8 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.background_button.setText("Background: "+name+"…");self.background_button.setEnabled(has and not self.busy)
         self._scope_tool_changed()
         text_enabled=bool(self.engine.spec and self.engine.spec.family in ("SAM2","SAM2.1","SAM3","SAM3.1","SAM3 ONNX"))
+        from .edition import offline_profile
+        text_enabled=text_enabled and not offline_profile()
         family = self.engine.spec.family if self.engine.spec else ""
         self.text_prompt.setPlaceholderText(f"{family} text prompt / alias" if text_enabled else "Text prompt unavailable for this model")
         if hasattr(self, "text_prompt_label_action"):
@@ -897,7 +914,11 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         if dialog.exec()==QDialog.DialogCode.Accepted:
             spec,device,path=dialog.values()
             token = dialog.take_hf_token() if hasattr(dialog, "take_hf_token") else None
-            def loaded(result):self.model_label.setText(result["model"]+" · "+result["device"].upper());self.model_label.setToolTip(result["checkpoint"]);self.statusBar().showMessage("Model loaded. Choose Segment and add positive/negative examples, text, or automatic grid.",10000);self.preview_timer.start() if self.mode.currentText()=="Segment" and self.scope.currentData()=="automatic" else None
+            def loaded(result):
+                self.model_label.setText(result['model']+' · '+result['device'].upper());self.model_label.setToolTip(result['checkpoint'])
+                if spec.family=='SAM3 ONNX' and not self._score_customized and self.options['min_score']==.70:self.options['min_score']=.50
+                self.statusBar().showMessage('Model loaded. Choose Segment and add supported text/shape prompts, then review the preview.',10000)
+                if self.mode.currentText()=='Segment' and self.scope.currentData()=='automatic':self.preview_timer.start()
             def load_model(progress, cancel):
                 nonlocal token
                 try:
@@ -925,6 +946,8 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         if not self._resolve_mode_content():return
         doc=self.document;dialog=RotationDialog(doc,self)
         if dialog.exec()!=QDialog.DialogCode.Accepted:return
+        if getattr(dialog,'reset_requested',False):
+            self.reset_image_rotation();return
         values=dialog.values()
         if abs(values["angle"])%360<1e-9:return
         method=values["fill"]
@@ -956,8 +979,36 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
                 self._commit("Rotate image and annotations",lambda:doc.restore(state));self.cleaned_checkbox.setChecked(True);self.canvas.fit_image()
         self._start_job("Rotating image and masks…",calculate,finished)
 
-    def _lama_pixels(self,raw,target,progress,cancel):
-        rgb=display_rgb(raw);filled=lama_fill(rgb,target,progress=progress,cancel=cancel)
+    def reset_image_rotation(self):
+        if not self.document or self.busy:return
+        answer=QMessageBox.question(self,'Reset rotation',
+            'Restore the image and annotations to their exact state before the first rotation? Changes made since that savepoint are reverted. Undo remains available.',
+            QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.No,QMessageBox.StandardButton.No)
+        if answer!=QMessageBox.StandardButton.Yes:return
+        if self._commit('Reset to before rotation',lambda:reset_rotation(self.document)):
+            self.preview_timer.stop();self._prompt_version+=1;self.canvas.set_preview([])
+            self._preview_context=None;self.mask_savepoints.pop(self.current_key,None)
+            self.canvas.set_document(self.document);self.canvas.fit_image();self._refresh()
+
+    def _processed_input_changed(self,checked):
+        if self.document:self.document.use_processed=bool(checked)
+        self.canvas.use_cleaned=bool(checked);self.canvas.refresh()
+        if hasattr(self,'preview_timer') and self.document and self.document.working is not None:
+            self.preview_timer.stop();self._pending_preview=False;self._prompt_version+=1
+            self.canvas.set_preview([]);self._preview_context=None
+            if self.busy and self._job_prompt_editable:self._job.cancel.set()
+
+    def forget_processed_image(self):
+        if not self.document or self.busy:return
+        answer=QMessageBox.question(self,'Forget processed image',
+            'Discard cleaning/processing results and retained pixel snapshots for this image? Annotations and current orientation are kept. Undo remains available.',
+            QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.No,QMessageBox.StandardButton.No)
+        if answer!=QMessageBox.StandardButton.Yes:return
+        self.preview_timer.stop();self._prompt_version+=1;self._preview_context=None;self.canvas.set_preview([])
+        self._commit('Forget processed image',self.document.forget_processing)
+
+    def _lama_pixels(self,raw,target,progress,cancel,options=None):
+        rgb=display_rgb(raw);filled=lama_fill(rgb,target,progress=progress,cancel=cancel,**(options or {}))
         output=raw.copy();values=filled if raw.ndim==3 else cv2.cvtColor(filled,cv2.COLOR_RGB2GRAY)
         if raw.dtype!=np.uint8:
             finite=raw[np.isfinite(raw)]
@@ -998,7 +1049,10 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
 
     def inference_options(self):
         dialog=InferenceOptionsDialog(self.options,self)
-        if dialog.exec()==QDialog.DialogCode.Accepted:self.options=dialog.values()
+        if dialog.exec()==QDialog.DialogCode.Accepted:
+            values=dialog.values()
+            self._score_customized=self._score_customized or values["min_score"]!=self.options["min_score"]
+            self.options=values
 
     def run_inference(self,checked=False,force_whole=None,force_automatic=False):
         if self.busy or not self.document:return
@@ -1049,8 +1103,15 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
                     return
                 if clip is not None:masks=filter_proposals(masks,protected,clip,min_area=self.options["min_area"])
                 context["confidence_scores"]=list(getattr(self.engine,"last_proposal_scores",[]))
+                diagnostics=copy.deepcopy(getattr(self.engine,'last_diagnostics',{}))
+                if diagnostics:context['diagnostics']=diagnostics
                 self._preview_context=context
                 self.canvas.set_preview(masks);self.statusBar().showMessage(f"{len(masks)} preview mask(s). Review and click Accept masks." if masks else "No eligible new masks. Accepted objects stay protected. Use explicit Refine to change an existing object.",12000)
+                if diagnostics:
+                    detail=(f"Model candidates: {diagnostics['raw_candidates']}; after score: {diagnostics['after_score']}; eligible preview: {len(masks)}. "+
+                        ('No candidates were returned by this text export. Try a visual phrase such as white dots / white circles for bright STEM particles or black dots for dark TEM particles.' if not diagnostics['raw_candidates'] else 'Check minimum score/area, ROI and protected accepted objects if masks were filtered.'))
+                    self.preview_count_label.setToolTip(detail)
+                    if not masks:self.statusBar().showMessage(detail,30000)
             self._start_job("Running automatic grid…" if automatic else "Running prompted segmentation…",
                 lambda progress,cancel:self._example_inference(self.engine,rgb,points,examples,protected,progress,cancel,text,self.options) if exemplar_mode else self.engine.infer(rgb,points,roi,protected,whole=whole or automatic,progress=progress,cancel=cancel,text_prompt=text,**self.options),
                 finished,prompt_editable=not automatic)
@@ -1095,7 +1156,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             else:
                 for i,mask in enumerate(masks):doc.add_object("mask",mask=mask,provenance={**provenance,"confidence_score":scores[i] if i<len(scores) else None})
             doc.draft["roi"]=None;doc.draft["points"]=[];doc.draft["examples"]=[]
-        if self._commit("Accept SAM masks",accept):self.canvas.set_preview([]);self._refine_target=None;self._refresh()
+        if self._commit("Accept masks",accept):self.canvas.set_preview([]);self._refine_target=None;self._refresh()
 
     def cancel_operation(self):
         self.preview_timer.stop();self._pending_preview=False;self._prompt_version+=1
@@ -1231,6 +1292,13 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         if not self.document or self.busy:return
         doc=self.document;target=doc.removed.copy()
         if not target.any():self.notify("Fill region","Remove an image area first. Fill Holes in Edit instead operates on object masks.");return
+        lama_options={}
+        if method=="lama":
+            from .analysis_dialogs import ParameterPreviewDialog,LAMA_PARAMETERS
+            dialog=ParameterPreviewDialog('LaMa fill options',LAMA_PARAMETERS,getattr(self,'lama_options',{}),
+                'Defaults keep the existing LaMa behavior. These control context, mask and compositing, not training. Preview first; only Apply changes pixels.',self)
+            if dialog.exec()!=QDialog.DialogCode.Accepted:return
+            lama_options=dialog.values();self.lama_options=lama_options.copy()
         patches=[]
         if method=="patches":
             if not doc.background_group_id and not self.choose_background_group():return
@@ -1244,13 +1312,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         def calculate(progress,cancel):
             if method=="neighbors":return neighbor_fill(raw,target)
             if method=="patches":return patch_fill(raw,target,patches)
-            rgb=display_rgb(raw);result=lama_fill(rgb,target,progress=progress,cancel=cancel)
-            output=raw.copy();values=result if raw.ndim==3 else cv2.cvtColor(result,cv2.COLOR_RGB2GRAY)
-            if raw.dtype!=np.uint8:
-                finite=np.asarray(raw)[np.isfinite(raw)];sample=finite[::max(1,finite.size//500_000)];lo,hi=np.percentile(sample,[.5,99.5]);values=values.astype(float)/255*(hi-lo)+lo
-            if raw.ndim==3 and raw.shape[-1]==4:output[target,:3]=cast_like(values[target],raw.dtype)
-            else:output[target]=cast_like(values[target],raw.dtype)
-            return output
+            return self._lama_pixels(raw,target,progress,cancel,lama_options)
         def finished(result):
             if self.current_key!=key:return
             # Show a disposable preview, then require an explicit Apply before changing saved image pixels.

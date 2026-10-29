@@ -74,7 +74,9 @@ def main(argv=None):
                 else:os.environ["SAM_STUDIO_DATA_DIR"]=previous_profile
             passed("Qt desktop window construction")
             if args.model:
-                spec=next(s for s in CATALOG if (s.family,s.variant)==(("SAM1","ViT-B") if args.model=="sam1" else ("SAM2.1","Tiny")))
+                from .edition import offline_profile
+                wanted=("SAM1","ViT-B") if args.model=="sam1" else ("SAM2.1","Small" if offline_profile() else "Tiny")
+                spec=next(s for s in CATALOG if (s.family,s.variant)==wanted)
                 engine=InferenceEngine();started=time.perf_counter()
                 engine.load(spec,args.device,args.checkpoint,progress=lambda m:print(m,flush=True))
                 if args.image:

@@ -61,10 +61,13 @@ METHODS={
   'kernel_size':P(5,1,101,2,help='Odd Gaussian window side in pixels.',recommended='3-7; default 5.'),
   'sigma':P(1.,.01,30.,.1,help='Spatial Gaussian sigma in pixels.',recommended='0.5-1.5; default 1.')},
  'Gaussian noise':{
-  'sigma':P(.03,0.,1.,.005,help='Added Gaussian standard deviation in normalized intensity units.',recommended='0.01-0.05 for a controlled comparison.'),
+  'sigma':P(.03,0.,1000000.,.005,help='Added standard deviation relative to the selected intensity scale, or in data units when scale=data_units. Noise is added to the original pixels.',recommended='Start 0.01-0.05 with image_range, not the full int16/uint16 range.'),
+  'scale':P('image_range',choices=['image_range','dtype_range','data_units'],help='image_range uses the 0.5-99.5 percentile range of actual pixels. dtype_range uses the full storage range. data_units makes sigma an absolute pixel-value standard deviation.',recommended='image_range for microscopy images stored in a wider integer dtype.'),
   'seed':P(0,0,2147483647,1,help='Random generator seed.',recommended='Keep fixed when comparing denoisers.')},
  'Poisson noise':{
-  'peak_counts':P(50.,1.,1000000.,5.,help='Synthetic Poisson counts at normalized intensity 1; lower counts mean more relative noise.',recommended='20-200 for demonstrations; this is not detector calibration.'),
+  'peak_counts':P(1000.,1.,1000000.,50.,help='Synthetic counts at one observed image intensity range. Lower counts give stronger noise. A baseline is retained and a zero-mean Poisson residual is added to the original image.',recommended='Start 1000; compare 200-5000. This is a simulation, not detector calibration.'),
+  'strength':P(1.,0.,2.,.1,help='Multiplier for the added Poisson residual. Zero returns the exact input.',recommended='0.25-1; increase peak_counts for weaker noise.'),
+  'scale':P('image_range',choices=['image_range','dtype_range'],help='image_range uses actual 0.5-99.5 percentile contrast and retains the original baseline. dtype_range is available for comparison.',recommended='image_range for microscopy data.'),
   'seed':P(0,0,2147483647,1,help='Random generator seed.',recommended='Keep fixed for comparisons.')},
  'Salt and pepper noise':{
   'amount':P(.01,0.,1.,.005,help='Fraction of pixels replaced by minimum/maximum normalized intensity.',recommended='0.001-0.02.'),

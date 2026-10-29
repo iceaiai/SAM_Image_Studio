@@ -76,6 +76,8 @@ Follow the interface from the workspace and menus to the relevant controls.
   examples and a single native object; automatic grid is explained separately.
 - [Compressed sensing](features/compressed-sensing.md): dialog order, DCT/TV
   parameter suggestions and computed synthetic comparisons.
+- [Otsu + watershed](segmentation/watershed.md): threshold, splitting parameters and preview without a model.
+- [Example images](features/examples.md): supplied EMD/TIFF and measured CPU outputs.
 - [SAM3 ONNX](segmentation/sam3-onnx.md): public text weights without HF login,
   aliases and exact application ROI clipping.
 
@@ -116,7 +118,7 @@ autosave, calibrated measurements, and reversible processing. Read the
 [application additions guide](segmentation/application-tools.md) to understand
 their scope and limitations.
 
-Version **1.4.3**, based on the v1.4 application line. The optional SAM3/3.1
+Version **1.4.4**, based on the v1.4 application line. The optional SAM3/3.1
 backend requires NVIDIA CUDA, a dedicated Linux/WSL2 Conda environment, and
 approved compatible weights. CPU supports SAM1, SAM2/2.1 and public SAM3 ONNX text segmentation. This website
 documents implementation and recorded checks; it does not claim new CUDA
@@ -127,6 +129,7 @@ benchmarks or microscopy detection accuracy.
 :hidden:
 
 Installation <installation>
+installation-offline
 features/index
 Documentation <documentation/index>
 developer/index

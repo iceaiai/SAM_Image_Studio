@@ -1,5 +1,6 @@
 from __future__ import annotations
 import argparse
+import os
 import logging
 from logging.handlers import RotatingFileHandler
 import sys
@@ -36,6 +37,9 @@ def main(argv=None):
     parser.add_argument("--version",action="version",version=__version__)
     parser.add_argument("--no-restore",action="store_true",help="Do not reopen the previous image session")
     args=parser.parse_args(argv)
+    from .edition import offline_profile
+    if offline_profile():
+        os.environ['HF_HUB_OFFLINE']='1';os.environ['TRANSFORMERS_OFFLINE']='1'
     from .qt_runtime import configure_qt_platform
     configure_qt_platform()
     directory=data_directory();directory.mkdir(parents=True,exist_ok=True)

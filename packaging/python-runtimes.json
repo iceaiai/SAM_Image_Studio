@@ -1,0 +1,18 @@
+{
+  "windows-x86_64": {
+    "version": "3.12.10",
+    "url": "https://api.nuget.org/v3-flatcontainer/python/3.12.10/python.3.12.10.nupkg",
+    "filename": "python.3.12.10.nupkg",
+    "sha256": "0eb85c2dfccccf1b17352de4c397f69194035b7d37149eacc16f1147d93de3b8",
+    "archive_root": "tools",
+    "source": "Python Software Foundation's official NuGet python package, including venv and ensurepip"
+  },
+  "linux-x86_64": {
+    "version": "3.12.15",
+    "url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261021/cpython-3.12.15%2B20261021-x86_64-unknown-linux-gnu-install_only_stripped.tar.gz",
+    "filename": "cpython-3.12.15-linux-x86_64.tar.gz",
+    "sha256": "6d7521138fd33afddc1ccd08abb007d9a2829e38117c2576f9efdc0ec73ce772",
+    "archive_root": "python",
+    "source": "Astral python-build-standalone; digest from pbs-installer 2026.10.25 published metadata"
+  }
+}

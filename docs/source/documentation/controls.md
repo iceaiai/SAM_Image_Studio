@@ -19,6 +19,7 @@ important Segment choices before you run a preview.
 | Options… | Configure grid density, minimum score, minimum area and maximum objects. |
 | Calibration display | Inspect current pixel size/unit and its source. |
 | View / infer from processed image | Choose derived pixels for display/inference when present; the acquired source is retained. |
+| Forget processed image… | Confirm clearing derived pixels, processing records and retained crops. Keeps annotations/orientation; undoable. |
 | Live prompt preview | Schedule a background preview after eligible prompt edits. |
 | Background: not selected… / Background group… | Choose the explicit manual background-patch source group for cleaning. |
 
@@ -56,6 +57,7 @@ For detailed text/shape interaction and output scope, see the
 
 | Button | Use |
 | --- | --- |
+| Select all / Deselect all | Available independently in Objects, Groups and Image files. Selecting group rows does not change the active drawing Group in the toolbar. |
 | Show cleaning regions | Toggle cleaning record outlines without deleting the records. |
 | + Group / Rename / Color | Create/rename groups and choose their colors. |
 | Remove selected images | Save and remove selected image/frame entries from this session. Source files and saved projects remain. |

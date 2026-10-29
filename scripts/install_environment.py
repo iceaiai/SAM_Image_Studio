@@ -24,9 +24,15 @@ def main(argv=None):
     parser.add_argument("--backend",choices=["cpu","cuda"],default="cpu")
     parser.add_argument("--current",action="store_true",help="Use the currently activated virtual/Conda environment")
     parser.add_argument("--dry-run",action="store_true")
+    argv=list(sys.argv[1:] if argv is None else argv)
     args=parser.parse_args(argv)
     if sys.version_info[:2] != (3,12) or struct.calcsize("P")!=8:
-        parser.error("Use 64-bit Python 3.12 for this tested release.")
+        if args.current:parser.error("--current requires an activated 64-bit Python 3.12 environment. Use the normal CPU helper to prepare a separate project-local Python automatically.")
+        if args.dry_run:
+            print(json.dumps({'status':'requires_python312','bootstrap':'The normal CPU helper prepares a verified local Python 3.12 without changing existing Python installations.'}));return 0
+        from bootstrap_python import ensure_python
+        py=ensure_python(ROOT)
+        return subprocess.call([str(py),str(Path(__file__).resolve()),*argv],cwd=ROOT)
     if args.backend=="cuda":
         parser.error("Use scripts/install_conda_gpu.py inside a dedicated Conda environment. GPU venv installation is disabled.")
     if args.current and sys.prefix==sys.base_prefix and not os.environ.get("CONDA_PREFIX"):

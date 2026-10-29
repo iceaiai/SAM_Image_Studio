@@ -7,6 +7,7 @@ the output. A disposable preview becomes an annotation only after **Accept masks
 | Goal | Start here |
 | --- | --- |
 | Understand ROI / whole-image / single-object choices | [Illustrated Seg scopes](scopes.md) |
+| Intensity-based splitting without a model | [Otsu + watershed](watershed.md) |
 | Public SAM3 text without HF login | [SAM3 ONNX](sam3-onnx.md) |
 | Learn SAM1/2/3 detection and segmentation differences | [Model families](model-families.md) |
 | Find dark particles using `black dots` | [SAM3.1 text prompt recipe](sam31.md#text-prompt-recipe-black-dots) |
@@ -19,6 +20,7 @@ the output. A disposable preview becomes an annotation only after **Accept masks
 :maxdepth: 2
 
 scopes
+watershed
 model-families
 sam3-onnx
 sam31

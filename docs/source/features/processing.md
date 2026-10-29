@@ -54,6 +54,33 @@ processing and interpolates back, whereas normal processing uses the native grid
 amount, each with an explicit seed. Keep the seed fixed when comparing
 restoration methods. Synthetic Poisson counts are not detector calibration.
 
+## Noise strength in image data units
+
+Gaussian and Poisson noise are added to the existing image; their output is not
+an independent noise frame. Version 1.4.4 fixes the use of a full int16 storage
+range for images whose actual signal occupies only a small fraction of it.
+Before/after previews use the same original intensity scale.
+
+| Method/control | Default and meaning | Suggested comparison |
+| --- | --- | --- |
+| Gaussian sigma | 0.03 × selected span | Start 0.01–0.05 with **image_range**; 0 preserves pixels. |
+| Gaussian scale | image_range | Robust 0.5–99.5 percentile span of input; dtype_range uses the full storage range, and data_units treats sigma as absolute pixel units. |
+| Poisson peak counts | 1,000 | Larger counts reduce relative noise; compare 100, 1,000, 10,000. These are synthetic counts, not instrument calibration. |
+| Poisson strength | 1 | Multiplier for the zero-mean sampled residual; 0 preserves pixels. |
+| Poisson scale | image_range | Maps the observed span to synthetic counts, then adds the residual back to original values, preserving the baseline. dtype_range is an explicit alternative. |
+| Seed | explicit per run | Keep fixed for reproducible comparisons. |
+
+```{image} ../_static/workflows/v144-noise-comparison.png
+:alt: Original signed int16 EMD image compared with Gaussian sigma 0.03 and Poisson peak 1000, all shown on the original intensity scale
+:width: 100%
+```
+
+The supplied EMD's central signal range is roughly 4–115 although int16 storage
+spans 65,536 values. Scaling sigma by storage range overwhelmed the signal.
+The default now follows image contrast. Final compositing preserves pixels
+outside the target and any alpha channel. Integer clipping still applies at the
+actual dtype limits. Use **Preview**, then **Apply** only after inspection.
+
 ## Retain a crop while processing its surroundings
 
 1. Select area objects or draw a region.

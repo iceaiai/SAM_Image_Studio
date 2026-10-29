@@ -1,0 +1,8 @@
+{
+  "edition": "offline-cpu",
+  "models": [
+    {"family": "SAM1", "variant": "ViT-B", "filename": "sam_vit_b_01ec64.pth", "url": "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth", "sha256": "ec2df62732614e57411cdcf32a23ffdf28910380d03139ee0f4fcbe91eb8c912"},
+    {"family": "SAM2.1", "variant": "Small", "filename": "sam2.1_hiera_small.pt", "url": "https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_small.pt", "sha256": ""},
+    {"family": "SAM2.1", "variant": "Base+", "filename": "sam2.1_hiera_base_plus.pt", "url": "https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_base_plus.pt", "sha256": ""}
+  ]
+}
