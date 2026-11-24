@@ -194,17 +194,21 @@ def label_map(document, by_group=False, objects=None):
     return output
 
 
-def color_mask(document, objects, by_group=False, opacity=1.0, background=None):
+def color_mask(document, objects, by_group=False, opacity=1.0, background=None, *, object_colors=None):
     h, w = document.frame.shape
     output = np.zeros((h, w, 4), np.uint8)
     if background is not None:
         output[..., :3] = background
         output[..., 3] = 255
+    if not by_group and object_colors is None:
+        from .palette import document_mask_colors
+        object_colors = document_mask_colors(document)
     for obj in objects:
         if obj.mask is None:
             continue
         mask = obj.mask
-        color = np.asarray(hex_rgb(document.get_group(obj.group_id).color if by_group else obj.color), np.float32)
+        rgb = document.get_group(obj.group_id).color if by_group else object_colors.get(obj.id, obj.color)
+        color = np.asarray(hex_rgb(rgb), np.float32)
         if background is None:
             output[mask, :3] = color.astype(np.uint8)
             output[mask, 3] = round(255 * opacity)
@@ -237,7 +241,8 @@ def overlay_source(document, overlay):
     raise ValueError("Choose no overlay, the original image, or the cleaned image.")
 
 
-def render_mask_pixels(document, objects, color_mode="group_color", overlay=False, transparency=0, transparent=False):
+def render_mask_pixels(document, objects, color_mode="group_color", overlay=False, transparency=0, transparent=False,
+                       *, object_colors=None):
     """Shared preview/export rendering, with transparency defined as 1-opacity."""
     if color_mode not in ("binary","overlap_gray","group_color","object_color"):
         raise ValueError("Choose binary, overlap grayscale, group color, or object color.")
@@ -260,7 +265,7 @@ def render_mask_pixels(document, objects, color_mode="group_color", overlay=Fals
             pixels[mask,:3]=np.rint(gray[mask,None]*opacity).astype(np.uint8);pixels[...,3]=255
     else:
         pixels=color_mask(document,objects,color_mode=="group_color",opacity,
-                          base)
+                          base,object_colors=object_colors)
         if not transparent and base is None:
             alpha=pixels[...,3:4].astype(np.float32)/255
             pixels[...,:3]=np.rint(pixels[...,:3]*alpha).astype(np.uint8)
@@ -272,7 +277,10 @@ def render_mask_pixels(document, objects, color_mode="group_color", overlay=Fals
 
 def save_masks(document: Document, directory: Path, file_format="bmp", organization="combined",
                color_mode="group_color", overlay=False, transparency=0, transparent=False,
-               save_original_image=False, save_cleaned_image=False):
+               save_original_image=False, save_cleaned_image=False, *, object_colors=None):
+    if object_colors is None:
+        from .palette import document_mask_colors
+        object_colors = document_mask_colors(document)
     file_format = file_format.lower().lstrip(".")
     if file_format not in ("bmp", "png", "tif", "tiff"):
         raise ValueError("Choose BMP, PNG, or TIFF.")
@@ -317,7 +325,8 @@ def save_masks(document: Document, directory: Path, file_format="bmp", organizat
             else:
                 Image.fromarray(pixels).save(path)
         else:
-            pixels = render_mask_pixels(document,batch,color_mode,overlay,transparency,transparent)
+            pixels = render_mask_pixels(document,batch,color_mode,overlay,transparency,transparent,
+                                        object_colors=object_colors)
             image = Image.fromarray(pixels, "RGBA")
             if color_mode == "overlap_gray":
                 _,weight,maximum=overlap_grayscale(batch,document.frame.shape)
@@ -332,7 +341,7 @@ def save_masks(document: Document, directory: Path, file_format="bmp", organizat
     class_ids = {g.id: i + 1 for i, g in enumerate(document.groups)}
     image_paths = save_image_versions(document, directory, save_original_image, save_cleaned_image)
     mapping = [{"instance_id": instance_ids[o.id], "class_id": class_ids[o.group_id], "object_id": o.id, "name": o.name,
-                "object_color": o.color, "group_color": document.get_group(o.group_id).color,
+                "object_color": object_colors.get(o.id, o.color), "group_color": document.get_group(o.group_id).color,
                 "group": document.get_group(o.group_id).name, "pixel_area": o.pixel_area,
                 "physical_area": document.calibration.area(o.pixel_area),
                 "area_unit": document.calibration.length_unit + "^2" if document.calibration.valid else None}

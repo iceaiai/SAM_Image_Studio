@@ -1,5 +1,6 @@
 """Deduplicated 2-D morphology measurements with explicit applicability."""
 from __future__ import annotations
+import copy
 import math
 import zlib
 import cv2
@@ -8,6 +9,7 @@ from scipy.ndimage import binary_fill_holes, binary_erosion, label
 from scipy.spatial import ConvexHull, cKDTree, distance
 from skimage.measure import find_contours
 from .domain import LENGTH_UNITS
+from .filaments import FILAMENT_METRICS, filament_chains, filament_values
 
 # dimension: 0 dimensionless, 1 length, 2 area, -1 degrees, -2 categorical
 METRICS = {
@@ -26,6 +28,7 @@ METRICS = {
  'cavity_size':('Cavity ECD',1),'wall_thickness':('Mean wall thickness',1),
  'cavity_x':('Cavity centroid X',1),'cavity_y':('Cavity centroid Y',1),
  'wall_uniformity':('Wall thickness CV',0),
+ **{key: (label, dimension) for key, (label, dimension, _) in FILAMENT_METRICS.items()},
 }
 
 
@@ -123,20 +126,30 @@ def nested_metrics(document, obj, matrix, result):
     return ''
 
 
-def object_values(document,obj,matrix,origin=None):
+def _nested_inner_ids(foreground, by_id):
+    inner_ids = set()
+    for outer in foreground:
+        config = outer.provenance.get("morphology", {})
+        if config.get("type") not in ("core-shell", "hollow") or outer.mask is None:
+            continue
+        inner = by_id.get(config.get("inner_id"))
+        if inner is None or inner.id == outer.id or inner.mask is None or not inner.mask.any():
+            continue
+        envelope = binary_fill_holes(outer.mask)
+        if label(envelope)[1] == 1 and label(inner.mask)[1] == 1 and not (inner.mask & ~binary_erosion(envelope)).any():
+            inner_ids.add(inner.id)
+    return inner_ids
+
+
+def object_values(document, obj, matrix, origin=None, *, inner_ids=None):
     result={k:None for k in METRICS}
     result.update(geometry(obj.mask,matrix))
     score=obj.provenance.get('confidence_score')
     result['confidence']=float(score) if isinstance(score,(float,int)) and math.isfinite(score) else None
     result['object_id']=obj.id
-    inner_ids=set()
-    for outer in document.foreground_objects():
-        config=outer.provenance.get('morphology',{})
-        if config.get('type') not in ('core-shell','hollow') or outer.mask is None:continue
-        inner=next((o for o in document.foreground_objects() if o.id==config.get('inner_id') and o.id!=outer.id),None)
-        if inner is None or inner.mask is None or not inner.mask.any():continue
-        envelope=binary_fill_holes(outer.mask)
-        if label(envelope)[1]==1 and label(inner.mask)[1]==1 and not (inner.mask & ~binary_erosion(envelope)).any():inner_ids.add(inner.id)
+    if inner_ids is None:
+        foreground = document.foreground_objects()
+        inner_ids = _nested_inner_ids(foreground, {o.id: o for o in foreground})
     result['particle_count']=0 if obj.id in inner_ids else 1
     note=nested_metrics(document,obj,matrix,result)
     if origin is not None:
@@ -146,44 +159,93 @@ def object_values(document,obj,matrix,origin=None):
     return result,note
 
 
-def measurement_records(document,object_ids=None,group_names=None,unit=None):
-    rows=[];excluded=0
-    links=[]
-    for item in document.foreground_objects():
-        config=item.provenance.get('morphology',{})
-        if config.get('type') in ('core-shell','hollow'):
-            partner=next((o for o in document.objects if o.id==config.get('inner_id')),None)
-            links.append((item.id,str(config),zlib.crc32(memoryview(np.ascontiguousarray(item.mask))) if item.mask is not None else None,
-                          zlib.crc32(memoryview(np.ascontiguousarray(partner.mask))) if partner and partner.mask is not None else None))
-    for obj in document.foreground_objects():
-        group=document.get_group(obj.group_id).name
-        if object_ids is not None and obj.id not in object_ids or group_names and group not in group_names:
+def measurement_records(document, object_ids=None, group_names=None, unit=None):
+    rows, excluded = [], 0
+    foreground = document.foreground_objects()
+    by_id = {obj.id: obj for obj in foreground}
+    inner_ids = _nested_inner_ids(foreground, by_id)
+    groups = {group.id: group for group in document.groups}
+    mask_keys = {}
+
+    def mask_key(obj):
+        if obj is None or obj.mask is None:
+            return None
+        if obj.id not in mask_keys:
+            mask_keys[obj.id] = zlib.crc32(memoryview(np.ascontiguousarray(obj.mask)))
+        return mask_keys[obj.id]
+
+    calibration = document.calibration
+    physical_matrix = calibration.matrix(unit) if calibration.valid else None
+    origin = (np.asarray(calibration.origin or [0., 0.]) *
+              (LENGTH_UNITS[calibration.length_unit] / LENGTH_UNITS[unit] if unit else 1.)) if calibration.valid else None
+    for members, links in filament_chains(foreground, document.filament_links):
+        obj = members[0]
+        group = groups[obj.group_id]
+        ids = tuple(member.id for member in members)
+        if (object_ids is not None and not any(ident in object_ids for ident in ids)
+                or group_names and group.name not in group_names):
             continue
         if obj.mask is None or not obj.mask.any():
-            excluded+=1;continue
-        # Include nested partners in cache key so edits to a core refresh outer metrics.
-        config=obj.provenance.get('morphology',{})
-        partner=next((o for o in document.objects if o.id==config.get('inner_id')),None)
-        key=(zlib.crc32(memoryview(np.ascontiguousarray(obj.mask))),str(config),str(document.calibration),unit,
-             zlib.crc32(memoryview(np.ascontiguousarray(partner.mask))) if partner and partner.mask is not None else None,
-             obj.provenance.get('confidence_score'),tuple(links))
-        cache=getattr(obj,'_statistics_cache',None)
-        if cache is None or cache[0]!=key:
-            pixel,note=object_values(document,obj,np.eye(2))
-            physical,pnote=object_values(document,obj,document.calibration.matrix(unit),
-              np.asarray(document.calibration.origin or [0.,0.])*(1 if not unit else LENGTH_UNITS[document.calibration.length_unit]/LENGTH_UNITS[unit])) if document.calibration.valid else ({k:None for k in METRICS},'')
-            cache=(key,pixel,physical,note or pnote);obj._statistics_cache=cache
-        _,pixel,physical,note=cache
-        row={'object_id':obj.id,'name':obj.name,'group':group,'image':document.frame.source_path,'dataset':document.frame.dataset,
-             'frame':document.frame.frame_index,'morphology':config.get('type','general'),'inner_object_id':config.get('inner_id',''),
-             'calibrated':document.calibration.valid,'length_unit':unit or document.calibration.length_unit if document.calibration.valid else '',
-             'applicability_note':note or ('Morphology-specific metrics require an explicit polygon or inner-region relationship.' if config.get('type','general') in ('general','rod') else ''),'confidence_note':'Backend mask score; not a calibrated probability.' if pixel['confidence'] is not None else 'No model confidence recorded (manual or legacy annotation).'}
-        for k,(_,dim) in METRICS.items():
-            if k=='object_id':continue
-            row[k+'_px']=pixel[k]
-            row[k+'_physical']=physical[k] if dim in (1,2,-1,0) else None
+            excluded += 1
+            continue
+        config = obj.provenance.get("morphology", {})
+        partner = by_id.get(config.get("inner_id"))
+        key = (tuple((member.id, mask_key(member)) for member in members), group.filament,
+               tuple(links), str(config), mask_key(partner), obj.id in inner_ids,
+               obj.provenance.get("confidence_score"), str(calibration), unit)
+        cache = getattr(obj, "_statistics_cache", None)
+        if cache is None or cache[0] != key:
+            measured = obj
+            if len(members) > 1:
+                measured = copy.copy(obj)
+                measured.mask = np.logical_or.reduce([member.mask for member in members])
+                measured.provenance = {}  # Linked fragments have no single backend score or inner mask.
+            counted_inner_ids = set() if group.filament else inner_ids
+            pixel, note = object_values(document, measured, np.eye(2), inner_ids=counted_inner_ids)
+            physical, physical_note = ({}, "")
+            if physical_matrix is not None:
+                physical, physical_note = object_values(document, measured, physical_matrix, origin,
+                                                        inner_ids=counted_inner_ids)
+            if group.filament:
+                pixel_filament, filament_note = filament_values(members, links, np.eye(2), mask_keys)
+                pixel.update(pixel_filament)
+                if physical_matrix is not None:
+                    physical_filament, physical_filament_note = filament_values(members, links, physical_matrix, mask_keys)
+                    physical.update(physical_filament)
+                    filament_note = filament_note or physical_filament_note
+                note = " ".join(text for text in (note or physical_note, filament_note) if text)
+            else:
+                note = note or physical_note
+            cache = (key, pixel, physical, note)
+            obj._statistics_cache = cache
+        _, pixel, physical, note = cache
+        morphology = "filament" if group.filament else config.get("type", "general")
+        if not note and morphology in ("general", "rod"):
+            note = "Morphology-specific metrics require an explicit polygon or inner-region relationship."
+        row = {
+            "object_id": obj.id,
+            "fragment_ids": ids if group.filament else (),
+            "name": obj.name,
+            "group": group.name,
+            "image": document.frame.source_path,
+            "dataset": document.frame.dataset,
+            "frame": document.frame.frame_index,
+            "morphology": morphology,
+            "inner_object_id": config.get("inner_id", "") if len(members) == 1 else "",
+            "calibrated": calibration.valid,
+            "length_unit": (unit or calibration.length_unit) if calibration.valid else "",
+            "applicability_note": note,
+            "confidence_note": ("Backend mask score; not a calibrated probability." if pixel["confidence"] is not None
+                                else "No single model score recorded." if len(members) > 1
+                                else "No model confidence recorded (manual or legacy annotation)."),
+        }
+        for metric in METRICS:
+            if metric == "object_id":
+                continue
+            row[metric + "_px"] = pixel.get(metric)
+            row[metric + "_physical"] = physical.get(metric)
         rows.append(row)
-    return rows,excluded
+    return rows, excluded
 
 
 def summary_records(rows,metrics=None):
@@ -211,9 +273,10 @@ def export_statistics(rows,path,metrics=None,bins=20):
     from pathlib import Path
     keys=list(metrics or METRICS)
     if any(k not in METRICS for k in keys):raise ValueError('Unknown statistic selected.')
-    metadata=['object_id','name','group','image','dataset','frame','morphology','inner_object_id','calibrated','length_unit','applicability_note','confidence_note']
+    metadata=['object_id','fragment_ids','mask_color','name','group','image','dataset','frame','morphology','inner_object_id','calibrated','length_unit','applicability_note','confidence_note']
     columns=metadata+[k+'_'+s for k in keys if k!='object_id' for s in ('px','physical')]
-    write_measurement_csv([{k:r.get(k) for k in columns} for r in rows],path)
+    write_measurement_csv([{k: ("; ".join(r.get(k, ())) if k == "fragment_ids" else r.get(k))
+                            for k in columns} for r in rows], path)
     summary=summary_records(rows,keys)
     summary_path=Path(path).with_name(Path(path).stem+'_summary.csv')
     if summary:write_measurement_csv(summary,summary_path)
@@ -232,7 +295,7 @@ def export_statistics(rows,path,metrics=None,bins=20):
     import json
     from .domain import atomic_write
     atomic_write(Path(path).with_name(Path(path).stem+'_definitions.json'),json.dumps({
-        'metrics':{k:METRIC_DEFINITIONS[k] for k in keys},'physical_units':'Length units are in length_unit; area uses their square. Dimensionless metrics use 1 and angles use degrees.',
+        'metrics':{k:METRIC_DEFINITIONS[k] for k in keys},'physical_units':'Length units are in length_unit; area and width variance use their square. Dimensionless metrics use 1 and angles use degrees.',
         'summaries':'Population standard deviation (ddof=0). Angular means, medians and SD are arithmetic and must be interpreted with the 0/180 or 0/360 wrap in mind.',
         'missing_values':'Empty CSV cells mean not applicable or unavailable; see applicability_note and confidence_note.',
         'histogram_bins':int(bins)},indent=2).encode())
@@ -271,4 +334,5 @@ METRIC_DEFINITIONS = {
  'cavity_x':'X centroid of the explicitly linked cavity mask.',
  'cavity_y':'Y centroid of the explicitly linked cavity mask.',
  'wall_uniformity':'Coefficient of variation of sampled wall thickness; lower is more uniform.',
+ **{key: definition for key, (_, _, definition) in FILAMENT_METRICS.items()},
 }

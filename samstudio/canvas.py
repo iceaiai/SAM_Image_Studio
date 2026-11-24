@@ -10,6 +10,7 @@ from PySide6.QtWidgets import QWidget
 from .domain import Document, unpack_mask
 from .exports import hex_rgb
 from .processing import curve_segments, display_rgb, mask_contours
+from .scale_bar_ui import draw_scale_bar
 
 
 def rgb_image(rgb):
@@ -32,6 +33,7 @@ class ImageCanvas(QWidget):
     tool_changed = Signal(str)
     object_context_requested = Signal(object)
     preview_count_changed = Signal(int)
+    filament_end_picked = Signal(str, int)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -58,6 +60,12 @@ class ImageCanvas(QWidget):
         self.vertex_delete_radius = 20.0
         self.handle_radius = 5.1  # screen pixels; half the v1.3 radius
         self.preview_masks = []
+        self.scale_bar_preview = None
+        self.previewing_scale_bar = False
+        self.filament_picks = {}
+        self.filament_first = None
+        self.filament_bridges = []
+        self.object_colors = {}
         self._base = self._overlay = self._preview = None
         self._region = None
         self._region_source = None
@@ -84,6 +92,11 @@ class ImageCanvas(QWidget):
         self._base_key = None
         self._contour_cache.clear()
         self.preview_masks = []
+        self.clear_scale_bar_preview()
+        self.filament_picks = {}
+        self.filament_first = None
+        self.filament_bridges = []
+        self.object_colors = {}
         self.refresh()
         if fit:
             self.fit_image()
@@ -108,7 +121,7 @@ class ImageCanvas(QWidget):
             if not obj.visible or (obj.role == "cleaning" and not self.show_cleaning):
                 continue
             if obj.mask is not None:
-                overlay[obj.mask, :3] = hex_rgb(obj.color)
+                overlay[obj.mask, :3] = hex_rgb(self.object_colors.get(obj.id, obj.color))
                 overlay[obj.mask, 3] = round(255 * obj.opacity)
                 if obj.id in self.selected or self.show_contours:
                     cached = self._contour_cache.get(obj.id)
@@ -147,6 +160,16 @@ class ImageCanvas(QWidget):
             self._preview = rgba_image(out)
         else:
             self._preview = None
+        self.update()
+
+    def preview_scale_bar(self, bar):
+        self.previewing_scale_bar = True
+        self.scale_bar_preview = bar
+        self.update()
+
+    def clear_scale_bar_preview(self):
+        self.previewing_scale_bar = False
+        self.scale_bar_preview = None
         self.update()
 
     def set_selected(self, ids):
@@ -269,7 +292,8 @@ class ImageCanvas(QWidget):
                 continue
             selected = obj.id in self.selected
             if selected or self.show_contours or obj.kind == "point":
-                painter.setPen(QPen(QColor("#245dd8" if selected else obj.color), (4.4 if selected else 2.2)/self.scale))
+                color = self.object_colors.get(obj.id, obj.color)
+                painter.setPen(QPen(QColor("#245dd8" if selected else color), (4.4 if selected else 2.2)/self.scale))
                 painter.setBrush(Qt.BrushStyle.NoBrush)
                 if selected and self.edit_mode and obj.role != "cleaning" and not obj.locked:
                     geometry = self._geometry(obj)
@@ -315,7 +339,23 @@ class ImageCanvas(QWidget):
             elif self.tool == "point" and self.mode == "Clean":
                 for p in points:
                     painter.drawEllipse(QPointF(*p), self.brush_radius, self.brush_radius)
+        bar = self.scale_bar_preview if self.previewing_scale_bar else self.document.scale_bar
+        if bar is not None:
+            draw_scale_bar(painter, bar, self.document.calibration, self.document.frame.shape)
+        self._draw_filament_guides(painter)
         painter.restore()
+
+    def _draw_filament_guides(self, painter):
+        painter.setPen(QPen(QColor("#f59e0b"), 3 / self.scale, Qt.PenStyle.DashLine))
+        for first, second in self.filament_bridges:
+            painter.drawLine(QPointF(*first), QPointF(*second))
+        painter.setPen(QPen(QColor("#292524"), 1.5 / self.scale))
+        for options in self.filament_picks.values():
+            for _, point in options:
+                selected = self.filament_first is point
+                painter.setBrush(QColor("#f59e0b" if selected else "#fef3c7"))
+                radius = (7 if selected else 6) / self.scale
+                painter.drawEllipse(QPointF(*point), radius, radius)
 
     def wheelEvent(self, event):
         if not self.document:
@@ -334,7 +374,16 @@ class ImageCanvas(QWidget):
             self.setCursor(Qt.CursorShape.ClosedHandCursor)
             return
         point = self.to_image(event.position())
-        if point is None or self.read_only:
+        if self.read_only:
+            return
+        if self.filament_picks and event.button() == Qt.MouseButton.LeftButton:
+            choices = [((self.to_widget(end) - event.position()).manhattanLength(), ident, index)
+                       for ident, options in self.filament_picks.items() for index, end in options]
+            distance, ident, index = min(choices)
+            if distance <= 16:
+                self.filament_end_picked.emit(ident, index)
+            return
+        if point is None:
             return
         if self.prompt_input_only:
             if self.mode == "Segment" and self.tool == "point":

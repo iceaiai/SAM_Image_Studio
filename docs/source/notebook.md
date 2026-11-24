@@ -40,7 +40,7 @@ effective denoising.
 `sample_fraction`, `sampling_method`, `random_seed`, and `initialization` are
 reconstruction controls. `tv_step` is an iteration step and is different from
 the regularization weight used by Chambolle TV restoration. See the
-[denoising parameter guide](denoising.md) for defaults and validation limits.
+[denoising parameter guide](user-manual.md#denoising-parameters) for defaults and validation limits.
 
 Notebook uncertainty scores are acquisition heuristics rather than calibrated
 probabilities. No reconstruction score alone establishes scientific feature

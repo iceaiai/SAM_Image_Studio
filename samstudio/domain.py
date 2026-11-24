@@ -15,7 +15,7 @@ from typing import Callable
 
 import numpy as np
 
-SCHEMA_VERSION = 5
+SCHEMA_VERSION = 6
 MAX_DECODED_BYTES = 2_000_000_000
 LENGTH_UNITS = {"m": 1.0, "mm": 1e-3, "um": 1e-6, "µm": 1e-6,
                 "μm": 1e-6, "nm": 1e-9, "pm": 1e-12, "Å": 1e-10,
@@ -138,11 +138,14 @@ class Group:
     name: str
     color: str = "#148374"
     id: str = ""
+    filament: bool = False
 
     def __post_init__(self):
         self.name = self.name.strip()
         if not self.name:
             raise ValueError("A group name cannot be empty.")
+        if type(self.filament) is not bool:
+            raise ValueError("Invalid Filament group type.")
         self.id = self.id or group_id(self.name)
 
 
@@ -258,6 +261,9 @@ class Document:
         self.cleaning_history: list[dict] = []
         self.background_group_id: str | None = None
         self.color_scheme = {"mode": "default", "by": "object", "offset": 0}
+        self.metric_color_scheme = None
+        self.scale_bar = None
+        self.filament_links = []
         self.revision = 0
         self.saved_revision = 0
 
@@ -358,6 +364,7 @@ class Document:
             source.name = "Cleaning " + str(sequence).zfill(3)
             self.active_group = active
         else:
+            self.unlink_filaments([source.id])
             source.provenance = {**source.provenance, "cleaning_source": {"id": source.id, "kind": source.kind}}
         source.role = "cleaning"
         source.visible = True
@@ -415,11 +422,30 @@ class Document:
         cleaned = [o.id for o in selected if o.role == "cleaning"]
         archived = [o.to_dict() for o in selected if o.role == "cleaning"]
         self.objects = [o for o in self.objects if o.id not in ids]
+        self.unlink_filaments(ids)
         if cleaned:
             self.rebuild_cleaning()
             self.cleaning_history.append({"operation": "restore_by_deleting_objects", "object_ids": cleaned,
                                           "objects": archived,
                                           "method": "replay remaining regions over original acquired pixels"})
+
+    def unlink_filaments(self, object_ids):
+        ids = set(object_ids)
+        self.filament_links = [link for link in self.filament_links
+                               if link.first_id not in ids and link.second_id not in ids]
+
+    def set_filament_group(self, group_id, enabled):
+        if enabled and group_id == self.background_group_id:
+            raise ValueError("Choose a foreground group for Filament measurements.")
+        self.get_group(group_id).filament = enabled
+        if not enabled:
+            self.unlink_filaments(o.id for o in self.objects if o.group_id == group_id)
+
+    def connect_filament(self, link):
+        from .filaments import validate_links
+        links = [*self.filament_links, link]
+        validate_links(links, self.objects, self.groups, self.background_group_id)
+        self.filament_links = links
 
     def restore_cleaning_area(self, mask):
         archived = [o.to_dict() for o in self.objects if o.role == "cleaning" and (o.mask & mask).any()]
@@ -458,6 +484,9 @@ class Document:
                 "removed": pack_mask(self.removed), "modified": pack_mask(self.modified),
                 "cleaning_history": copy.deepcopy(self.cleaning_history), "background_group_id": self.background_group_id,
                 "color_scheme": copy.deepcopy(self.color_scheme),
+                "metric_color_scheme": asdict(self.metric_color_scheme) if self.metric_color_scheme is not None else None,
+                "scale_bar": asdict(self.scale_bar) if self.scale_bar is not None else None,
+                "filament_links": [asdict(link) for link in self.filament_links],
                 "detached_crops": copy.deepcopy(self.detached_crops), "revision": self.revision}
 
     def forget_processing(self):
@@ -477,7 +506,7 @@ class Document:
         rotation_reset = copy.deepcopy(data.get('rotation_reset_state'))
         if rotation_reset is not None and (not isinstance(rotation_reset,dict) or rotation_reset.get('rotation') or rotation_reset.get('rotation_reset_state') is not None):
             raise ValueError('Invalid pre-rotation savepoint.')
-        if data.get("schema_version") not in (1, 2, 3, 4, SCHEMA_VERSION):
+        if data.get("schema_version") not in (1, 2, 3, 4, 5, SCHEMA_VERSION):
             raise ValueError("Unsupported project version.")
         im = data.get("image", {})
         if im.get("key") != self.frame.key or im.get("fingerprint") != self.frame.fingerprint or tuple(im.get("shape", ())) != self.source_raw.shape[:2]:
@@ -538,8 +567,15 @@ class Document:
                 unpack_mask(roi["mask"], shape)
             elif roi.get("kind") not in ("polygon", "rectangle", "ellipse", "circle", "brush") or not roi.get("points"):
                 raise ValueError("Invalid saved region.")
-        from .palette import validate_scheme
+        from .palette import MetricColorScheme, validate_scheme
         color_scheme = validate_scheme(data.get("color_scheme", {}))
+        metric_scheme = data.get("metric_color_scheme")
+        metric_scheme = MetricColorScheme(**metric_scheme) if metric_scheme is not None else None
+        from .scale_bar import ScaleBar
+        scale_bar = ScaleBar(**data["scale_bar"]) if data.get("scale_bar") is not None else None
+        from .filaments import FilamentLink, validate_links
+        filament_links = [FilamentLink(**link) for link in data.get("filament_links", [])]
+        validate_links(filament_links, objects, groups, data.get("background_group_id"))
         if calibration.valid:
             calibration.matrix()
         crops = copy.deepcopy(data.get("detached_crops", []))
@@ -563,6 +599,10 @@ class Document:
         self.cleaning_history = copy.deepcopy(data.get("cleaning_history", []))
         self.background_group_id = data.get("background_group_id") if data.get("background_group_id") in ids else None
         self.color_scheme = color_scheme
+        self.metric_color_scheme = metric_scheme
+        self._metric_palette_cache = (None, None)
+        self.scale_bar = scale_bar
+        self.filament_links = filament_links
         # Earlier releases stored only a derived image and aggregate footprints.
         # Retain their exact pixels as visible, independently restorable objects.
         if working is not None and modified.any() and not any(o.role == "cleaning" for o in objects):

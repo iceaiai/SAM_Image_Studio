@@ -6,6 +6,7 @@ import logging
 import math
 import threading
 import traceback
+from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -28,7 +29,7 @@ from .domain import Annotation, Document, Group, History, ProjectStore, pack_mas
 from .exports import export_coco, export_yolo, safe_name, save_cleaned, save_masks, save_image_versions
 from .imageio import SUPPORTED_EXTENSIONS, load_files
 from .inference import InferenceEngine, data_directory, initialize_torch_runtime, lama_fill
-from .processing import bounding_box, brush_mask, cast_like, display_rgb, filter_proposals, neighbor_fill, patch_fill, raster_contours, shape_mask, smooth_image
+from .processing import bounding_box, brush_mask, cast_like, display_rgb, filter_proposal_indices, neighbor_fill, patch_fill, raster_contours, shape_mask, smooth_image
 from .palette import assign_colors
 from .dialogs_v14 import PromptAliasesDialog, RotationDialog, MaskScaleDialog, MorphologyDialog
 from .text_prompts import resolve_prompt
@@ -39,6 +40,9 @@ from .calibration_table import CalibrationTableMixin
 from .processing_ui import ProcessingWorkflowMixin
 from .segmentation_ui import SegmentationWorkflowMixin
 from .plugin_ui import PluginWorkflowMixin
+from .scale_bar_ui import ScaleBarDialog
+from .filament_ui import FilamentWorkflowMixin
+from .plot_groups import PlotGroupWorkflowMixin
 
 LOG = logging.getLogger(__name__)
 
@@ -76,6 +80,9 @@ def tool_icon(kind, size=28):
     elif kind == "point":painter.drawLine(14,4,14,24);painter.drawLine(4,14,24,14)
     elif kind == "select":painter.drawPolygon(QPolygonF([QPointF(6,3),QPointF(22,15),QPointF(14,17),QPointF(12,25)]))
     elif kind == "delete":painter.drawRect(8,9,12,15);painter.drawLine(5,6,23,6);painter.drawLine(11,3,17,3)
+    elif kind == "delete_vertex":
+        painter.drawPolyline(QPolygonF([QPointF(3,23), QPointF(13,8), QPointF(25,18)]))
+        painter.drawLine(9,4,17,12);painter.drawLine(17,4,9,12)
     elif kind == "edit":painter.drawLine(5,23,22,6);painter.drawRect(3,20,5,5);painter.drawRect(20,3,5,5)
     elif kind == "pan":
         path=QPainterPath(QPointF(8,16));path.lineTo(8,8);path.cubicTo(8,5,11,5,11,8);path.lineTo(11,5);path.cubicTo(11,2,14,2,14,5);path.lineTo(14,8);path.lineTo(14,5);path.cubicTo(14,3,17,3,17,6);path.lineTo(17,9);path.cubicTo(17,6,20,6,20,9);path.lineTo(20,17);path.cubicTo(20,26,10,27,7,20);path.lineTo(4,15);path.cubicTo(2,11,5,10,8,16);painter.drawPath(path)
@@ -93,7 +100,9 @@ def tool_icon(kind, size=28):
     return QIcon(pixmap)
 
 
-class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkflowMixin, SegmentationWorkflowMixin, PluginWorkflowMixin, QMainWindow):
+class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkflowMixin,
+                 SegmentationWorkflowMixin, PluginWorkflowMixin, FilamentWorkflowMixin,
+                 PlotGroupWorkflowMixin, QMainWindow):
     def __init__(self, restore_session=True):
         super().__init__()
         # Bootstrap PyTorch on the GUI thread. Weights and inference stay in
@@ -136,6 +145,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.canvas.zoom_changed.connect(lambda value:self.zoom_label.setText(f"Zoom {value*100:.0f}%"))
         self.canvas.object_context_requested.connect(self._show_object_context_menu)
         self._build_actions();self._build_top();self._build_docks();self._build_status();self._init_workspace_ui();self._init_calibration_tables();self._init_processing_ui();self._init_segmentation_ui();self._init_plugin_ui()
+        self._init_plot_groups()
         self.preview_timer=QTimer(self);self.preview_timer.setSingleShot(True);self.preview_timer.setInterval(220)
         self.preview_timer.timeout.connect(self._auto_preview)
         self._refresh()
@@ -169,7 +179,8 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.save_action=self._action("Save masks…",self.save_mask_dialog,"Ctrl+S")
         self.undo_action=self._action("Undo",self.undo,"Ctrl+Z","undo")
         self.redo_action=self._action("Redo",self.redo,"Ctrl+Y","redo")
-        self.delete_action=self._action("Delete object / selected vertex",self.delete_selected,"Delete","delete")
+        self.delete_action = self._action("Delete objects", self.delete_selected, icon="delete")
+        self.delete_vertex_action = self._action("Delete vertex", self.delete_vertex, icon="delete_vertex")
         self.edit_action=self._action("Edit object vertices",self.edit_object,"Ctrl+E","edit",True)
         self.select_all_action=self._action("Select all objects",self.select_all_objects,"Ctrl+A")
         self.select_all_action.setToolTip("Select annotation and cleaning objects. Image-smoothing records remain selectable in the Objects panel.")
@@ -181,6 +192,8 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.scale_masks_action=self._action("Scale masks / savepoints…",self.scale_masks_dialog)
         self.morphology_action=self._action("Morphology / inner region…",self.morphology_dialog)
         self.mask_colors_action=self._action("Assign mask colors…",self.assign_mask_colors)
+        self.scale_bar_action = self._action("Add scale bar…", self.edit_scale_bar)
+        self.remove_scale_bar_action = self._action("Remove scale bar", self.remove_scale_bar)
         self.remove_action=self._action("Remove selected image area",self.remove_area,"Ctrl+D")
         self.cancel_action=self._action("Cancel current drawing / preview",self.cancel_operation,"Esc")
         self.addAction(self.cancel_action)
@@ -195,7 +208,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         for key in ("select","pan"):self.toolbar.addAction(self.tool_actions[key])
         self.toolbar.addAction(self.fit_action)
         self.toolbar.addSeparator()
-        for action in (self.undo_action,self.redo_action,self.delete_action,self.edit_action):self.toolbar.addAction(action)
+        for action in (self.undo_action,self.redo_action,self.delete_action,self.delete_vertex_action,self.edit_action):self.toolbar.addAction(action)
         for action in (self.undo_action,self.redo_action):
             button=self.toolbar.widgetForAction(action)
             button.setIconSize(QSize(44,44));button.setFixedSize(72,72)
@@ -206,13 +219,16 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         file.addAction(self.save_action);file.addAction(self._action("Save project now",self.save_project));file.addAction(self._action("Choose project folder…",self.choose_project_folder));file.addAction(self._action("Save original / processed images…",self.export_images));file.addSeparator()
         file.addAction(self._action("Close current image",self.close_current));file.addAction(self._action("Exit",self.close))
         edit=self.menuBar().addMenu("Edit")
-        for action in (self.undo_action,self.redo_action,self.edit_action,self.delete_action):edit.addAction(action)
+        for action in (self.undo_action,self.redo_action,self.edit_action,self.delete_action,self.delete_vertex_action):edit.addAction(action)
         edit.addSeparator()
         for action in (self.select_all_action,self.invert_region_action,self.region_object_action):edit.addAction(action)
         edit.addSeparator();edit.addAction(self._action("Object properties…",self.object_properties));edit.addAction(self._action("Change selected objects' group…",self.change_group))
         edit.addAction(self._action("Brightness / contrast…",self.adjust_display));edit.addAction(self._action("Object color…",self.change_color));edit.addAction(self._action("Object transparency…",self.change_transparency))
         edit.addAction(self.mask_colors_action);edit.addAction(self.smooth_image_action)
         for action in (self.rotation_action,self.reset_rotation_action,self.scale_masks_action,self.morphology_action):edit.addAction(action)
+        edit.addAction(self.scale_bar_action)
+        edit.addAction(self.remove_scale_bar_action)
+        self._init_filament_ui(edit)
         edit.addAction(self._action("Vertex deletion radius…",self.change_vertex_delete_radius))
         edit.addSeparator();edit.addAction(self._action("Fill holes…",lambda:self.refine_masks("holes")));edit.addAction(self._action("Smooth edges…",lambda:self.refine_masks("smooth")))
         cleaning=self.menuBar().addMenu("Cleaning");cleaning.addAction(self.remove_action)
@@ -229,7 +245,8 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         sizes=view.addMenu("Toolbar icon size")
         for name,size in [("Small (default)",22),("Medium",30),("Large",40)]:sizes.addAction(self._action(name,lambda checked=False,n=size:self.toolbar.setIconSize(QSize(n,n))))
         self.view_menu=view
-        help_menu=self.menuBar().addMenu("Help");help_menu.addAction(self._action("User manual (PDF)",self.open_pdf_help));help_menu.addAction(self._action("Denoising parameter guide (PDF)",lambda:self.open_pdf_help(denoise=True)));help_menu.addAction(self._action("Quick start",self.quick_start));help_menu.addAction(self._action("Diagnostics / versions",self.diagnostics))
+        self.help_menu = self.menuBar().addMenu("Help")
+        self.help_menu.addAction(self._action("User Manual", self.open_user_manual))
 
     def _build_top(self):
         bar=QToolBar("Workflow",self);bar.setObjectName("workflowToolbar");bar.setMovable(False);self.addToolBar(Qt.ToolBarArea.TopToolBarArea,bar)
@@ -291,7 +308,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.objects_dock=self._dock("Objects","objectsDock",objects_widget)
         self.objects_dock.setMinimumWidth(420)
         group_widget=QWidget();layout=QVBoxLayout(group_widget);layout.setContentsMargins(5,5,5,5)
-        self.groups_tree=QTreeWidget();self.groups_tree.setObjectName("groupsTree");self.groups_tree.setHeaderLabels(["Group","Count"]);self.groups_tree.setRootIsDecorated(False);self.groups_tree.itemDoubleClicked.connect(lambda item,col:self.select_group_item(item))
+        self.groups_tree=QTreeWidget();self.groups_tree.setObjectName("groupsTree");self.groups_tree.setHeaderLabels(["Group","Count","Measurement"]);self.groups_tree.setRootIsDecorated(False);self.groups_tree.itemDoubleClicked.connect(lambda item,col:self.select_group_item(item))
         layout.addWidget(self.groups_tree);row=QHBoxLayout()
         for title,callback in [("+ Group",self.new_group),("Rename",self.rename_group),("Color",self.group_color)]:
             button=QPushButton(title);button.clicked.connect(callback);row.addWidget(button)
@@ -369,9 +386,11 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.canvas.use_cleaned=bool(doc and doc.use_processed)
         self.objects_tree.clear();self.groups_tree.clear();self.group_combo.clear()
         if doc:
+            self.canvas.object_colors = self._mask_colors(doc)
             for group in doc.groups:
                 self.group_combo.addItem(group.name,group.id)
-                item=QTreeWidgetItem([group.name,str(sum(o.group_id==group.id for o in doc.objects))]);item.setData(0,Qt.ItemDataRole.UserRole,group.id);self.groups_tree.addTopLevelItem(item)
+                item=QTreeWidgetItem([group.name,str(sum(o.group_id==group.id for o in doc.objects)),
+                                     "Filament" if group.filament else ""]);item.setData(0,Qt.ItemDataRole.UserRole,group.id);self.groups_tree.addTopLevelItem(item)
             if doc.active_group:self.group_combo.setCurrentIndex(self.group_combo.findData(doc.active_group))
             for obj in doc.objects:
                 area="Point" if obj.mask is None else f"{obj.pixel_area:,} px²"
@@ -382,13 +401,15 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
                 elif obj.group_id==doc.background_group_id:item.setText(0,"[Background] "+obj.name)
                 item.setData(0,Qt.ItemDataRole.UserRole,obj.id);item.setFlags(item.flags()|Qt.ItemFlag.ItemIsUserCheckable)
                 item.setCheckState(0,Qt.CheckState.Checked if obj.visible else Qt.CheckState.Unchecked);item.setCheckState(3,Qt.CheckState.Checked if obj.locked else Qt.CheckState.Unchecked)
-                item.setForeground(0,QColor(obj.color));item.setToolTip(2,f"Pixel area: {obj.pixel_area}\nPhysical area: {doc.calibration.area(obj.pixel_area) if obj.mask is not None else 'N/A'}")
+                item.setForeground(0,QColor(self.canvas.object_colors[obj.id]));item.setToolTip(2,f"Pixel area: {obj.pixel_area}\nPhysical area: {doc.calibration.area(obj.pixel_area) if obj.mask is not None else 'N/A'}")
                 self.objects_tree.addTopLevelItem(item);item.setSelected(obj.id in selected)
             cal=doc.calibration
             self.calibration_label.setText(f"Pixel size: X {cal.pixel_size_x:g} × Y {cal.pixel_size_y:g} {cal.length_unit}/pixel" if cal.valid else "Pixel size unavailable — measurements use pixels")
             self.calibration_label.setToolTip(cal.source)
             self.setWindowTitle(f"{Path(doc.frame.source_path).name} — {doc.frame.frame_label} — SAM Image Studio {__version__}")
-            self.canvas.selected &= {o.id for o in doc.objects};self.canvas.refresh()
+            self.canvas.selected &= {o.id for o in doc.objects}
+            self._refresh_filament_bridges()
+            self.canvas.refresh()
         else:
             self.calibration_label.setText("No image");self.setWindowTitle(f"SAM Image Studio {__version__}")
         self._updating=False
@@ -403,6 +424,10 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.reset_rotation_action.setEnabled(has and bool(doc.rotation) and doc.rotation_reset_state is not None and not self.busy)
         self.accept_button.setEnabled(has and bool(self.canvas.preview_masks) and not self.busy)
         self.save_action.setEnabled(has and not self.busy);self.remove_action.setEnabled(has and not self.busy)
+        self.scale_bar_action.setEnabled(has and not self.busy)
+        has_bar = has and doc.scale_bar is not None
+        self.scale_bar_action.setText("Edit scale bar…" if has_bar else "Add scale bar…")
+        self.remove_scale_bar_action.setEnabled(has_bar and not self.busy)
         for action in (self.select_all_action,self.invert_region_action,self.smooth_image_action,self.mask_colors_action):action.setEnabled(has and not self.busy)
         roi=doc.draft.get("roi") if doc else None
         selected_region=self._selection_mask() if doc and roi else None
@@ -411,8 +436,16 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.region_object_action.setEnabled(has and self.mode.currentText() in ("Manual","Edit") and pixels>0 and not self.busy)
         history=self.histories.get(self.current_key)
         self.undo_action.setEnabled(bool(history and history.undo_stack) and not self.busy);self.redo_action.setEnabled(bool(history and history.redo_stack) and not self.busy)
-        self.delete_action.setEnabled(has and bool(self.canvas.selected) and not self.busy)
+        self.delete_action.setEnabled(has and bool(self.canvas.selected) and not self.busy and not self.canvas.filament_picks)
         editable=self.selected_objects()
+        editing = self.mode.currentText() == "Edit"
+        self.delete_action.setShortcut(QKeySequence("" if editing else "Delete"))
+        self.delete_vertex_action.setShortcut(QKeySequence("Delete" if editing else ""))
+        self.delete_vertex_action.setEnabled(editing and len(editable) == 1 and
+                                             editable[0].role == "object" and not editable[0].locked and
+                                             editable[0].kind in ("polygon", "mask") and not self.busy
+                                             and not self.canvas.filament_picks)
+        self._refresh_filament_controls(doc, editable)
         self.edit_action.setEnabled(has and len(editable)==1 and editable[0].role=="object" and not editable[0].locked and not self.busy)
         self.edit_action.setChecked(self.mode.currentText()=="Edit")
         for kind in ("polygon","rectangle","circle","ellipse","point"):self.tool_actions[kind].setEnabled(self.mode.currentText()!="Edit" and (not self.busy or self._job_prompt_editable))
@@ -432,11 +465,20 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             self.text_run_action.setVisible(text_enabled);self.text_run_button.setEnabled(has and bool(self.text_prompt.text().strip()) and self.engine.ready and not self.busy)
         for action in (self.rotation_action,self.scale_masks_action,self.morphology_action):
             action.setEnabled(has and self.mode.currentText()=="Edit" and not self.busy)
+        self._refresh_plot_group_controls()
+        self._refresh_statistics()
+
+    def _refresh_statistics(self):
+        if not self.stats_dialogs:
+            return
+        palette = self._active_plot_palette()
         for dialog in list(self.stats_dialogs):
             dialog.documents=list(self.documents.values())
             dialog.selected_objects=set(self.canvas.selected)
             dialog.selected_images=self.selected_images()
-            dialog.current=doc
+            dialog.current=self.document
+            dialog.set_plot_groups(self.plot_groups, self.active_plot_group)
+            dialog.palette_description = palette.description if palette is not None else ""
             dialog.refresh()
 
     def open_images(self):
@@ -478,12 +520,16 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         if result.warnings:self.notify("Some files / saved annotations need attention","\n\n".join(result.warnings[:12]))
 
     def _rebuild_file_tree(self):
+        selected = self.selected_images()
+        self.files_tree.blockSignals(True)
         self.files_tree.clear();parents={}
         for key,doc in self.documents.items():
             path=doc.frame.source_path
             if path not in parents:
                 parent=QTreeWidgetItem([Path(path).name]);parent.setToolTip(0,path);self.files_tree.addTopLevelItem(parent);parents[path]=parent
             child=QTreeWidgetItem([doc.frame.frame_label]);child.setData(0,Qt.ItemDataRole.UserRole,key);parents[path].addChild(child);parents[path].setExpanded(True)
+            child.setSelected(key in selected)
+        self.files_tree.blockSignals(False)
 
     def select_document(self,key):
         if self.busy or key not in self.documents:return
@@ -491,6 +537,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             try:self._persist(self.document)
             except Exception as error:self.notify("Image switch blocked",f"Save the current work first. {error}");return
         self.current_key=key;self._refine_target=None
+        self.cancel_filament_link()
         self.canvas.set_document(self.document);self.canvas.mode=self.mode.currentText();self.canvas.edit_mode=self.mode.currentText()=="Edit";self._refresh()
 
     def _file_clicked(self,item,column):
@@ -649,6 +696,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
                 self.mode.blockSignals(True);self.mode.setCurrentText(old);self.mode.blockSignals(False);return
             if not self._resolve_mode_content():
                 self.mode.blockSignals(True);self.mode.setCurrentText(old);self.mode.blockSignals(False);self.edit_action.setChecked(old=="Edit");return
+        self.cancel_filament_link()
         self.preview_timer.stop();self._pending_preview=False;self._prompt_version+=1
         self.canvas.set_preview([]);self._preview_context=None
         if self.busy and self._job_prompt_editable:self._job.cancel.set()
@@ -758,6 +806,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         else:self.run_inference()
 
     def _canvas_selected(self,ids):
+        self.cancel_filament_link()
         self._updating=True
         for i in range(self.objects_tree.topLevelItemCount()):
             item=self.objects_tree.topLevelItem(i);item.setSelected(item.data(0,Qt.ItemDataRole.UserRole) in ids)
@@ -765,6 +814,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
 
     def _tree_selected(self):
         if self._updating:return
+        self.cancel_filament_link()
         self.canvas.set_selected([item.data(0,Qt.ItemDataRole.UserRole) for item in self.objects_tree.selectedItems()]);self._refresh_controls()
 
     def _object_item_changed(self,item,column):
@@ -781,14 +831,14 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         return [o for o in self.document.objects if o.id in self.canvas.selected] if self.document else []
 
     def delete_selected(self):
-        if self.busy or not self.document:return
-        if self.canvas.delete_vertex():return
-        if self.canvas.edit_mode:
-            self.statusBar().showMessage("Click a polygon/contour vertex before pressing Delete. Exit vertex edit mode to delete whole objects.",8000)
-            return
+        if self.busy or not self.document or self.canvas.filament_picks:return
         selected=self.selected_objects()
         if any(o.locked for o in selected):self.notify("Locked object","Unlock the selected objects before deleting them.");return
         if selected:self._commit("Delete objects / restore cleaning pixels",lambda:self.document.delete_objects(self.canvas.selected))
+
+    def delete_vertex(self):
+        if not self.busy and self.document and not self.canvas.filament_picks and not self.canvas.delete_vertex():
+            self.statusBar().showMessage("Click near a polygon or contour vertex, then choose Delete vertex.", 8000)
 
     def edit_object(self,checked=True):
         selected=self.selected_objects()
@@ -805,6 +855,25 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             "Radius in image pixels. Each Del removes the nearest remaining vertex\nwithin this radius, in the selected object only.",self.canvas.vertex_delete_radius,0,10000,2)
         if ok:
             self.vertex_radius.setValue(value)
+
+    def edit_scale_bar(self):
+        doc = self.document
+        if doc is None or self.busy:
+            return
+        dialog = ScaleBarDialog(doc, self)
+        dialog.preview_changed.connect(self.canvas.preview_scale_bar)
+        self.canvas.preview_scale_bar(dialog.value)
+        try:
+            if dialog.exec() == QDialog.DialogCode.Accepted and dialog.value is not None:
+                if dialog.value != doc.scale_bar:
+                    self._commit("Set scale bar", lambda: setattr(doc, "scale_bar", dialog.value))
+        finally:
+            self.canvas.clear_scale_bar_preview()
+
+    def remove_scale_bar(self):
+        doc = self.document
+        if doc is not None and doc.scale_bar is not None:
+            self._commit("Remove scale bar", lambda: setattr(doc, "scale_bar", None))
 
     def set_vertex_delete_radius(self,value):
         self.canvas.vertex_delete_radius=value;self.settings.setValue("vertex_delete_radius",value);self.settings.sync();self.canvas.update()
@@ -831,6 +900,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
 
     def undo(self):
         if self.busy or not self.document:return
+        self.cancel_filament_link()
         self.canvas.set_preview([]);self._refine_target=None
         try:self.histories[self.current_key].undo()
         except Exception as error:self.notify("Undo / autosave",str(error))
@@ -839,6 +909,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
 
     def redo(self):
         if self.busy or not self.document:return
+        self.cancel_filament_link()
         self.canvas.set_preview([]);self._refine_target=None
         try:self.histories[self.current_key].redo()
         except Exception as error:self.notify("Redo / autosave",str(error))
@@ -853,6 +924,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         if ok and name.strip():
             def change():
                 group=self.document.ensure_group(name.strip(),self._palette.get(name.strip(),"#148374"))
+                self.document.unlink_filaments(obj.id for obj in selected if obj.group_id != group.id)
                 for obj in selected:obj.group_id=group.id
             self._commit("Change group",change)
 
@@ -864,10 +936,18 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
 
     def assign_mask_colors(self):
         if not self.document or self.busy:return
+        doc = self.document
         dialog=MaskColorsDialog(self.document,bool(self.canvas.selected),self)
         if dialog.exec()!=QDialog.DialogCode.Accepted:return
-        values=dialog.values();ids=set(self.canvas.selected) if values["selected_only"] else None
-        self._commit("Assign mask colors",lambda:assign_colors(self.document,values["scheme"],ids,values["use_for_new"]))
+        values = dialog.values()
+        if "metric_scheme" in values:
+            self._commit("Color masks by measurement", lambda: setattr(doc, "metric_color_scheme", values["metric_scheme"]))
+            return
+        ids = set(self.canvas.selected) if values["selected_only"] else None
+        def apply():
+            assign_colors(doc, values["scheme"], ids, values["use_for_new"])
+            doc.metric_color_scheme = None
+        self._commit("Assign mask colors", apply)
 
     def change_transparency(self):
         selected=self.selected_objects()
@@ -906,7 +986,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         refine=menu.addAction("Refine selected object explicitly",self.refine_selected_inference)
         refine.setEnabled(len(self.selected_objects())==1 and all(o.role=="object" and o.group_id!=self.document.background_group_id and not o.locked and o.mask is not None for o in self.selected_objects()))
         menu.addSeparator()
-        menu.addAction("Fill holes…",lambda:self.refine_masks("holes"));menu.addAction("Smooth edges…",lambda:self.refine_masks("smooth"));menu.addSeparator();menu.addAction(self.delete_action);menu.exec(position)
+        menu.addAction("Fill holes…",lambda:self.refine_masks("holes"));menu.addAction("Smooth edges…",lambda:self.refine_masks("smooth"));menu.addSeparator();menu.addAction(self.delete_vertex_action);menu.addAction(self.delete_action);menu.exec(position)
 
     def model_dialog(self):
         if self.busy:return
@@ -1048,11 +1128,21 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             self._commit("Set object morphology",lambda:obj.provenance.update(morphology=dialog.values()))
 
     def inference_options(self):
-        dialog=InferenceOptionsDialog(self.options,self)
+        if self.busy:
+            return
+        dialog=InferenceOptionsDialog(self.options,self, target_size=self.target_size,
+                                      calibration=self.document.calibration if self.document else None)
         if dialog.exec()==QDialog.DialogCode.Accepted:
             values=dialog.values()
+            target_size = dialog.target_size.value()
+            if values != self.options or target_size != self.target_size:
+                self.preview_timer.stop()
+                self._preview_context = None
+                self.canvas.set_preview([])
+                self._refresh_controls()
             self._score_customized=self._score_customized or values["min_score"]!=self.options["min_score"]
             self.options=values
+            self.target_size = target_size
 
     def run_inference(self,checked=False,force_whole=None,force_automatic=False):
         if self.busy or not self.document:return
@@ -1085,6 +1175,12 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
                     else:raise ValueError("Add a point or draw a shape prompt. For all objects, choose Automatic grid explicitly.")
             if points and roi is None:whole=True  # A dot never defines a one-pixel ROI.
             if points and not any(p[2] for p in points) and roi is None and not has_text and not any(e.get("label",1) for e in examples):raise ValueError("Add at least one positive (left-click) point.")
+            use_size = (automatic or clip is not None or force_whole is not None
+                        or self.scope.currentData() != "single") and not self._refine_target
+            area_range = self.target_size.pixel_bounds(doc.calibration) if use_size else None
+            options = self.options.copy()
+            if area_range is not None:
+                options.update(min_area=1, area_range=area_range)
             protected=doc.protected_mask([self._refine_target] if self._refine_target and not automatic else [])
             if clip is not None:protected|=~clip
             raw=doc.working if self.cleaned_checkbox.isChecked() and doc.working is not None else doc.frame.raw
@@ -1094,26 +1190,36 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
                      "normalization":"uint8 RGB; non-uint8 0.5–99.5 percentile stretch"}
             if exemplar_mode:context.update(prompt_mode="text only" if self.engine.spec.family=="SAM3 ONNX" else "whole-image exemplars",example_backend="SAM3 ONNX text" if self.engine.spec.family=="SAM3 ONNX" else self.engine.spec.family+" native concepts" if self.engine.spec.family in ("SAM3","SAM3.1") else "SAM candidates + feature/intensity retrieval",examples=copy.deepcopy(examples),point_examples=copy.deepcopy(points))
             if text:context.update(text_prompt=self.text_prompt.text().strip(),effective_text_prompt=text,text_backend=self.engine.spec.family if self.engine.spec.family in ("SAM3","SAM3.1","SAM3 ONNX") else "Grounding DINO Tiny → SAM2")
-            if clip is not None:context["clip_region"]=pack_mask(clip)
+            output_region = clip if clip is not None else roi if not whole and not automatic else None
+            if output_region is not None:context["clip_region"]=pack_mask(output_region)
+            if area_range is not None:
+                context.update(area_range=area_range, target_size=asdict(self.target_size))
             self.canvas.set_preview([]);self._preview_context=None;self._refine_target=None
             def finished(masks):
                 if self.current_key!=key:return
                 if self._prompt_version!=version:
                     self.statusBar().showMessage("Newer prompts received. Updating the preview…",5000)
                     return
-                if clip is not None:masks=filter_proposals(masks,protected,clip,min_area=self.options["min_area"])
-                context["confidence_scores"]=list(getattr(self.engine,"last_proposal_scores",[]))
+                scores = list(getattr(self.engine, "last_proposal_scores", []))
+                if output_region is not None or area_range is not None:
+                    filtered = filter_proposal_indices(masks, protected, output_region,
+                                                       options["min_area"], area_range=area_range)
+                    masks = [mask for _, mask in filtered]
+                    scores = [scores[i] if i < len(scores) else None for i, _ in filtered]
+                context["confidence_scores"] = scores
                 diagnostics=copy.deepcopy(getattr(self.engine,'last_diagnostics',{}))
                 if diagnostics:context['diagnostics']=diagnostics
                 self._preview_context=context
                 self.canvas.set_preview(masks);self.statusBar().showMessage(f"{len(masks)} preview mask(s). Review and click Accept masks." if masks else "No eligible new masks. Accepted objects stay protected. Use explicit Refine to change an existing object.",12000)
+                if area_range is not None and not masks:
+                    self.statusBar().showMessage("No eligible masks. Check the target size range, prompts and protected regions.", 12000)
                 if diagnostics:
                     detail=(f"Model candidates: {diagnostics['raw_candidates']}; after score: {diagnostics['after_score']}; eligible preview: {len(masks)}. "+
-                        ('No candidates were returned by this text export. Try a visual phrase such as white dots / white circles for bright STEM particles or black dots for dark TEM particles.' if not diagnostics['raw_candidates'] else 'Check minimum score/area, ROI and protected accepted objects if masks were filtered.'))
+                        ('No candidates were returned by this text export. Try a visual phrase such as white dots / white circles for bright STEM particles or black dots for dark TEM particles.' if not diagnostics['raw_candidates'] else 'Check the minimum score, target size, ROI and protected objects if masks were filtered.'))
                     self.preview_count_label.setToolTip(detail)
                     if not masks:self.statusBar().showMessage(detail,30000)
             self._start_job("Running automatic grid…" if automatic else "Running prompted segmentation…",
-                lambda progress,cancel:self._example_inference(self.engine,rgb,points,examples,protected,progress,cancel,text,self.options) if exemplar_mode else self.engine.infer(rgb,points,roi,protected,whole=whole or automatic,progress=progress,cancel=cancel,text_prompt=text,**self.options),
+                lambda progress,cancel:self._example_inference(self.engine,rgb,points,examples,protected,progress,cancel,text,options) if exemplar_mode else self.engine.infer(rgb,points,roi,protected,whole=whole or automatic,progress=progress,cancel=cancel,text_prompt=text,**options),
                 finished,prompt_editable=not automatic)
         except Exception as error:self.notify("Segmentation",str(error))
 
@@ -1142,8 +1248,11 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         doc=self.document;context=copy.deepcopy(self._preview_context or {});target=context.pop("target",None)
         clip=context.pop("clip_region",None)
         scores=context.pop("confidence_scores",[])
-        masks=filter_proposals(self.canvas.preview_masks,doc.protected_mask([target] if target else []),
-                               unpack_mask(clip,doc.frame.shape) if clip else None,min_area=1)
+        filtered = filter_proposal_indices(self.canvas.preview_masks, doc.protected_mask([target] if target else []),
+                                           unpack_mask(clip, doc.frame.shape) if clip else None,
+                                           min_area=1, area_range=context.pop("area_range", None))
+        masks = [mask for _, mask in filtered]
+        scores = [scores[i] if i < len(scores) else None for i, _ in filtered]
         if not masks:
             self.canvas.set_preview([]);self._refine_target=None;self._refresh();self.notify("Preview is no longer eligible","Accepted objects now occupy this preview. Run segmentation again.");return
         def accept():
@@ -1159,6 +1268,10 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         if self._commit("Accept masks",accept):self.canvas.set_preview([]);self._refine_target=None;self._refresh()
 
     def cancel_operation(self):
+        if self.cancel_filament_link():
+            self._refresh_controls()
+            self.statusBar().showMessage("Filament connection cancelled.", 5000)
+            return
         self.preview_timer.stop();self._pending_preview=False;self._prompt_version+=1
         if self.busy:self._job.cancel.set();self.statusBar().showMessage("Stopping after the current model operation…");return
         self.canvas.set_tool(self.canvas.tool)
@@ -1186,8 +1299,35 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
 
     def plot_statistics(self):
         if not self.document:return
-        dialog=StatisticsDialog(self.documents.values(),self.document,self.canvas.selected,self.selected_images(),self)
-        self.stats_dialogs.append(dialog);dialog.finished.connect(lambda result,d=dialog:self.stats_dialogs.remove(d) if d in self.stats_dialogs else None);dialog.show()
+        if self.stats_dialogs:
+            self.stats_dialogs[0].show()
+            self.stats_dialogs[0].raise_()
+            self.stats_dialogs[0].activateWindow()
+            return
+        dialog = StatisticsDialog(self.documents.values(), self.document, self.canvas.selected,
+                                  self.selected_images(), self, plot_groups=self.plot_groups,
+                                  active_plot_group=self.active_plot_group, color_provider=self._mask_colors)
+        dialog.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        dialog.plot_group_requested.connect(self.set_active_plot_group)
+        dialog.color_settings_requested.connect(lambda: self._plot_color_settings(dialog))
+        self.stats_dialogs.append(dialog)
+        dialog.finished.connect(lambda: self.stats_dialogs.remove(dialog))
+        self._refresh_statistics()
+        dialog.show()
+
+    def _plot_color_settings(self, dialog):
+        if dialog.plot_group_name is not None:
+            self.set_active_plot_group(dialog.plot_group_name)
+            self.edit_plot_group()
+        elif dialog.scope.currentData() == "selected":
+            group = self.create_plot_group()
+            if group is not None:
+                dialog.scope.setCurrentIndex(dialog.scope.findData(f"plot:{group.name}"))
+        else:
+            self.assign_mask_colors()
+        if (self._active_plot_palette() is not None or
+                self.document is not None and self.document.metric_color_scheme is not None):
+            dialog.plot_type.setCurrentIndex(dialog.plot_type.findData("points"))
 
     def set_canvas_option(self,attribute,value):
         setattr(self.canvas,attribute,value);self.canvas.refresh()
@@ -1255,7 +1395,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
     def choose_background_group(self):
         if not self.document or self.busy:return False
         doc=self.document
-        names=[g.name for g in doc.groups if any(o.group_id==g.id and o.role=="object" and o.mask is not None
+        names=[g.name for g in doc.groups if not g.filament and any(o.group_id==g.id and o.role=="object" and o.mask is not None
                and o.provenance.get("method")=="manual" for o in doc.objects)]
         if not names:
             self.notify("Background group","In Manual mode, draw unaffected background regions in a group of any name, then choose that group here.");return False
@@ -1327,12 +1467,13 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
 
     def save_mask_dialog(self,transparent=False):
         if not self.document or self.busy:return
-        dialog=SaveMasksDialog(self.document,bool(transparent),self)
+        colors = self._mask_colors(self.document)
+        dialog=SaveMasksDialog(self.document,bool(transparent),self,object_colors=colors)
         if dialog.exec()!=QDialog.DialogCode.Accepted:return
         folder=QFileDialog.getExistingDirectory(self,"Save mask images")
         if not folder:return
         try:
-            paths=save_masks(self.document,Path(folder),**dialog.values());self.statusBar().showMessage(f"Saved {len(paths)} mask / source image file(s).",10000)
+            paths=save_masks(self.document,Path(folder),object_colors=colors,**dialog.values());self.statusBar().showMessage(f"Saved {len(paths)} mask / source image file(s).",10000)
         except Exception as error:self.notify("Save masks",str(error))
 
     def export_dataset(self,format):
@@ -1382,32 +1523,12 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             return open_pdf_help(self,bool(developer),denoise)
         except Exception as error:self.notify("Help",str(error))
 
-    def quick_start(self):
-        text=("1. Open images and load SAM2.1 Tiny on CPU.\n"
-              "2. Manual draws annotations. Close a polygon within 3 image pixels of its start, or press Enter.\n"
-              "3. Segment uses point/shape prompts. Left/right clicks add positive/negative points. Review and Accept masks. Automatic grid is a separate scope.\n"
-              "4. Edit (Ctrl+E) moves existing handles and deletes nearby vertices. Set the radius in the top bar; default 20 image pixels.\n"
-              "5. Select some objects (Ctrl+click) or all (Ctrl+A), then Invert region (Ctrl+I). This selects remaining image pixels. Manual/Edit can Create object from region. Clean can remove it. Segment clips prompted or grid results to it.\n"
-              "6. Clean removes image regions. Right-click an object > Delete for cleaning. Delete a cleaning object to restore its pixels. For patch fill, choose a group of manually drawn background regions, then fill and review.\n"
-              "7. Smooth image pixels offers Gaussian and median filters with preview and Undo. Smooth edges instead changes mask geometry. Original acquired pixels remain available.\n"
-              "8. Assign mask colors offers default group colors or a 20-color lookup table, by object or group.\n"
-              "9. Save masks retains binary, weighted overlap, colors and transparency. Optionally save original and/or processed TIFF images. Dataset export also offers either version, both, or annotations only.\n"
-              "10. Edit > Rotate image offers presets, free angles and optional rectangle/square padding with black, neighbors, LaMa or background fill. Review the preview.\n"
-              "11. Edit > Scale masks scales selected objects or a group. Temporary savepoints stay in memory. Local saves include original masks and editable geometry.\n"
-              "12. SAM2+ supports text prompts and project aliases. SAM2 uses Grounding DINO Tiny. Clear text to return to point/shape prompts.\n"
-              "13. Statistics plots up to nine metrics. Set axes/colors and export all or selected measurements, summaries and histograms. Use Edit > Morphology to link cores/cavities.\n"
-              "14. When switching mode, Yes adds pending shapes, No discards them, and Cancel keeps the current mode. Work autosaves.\n\n"
-              "Hand or middle-drag = pan. Reset or F = fit. Ctrl+Z/Y = undo/redo.")
-        QMessageBox.information(self,"Quick start",text)
-
-    def diagnostics(self):
-        import importlib.metadata as metadata
-        names=["PySide6","numpy","scipy","torch","torchvision","segment-anything","SAM-2","rosettasciio","tifffile","transformers","huggingface-hub"]
-        values=[]
-        for name in names:
-            try:values.append(name+": "+metadata.version(name))
-            except metadata.PackageNotFoundError:values.append(name+": not installed")
-        QMessageBox.information(self,"Diagnostics",f"SAM Image Studio {__version__}\n"+"\n".join(values)+f"\n\nData / log folder: {data_directory()}\nNative SAM3 needs the optional CUDA environment.")
+    def open_user_manual(self):
+        try:
+            from .help_viewer import open_user_manual
+            return open_user_manual(self)
+        except Exception as error:
+            self.notify("User Manual", str(error))
 
     def closeEvent(self,event):
         self.preview_timer.stop()

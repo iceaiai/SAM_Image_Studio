@@ -120,7 +120,7 @@ preserved. Review independent annotations, edge profiles and downstream
 measurements. Prefer native resolution for scientific comparisons.
 
 For all allowable bounds and other methods, see the
-[complete parameter reference](../denoising.md). The
+[complete parameter reference](../user-manual.md#denoising-parameters). The
 [notebook page](../notebook.md) explains the unchanged original upload and its
 external teaching-image dependencies. Figures can be reproduced with
 `python docs/tools/generate_workflow_figures.py` from the repository root.

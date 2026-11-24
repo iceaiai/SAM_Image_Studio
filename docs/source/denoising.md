@@ -1,13 +1,9 @@
+---
+orphan: true
+---
+
 # Denoising parameters
 
-This is the **original v1.4.2 manual**, preserved for reference. For current
-installation paths and automatic repairs, use [installation](installation.md).
-Current illustrated [cleaning](features/cleaning.md),
-[Seg scopes](segmentation/scopes.md), [SAM3.1](segmentation/sam31.md) and
-[compressed-sensing parameters](features/compressed-sensing.md) describe v1.4.3.
-
-```{include} ../DENOISING_PARAMETERS.md
-:start-line: 1
-:relative-images:
-:relative-docs: ..
-```
+This reference is now part of the [User Manual](user-manual.md#denoising-parameters).
+The **Denoising parameters** button in **Processing → Denoise** opens the same
+chapter in the desktop application.

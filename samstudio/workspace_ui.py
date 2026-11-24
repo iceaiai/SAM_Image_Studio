@@ -32,6 +32,7 @@ class WorkspaceWorkflowMixin:
         menu = QMenu(self)
         menu.addAction('Select all images',self.files_tree.selectAll)
         menu.addAction('Deselect all images',self.files_tree.clearSelection)
+        menu.addAction(self.create_plot_group_action)
         menu.addAction('Remove selected images (keep annotations)', self.remove_workspace_images)
         menu.exec(self.files_tree.viewport().mapToGlobal(position))
 

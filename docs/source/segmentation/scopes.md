@@ -92,6 +92,20 @@ Use **Options… → Grid points per side**, minimum score/area and maximum obje
 CPU starts with a small grid; larger grids can be expensive. Grid density does
 not alter a native SAM3.1 text request. SAM3 ONNX hides this unsupported operation.
 
+## Filter by target size
+
+In **Options… → Target size range**, choose **Projected area** or **Equivalent
+circular diameter**, then enter either inclusive limit or both. Leave both
+blank to leave the target range unset. Use px² for area, px for diameter, or
+choose a physical unit such as nm, µm or mm. **Enter pixel sizes for this
+filter** lets you supply X/Y sizes and their unit instead of image calibration.
+
+The filter measures the preview mask after clipping to the ROI and protecting
+existing objects. It works in Inside ROI only, Whole Image, automatic grid and
+watershed. A configured range replaces the candidate noise floor in these
+scopes. Single object and explicit Refine keep their usual settings. Rerun the
+preview after editing the bounds. See the [User Manual](../user-manual.md#target-size-range).
+
 ## Invert a selected region
 
 Select area objects and use **Edit → Invert region** or Ctrl+I. Their complement

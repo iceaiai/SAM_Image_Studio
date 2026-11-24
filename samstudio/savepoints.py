@@ -1,6 +1,6 @@
 """Geometry savepoints. Temporary collections never enter project/autosave state."""
 from __future__ import annotations
-import copy
+from dataclasses import asdict, replace
 import hashlib
 import json
 from pathlib import Path
@@ -8,6 +8,7 @@ import uuid
 import numpy as np
 from PIL import Image
 from .domain import Annotation, Group, atomic_write
+from .filaments import FilamentLink, validate_links
 
 
 def coordinate_signature(document):
@@ -20,6 +21,7 @@ def capture(document, name='original'):
     return {'schema':'samstudio-mask-savepoint-1','id':str(uuid.uuid4()),'name':name.strip(),
             'source_key':document.frame.key,'coordinates':coordinate_signature(document),
             'shape':list(document.frame.shape),'groups':[vars(g).copy() for g in document.groups],
+            'filament_links': [asdict(link) for link in document.filament_links],
             'objects':[o.to_dict() for o in document.objects if o.role=='object']}
 
 
@@ -36,10 +38,16 @@ def restore(document, snapshot):
     by_id={g.id:g for g in document.groups}
     for g in groups:
         if g.id not in by_id:
-            document.groups.append(g);by_id[g.id]=g
+            by_id[g.id] = g
+        elif g.id != document.background_group_id:
+            by_id[g.id] = replace(by_id[g.id], filament=g.filament)
     if any(o.group_id not in by_id for o in saved):
         raise ValueError('A saved group is missing.')
+    links = [FilamentLink(**link) for link in snapshot.get("filament_links", [])]
+    validate_links(links, saved, by_id.values(), document.background_group_id)
+    document.groups = list(by_id.values())
     document.objects=saved+cleaning
+    document.filament_links = links
     document.next_object_number=max(document.next_object_number,len(document.objects)+1)
 
 

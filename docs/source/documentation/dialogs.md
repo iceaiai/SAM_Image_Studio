@@ -22,7 +22,8 @@ from accepting a segmentation preview.
 | --- | --- |
 | Grid points per side | Density of automatic/candidate point sampling; larger grids cost more work. |
 | Minimum model score | Filter applicable proposals by backend score; not a probability guarantee. |
-| Minimum mask area | Reject tiny masks in pixels. |
+| Candidate noise floor (px²) | Reject small candidates when a target range is unset. |
+| Target size range | Set either inclusive bound or both, using projected area or equivalent diameter. Physical units default to image calibration. |
 | Maximum objects | Limit proposals; native model capacity can impose additional limits. |
 
 These options are path-dependent. In particular, grid density does not change
@@ -42,7 +43,8 @@ it and **Cancel** discards it.
 For Noise2Void/N2V2, Train/Predict changes which controls are active. Specify
 the device, training/patch settings, checkpoint or output directory as needed.
 Saved model files remain even when image Apply is canceled. Every exposed
-restoration parameter is documented in the [parameter reference](../denoising.md).
+restoration parameter is documented in the [User Manual](../user-manual.md#denoising-parameters).
+The **Denoising parameters** button opens that chapter.
 
 ## Otsu + watershed and LaMa
 
@@ -83,23 +85,33 @@ selects a general/polygon/core–shell/hollow interpretation and, where applicab
 a linked core/cavity or expected side count. Relationships must be valid before
 derived metrics are meaningful. The full manual defines per-field applicability.
 
+## Scale bar and Filament
+
+**Add scale bar…** previews the length, units, font, font size, line width and
+corner position on the canvas. **Apply** saves the style with the native project.
+**Edit scale bar…** and **Remove scale bar** update an existing bar.
+
+Use **Edit → Filament** in Edit mode. [Mark a group and connect visible fragments](../user-manual.md#filaments-and-occluded-fragments)
+to report the visible centerline length, straight-gap estimate and visible widths.
+
 ## Statistics and export dialogs
 
-Statistics selects up to nine displayed metrics, plot appearance/axis settings,
-and separately the set of numerical columns to export. Resizing changes the
-plot area. Export plot and export statistics are independent actions.
+Statistics accepts a named plot group under **Images**. **Object points (mask
+colors)** shows per-object measurements with the same RGB assignments as the
+canvas. Choose up to nine metrics for display and choose the numerical columns
+to export independently. The [measurement guide](../features/measurements.md)
+describes how to create a plot group and share its color scale.
 
 Mask/image/dataset dialogs select output scope, original/processed pixel copies,
 format, colors/opacity/alpha where applicable, and explicit handling of lossy
 YOLO geometry. Integer label outputs preserve IDs rather than display effects.
 
-## Aliases, plugins, and PDF help
+## Aliases, plugins, and help
 
 The alias table maps phrases and validates empty/duplicate/cyclic entries.
 See [alias examples](../segmentation/application-tools.md#text-prompt-aliases).
 Plugin management offers enable checkboxes, **Apply / reload**, **Remove plugin**,
 and **Close**. Installed plugin actions vary by plugin and are not core controls.
 
-PDF help provides **Fit width** and a zoom percentage for the complete user,
-developer, or denoising guide. **Diagnostics / versions** supplies runtime
-information for bug reports; it is not a full scientific validation run.
+**Help → User Manual** opens the English manual, including the Denoising
+parameters chapter. **Plugin → For Developer (PDF)** opens the developer guide.

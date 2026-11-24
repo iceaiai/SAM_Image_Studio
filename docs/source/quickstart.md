@@ -39,7 +39,7 @@ Use **Manual** to add geometry and **Edit** to change existing objects. Check
 the selected group, object locks, and scope before applying changes.
 **Processing** previews denoising/smoothing/noise operations; **Apply** commits
 an undoable image record. Compare with acquired pixels before trusting small
-features. The [parameter guide](denoising.md) explains units and tradeoffs.
+features. The [parameter guide](user-manual.md#denoising-parameters) explains units and tradeoffs.
 
 **Clean** records removals/fills separately. Deleting a cleaning record restores
 its footprint while replaying the remaining image changes. Derived images do

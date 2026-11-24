@@ -4,11 +4,11 @@
 | --- | --- |
 | Central canvas | Display the current image, masks/contours, draft shapes, prompts, previews, and selections. Mouse wheel zooms; Hand or middle drag pans; F fits the image. |
 | Objects, upper right | Select one/many annotations; canvas/list selections stay synchronized. Columns show Object, Group, Area, Lock. Visibility/lock controls govern display and editing eligibility. Double-click enters object editing. |
-| Groups, right | Show labels and counts. **+ Group** creates a label, **Rename** changes it, **Color** changes its color. Double-click selects its objects; choose the active drawing group in the top toolbar. |
-| Image files, lower right | Choose source images, datasets, or stack frames. Multi-select to remove session entries using **Remove selected images** while retaining saved annotations and sources. |
+| Groups, right | Show group labels, mask counts and the Filament designation. **+ Group** creates a label, **Rename** changes it, **Color** changes its base color. Double-click selects its objects. |
+| Image files, lower right | Choose source images, datasets, or stack frames. Multi-select to create a **Plot group** or remove session entries while retaining saved annotations and sources. |
 | Workflow toolbar | Choose Mode, model, active Group, and Scope; run, accept, cancel, or configure inference. |
 | Segmentation prompts toolbar | Type/run text, manage aliases, and choose positive/negative shape polarity. |
-| Drawing tools, left | Select/pan, undo/redo, edit/delete, and draw polygon/rectangle/circle/ellipse/point. |
+| Drawing tools, left | Select/pan, undo/redo, delete objects, delete eligible vertices or draw geometry. |
 | Region tools | Select all, invert, create an object from a region, and reach appearance/transformation tools. |
 | Status bar | Shows progress, filtered-mask counts, errors, save state, and zoom. Model loading and processing run as background jobs. |
 

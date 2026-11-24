@@ -26,7 +26,7 @@ changes only the target; algorithms may use the full image as context.
 | BM3D | A single-image, non-training comparison | Gaussian-noise assumptions and upstream license terms apply. |
 | Noise2Void / N2V2 | Self-supervised blind-spot training or saved-model prediction | Correlated microscope noise can violate assumptions; training loss is not scientific validation. |
 
-The [complete denoising parameter reference](../denoising.md) lists every exposed
+The [complete denoising parameter reference](../user-manual.md#denoising-parameters) lists every exposed
 control, default, allowable range, and recommended comparison. No method or
 default is guaranteed to preserve all specimen features.
 

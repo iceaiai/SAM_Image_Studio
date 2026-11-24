@@ -1,13 +1,16 @@
 from __future__ import annotations
 import copy
+from dataclasses import asdict
 from PySide6.QtWidgets import QPushButton,QLabel,QToolBar
 from PySide6.QtCore import Qt
 from .dialogs import combo
 from .exemplars import infer_examples
+from .target_size import TargetSizeRange
 
 class SegmentationWorkflowMixin:
     def _init_segmentation_ui(self):
         self.watershed_options={}
+        self.target_size = TargetSizeRange()
         self.watershed_action=self._action('Otsu + watershed…',self.watershed_dialog)
         for action in self.menuBar().actions():
             if action.text()=='Models':action.menu().addAction(self.watershed_action);break
@@ -66,18 +69,33 @@ class SegmentationWorkflowMixin:
         dialog=ParameterPreviewDialog('Otsu + watershed',WATERSHED_PARAMETERS,self.watershed_options,
             'No SAM model is required. A current region limits output. Preview creates provisional masks on the canvas; review them and use Accept masks.',self)
         if dialog.exec()!=QDialog.DialogCode.Accepted:return
-        self.watershed_options=dialog.values();self.preview_timer.stop();self._prompt_version+=1
+        options = dialog.values()
+        try:
+            area_range = self.target_size.pixel_bounds(self.document.calibration)
+        except ValueError as error:
+            self.notify("Target size range", str(error))
+            return
+        if area_range is not None:
+            options["minimum_area"] = 1
+        self.watershed_options = dialog.values()
+        self.preview_timer.stop();self._prompt_version+=1
         doc=self.document;key=self.current_key;version=self._prompt_version
         raw=(doc.working if doc.use_processed and doc.working is not None else doc.frame.raw).copy()
         roi=self._selection_mask() if doc.draft.get('roi') else None
         protected=doc.protected_mask();self.canvas.set_preview([]);self._preview_context=None
         def calculate(progress,cancel):
-            masks,info=watershed_masks(raw,self.watershed_options,roi,progress,cancel)
-            return filter_proposals(masks,protected,roi,int(self.watershed_options['minimum_area'])),info
+            masks,info=watershed_masks(raw,options,roi,progress,cancel)
+            return filter_proposals(masks, protected, roi, int(options["minimum_area"]),
+                                    area_range=area_range), info
         def finished(result):
             if self.current_key!=key or self._prompt_version!=version:return
             masks,info=result
-            self._preview_context={'method':'Otsu + watershed','parameters':copy.deepcopy(self.watershed_options),'input':'processed' if doc.use_processed else 'original','diagnostics':info}
+            self._preview_context={'method':'Otsu + watershed','parameters':options,'input':'processed' if doc.use_processed else 'original','diagnostics':info}
+            if roi is not None:
+                from .domain import pack_mask
+                self._preview_context["clip_region"] = pack_mask(roi)
+            if area_range is not None:
+                self._preview_context.update(area_range=area_range, target_size=asdict(self.target_size))
             self.canvas.set_preview(masks)
             self.preview_count_label.setText(f'Preview: {len(masks)}')
             self.preview_count_label.setToolTip(str(info))

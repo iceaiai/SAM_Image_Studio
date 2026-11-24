@@ -9,7 +9,8 @@ compressed-sensing restoration, with calibrated measurements and editable projec
 [Cleaning](https://iceaiai.github.io/SAM_Image_Studio/features/cleaning.html) ·
 [Segmentation modes](https://iceaiai.github.io/SAM_Image_Studio/segmentation/scopes.html) ·
 [SAM3.1 text and shapes](https://iceaiai.github.io/SAM_Image_Studio/segmentation/sam31.html) ·
-[Compressed sensing](https://iceaiai.github.io/SAM_Image_Studio/features/compressed-sensing.html)
+[Compressed sensing](https://iceaiai.github.io/SAM_Image_Studio/features/compressed-sensing.html) ·
+[User Manual](https://iceaiai.github.io/SAM_Image_Studio/user-manual.html)
 
 Version **1.4.4** adds Otsu + watershed with adjustable previews, signal-scaled
 Gaussian/Poisson noise, per-image inference input controls, exact rotation reset,
@@ -82,10 +83,10 @@ Routine updates reuse the environment; uninstalling is unnecessary.
 | --- | --- |
 | Annotate | Draw/edit points and shapes; organize objects into groups; Undo/Redo. |
 | Segment | SAM1/2 point/box segmentation; SAM2 text detection → masks; SAM3 ONNX text; optional native SAM3/3.1 concepts. |
-| Control output | Whole-image exemplar search, single object, exact ROI/inverse-region limits, protected annotations and review before acceptance. |
+| Control output | Whole-image exemplar search, single object, exact ROI/inverse-region limits, optional size bounds and review before acceptance. |
 | Clean data | Remove contamination, fill from neighbors or manual background patches, and restore retained original pixels. |
 | Restore pixels | TV, wavelets, DCT, sampled compressed-sensing reconstruction, BM3D, dictionary learning, and N2V/N2V2. |
-| Measure/export | Physical calibration, object statistics, COCO/YOLO/masks/overlays, native editable `.sam.json` projects. |
+| Measure/export | Physical scale bars, filament centerline and width measurements, shared metric colors for named plot groups, object statistics and editable `.sam.json` projects. COCO, YOLO and mask exports are available. |
 
 For text segmentation without Hugging Face login, choose **SAM3 ONNX** and enter
 `black dots` (or `white dots` for the bundled bright-particle example). The public

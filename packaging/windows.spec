@@ -10,7 +10,7 @@ datas = [(str(root / "third_party"), "third_party"), (str(root / "LICENSE"), "."
 datas += collect_data_files("onnxruntime")
 hidden_onnx = collect_submodules("onnxruntime")
 hidden = hidden_onnx + ["matplotlib.backends.backend_qtagg", "PySide6.QtSvg", "PySide6.QtPdf", "PySide6.QtPdfWidgets"]
-datas += collect_data_files("samstudio", includes=["resources/*.pdf"])
+datas += collect_data_files("samstudio", includes=["resources/*.pdf", "resources/*.md"])
 
 # SAM2 uses Hydra YAML configuration and dynamically named model classes.
 for package in ("sam2", "segment_anything"):

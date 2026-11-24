@@ -13,7 +13,8 @@ from pathlib import Path
 
 import numpy as np
 
-from .processing import bounding_box, filter_proposals
+from .processing import bounding_box, filter_proposal_indices
+from .target_size import within_size
 
 
 _TORCH_RUNTIME_LOCK = threading.RLock()
@@ -327,7 +328,8 @@ class InferenceEngine:
             return masks[best], float(scores[best])
 
     def infer(self, rgb, points=None, roi=None, protected=None, whole=False, grid=8,
-              min_score=.70, min_area=8, max_objects=300, progress=None, cancel=None, text_prompt=""):
+              min_score=.70, min_area=8, max_objects=300, progress=None, cancel=None, text_prompt="",
+              area_range=None):
         if not self.ready:
             raise ValueError("Load a SAM model first.")
         shape = rgb.shape[:2]
@@ -337,13 +339,11 @@ class InferenceEngine:
         self.last_proposal_scores = []
         self.last_diagnostics = {}
         def finish(candidates, scores, clip):
-            output = filter_proposals(candidates, protected, clip, min_area)
-            self.last_proposal_scores = []
-            for mask in output:
-                overlaps = [int((mask & candidate).sum()) / max(1, int((mask | candidate).sum())) for candidate in candidates]
-                score = scores[int(np.argmax(overlaps))] if overlaps and scores else None
-                self.last_proposal_scores.append(float(score) if score is not None and np.isfinite(score) else None)
-            return output
+            output = filter_proposal_indices(candidates, protected, clip, min_area,
+                                             area_range=area_range)[:max_objects]
+            self.last_proposal_scores = [float(scores[i]) if scores[i] is not None and np.isfinite(scores[i])
+                                         else None for i, _ in output]
+            return [mask for _, mask in output]
         if self.spec and self.spec.family == "SAM3 ONNX":
             if points:
                 raise ValueError("Clear point prompts for SAM3 ONNX. Use a text prompt and an optional area ROI; native geometric prompts require SAM3.1.")
@@ -352,8 +352,7 @@ class InferenceEngine:
             with self._lock:
                 candidates, scores = self.predictor.segment(np.ascontiguousarray(rgb, dtype=np.uint8), text_prompt, progress, cancel)
             pairs = [(mask, score) for mask, score in zip(candidates, scores) if score >= min_score]
-            result = finish([p[0] for p in pairs], [p[1] for p in pairs], None if whole else roi)[:max_objects]
-            self.last_proposal_scores = self.last_proposal_scores[:len(result)]
+            result = finish([p[0] for p in pairs], [p[1] for p in pairs], None if whole else roi)
             self.last_diagnostics={'raw_candidates':len(candidates),'after_score':len(pairs),'eligible':len(result),
                 'min_score':min_score,'maximum_score':max(scores) if scores else None,'text':text_prompt,
                 'input':'Provided RGB pixels'}
@@ -363,7 +362,7 @@ class InferenceEngine:
             if self.spec.family == "SAM3.1":
                 with self._lock:
                     masks,scores = self.predictor.concepts(rgb,text=text_prompt,cancel=cancel)
-                return finish(masks,scores,None if whole else roi)[:max_objects]
+                return finish(masks,scores,None if whole else roi)
             if self.spec.family == "SAM1":
                 raise ValueError("Text prompts are available for SAM2 / SAM2.1 with Grounding DINO, or native SAM3.")
             if self.spec.family in ("SAM2", "SAM2.1"):
@@ -372,9 +371,10 @@ class InferenceEngine:
                     self.text_grounder = TextGrounder()
                 boxes, detection_scores = self.text_grounder.detect(rgb,text_prompt,self.device,progress=progress,cancel=cancel)
                 masks, scores = [], []
-                for index, box in enumerate(boxes[:max_objects]):
+                search_boxes = boxes if area_range is not None else boxes[:max_objects]
+                for index, box in enumerate(search_boxes):
                     check_cancel(cancel)
-                    if progress:progress(f"Segmenting text detection {index+1}/{min(len(boxes),max_objects)}…")
+                    if progress:progress(f"Segmenting text detection {index+1}/{len(search_boxes)}…")
                     mask, score = self.predict(rgb, box=box, cancel=cancel)
                     masks.append(mask);scores.append(score)
                 return finish(masks,scores,None if whole else roi)
@@ -421,7 +421,8 @@ class InferenceEngine:
                     continue
                 mask, score = self.predict(rgb, [[float(x), float(y), 1]], None, None, cancel)
                 area = int(mask.sum())
-                if score >= min_score and min_area <= area <= h * w * .85:
+                if (score >= min_score and min_area <= area <= h * w * .85
+                        and (area_range is None or within_size(np.count_nonzero(mask & ~protected), area_range))):
                     candidates.append(mask);candidate_scores.append(score)
                 if len(candidates) >= max_objects:
                     break

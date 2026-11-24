@@ -5,69 +5,23 @@ import math
 from pathlib import Path
 import numpy as np
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QColor, QPixmap, QPalette
+from PySide6.QtGui import QColor, QPixmap
 from PySide6.QtWidgets import (QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox,
     QDoubleSpinBox, QFileDialog, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QMessageBox,
-    QPushButton, QSlider, QSpinBox, QVBoxLayout, QWidget, QStyledItemDelegate,
-    QStyle, QStyleOptionComboBox, QStylePainter, QGridLayout, QButtonGroup, QToolButton)
+    QPushButton, QSlider, QSpinBox, QVBoxLayout, QWidget, QGridLayout, QButtonGroup, QToolButton)
 
 from .canvas import rgb_image, rgba_image
 from .domain import Calibration, LENGTH_UNITS
 from .exports import render_mask_pixels, write_measurement_csv
 from .inference import CATALOG
 from .processing import display_rgb, measurements, refine_objects, refinement_geometry
-from .palette import LUT20
+from .palette import LUT20, document_mask_colors
+from .metric_colors_ui import MetricColorControls
+from .target_size import TargetSizeRange
+from .target_size_ui import TargetSizeControls
 
 
-class CheckedComboDelegate(QStyledItemDelegate):
-    def initStyleOption(self, option, index):
-        super().initStyleOption(option,index)
-        if index.row() == self.parent().currentIndex():
-            option.text += "  √"
-        option.palette.setColor(QPalette.ColorRole.Text,QColor("#20344f"))
-        option.palette.setColor(QPalette.ColorRole.HighlightedText,QColor("#20344f"))
-        option.palette.setColor(QPalette.ColorRole.Highlight,QColor("#dce9ff"))
-
-
-class CheckedComboBox(QComboBox):
-    """The check is visual only, so currentText and saved values stay stable."""
-    def __init__(self,parent=None):
-        super().__init__(parent)
-        self.setItemDelegate(CheckedComboDelegate(self))
-        self.view().setStyleSheet("QAbstractItemView { color:#20344f; background:white; selection-color:#20344f; selection-background-color:#dce9ff; }")
-
-    def paintEvent(self,event):
-        painter=QStylePainter(self)
-        option=QStyleOptionComboBox();self.initStyleOption(option)
-        if self.currentIndex() >= 0:option.currentText += "  √"
-        option.palette.setColor(QPalette.ColorRole.ButtonText,QColor("#20344f"))
-        painter.drawComplexControl(QStyle.ComplexControl.CC_ComboBox,option)
-        painter.drawControl(QStyle.ControlElement.CE_ComboBoxLabel,option)
-
-    def minimumSizeHint(self):
-        size=super().minimumSizeHint();size.setWidth(size.width()+24);return size
-
-    def sizeHint(self):
-        size=super().sizeHint();size.setWidth(size.width()+24);return size
-
-
-def combo(items, name=""):
-    out = CheckedComboBox()
-    out.setObjectName(name)
-    for item in items:
-        if isinstance(item, tuple):
-            out.addItem(item[0], item[1])
-        else:
-            out.addItem(item, item)
-    return out
-
-
-def buttons(dialog, layout):
-    controls = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
-    controls.accepted.connect(dialog.accept)
-    controls.rejected.connect(dialog.reject)
-    layout.addWidget(controls)
-    return controls
+from .widgets import CheckedComboBox, CheckedComboDelegate, buttons, combo
 
 
 class ModelDialog(QDialog):
@@ -222,7 +176,7 @@ class BrightnessDialog(QDialog):
 
 
 class InferenceOptionsDialog(QDialog):
-    def __init__(self, options, parent=None):
+    def __init__(self, options, parent=None, *, target_size=None, calibration=None):
         super().__init__(parent)
         self.setWindowTitle("Segmentation options")
         layout = QVBoxLayout(self)
@@ -231,11 +185,24 @@ class InferenceOptionsDialog(QDialog):
         self.score = QDoubleSpinBox();self.score.setRange(0, 1);self.score.setSingleStep(.05);self.score.setValue(options["min_score"])
         self.area = QSpinBox();self.area.setRange(1, 100_000_000);self.area.setValue(options["min_area"])
         self.maximum = QSpinBox();self.maximum.setRange(1, 10_000);self.maximum.setValue(options["max_objects"])
-        for title, widget in [("Automatic grid points / side",self.grid),("Minimum model score",self.score),("Minimum area (pixel²)",self.area),("Maximum candidate masks",self.maximum)]:
+        for title, widget in [("Automatic grid points / side",self.grid),("Minimum model score",self.score),("Candidate noise floor (px²)",self.area),("Maximum candidate masks",self.maximum)]:
             form.addRow(title,widget)
         layout.addLayout(form)
-        layout.addWidget(QLabel("Grid settings control automatic and whole-image exemplar candidate searches.\nSingle object uses native SAM inference. Larger grids take longer on CPU."))
+        self.target_size = TargetSizeControls(target_size or TargetSizeRange(), calibration, self)
+        layout.addWidget(self.target_size)
+        note = QLabel("A configured target range replaces the candidate noise floor in the listed scopes. "
+                      "Single object uses native SAM inference.")
+        note.setWordWrap(True)
+        layout.addWidget(note)
         buttons(self,layout)
+
+    def accept(self):
+        try:
+            self.target_size.value()
+        except ValueError as error:
+            QMessageBox.warning(self, "Target size range", str(error))
+            return
+        super().accept()
 
     def values(self):
         return {"grid":self.grid.value(),"min_score":self.score.value(),"min_area":self.area.value(),"max_objects":self.maximum.value()}
@@ -400,17 +367,20 @@ class ImagePreviewDialog(QDialog):
 class MaskColorsDialog(QDialog):
     def __init__(self, document, has_selected=False, parent=None):
         super().__init__(parent);self.setWindowTitle("Assign mask colors");self.resize(640,490)
-        layout = QVBoxLayout(self);form = QFormLayout()
-        self.mode = combo([("Default group colors", "default"), ("20 preset lookup table", "lut20")], "maskColorScheme")
+        layout = QVBoxLayout(self);form = self.form = QFormLayout()
+        self.mode = combo([("Default group colors", "default"), ("20 preset lookup table", "lut20"),
+                           ("By measurement", "metric")], "maskColorScheme")
         self.by = combo([("Object", "object"), ("Group", "group")], "maskColorAssignment")
         self.target = combo([("All objects", "all"), ("Selected objects", "selected")], "maskColorTarget")
         self.target.model().item(1).setEnabled(has_selected)
         if has_selected:self.target.setCurrentIndex(1)
-        self.mode.setCurrentIndex(self.mode.findData(document.color_scheme["mode"]))
+        mode = "metric" if document.metric_color_scheme is not None else document.color_scheme["mode"]
+        self.mode.setCurrentIndex(self.mode.findData(mode))
         self.by.setCurrentIndex(self.by.findData(document.color_scheme["by"]))
         for title, widget in (("Scheme",self.mode),("Assign by",self.by),("Apply to",self.target)):form.addRow(title,widget)
         layout.addLayout(form)
-        layout.addWidget(QLabel("Lookup table start color (colors cycle in the order below)"))
+        self.swatch_label = QLabel("Lookup table start color (colors cycle in the order below)")
+        layout.addWidget(self.swatch_label)
         self.swatches = QButtonGroup(self);self.swatches.setExclusive(True);self.palette_widget = QWidget();grid=QGridLayout(self.palette_widget)
         for index, (name,color) in enumerate(LUT20):
             button = QToolButton();button.setText(f"{index+1:02d} {name}");button.setCheckable(True)
@@ -419,22 +389,39 @@ class MaskColorsDialog(QDialog):
             button.setStyleSheet(f"QToolButton {{background:{color};color:{foreground};border:1px solid #6c7c8c;padding:3px;}} QToolButton:checked {{border:4px solid #101820;}}")
             self.swatches.addButton(button,index);grid.addWidget(button,index//5,index%5)
         self.swatches.button(document.color_scheme["offset"]).setChecked(True);layout.addWidget(self.palette_widget)
+        self.metric_color = MetricColorControls(document.metric_color_scheme, parent=self)
+        layout.addWidget(self.metric_color)
         self.future = QCheckBox("Use this scheme for new objects and groups in this image");self.future.setChecked(True);layout.addWidget(self.future)
-        label = QLabel("By group updates the group color and every object in each affected group. Default uses the current group colors. Lookup colors repeat after 20 entries; object IDs and numeric mask labels stay unchanged.")
-        label.setWordWrap(True);layout.addWidget(label)
+        self.lookup_note = QLabel("By group updates the group color and every object in each affected group. Default uses the current group colors. Lookup colors repeat after 20 entries.")
+        self.lookup_note.setWordWrap(True)
+        layout.addWidget(self.lookup_note)
         buttons(self,layout)
-        self.mode.currentIndexChanged.connect(lambda:self.palette_widget.setEnabled(self.mode.currentData()=="lut20"))
-        self.palette_widget.setEnabled(self.mode.currentData()=="lut20")
+        self.mode.currentIndexChanged.connect(self._update_mode)
+        self._update_mode()
+
+    def _update_mode(self):
+        metric = self.mode.currentData() == "metric"
+        lut = self.mode.currentData() == "lut20"
+        self.swatch_label.setVisible(lut)
+        self.palette_widget.setVisible(lut)
+        self.form.setRowVisible(self.by, not metric)
+        self.form.setRowVisible(self.target, not metric)
+        self.future.setVisible(not metric)
+        self.lookup_note.setVisible(not metric)
+        self.metric_color.setVisible(metric)
 
     def values(self):
+        if self.mode.currentData() == "metric":
+            return {"metric_scheme": self.metric_color.value()}
         return {"scheme":{"mode":self.mode.currentData(),"by":self.by.currentData(),"offset":self.swatches.checkedId()},
                 "selected_only":self.target.currentData()=="selected", "use_for_new":self.future.isChecked()}
 
 
 class SaveMasksDialog(QDialog):
-    def __init__(self, document, transparent=False, parent=None):
+    def __init__(self, document, transparent=False, parent=None, *, object_colors=None):
         super().__init__(parent)
         self.document = document
+        self.object_colors = document_mask_colors(document) if object_colors is None else object_colors
         self.setWindowTitle("Export transparent masks" if transparent else "Save mask images")
         self.resize(720,650)
         layout=QVBoxLayout(self);form=QFormLayout()
@@ -442,7 +429,9 @@ class SaveMasksDialog(QDialog):
         if transparent:self.format.setCurrentIndex(1)
         self.organization=combo([("One combined image","combined"),("One file per object","object"),("One file per group","group")],"maskOrganization")
         self.color=combo([("Color by group","group_color"),("Color by object","object_color"),("Binary grayscale","binary"),("Weighted grayscale at overlaps","overlap_gray"),("Numeric instance IDs","instance"),("Numeric class IDs","class")],"maskColor")
-        if document.color_scheme["mode"]=="lut20" and document.color_scheme["by"]=="object":self.color.setCurrentIndex(1)
+        if (document.color_scheme["mode"]=="lut20" and document.color_scheme["by"]=="object"
+                or any(self.object_colors.get(obj.id, obj.color) != obj.color for obj in document.objects)):
+            self.color.setCurrentIndex(1)
         self.overlay=QCheckBox("Overlay masks on an image")
         self.overlay_source=combo([("Uncleaned image (current orientation)","original"),("Processed image (cleaning / smoothing / rotation)","cleaned")],"overlaySource")
         self.overlay_source.model().item(1).setEnabled(document.working is not None)
@@ -491,7 +480,8 @@ class SaveMasksDialog(QDialog):
         if objects:
             try:
                 rgba=render_mask_pixels(self.document,objects,"object_color" if numeric else self.color.currentData(),
-                                        self.values()["overlay"],self.transparency.value(),self.transparent.isChecked())
+                                        self.values()["overlay"],self.transparency.value(),self.transparent.isChecked(),
+                                        object_colors=self.object_colors)
             except ValueError as error:
                 self.info.setText(str(error));self.controls.button(QDialogButtonBox.StandardButton.Ok).setEnabled(False);return
             if self.color.currentData()=="overlap_gray":

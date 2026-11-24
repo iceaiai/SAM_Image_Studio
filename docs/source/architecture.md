@@ -12,15 +12,18 @@ arguments and `--no-restore`, initializes logging and Qt, and constructs
 | `processing`, `image_processing`, `denoise_config` | Processing targets, parameter validation, intensity normalization, preview/apply dispatch and shared parameter descriptions |
 | `compressed_sensing`, `sparse_denoising`, `neural_denoising` | Iterative DCT/TV, SPORCO/BM3D, CAREamics N2V/N2V2 |
 | `transforms`, `savepoints` | Coordinated pixel/geometry/calibration transformations and annotation snapshots |
-| `statistics`, `exports`, `palette` | Applicable measurements, dataset/image output, and display colors |
+| `target_size`, `scale_bar`, `filaments` | Calibrated mask size bounds, scale bars and visible centerline measurement |
+| `statistics`, `exports`, `palette`, `plot_groups` | Measurements, dataset/image output, and color scales shared by masks and plots |
 | `plugin_api`, `plugin_ui`, `hardware` | Plugin registration/validation, desktop integration, and NVIDIA/Conda planning |
 
 ## State and transactions
 
 An `ImageFrame` carries acquired pixels and calibration; a `Document` holds
 objects, groups, geometry, and editing/processing records. `History` supports
-Undo/Redo; `ProjectStore` persists native state. Native schema 5 reads earlier
-schemas 1–4. Source images, native projects, dataset exports, app caches, and
+Undo/Redo. `ProjectStore` persists native state. Native schema 6 adds scale
+bars, filament links and per-image metric colors, and reads earlier schemas 1–5.
+Plot groups are workspace preferences that reference frame keys. Source images,
+native projects, dataset exports, app caches, and
 neural training outputs have different lifetimes.
 
 Segmentation and processing generate previews before commit. GUI actions use

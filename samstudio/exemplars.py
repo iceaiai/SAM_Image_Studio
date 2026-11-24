@@ -9,7 +9,7 @@ import hashlib,math
 import cv2
 import numpy as np
 from scipy.ndimage import distance_transform_edt
-from .processing import shape_mask,bounding_box,filter_proposals
+from .processing import shape_mask, bounding_box, filter_proposal_indices
 from .domain import unpack_mask
 
 def _check(cancel):
@@ -61,23 +61,27 @@ def template_centers(rgb,mask,limit=24):
     return result
 
 def infer_examples(engine,rgb,points=None,examples=None,protected=None,grid=8,min_score=.70,min_area=8,max_objects=300,
-                   progress=None,cancel=None,text_prompt='',similarity_threshold=.72,negative_margin=.025):
+                   progress=None,cancel=None,text_prompt='',similarity_threshold=.72,negative_margin=.025,
+                   area_range=None):
     if not engine.ready:raise ValueError('Load a model first.')
     shape=rgb.shape[:2];protected=np.zeros(shape,bool) if protected is None else np.asarray(protected,bool)
     if protected.shape!=shape:raise ValueError('Protected mask dimensions do not match.')
+    size_options = {"area_range": area_range} if area_range is not None else {}
     if engine.spec.family=='SAM3 ONNX':
         if points or examples:
             raise ValueError('This SAM3 ONNX export is text-only. Clear exemplar prompts and enter text; choose Inside ROI only for an output region. Use SAM3.1 for native positive/negative shapes.')
         return engine.infer(rgb,protected=protected,whole=True,min_score=min_score,min_area=min_area,
-                            max_objects=max_objects,progress=progress,cancel=cancel,text_prompt=text_prompt)
+                            max_objects=max_objects,progress=progress,cancel=cancel,text_prompt=text_prompt,
+                            **size_options)
     if engine.spec.family=='SAM3.1':
         with engine._lock:
             candidates,scores=engine.predictor.concepts(rgb,points,examples,text_prompt,cancel)
         pairs=[(m,s) for m,s in zip(candidates,scores) if s>=min_score]
         candidates,scores=([p[0] for p in pairs],[p[1] for p in pairs])
-        result=filter_proposals(candidates,protected,min_area=min_area)[:max_objects]
-        engine.last_proposal_scores=[scores[int(np.argmax([float((m&c).sum())/max(1,float((m|c).sum())) for c in candidates]))] for m in result]
-        return result
+        result = filter_proposal_indices(candidates, protected, min_area=min_area,
+                                         area_range=area_range)[:max_objects]
+        engine.last_proposal_scores = [scores[i] for i, _ in result]
+        return [mask for _, mask in result]
     seeds=[]
     for x,y,label in points or []:
         _check(cancel);mask,score=engine.predict(rgb,[[x,y,1]],progress=progress,cancel=cancel)
@@ -116,14 +120,17 @@ def infer_examples(engine,rgb,points=None,examples=None,protected=None,grid=8,mi
     else:
         positive=[descriptor(engine,rgb,m) for m,_,label in seeds if label]
         negative=[descriptor(engine,rgb,m) for m,_,label in seeds if not label]
+        candidate_protection = protected if area_range is not None else np.zeros(shape, bool)
         if text_prompt:
-            candidates=engine.infer(rgb,protected=np.zeros(shape,bool),whole=True,text_prompt=text_prompt,progress=progress,cancel=cancel,min_area=min_area,max_objects=max_objects)
+            candidates=engine.infer(rgb,protected=candidate_protection,whole=True,text_prompt=text_prompt,progress=progress,cancel=cancel,min_area=min_area,max_objects=max_objects,**size_options)
             scores=list(engine.last_proposal_scores)
         else:
             key=(id(engine.predictor),hashlib.sha256(rgb.tobytes()).hexdigest(),int(grid),float(min_score),int(min_area),int(max_objects))
+            if area_range is not None:
+                key += (area_range, hashlib.sha256(np.packbits(protected).tobytes()).digest())
             cache=getattr(engine,'_example_candidates',None)
             if not cache or cache[0]!=key:
-                masks=engine.infer(rgb,protected=np.zeros(shape,bool),whole=True,grid=grid,min_score=min_score,min_area=min_area,max_objects=max_objects,progress=progress,cancel=cancel)
+                masks=engine.infer(rgb,protected=candidate_protection,whole=True,grid=grid,min_score=min_score,min_area=min_area,max_objects=max_objects,progress=progress,cancel=cancel,**size_options)
                 cache=(key,[m.copy() for m in masks],list(engine.last_proposal_scores));engine._example_candidates=cache
             candidates,scores=list(cache[1]),list(cache[2])
         # Explicit exemplars and correlation seeds supplement sparse grid proposals.
@@ -146,11 +153,8 @@ def infer_examples(engine,rgb,points=None,examples=None,protected=None,grid=8,mi
             excluded=any(not label and (mask&m).sum()/max(1,min(mask.sum(),m.sum()))>.5 for m,_,label in seeds)
             if not excluded and (explicit or pos>=similarity_threshold and pos+negative_margin>=neg):chosen.append(mask);qualities.append(quality)
         candidates,scores=chosen,qualities
-    result=filter_proposals(candidates,protected,min_area=min_area)[:max_objects]
-    engine.last_proposal_scores=[]
-    for mask in result:
-        overlaps=[float((mask&m).sum())/max(1,float((mask|m).sum())) for m in candidates]
-        score=scores[int(np.argmax(overlaps))] if overlaps else None
-        engine.last_proposal_scores.append(score)
+    result = filter_proposal_indices(candidates, protected, min_area=min_area,
+                                     area_range=area_range)[:max_objects]
+    engine.last_proposal_scores = [scores[i] for i, _ in result]
     _check(cancel)
-    return result
+    return [mask for _, mask in result]

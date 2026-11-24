@@ -167,28 +167,38 @@ def refinement_geometry(mask, sigma, protected=None):
     return result, contours
 
 
-def filter_proposals(masks, protected: np.ndarray, roi=None, min_area=8, duplicate_iou=.90):
+def filter_proposal_indices(masks, protected: np.ndarray, roi=None, min_area=8,
+                            duplicate_iou=.90, area_range=None):
+    from .target_size import within_size
+
     accepted = []
     eligible = ~protected
     if roi is not None:
         eligible &= np.asarray(roi, bool)
     # Prefer smaller instances to prevent a broad mask swallowing several particles.
-    for candidate in sorted(masks, key=lambda m: int(np.count_nonzero(m))):
+    for index, candidate in sorted(enumerate(masks), key=lambda item: np.count_nonzero(item[1])):
         mask = np.asarray(candidate, bool)
         if mask.shape != eligible.shape:
             raise ValueError("The model returned a mask with incorrect image dimensions.")
         mask = mask & eligible
-        if int(mask.sum()) < min_area:
+        area = np.count_nonzero(mask)
+        if area < min_area or not within_size(area, area_range):
             continue
         duplicate = False
-        for old in accepted:
+        for _, old in accepted:
             overlap = int(np.count_nonzero(mask & old))
             if overlap and overlap / int(np.count_nonzero(mask | old)) >= duplicate_iou:
                 duplicate = True
                 break
         if not duplicate:
-            accepted.append(mask)
+            accepted.append((index, mask))
     return accepted
+
+
+def filter_proposals(masks, protected: np.ndarray, roi=None, min_area=8, duplicate_iou=.90,
+                     area_range=None):
+    return [mask for _, mask in filter_proposal_indices(masks, protected, roi, min_area,
+                                                        duplicate_iou, area_range)]
 
 
 def fill_holes(mask, max_area=None, protected=None):

@@ -5,7 +5,7 @@
 | Manual | Create a point or closed-shape annotation in the active group | Select/edit it or export reviewed annotations |
 | Segment | Supply point/shape/text prompts or run a grid; generate disposable model masks | Review → Accept masks |
 | Clean | Define a pixel removal/fill region or brush target | Preview a fill → Apply, or restore a cleaning record |
-| Edit | Change existing geometry, rotate images, scale masks, or assign morphology | Apply a reviewed edit and retain savepoints |
+| Edit | Change vertices, rotate images, scale masks, add a scale bar, or configure filament measurements | Apply a reviewed edit or connect visible filament fragments |
 
 ## Switching modes
 

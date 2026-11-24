@@ -1,6 +1,7 @@
 """Pixel-coordinate transforms shared by rotation and proportional mask scaling."""
 from __future__ import annotations
 import copy
+from dataclasses import replace
 import math
 from dataclasses import asdict
 import cv2
@@ -95,6 +96,12 @@ def rotate_document(document, angle, padding="none"):
         document.source_calibration=copy.deepcopy(document.calibration)
     document.frame.raw = base
     document.objects = [o for o in objects if o.mask is None or o.mask.any()]
+    present = {obj.id for obj in document.objects}
+    document.filament_links = [
+        replace(link, first_anchor=transform_points([link.first_anchor], matrix)[0],
+                second_anchor=transform_points([link.second_anchor], matrix)[0])
+        for link in document.filament_links if {link.first_id, link.second_id} <= present
+    ]
     document.draft = {"points":[],"roi":None,"patches":[]}
     if document.calibration.valid:
         cal = copy.deepcopy(document.calibration)
@@ -146,3 +153,15 @@ def scaled_objects(document, object_ids, factor):
 def apply_scaled_objects(document, replacements):
     mapping={o.id:o for o in replacements}
     document.objects=[mapping.get(o.id,o) for o in document.objects]
+    def scaled_anchor(ident, anchor):
+        obj = mapping.get(ident)
+        if obj is None:
+            return anchor
+        center = np.asarray(obj.provenance["mask_scale_center"])
+        return center + (np.asarray(anchor) - center) * obj.provenance["mask_scale_factor"]
+
+    document.filament_links = [
+        replace(link, first_anchor=scaled_anchor(link.first_id, link.first_anchor),
+                second_anchor=scaled_anchor(link.second_id, link.second_anchor))
+        for link in document.filament_links
+    ]

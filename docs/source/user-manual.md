@@ -1,13 +1,8 @@
-# User manual
+# User Manual
 
-This is the **original v1.4.2 manual**, preserved for reference. For current
-installation paths and automatic repairs, use [installation](installation.md).
-Current illustrated [cleaning](features/cleaning.md),
-[Seg scopes](segmentation/scopes.md), [SAM3.1](segmentation/sam31.md) and
-[compressed-sensing parameters](features/compressed-sensing.md) describe v1.4.3.
+This manual covers SAM Image Studio {{ app_version }}. See [installation](installation.md)
+for the current platform setup instructions and [Denoising parameters](#denoising-parameters)
+for denoising method defaults and units.
 
-```{include} ../USER_MANUAL.md
-:start-line: 1
-:relative-images:
-:relative-docs: ..
+```{include} ../../samstudio/resources/user_manual.md
 ```

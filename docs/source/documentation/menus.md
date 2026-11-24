@@ -1,7 +1,6 @@
 # Menu-by-menu reference
 
-This reference covers every core menu action in the 1.4.4 main window. Labels
-were checked against an offscreen application instance. Some actions depend on
+This reference covers the core menus in the main window. Some actions depend on
 selection, mode, loaded model, or task state. Installed plugins add their own
 actions and are documented by their authors.
 
@@ -26,7 +25,8 @@ actions and are documented by their authors.
 | Undo | Revert the latest committed operation in the current image history. | Ctrl+Z |
 | Redo | Reapply an undone operation. | Ctrl+Y |
 | Edit object vertices | Edit existing selected geometry instead of adding another shape. | Ctrl+E |
-| Delete object / selected vertex | Delete the selected object or an eligible vertex in the active edit state. | Del |
+| Delete objects | Delete the selected objects. | Del outside Edit |
+| Delete vertex | Delete one eligible vertex near the chosen point in a selected polygon or contour. | Del in Edit |
 | Select all objects | Select annotation/cleaning objects; image-smoothing records remain selectable in Objects. | Ctrl+A |
 | Invert region | Make an exact pixel region from the complement of selected area masks or the current region. | Ctrl+I |
 | Create object from region | In Manual/Edit, create an exact mask annotation from the current nonempty region. | — |
@@ -35,12 +35,18 @@ actions and are documented by their authors.
 | Brightness / contrast… | Adjust the display copy without modifying acquired pixel values. | — |
 | Object color… | Change selected object display colors. | — |
 | Object transparency… | Set mask display opacity independently of binary mask geometry. | — |
-| Assign mask colors… | Use default colors or assign the preset 20-color lookup table. | — |
+| Assign mask colors… | Use group colors, the preset lookup table, or a measured value with a configurable color count. | — |
 | Smooth image pixels… | Preview a smoothing operation on derived pixels; this is different from smoothing a contour. | — |
 | Rotate image… | Choose angle, optional rectangle/square padding and fill; transform pixels, masks and calibration together. | — |
 | Reset rotation… | Restore the exact pre-first-rotation savepoint, including pixels, masks and calibration; later changes are reverted after confirmation. Undo is available. | — |
 | Scale masks / savepoints… | Scale selected/group masks uniformly; keep original/result snapshots temporarily or in a local folder. | — |
 | Morphology / inner region… | Assign morphology and link an enclosed core/cavity or expected polygon side count for measurements. | — |
+| Add scale bar… / Edit scale bar… | Preview the current image's scale bar and set its length, width, font, size and position. | — |
+| Remove scale bar | Remove the current image's scale bar. | — |
+| Filament → Mark group as Filament… | Enable centerline length and width measurement for a foreground group in Edit mode. | — |
+| Filament → Use particle measurements for group… | Remove the Filament designation and the group's links. | — |
+| Filament → Connect visible fragments… | Pick one visible end on each of two selected fragments to estimate the gap. | — |
+| Filament → Disconnect selected fragments | Remove links incident to one selected fragment or between multiple selected fragments. | — |
 | Vertex deletion radius… | Set the eligible-vertex deletion search radius in image pixels. | — |
 | Fill holes… | Preview filling eligible holes in selected area masks. | — |
 | Smooth edges… | Preview smoother editable contours for selected masks; does not smooth image intensities. | — |
@@ -69,7 +75,7 @@ this menu order: remove → choose fill → preview/apply → restore.
 | --- | --- | --- |
 | Model manager… | Choose model family/variant, matching checkpoint and CPU/Conda CUDA device. | — |
 | Otsu + watershed… | Adjust threshold/splitting parameters, preview classical masks without SAM, then accept. | — |
-| Segmentation options… | Set grid density, minimum score/area and maximum objects, with path-dependent effects. | — |
+| Segmentation options… | Set candidate controls and optional calibrated area or equivalent-diameter bounds. | — |
 | Text prompt aliases… | Edit project aliases such as nanoparticle → black dots; aliases do not train a model. | — |
 
 ## Export
@@ -84,7 +90,9 @@ this menu order: remove → choose fill → preview/apply → restore.
 
 | Menu entry | What it does | Shortcut |
 | --- | --- | --- |
-| Plot Object Statistics… | Choose up to nine displayed metrics and export plots or numerical statistics. | — |
+| Plot Object Statistics… | Choose an image scope, histogram or mask-colored points, and up to nine displayed metrics. | — |
+| Create plot group from selected images… | Save a named set of frames with an optional shared measurement color scale. | — |
+| Edit active plot group… | Change its name, membership or color settings, or remove the group. | — |
 | Edit image calibration… | Set physical X/Y pixel sizes and length unit. | — |
 | Read pixel sizes from Excel… | Select a worksheet/unit and match converted_image_name to converted_size after filename normalization. | — |
 | Forget automatic Excel lookup | Stop applying the saved lookup on later opens while retaining calibration already assigned. | — |
@@ -108,10 +116,7 @@ this menu order: remove → choose fill → preview/apply → restore.
 
 | Menu entry | What it does | Shortcut |
 | --- | --- | --- |
-| User manual (PDF) | Open bundled English user help with fit-width and zoom controls. | — |
-| Denoising parameter guide (PDF) | Open the separate complete parameter/default/recommendation guide. | — |
-| Quick start | Show the short built-in workflow reminder. | — |
-| Diagnostics / versions | Inspect runtime/platform versions for troubleshooting. | — |
+| User Manual | Open the bundled English manual for the running version. | — |
 
 ## Processing
 
@@ -121,7 +126,7 @@ DCT/TV dialog controls in order and shows computed parameter comparisons.
 
 | Menu entry | What it does | Shortcut |
 | --- | --- | --- |
-| Denoise… | Choose a restoration method, target, parameters and Preview/Apply workflow. | — |
+| Denoise… | Choose a restoration method, preview it, or open the Denoising parameters chapter. | — |
 | Smooth (Gaussian)… | Choose an odd kernel size and spatial sigma for derived pixel smoothing. | — |
 | Crop selected region / masks… | Retain real pixels in the mask bounding box plus 3 pixels of context and protect them. | — |
 | Retained crops / paste back… | Paste, protect/release, export or remove retained snapshots. | — |
@@ -136,4 +141,4 @@ DCT/TV dialog controls in order and shows computed parameter comparisons.
 | For Developer (PDF) | Open the separate plugin/API/U-Net example manual. | — |
 
 For toolbar/panel buttons, see [controls](controls.md). For parameter dialogs,
-see [dialogs](dialogs.md) and the [denoising reference](../denoising.md).
+see [dialogs](dialogs.md) and the [denoising reference](../user-manual.md#denoising-parameters).

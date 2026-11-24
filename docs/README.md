@@ -5,8 +5,10 @@
 - `tools/`: reproducible synthetic scientific figures and website browser checks.
 - `requirements.txt`: isolated Sphinx dependencies; no Qt or Torch required to build.
 - `RELEASE_NOTES.md`: changes to the current application.
-- `USER_MANUAL.md`, `FOR_DEVELOPER.md`, `DENOISING_PARAMETERS.md`, PDFs and
-  `screenshots/`: original v1.4.2 manuals/resources, retained as historical reference.
+- [User Manual source](../samstudio/resources/user_manual.md): shared by the desktop
+  app and Sphinx, including the denoising chapter.
+- `FOR_DEVELOPER.md`, PDFs and `screenshots/`: original v1.4.2 developer and
+  reference materials.
 - `archive/`: original installation and test reports.
 - `validation/`: historical release evidence and explicitly scoped current reports.
 - `_build/`: locally generated website, ignored by Git.

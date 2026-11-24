@@ -1,33 +1,57 @@
 from __future__ import annotations
 import math
 import numpy as np
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import (QCheckBox,QColorDialog,QDialog,QFileDialog,QFormLayout,QHBoxLayout,
  QLabel,QLineEdit,QListWidget,QListWidgetItem,QMessageBox,QPushButton,QSpinBox,QVBoxLayout,
  QWidget,QSplitter,QTabWidget,QDialogButtonBox)
-from .dialogs import combo,buttons
+from .widgets import combo,buttons
 from .domain import LENGTH_UNITS
-from .processing import measurements
+from .palette import document_mask_colors, image_metric_palette
 from .statistics import METRICS,METRIC_DEFINITIONS,measurement_records,summary_records,export_statistics
 
 
 class StatisticsDialog(QDialog):
-    def __init__(self,documents,current,selected_objects=None,selected_images=None,parent=None):
+    plot_group_requested = Signal(str)
+    color_settings_requested = Signal()
+
+    def __init__(self,documents,current,selected_objects=None,selected_images=None,parent=None,
+                 *, plot_groups=None, active_plot_group=None, color_provider=None):
         super().__init__(parent)
         from matplotlib.figure import Figure
         from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg,NavigationToolbar2QT
         self.documents=list(documents);self.current=current;self.selected_objects=set(selected_objects or []);self.selected_images=set(selected_images or [])
+        self.plot_groups = {}
+        self.active_plot_group = None
+        self.color_provider = color_provider or document_mask_colors
+        self.palette_description = ""
         self.rows=[];self.records=[];self.axis_settings={};self.plot_keys=[];self._updating=False;self._bar_color='#245dd8'
         self.setWindowTitle('Plot Object Statistics');self.resize(1320,850)
         layout=QVBoxLayout(self);row=QHBoxLayout()
-        self.scope=combo(['Current image','All open images','Selected images']);self.group=combo(['All groups']+sorted({g.name for d in self.documents for g in d.groups}))
+        self.scope=combo([], "statisticsImageScope");self.group=combo(['All groups'])
         self.metric_combo=combo([(label,key) for key,(label,dim) in METRICS.items()])
         self.unit=combo(['Auto','Pixels','nm','µm','mm']);self.bins=QSpinBox();self.bins.setRange(2,500);self.bins.setValue(20)
         self.only_selected=QCheckBox('Selected objects only')
         for title,widget in [('Images',self.scope),('Group',self.group),('Single metric',self.metric_combo),('Units',self.unit),('Bins',self.bins)]:
             col=QVBoxLayout();col.addWidget(QLabel(title));col.addWidget(widget);row.addLayout(col)
-        layout.addLayout(row);layout.addWidget(self.only_selected)
+        layout.addLayout(row)
+        appearance = QHBoxLayout()
+        appearance.addWidget(self.only_selected)
+        appearance.addStretch()
+        appearance.addWidget(QLabel("Plot type"))
+        self.plot_type = combo([("Histogram", "histogram"), ("Object points (mask colors)", "points")], "statisticsPlotType")
+        appearance.addWidget(self.plot_type)
+        if color_provider is not None:
+            color_settings = QPushButton("Mask color settings…")
+            color_settings.clicked.connect(lambda: self.color_settings_requested.emit())
+            appearance.addWidget(color_settings)
+        layout.addLayout(appearance)
+        self.set_plot_groups(plot_groups or {}, active_plot_group, prefer_group=True)
+        active_group = self.plot_groups.get(active_plot_group)
+        if ((active_group and active_group.scheme is not None)
+                or (current is not None and current.metric_color_scheme is not None)):
+            self.plot_type.setCurrentIndex(self.plot_type.findData("points"))
         split=QSplitter(Qt.Orientation.Horizontal);layout.addWidget(split,1);panel=QWidget();left=QVBoxLayout(panel);split.addWidget(panel)
         tabs=QTabWidget();left.addWidget(tabs);metrics_page=QWidget();metrics_layout=QVBoxLayout(metrics_page)
         metrics_layout.addWidget(QLabel('Choose up to 9 metrics.\nResize the window or drag the divider.'))
@@ -51,7 +75,8 @@ class StatisticsDialog(QDialog):
         plot_button.clicked.connect(self.save_plot);csv.clicked.connect(self.save_csv);close.clicked.connect(self.accept)
         for button in (plot_button,csv,close):actions.addWidget(button)
         layout.addLayout(actions)
-        for widget in (self.scope,self.group,self.unit):widget.currentIndexChanged.connect(self.refresh)
+        self.scope.currentIndexChanged.connect(self._scope_changed)
+        for widget in (self.group,self.unit,self.plot_type):widget.currentIndexChanged.connect(self.refresh)
         self.metric_combo.currentIndexChanged.connect(self.single_metric_changed);self.metrics_list.itemChanged.connect(self.metrics_changed)
         self.bins.valueChanged.connect(self.refresh);self.only_selected.toggled.connect(self.refresh);self.axis_combo.currentIndexChanged.connect(self.load_axis_settings)
         self.refresh()
@@ -73,22 +98,72 @@ class StatisticsDialog(QDialog):
         self.refresh()
 
     def filtered_documents(self):
-        docs=([self.current] if self.current is not None else []) if self.scope.currentIndex()==0 else self.documents
-        return [d for d in docs if d.frame.key in self.selected_images] if self.scope.currentIndex()==2 else docs
+        scope = self.scope.currentData()
+        if scope == "current":
+            return [self.current] if self.current is not None else []
+        if scope == "selected":
+            return [doc for doc in self.documents if doc.frame.key in self.selected_images]
+        group = self.plot_groups.get(self.plot_group_name)
+        if group is not None:
+            return [doc for doc in self.documents if doc.frame.key in group.frames]
+        return self.documents
+
+    @property
+    def plot_group_name(self):
+        value = self.scope.currentData() or ""
+        return value[5:] if value.startswith("plot:") else None
+
+    def set_plot_groups(self, groups, active, *, prefer_group=False):
+        old = self.scope.currentData()
+        active_changed = active != self.active_plot_group
+        self.active_plot_group = active
+        self.plot_groups = dict(groups)
+        options = [("Current image", "current"), ("All open images", "all"), ("Selected images", "selected")]
+        options += [(f"Plot group: {name}", f"plot:{name}") for name in sorted(groups, key=str.casefold)]
+        if options != [(self.scope.itemText(i), self.scope.itemData(i)) for i in range(self.scope.count())]:
+            self.scope.blockSignals(True)
+            self.scope.clear()
+            for label, value in options:
+                self.scope.addItem(label, value)
+            self.scope.setCurrentIndex(max(0, self.scope.findData(old)))
+            self.scope.blockSignals(False)
+        if prefer_group or (active_changed and old and old.startswith("plot:")):
+            self.scope.blockSignals(True)
+            index = self.scope.findData(f"plot:{active}") if active is not None else 0
+            self.scope.setCurrentIndex(max(0, index))
+            self.scope.blockSignals(False)
+
+    def _scope_changed(self):
+        name = self.plot_group_name
+        if name is not None:
+            if self.plot_groups[name].scheme is not None:
+                self.plot_type.blockSignals(True)
+                self.plot_type.setCurrentIndex(self.plot_type.findData("points"))
+                self.plot_type.blockSignals(False)
+            self.plot_group_requested.emit(name)
+        self.refresh()
 
     def refresh(self):
         if self._updating:return
-        names=['All groups']+sorted({g.name for d in self.documents for g in d.groups})
+        docs=self.filtered_documents();unit=self.unit.currentText()
+        names=['All groups']+sorted({g.name for d in docs for g in d.groups})
         if [self.group.itemText(i) for i in range(self.group.count())]!=names:
             old=self.group.currentText();self.group.blockSignals(True);self.group.clear();self.group.addItems(names);self.group.setCurrentIndex(max(0,self.group.findText(old)));self.group.blockSignals(False)
-        docs=self.filtered_documents();unit=self.unit.currentText()
         physical_unit=next((d.calibration.length_unit for d in docs if d.calibration.valid),'nm') if unit=='Auto' else unit
         physical_unit=physical_unit if physical_unit in LENGTH_UNITS else None
         self.rows=[];self.records=[];excluded=0
+        metric = self.metric_combo.currentData()
         for doc in docs:
             ids=self.selected_objects if self.only_selected.isChecked() else None;groups=[self.group.currentText()] if self.group.currentIndex()>0 else None
-            records,skip=measurement_records(doc,ids,groups,physical_unit);self.records.extend(records);excluded+=skip
-            rows,_=measurements(doc,ids,groups,self.metric_combo.currentData(),physical_unit);self.rows.extend(rows)
+            records, skip = measurement_records(doc, ids, groups, physical_unit)
+            colors = self.color_provider(doc)
+            for record in records:
+                record["mask_color"] = colors[record["object_id"]]
+                self.rows.append({**record, "pixel_area": record["area_px"], "physical_area": record["area_physical"],
+                                  "metric": metric, "pixel_value": record.get(metric + "_px"),
+                                  "physical_value": record.get(metric + "_physical")})
+            self.records.extend(records)
+            excluded += skip
         self.figure.clear();panels=[]
         for key in self.selected_metrics():
             dim=METRICS[key][1]
@@ -113,19 +188,32 @@ class StatisticsDialog(QDialog):
         count=max(1,len(panels));cols=min(3,count);rows=math.ceil(count/cols);self.plot_keys=[]
         if not panels:
             ax=self.figure.add_subplot(111);ax.text(.5,.5,'No eligible objects or metrics',ha='center',va='center',transform=ax.transAxes);ax.set_axis_off()
+        points = self.plot_type.currentData() == "points"
+        self.color_button.setEnabled(not points)
         for i,(key,suffix,label,records) in enumerate(panels):
             ax=self.figure.add_subplot(rows,cols,i+1);plot_key=key+'|'+label;self.plot_keys.append(plot_key)
             options=self.axis_settings.get(plot_key,{});color=options.get('color','#245dd8')
-            values=[r.get(key+'_'+suffix) for r in records] if key!='object_id' else []
-            values=[v for v in values if v is not None and np.isfinite(v)]
+            samples = [(index, record.get(key + "_" + suffix), record["mask_color"])
+                       for index, record in enumerate(records, start=1)]
+            samples = [(index, value, rgb) for index, value, rgb in samples
+                       if value is not None and np.isfinite(value)]
+            values = [value for _, value, _ in samples]
             if key=='object_id':
-                ax.bar(range(len(records)),[1]*len(records),color=color);ax.set_xticks(range(len(records)),[r['name']+'\n'+r['object_id'][:8] for r in records],rotation=60)
-            elif key=='particle_count':
+                object_colors = [r["mask_color"] for r in records]
+                if points:
+                    ax.scatter(range(len(records)), range(1, len(records) + 1), c=object_colors)
+                else:
+                    ax.bar(range(len(records)), [1]*len(records), color=color)
+                ax.set_xticks(range(len(records)),[r['name']+'\n'+r['object_id'][:8] for r in records],rotation=60)
+            elif points and samples:
+                ax.scatter(values, [index for index, _, _ in samples], c=[rgb for _, _, rgb in samples])
+            elif key=='particle_count' and not points:
                 groups=sorted({r['group'] for r in records});counts=[sum(r['particle_count_px'] for r in records if r['group']==g) for g in groups];ax.bar(groups,counts,color=color)
             elif values:ax.hist(values,bins=self.bins.value(),color=color,edgecolor='white')
             else:ax.text(.5,.5,'Not applicable / unavailable',ha='center',va='center',transform=ax.transAxes)
             default_x=METRICS[key][0]+(f' ({label})' if label else '')
-            ax.set_xlabel(options.get('xlabel') or default_x,fontsize=options.get('label_size',11));ax.set_ylabel(options.get('ylabel') or ('Particle count' if key=='particle_count' else 'Object count'),fontsize=options.get('label_size',11))
+            default_y = "Object index" if points else "Particle count" if key == "particle_count" else "Object count"
+            ax.set_xlabel(options.get('xlabel') or default_x,fontsize=options.get('label_size',11));ax.set_ylabel(options.get('ylabel') or default_y,fontsize=options.get('label_size',11))
             ax.set_title(METRICS[key][0]+f' · n={len(records) if key=="object_id" else len(values)}',fontsize=11);ax.tick_params(labelsize=options.get('tick_size',9));ax.grid(axis='y',alpha=.2)
             for axis in ('x','y'):
                 lo,hi=options.get(axis+'min'),options.get(axis+'max')
@@ -137,7 +225,21 @@ class StatisticsDialog(QDialog):
         for key in self.plot_keys:self.axis_combo.addItem(key,key)
         self.axis_combo.setCurrentIndex(max(0,self.axis_combo.findData(old)));self.axis_combo.blockSignals(False);self.load_axis_settings()
         self.canvas.draw_idle()
-        self.summary.setText(f'{len(self.records)} measured objects; {sum(r["particle_count_px"] for r in self.records):g} particles; {excluded} point/open annotations excluded. Physical and pixel cohorts are separate. Blank values indicate unavailable metrics. Save all or selected metrics independently of these plots.')
+        summary = f'{len(self.records)} measured objects · {sum(r["particle_count_px"] for r in self.records):g} counted · {excluded} point/open annotations excluded.'
+        plot_group = self.plot_groups.get(self.plot_group_name)
+        if plot_group is not None:
+            summary += f" {len(docs)}/{len(plot_group.frames)} plot group frames open."
+        if points:
+            active_group = self.plot_groups.get(self.active_plot_group)
+            uses_active_palette = (active_group is not None and active_group.scheme is not None
+                                   and any(doc.frame.key in active_group.frames for doc in docs))
+            if uses_active_palette:
+                summary += f"\n{active_group.name} · {self.palette_description}"
+            elif len(docs) == 1:
+                palette = image_metric_palette(docs[0])
+                if palette is not None:
+                    summary += "\n" + palette.description
+        self.summary.setText(summary)
 
     def load_axis_settings(self):
         options=self.axis_settings.get(self.axis_combo.currentData(),{});self.x_label.setText(options.get('xlabel',''));self.y_label.setText(options.get('ylabel',''))

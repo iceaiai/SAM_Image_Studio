@@ -9,6 +9,7 @@ from .image_processing import METHODS,parameters,process_pixels,processing_targe
 from .dialogs import ImagePreviewDialog
 from .domain import unpack_array
 from .denoise_config import DENOISE_METHODS,LEARNING_METHODS,parameter_html
+from .help_viewer import DENOISING_SECTION, open_user_manual
 
 class ProcessingDialog(QDialog):
     def __init__(self,methods,parent=None,plugin_specs=None):
@@ -17,6 +18,11 @@ class ProcessingDialog(QDialog):
         layout=QVBoxLayout(self);self.method=QComboBox();self.method.addItems(methods);layout.addWidget(self.method)
         row=QHBoxLayout();layout.addLayout(row)
         defaults=QPushButton('Restore defaults');defaults.clicked.connect(self.reset_controls);row.addWidget(defaults)
+        if any(method in DENOISE_METHODS for method in methods):
+            self.denoising_help = QPushButton("Denoising parameters")
+            self.denoising_help.setObjectName("denoisingHelp")
+            self.denoising_help.clicked.connect(lambda: open_user_manual(self, DENOISING_SECTION))
+            row.addWidget(self.denoising_help)
         self.notebook_button=QPushButton('Notebook reconstruction preset (10%, max side 256)');self.notebook_button.clicked.connect(self.notebook_preset);row.addWidget(self.notebook_button)
         body=QHBoxLayout();layout.addLayout(body,1)
         area=QScrollArea();area.setWidgetResizable(True);panel=QWidget();self.form=QFormLayout(panel);area.setWidget(panel);body.addWidget(area,1)

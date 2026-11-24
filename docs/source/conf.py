@@ -39,7 +39,8 @@ html_static_path = ["_static"]
 html_css_files = ["studio.css"]
 html_copy_source = False
 html_show_sourcelink = False
-myst_enable_extensions = ["colon_fence", "dollarmath"]
+myst_enable_extensions = ["colon_fence", "dollarmath", "substitution"]
+myst_substitutions = {"app_version": release}
 myst_heading_anchors = 4
 
 # AutoAPI parses all application modules. It does not download model weights,
@@ -51,23 +52,3 @@ autoapi_options = ["members", "undoc-members", "show-inheritance", "show-module-
 autoapi_member_order = "bysource"
 autoapi_add_toctree_entry = False
 autoapi_keep_files = False
-
-
-def setup(app):
-    # The release intentionally re-exports StatisticsDialog through dialogs.
-    # AutoAPI cannot resolve that circular alias, but it still documents the
-    # actual class in statistics_dialog. Filter only this known alias cycle;
-    # all other import-resolution and documentation warnings remain errors.
-    import logging
-
-    class KnownDialogAliasCycle(logging.Filter):
-        def filter(self, record):
-            message = record.getMessage()
-            prefix = "Cannot resolve cyclic import: "
-            if not message.startswith(prefix):
-                return True
-            modules = message[len(prefix):].split(", ")
-            cycle = modules[modules.index(modules[-1]):-1]
-            return set(cycle) != {"samstudio.dialogs", "samstudio.statistics_dialog"}
-
-    logging.getLogger("sphinx.autoapi._mapper").addFilter(KnownDialogAliasCycle())

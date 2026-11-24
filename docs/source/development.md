@@ -111,11 +111,12 @@ hosting prerequisites. A local build alone does not establish a live site.
 ## Edit the right source
 
 Edit `docs/source/` for installation, onboarding, and architecture pages.
-The full manual pages include `docs/USER_MANUAL.md`, `docs/FOR_DEVELOPER.md`,
-and `docs/DENOISING_PARAMETERS.md` from the supplied source archive using MyST.
-Changes to code are picked up by AutoAPI on the next build. Keep
-`samstudio.__version__` authoritative for the displayed version.
+Edit `samstudio/resources/user_manual.md` for the English User Manual and its
+denoising chapter. The app bundles this source and Sphinx includes it with MyST.
+The app and website read the displayed version from `samstudio.__version__`.
+The developer manual includes `docs/FOR_DEVELOPER.md`. AutoAPI picks up code
+changes on the next build.
 
-Preserve `uploads/` as the original supplied artifacts. The GUI's packaged
-help PDFs under `samstudio/resources/` remain the release's original resources;
-they are not regenerated from Sphinx by this workflow.
+Preserve `uploads/` as the original supplied artifacts. The packaged PDFs under
+`samstudio/resources/` are historical artifacts. The Plugin menu still opens
+the developer PDF.

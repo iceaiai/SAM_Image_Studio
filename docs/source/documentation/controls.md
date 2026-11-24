@@ -16,7 +16,7 @@ important Segment choices before you run a preview.
 | Run preview | Generate a provisional segmentation according to the active scope/prompts. |
 | Accept masks | Commit eligible current preview masks to annotations. |
 | Cancel / clear | Cancel current work/drawing and discard pending preview/prompts. |
-| Options… | Configure grid density, minimum score, minimum area and maximum objects. |
+| Options… | Configure candidate controls and optional area or diameter bounds. |
 | Calibration display | Inspect current pixel size/unit and its source. |
 | View / infer from processed image | Choose derived pixels for display/inference when present; the acquired source is retained. |
 | Forget processed image… | Confirm clearing derived pixels, processing records and retained crops. Keeps annotations/orientation; undoable. |
@@ -47,7 +47,8 @@ For detailed text/shape interaction and output scope, see the
 | Hand | Drag to pan the image. |
 | Reset magnification / fit image | Fit the current image to the viewport. |
 | Undo / Redo | Traverse committed editing history; controls are intentionally enlarged. |
-| Delete object / selected vertex | Delete the selected object or eligible edited vertex. |
+| Delete objects | Delete the selected annotations. Del uses this action outside Edit mode. |
+| Delete vertex | Remove one eligible vertex in Edit mode. Click near a polygon or contour vertex before using the button or Del. |
 | Edit object vertices | Edit existing geometry rather than draw a new object. |
 | Polygon | Click vertices; close using Enter, double-click or a near-first-vertex click. |
 | Rectangle / Circle / Ellipse | Draw an area used according to Mode and Scope. |
