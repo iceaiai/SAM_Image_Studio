@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.canvas &#8212; SAM Image Studio 1.4.4.2</title>
+    <title>samstudio.canvas &#8212; SAM Image Studio 1.4.5</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=f62de848"></script>
+    <script src="../../../_static/documentation_options.js?v=c6b7524a"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="samstudio.calibration_table" href="../calibration_table/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.4.2" />
+  <meta name="docsearch:version" content="1.4.5" />
   </head>
   
   
@@ -462,6 +462,15 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.canvas.DISTANCE_TOOLS" title="samstudio.canvas.DISTANCE_TOOLS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DISTANCE_TOOLS</span></code></a></p></td>
 <td><p></p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.canvas.MAX_VERTEX_DELETE_COUNT" title="samstudio.canvas.MAX_VERTEX_DELETE_COUNT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAX_VERTEX_DELETE_COUNT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.canvas.MAX_MASK_PUSHER_RADIUS" title="samstudio.canvas.MAX_MASK_PUSHER_RADIUS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAX_MASK_PUSHER_RADIUS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.canvas.MAX_POLYGON_CLOSE_DISTANCE" title="samstudio.canvas.MAX_POLYGON_CLOSE_DISTANCE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAX_POLYGON_CLOSE_DISTANCE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -498,6 +507,21 @@
 <span class="sig-prename descclassname"><span class="pre">samstudio.canvas.</span></span><span class="sig-name descname"><span class="pre">DISTANCE_TOOLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('measure_line',</span> <span class="pre">'measure_curve')</span></em><a class="headerlink" href="#samstudio.canvas.DISTANCE_TOOLS" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py data">
+<dt class="sig sig-object py" id="samstudio.canvas.MAX_VERTEX_DELETE_COUNT">
+<span class="sig-prename descclassname"><span class="pre">samstudio.canvas.</span></span><span class="sig-name descname"><span class="pre">MAX_VERTEX_DELETE_COUNT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#samstudio.canvas.MAX_VERTEX_DELETE_COUNT" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="samstudio.canvas.MAX_MASK_PUSHER_RADIUS">
+<span class="sig-prename descclassname"><span class="pre">samstudio.canvas.</span></span><span class="sig-name descname"><span class="pre">MAX_MASK_PUSHER_RADIUS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1000</span></em><a class="headerlink" href="#samstudio.canvas.MAX_MASK_PUSHER_RADIUS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="samstudio.canvas.MAX_POLYGON_CLOSE_DISTANCE">
+<span class="sig-prename descclassname"><span class="pre">samstudio.canvas.</span></span><span class="sig-name descname"><span class="pre">MAX_POLYGON_CLOSE_DISTANCE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">100</span></em><a class="headerlink" href="#samstudio.canvas.MAX_POLYGON_CLOSE_DISTANCE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="samstudio.canvas.rgb_image">
 <span class="sig-prename descclassname"><span class="pre">samstudio.canvas.</span></span><span class="sig-name descname"><span class="pre">rgb_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rgb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.canvas.rgb_image" title="Link to this definition">#</a></dt>
@@ -530,6 +554,11 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.geometry_changed">
 <span class="sig-name descname"><span class="pre">geometry_changed</span></span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.geometry_changed" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.mask_pushed">
+<span class="sig-name descname"><span class="pre">mask_pushed</span></span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.mask_pushed" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -653,6 +682,21 @@
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.vertex_delete_count">
+<span class="sig-name descname"><span class="pre">vertex_delete_count</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#samstudio.canvas.ImageCanvas.vertex_delete_count" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.polygon_close_distance">
+<span class="sig-name descname"><span class="pre">polygon_close_distance</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14</span></em><a class="headerlink" href="#samstudio.canvas.ImageCanvas.polygon_close_distance" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.mask_pusher_radius">
+<span class="sig-name descname"><span class="pre">mask_pusher_radius</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12</span></em><a class="headerlink" href="#samstudio.canvas.ImageCanvas.mask_pusher_radius" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.handle_radius">
 <span class="sig-name descname"><span class="pre">handle_radius</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.1</span></em><a class="headerlink" href="#samstudio.canvas.ImageCanvas.handle_radius" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -753,6 +797,11 @@
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.cancel_mask_pusher">
+<span class="sig-name descname"><span class="pre">cancel_mask_pusher</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.cancel_mask_pusher" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.paintEvent">
 <span class="sig-name descname"><span class="pre">paintEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.paintEvent" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -790,6 +839,11 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.mouseDoubleClickEvent">
 <span class="sig-name descname"><span class="pre">mouseDoubleClickEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.mouseDoubleClickEvent" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.leaveEvent">
+<span class="sig-name descname"><span class="pre">leaveEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.leaveEvent" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -859,6 +913,9 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.DISTANCE_TOOLS"><code class="docutils literal notranslate"><span class="pre">DISTANCE_TOOLS</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.MAX_VERTEX_DELETE_COUNT"><code class="docutils literal notranslate"><span class="pre">MAX_VERTEX_DELETE_COUNT</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.MAX_MASK_PUSHER_RADIUS"><code class="docutils literal notranslate"><span class="pre">MAX_MASK_PUSHER_RADIUS</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.MAX_POLYGON_CLOSE_DISTANCE"><code class="docutils literal notranslate"><span class="pre">MAX_POLYGON_CLOSE_DISTANCE</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.rgb_image"><code class="docutils literal notranslate"><span class="pre">rgb_image()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.rgba_image"><code class="docutils literal notranslate"><span class="pre">rgba_image()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas"><code class="docutils literal notranslate"><span class="pre">ImageCanvas</span></code></a><ul class="nav section-nav flex-column">
@@ -866,6 +923,7 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.shape_completed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.shape_completed</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.prompt_added"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.prompt_added</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.geometry_changed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.geometry_changed</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.mask_pushed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.mask_pushed</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.message"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.message</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.zoom_changed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.zoom_changed</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.tool_changed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.tool_changed</span></code></a></li>
@@ -890,6 +948,9 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.offset"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.offset</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.brush_radius"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.brush_radius</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.vertex_delete_radius"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.vertex_delete_radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.vertex_delete_count"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.vertex_delete_count</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.polygon_close_distance"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.polygon_close_distance</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.mask_pusher_radius"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.mask_pusher_radius</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.handle_radius"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.handle_radius</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.preview_masks"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.preview_masks</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.scale_bar_preview"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.scale_bar_preview</span></code></a></li>
@@ -910,6 +971,7 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.to_widget"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.to_widget()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.clear_distance_measurement"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.clear_distance_measurement()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.distance_readout"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.distance_readout()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.cancel_mask_pusher"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.cancel_mask_pusher()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.paintEvent"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.paintEvent()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.wheelEvent"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.wheelEvent()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.mousePressEvent"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.mousePressEvent()</span></code></a></li>
@@ -918,6 +980,7 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.mouseReleaseEvent"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.mouseReleaseEvent()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.finish_polygon"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.finish_polygon()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.mouseDoubleClickEvent"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.mouseDoubleClickEvent()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.leaveEvent"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.leaveEvent()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.delete_vertex"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.delete_vertex()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.keyPressEvent"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.keyPressEvent()</span></code></a></li>
 </ul>

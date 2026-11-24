@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Manual annotation and editing &#8212; SAM Image Studio 1.4.4.2</title>
+    <title>Manual annotation and editing &#8212; SAM Image Studio 1.4.5</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=f62de848"></script>
+    <script src="../_static/documentation_options.js?v=c6b7524a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Example microscopy images" href="examples.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.4.2" />
+  <meta name="docsearch:version" content="1.4.5" />
   </head>
   
   
@@ -422,7 +422,9 @@ background groups are chosen explicitly for cleaning.</p>
 <p>Choose <strong>Manual</strong>, then Polygon, Rectangle, Circle, Ellipse, or Point. Area tools
 produce filled annotations; points remain point annotations. A polygon finishes
 with Enter, double-click, or a click near its first vertex after at least three
-vertices. Completed Manual shapes are committed to the active group.</p>
+vertices. The first vertex turns green inside the closing distance. Change the
+14-screen-pixel default under <strong>Edit → Polygon closing distance…</strong>. Use 0 to
+close with Enter or double-click. Completed Manual shapes use the active group.</p>
 <p>Select on the canvas or in <strong>Objects</strong>. Ctrl+click supports multiple selection.
 <strong>Select all objects</strong> and <strong>Invert region</strong> let you work with the complement of
 selected area masks. Use <strong>Create object from region</strong> in Manual/Edit to turn
@@ -431,9 +433,11 @@ that exact region into a new annotation. Points have no filled area to invert.</
 <section id="edit-geometry-and-appearance">
 <h2>Edit geometry and appearance<a class="headerlink" href="#edit-geometry-and-appearance" title="Link to this heading">#</a></h2>
 <p>Switch to <strong>Edit</strong>, select an object, and use <strong>Edit object vertices</strong> to drag
-existing handles. Delete removes an eligible selected vertex or an object,
-depending on the editing state. <strong>Vertex deletion radius…</strong> controls the search
-radius in image pixels. Locked objects are protected.</p>
+existing handles. Set <strong>Vertices per delete</strong> and <strong>Vertex radius (px)</strong>, then
+click near a contour to highlight the closest eligible vertices. <strong>Del</strong> or
+<strong>Delete vertex</strong> removes the highlighted batch in a single undoable operation.
+Choose between one and ten vertices. Each contour keeps at least three vertices.
+<strong>Delete objects</strong> removes whole annotations. Locked objects are protected.</p>
 <p>Use <strong>Fill holes…</strong> or <strong>Smooth edges…</strong> for a reviewed mask/contour change.
 <strong>Smooth edges</strong> edits annotation boundaries; <strong>Smooth image pixels…</strong> modifies
 derived image intensities. They solve different tasks.</p>
@@ -441,6 +445,27 @@ derived image intensities. They solve different tasks.</p>
 and <strong>Object transparency…</strong> control metadata and display. <strong>Assign mask colors…</strong>
 supports default group/object colors or a 20-color lookup table. Colors and
 transparency are display choices, not changes to binary mask ownership.</p>
+</section>
+<section id="clean-up-disconnected-mask-parts">
+<h2>Clean up disconnected mask parts<a class="headerlink" href="#clean-up-disconnected-mask-parts" title="Link to this heading">#</a></h2>
+<p>Several disjoint shapes can belong to one mask. In <strong>Edit</strong>, choose <strong>Select
+objects</strong>, right-click the unwanted piece on the image, and select <strong>Remove this
+disconnected part</strong>. The other parts of that mask survive.</p>
+<p>Use <strong>Edit → Refine disconnected parts…</strong> to preview cleanup for selected masks.
+Choose <strong>Keep largest connected part</strong> or set a minimum part area in px². The
+largest part always remains. Pixel edges and corners count as connected. Red
+shows the areas to remove. Click <strong>Apply</strong> after reviewing the result.</p>
+</section>
+<section id="push-a-mask-boundary">
+<h2>Push a mask boundary<a class="headerlink" href="#push-a-mask-boundary" title="Link to this heading">#</a></h2>
+<p>In <strong>Edit</strong>, select a single unlocked area mask and choose <strong>Mask pusher</strong> in the
+left toolbar. Set the radius in image pixels on the Image settings toolbar or
+through <strong>Edit → Mask pusher radius…</strong>. Left-drag along the edge to expand the
+mask with a rounded stroke. Right-drag carves inward. Green and red show the
+pending additions and removals. Release to apply the stroke. Use Esc to discard
+an active stroke or Undo to reverse a committed stroke.</p>
+<p>The edit applies to the selected mask within the swept circle. An outward
+stroke grows where the circle overlaps the mask.</p>
 </section>
 <section id="rotate-an-image">
 <h2>Rotate an image<a class="headerlink" href="#rotate-an-image" title="Link to this heading">#</a></h2>
@@ -518,6 +543,8 @@ remain. See <a class="reference internal" href="../documentation/modes.html"><sp
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#open-images-and-create-a-group">Open images and create a group</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#draw-an-object">Draw an object</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#edit-geometry-and-appearance">Edit geometry and appearance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clean-up-disconnected-mask-parts">Clean up disconnected mask parts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#push-a-mask-boundary">Push a mask boundary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotate-an-image">Rotate an image</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scale-masks-and-savepoints">Scale masks and savepoints</a></li>
 </ul>
