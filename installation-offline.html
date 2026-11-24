@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Offline CPU installation &#8212; SAM Image Studio 1.4.4</title>
+    <title>Offline CPU installation &#8212; SAM Image Studio 1.4.4.1</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=a278820e"></script>
+    <script src="_static/documentation_options.js?v=5b7d9884"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Installation and updates" href="installation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.4" />
+  <meta name="docsearch:version" content="1.4.4.1" />
   </head>
   
   
@@ -383,12 +383,10 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="offline-cpu-installation">
 <h1>Offline CPU installation<a class="headerlink" href="#offline-cpu-installation" title="Link to this heading">#</a></h1>
-<p>First <a class="reference internal" href="downloads.html"><span class="std std-doc">download the offline CPU ZIP</span></a>, extract the whole archive,
+<p>First <a class="reference internal" href="downloads.html"><span class="std std-doc">download the offline CPU ZIP</span></a> for 1.4.4.1, extract the whole archive,
 and open its project root. The initial source ZIP is approximately the same
 size as the normal source ZIP. Its runtime, packages and three checkpoints must
 be <strong>pre-downloaded while online</strong> before it can install on a disconnected PC.</p>
-<p>On Windows, apply the <a class="reference internal" href="troubleshooting.html#repair-windows-python-preparation"><span class="std std-ref">bootstrap script update</span></a>
-to the offline source folder before preparing and transferring it.</p>
 <ol class="arabic simple">
 <li><p>On a matching online Windows/Linux x86-64 computer, run
 <code class="docutils literal notranslate"><span class="pre">offline/Prepare_Offline.bat</span></code> or <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">offline/prepare_offline.sh</span></code>.</p></li>
@@ -398,6 +396,7 @@ to the offline source folder before preparing and transferring it.</p>
 <li><p>Launch with <code class="docutils literal notranslate"><span class="pre">packaging/Start_GUI.bat</span></code> or <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">packaging/start_gui.sh</span></code>.</p></li>
 </ol>
 <p>The installer selects/prepares Python 3.12 and uses only hashed local packages.
+Run preparation for the application version you intend to install.
 Only <strong>SAM1 ViT-B</strong>, <strong>SAM2.1 Small</strong>, <strong>SAM2.1 Base+</strong> and CPU are available.
 There is no SAM3, ONNX text, Grounding DINO text detection or online model download.
 Otsu + watershed is available without a checkpoint. No app packages go into base.</p>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Website build and GitHub Pages &#8212; SAM Image Studio 1.4.4</title>
+    <title>Website build and GitHub Pages &#8212; SAM Image Studio 1.4.4.1</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=a278820e"></script>
+    <script src="../_static/documentation_options.js?v=5b7d9884"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -52,7 +52,7 @@
     <link rel="prev" title="Compressed sensing notebook" href="../notebook.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.4" />
+  <meta name="docsearch:version" content="1.4.4.1" />
   </head>
   
   
@@ -494,11 +494,15 @@ analytics. <code class="docutils literal notranslate"><span class="pre">.readthe
 </section>
 <section id="normal-and-offline-source-downloads">
 <h2>Normal and offline source downloads<a class="headerlink" href="#normal-and-offline-source-downloads" title="Link to this heading">#</a></h2>
-<p>The current source ZIP follows <code class="docutils literal notranslate"><span class="pre">main</span></code>. The release archives use immutable Git
-tags. The normal <code class="docutils literal notranslate"><span class="pre">v1.4.4</span></code> tag has
-no <code class="docutils literal notranslate"><span class="pre">samstudio/resources/offline_profile.json</span></code>. The <code class="docutils literal notranslate"><span class="pre">v1.4.4-offline</span></code> tag adds that
-marker from <code class="docutils literal notranslate"><span class="pre">offline/profile.json</span></code> and uses the offline guide as its root README.
-Its application version and source are otherwise shared with the normal release.
+<p>Set <code class="docutils literal notranslate"><span class="pre">samstudio.__version__</span></code> for each release. It supplies the package metadata,
+the application, the manual and the offline cache version. Small updates
+increment the fourth component. The next small update after <code class="docutils literal notranslate"><span class="pre">1.4.4.1</span></code> is
+<code class="docutils literal notranslate"><span class="pre">1.4.4.2</span></code>. The next larger update is <code class="docutils literal notranslate"><span class="pre">1.4.5</span></code>.</p>
+<p>Publish the standard and offline source archives as immutable Git tags. For
+<code class="docutils literal notranslate"><span class="pre">1.4.4.1</span></code>, the standard tag is <code class="docutils literal notranslate"><span class="pre">v1.4.4.1</span></code>. The <code class="docutils literal notranslate"><span class="pre">v1.4.4.1-offline</span></code> tag adds
+<code class="docutils literal notranslate"><span class="pre">samstudio/resources/offline_profile.json</span></code> from <code class="docutils literal notranslate"><span class="pre">offline/profile.json</span></code> and
+uses the offline guide as its root README. Both tags share the application
+version and all other source files.
 Create the offline commit in a temporary ordinary clone, never by modifying the
 normal working checkout. Preserve existing tags; push new tags without force.</p>
 <p>Neither source archive includes <code class="docutils literal notranslate"><span class="pre">.venv*</span></code>, <code class="docutils literal notranslate"><span class="pre">.python312</span></code>, <code class="docutils literal notranslate"><span class="pre">offline-cache</span></code> or model
