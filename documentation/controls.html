@@ -334,12 +334,10 @@
 <li class="toctree-l1"><a class="reference internal" href="menus.html">Menu-by-menu reference</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Buttons, tools, and segmentation controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dialogs.html">Dialogs and their controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="files.html">Folders, projects, and model files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation-gpu.html">GPU installation and updates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User manual</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../denoising.html">Denoising parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User Manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting installation and operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../downloads.html">CPU version downloads and manuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a></li>
@@ -442,7 +440,7 @@ important Segment choices before you run a preview.</p>
 <td><p>Cancel current work/drawing and discard pending preview/prompts.</p></td>
 </tr>
 <tr class="row-even"><td><p>Options…</p></td>
-<td><p>Configure grid density, minimum score, minimum area and maximum objects.</p></td>
+<td><p>Configure candidate controls and optional area or diameter bounds.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Calibration display</p></td>
 <td><p>Inspect current pixel size/unit and its source.</p></td>
@@ -515,19 +513,22 @@ For detailed text/shape interaction and output scope, see the
 <tr class="row-odd"><td><p>Undo / Redo</p></td>
 <td><p>Traverse committed editing history; controls are intentionally enlarged.</p></td>
 </tr>
-<tr class="row-even"><td><p>Delete object / selected vertex</p></td>
-<td><p>Delete the selected object or eligible edited vertex.</p></td>
+<tr class="row-even"><td><p>Delete objects</p></td>
+<td><p>Delete the selected annotations. Del uses this action outside Edit mode.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Edit object vertices</p></td>
+<tr class="row-odd"><td><p>Delete vertex</p></td>
+<td><p>Remove one eligible vertex in Edit mode. Click near a polygon or contour vertex before using the button or Del.</p></td>
+</tr>
+<tr class="row-even"><td><p>Edit object vertices</p></td>
 <td><p>Edit existing geometry rather than draw a new object.</p></td>
 </tr>
-<tr class="row-even"><td><p>Polygon</p></td>
+<tr class="row-odd"><td><p>Polygon</p></td>
 <td><p>Click vertices; close using Enter, double-click or a near-first-vertex click.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Rectangle / Circle / Ellipse</p></td>
+<tr class="row-even"><td><p>Rectangle / Circle / Ellipse</p></td>
 <td><p>Draw an area used according to Mode and Scope.</p></td>
 </tr>
-<tr class="row-even"><td><p>Point / cleaning brush</p></td>
+<tr class="row-odd"><td><p>Point / cleaning brush</p></td>
 <td><p>Point annotation/prompt, or a brush in Clean mode.</p></td>
 </tr>
 </tbody>

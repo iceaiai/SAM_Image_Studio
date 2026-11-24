@@ -334,12 +334,10 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Menu-by-menu reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dialogs.html">Dialogs and their controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="files.html">Folders, projects, and model files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation-gpu.html">GPU installation and updates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User manual</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../denoising.html">Denoising parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User Manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting installation and operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../downloads.html">CPU version downloads and manuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a></li>
@@ -405,8 +403,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="menu-by-menu-reference">
 <h1>Menu-by-menu reference<a class="headerlink" href="#menu-by-menu-reference" title="Link to this heading">#</a></h1>
-<p>This reference covers every core menu action in the 1.4.4 main window. Labels
-were checked against an offscreen application instance. Some actions depend on
+<p>This reference covers the core menus in the main window. Some actions depend on
 selection, mode, loaded model, or task state. Installed plugins add their own
 actions and are documented by their authors.</p>
 <section id="file">
@@ -481,75 +478,103 @@ actions and are documented by their authors.</p>
 <td><p>Edit existing selected geometry instead of adding another shape.</p></td>
 <td><p>Ctrl+E</p></td>
 </tr>
-<tr class="row-odd"><td><p>Delete object / selected vertex</p></td>
-<td><p>Delete the selected object or an eligible vertex in the active edit state.</p></td>
-<td><p>Del</p></td>
+<tr class="row-odd"><td><p>Delete objects</p></td>
+<td><p>Delete the selected objects.</p></td>
+<td><p>Del outside Edit</p></td>
 </tr>
-<tr class="row-even"><td><p>Select all objects</p></td>
+<tr class="row-even"><td><p>Delete vertex</p></td>
+<td><p>Delete one eligible vertex near the chosen point in a selected polygon or contour.</p></td>
+<td><p>Del in Edit</p></td>
+</tr>
+<tr class="row-odd"><td><p>Select all objects</p></td>
 <td><p>Select annotation/cleaning objects; image-smoothing records remain selectable in Objects.</p></td>
 <td><p>Ctrl+A</p></td>
 </tr>
-<tr class="row-odd"><td><p>Invert region</p></td>
+<tr class="row-even"><td><p>Invert region</p></td>
 <td><p>Make an exact pixel region from the complement of selected area masks or the current region.</p></td>
 <td><p>Ctrl+I</p></td>
 </tr>
-<tr class="row-even"><td><p>Create object from region</p></td>
+<tr class="row-odd"><td><p>Create object from region</p></td>
 <td><p>In Manual/Edit, create an exact mask annotation from the current nonempty region.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-odd"><td><p>Object properties…</p></td>
+<tr class="row-even"><td><p>Object properties…</p></td>
 <td><p>Edit metadata for the selected annotation.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p>Change selected objects’ group…</p></td>
+<tr class="row-odd"><td><p>Change selected objects’ group…</p></td>
 <td><p>Move selected eligible objects to a different group.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-odd"><td><p>Brightness / contrast…</p></td>
+<tr class="row-even"><td><p>Brightness / contrast…</p></td>
 <td><p>Adjust the display copy without modifying acquired pixel values.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p>Object color…</p></td>
+<tr class="row-odd"><td><p>Object color…</p></td>
 <td><p>Change selected object display colors.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-odd"><td><p>Object transparency…</p></td>
+<tr class="row-even"><td><p>Object transparency…</p></td>
 <td><p>Set mask display opacity independently of binary mask geometry.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p>Assign mask colors…</p></td>
-<td><p>Use default colors or assign the preset 20-color lookup table.</p></td>
+<tr class="row-odd"><td><p>Assign mask colors…</p></td>
+<td><p>Use group colors, the preset lookup table, or a measured value with a configurable color count.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-odd"><td><p>Smooth image pixels…</p></td>
+<tr class="row-even"><td><p>Smooth image pixels…</p></td>
 <td><p>Preview a smoothing operation on derived pixels; this is different from smoothing a contour.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p>Rotate image…</p></td>
+<tr class="row-odd"><td><p>Rotate image…</p></td>
 <td><p>Choose angle, optional rectangle/square padding and fill; transform pixels, masks and calibration together.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-odd"><td><p>Reset rotation…</p></td>
+<tr class="row-even"><td><p>Reset rotation…</p></td>
 <td><p>Restore the exact pre-first-rotation savepoint, including pixels, masks and calibration; later changes are reverted after confirmation. Undo is available.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p>Scale masks / savepoints…</p></td>
+<tr class="row-odd"><td><p>Scale masks / savepoints…</p></td>
 <td><p>Scale selected/group masks uniformly; keep original/result snapshots temporarily or in a local folder.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-odd"><td><p>Morphology / inner region…</p></td>
+<tr class="row-even"><td><p>Morphology / inner region…</p></td>
 <td><p>Assign morphology and link an enclosed core/cavity or expected polygon side count for measurements.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p>Vertex deletion radius…</p></td>
+<tr class="row-odd"><td><p>Add scale bar… / Edit scale bar…</p></td>
+<td><p>Preview the current image’s scale bar and set its length, width, font, size and position.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Remove scale bar</p></td>
+<td><p>Remove the current image’s scale bar.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Filament → Mark group as Filament…</p></td>
+<td><p>Enable centerline length and width measurement for a foreground group in Edit mode.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Filament → Use particle measurements for group…</p></td>
+<td><p>Remove the Filament designation and the group’s links.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Filament → Connect visible fragments…</p></td>
+<td><p>Pick one visible end on each of two selected fragments to estimate the gap.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Filament → Disconnect selected fragments</p></td>
+<td><p>Remove links incident to one selected fragment or between multiple selected fragments.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vertex deletion radius…</p></td>
 <td><p>Set the eligible-vertex deletion search radius in image pixels.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-odd"><td><p>Fill holes…</p></td>
+<tr class="row-even"><td><p>Fill holes…</p></td>
 <td><p>Preview filling eligible holes in selected area masks.</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p>Smooth edges…</p></td>
+<tr class="row-odd"><td><p>Smooth edges…</p></td>
 <td><p>Preview smoother editable contours for selected masks; does not smooth image intensities.</p></td>
 <td><p>—</p></td>
 </tr>
@@ -628,7 +653,7 @@ this menu order: remove → choose fill → preview/apply → restore.</p>
 <td><p>—</p></td>
 </tr>
 <tr class="row-even"><td><p>Segmentation options…</p></td>
-<td><p>Set grid density, minimum score/area and maximum objects, with path-dependent effects.</p></td>
+<td><p>Set candidate controls and optional calibrated area or equivalent-diameter bounds.</p></td>
 <td><p>—</p></td>
 </tr>
 <tr class="row-odd"><td><p>Text prompt aliases…</p></td>
@@ -676,7 +701,15 @@ this menu order: remove → choose fill → preview/apply → restore.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Plot Object Statistics…</p></td>
-<td><p>Choose up to nine displayed metrics and export plots or numerical statistics.</p></td>
+<td><p>Choose an image scope, histogram or mask-colored points, and up to nine displayed metrics.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Create plot group from selected images…</p></td>
+<td><p>Save a named set of frames with an optional shared measurement color scale.</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>Edit active plot group…</p></td>
+<td><p>Change its name, membership or color settings, or remove the group.</p></td>
 <td><p>—</p></td>
 </tr>
 <tr class="row-odd"><td><p>Edit image calibration…</p></td>
@@ -759,20 +792,8 @@ this menu order: remove → choose fill → preview/apply → restore.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>User manual (PDF)</p></td>
-<td><p>Open bundled English user help with fit-width and zoom controls.</p></td>
-<td><p>—</p></td>
-</tr>
-<tr class="row-odd"><td><p>Denoising parameter guide (PDF)</p></td>
-<td><p>Open the separate complete parameter/default/recommendation guide.</p></td>
-<td><p>—</p></td>
-</tr>
-<tr class="row-even"><td><p>Quick start</p></td>
-<td><p>Show the short built-in workflow reminder.</p></td>
-<td><p>—</p></td>
-</tr>
-<tr class="row-odd"><td><p>Diagnostics / versions</p></td>
-<td><p>Inspect runtime/platform versions for troubleshooting.</p></td>
+<tr class="row-even"><td><p>User Manual</p></td>
+<td><p>Open the bundled English manual for the running version.</p></td>
 <td><p>—</p></td>
 </tr>
 </tbody>
@@ -792,7 +813,7 @@ DCT/TV dialog controls in order and shows computed parameter comparisons.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Denoise…</p></td>
-<td><p>Choose a restoration method, target, parameters and Preview/Apply workflow.</p></td>
+<td><p>Choose a restoration method, preview it, or open the Denoising parameters chapter.</p></td>
 <td><p>—</p></td>
 </tr>
 <tr class="row-odd"><td><p>Smooth (Gaussian)…</p></td>
@@ -841,7 +862,7 @@ DCT/TV dialog controls in order and shows computed parameter comparisons.</p>
 </table>
 </div>
 <p>For toolbar/panel buttons, see <a class="reference internal" href="controls.html"><span class="std std-doc">controls</span></a>. For parameter dialogs,
-see <a class="reference internal" href="dialogs.html"><span class="std std-doc">dialogs</span></a> and the <a class="reference internal" href="../denoising.html"><span class="std std-doc">denoising reference</span></a>.</p>
+see <a class="reference internal" href="dialogs.html"><span class="std std-doc">dialogs</span></a> and the <a class="reference internal" href="../user-manual.html#denoising-parameters"><span class="std std-ref">denoising reference</span></a>.</p>
 </section>
 </section>
 

@@ -334,12 +334,10 @@
 <li class="toctree-l1"><a class="reference internal" href="menus.html">Menu-by-menu reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Dialogs and their controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="files.html">Folders, projects, and model files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation-gpu.html">GPU installation and updates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User manual</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../denoising.html">Denoising parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User Manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting installation and operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../downloads.html">CPU version downloads and manuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a></li>
@@ -433,10 +431,13 @@ from accepting a segmentation preview.</p>
 <tr class="row-odd"><td><p>Minimum model score</p></td>
 <td><p>Filter applicable proposals by backend score; not a probability guarantee.</p></td>
 </tr>
-<tr class="row-even"><td><p>Minimum mask area</p></td>
-<td><p>Reject tiny masks in pixels.</p></td>
+<tr class="row-even"><td><p>Candidate noise floor (px²)</p></td>
+<td><p>Reject small candidates when a target range is unset.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Maximum objects</p></td>
+<tr class="row-odd"><td><p>Target size range</p></td>
+<td><p>Set either inclusive bound or both, using projected area or equivalent diameter. Physical units default to image calibration.</p></td>
+</tr>
+<tr class="row-even"><td><p>Maximum objects</p></td>
 <td><p>Limit proposals; native model capacity can impose additional limits.</p></td>
 </tr>
 </tbody>
@@ -458,7 +459,8 @@ it and <strong>Cancel</strong> discards it.</p>
 <p>For Noise2Void/N2V2, Train/Predict changes which controls are active. Specify
 the device, training/patch settings, checkpoint or output directory as needed.
 Saved model files remain even when image Apply is canceled. Every exposed
-restoration parameter is documented in the <a class="reference internal" href="../denoising.html"><span class="std std-doc">parameter reference</span></a>.</p>
+restoration parameter is documented in the <a class="reference internal" href="../user-manual.html#denoising-parameters"><span class="std std-ref">User Manual</span></a>.
+The <strong>Denoising parameters</strong> button opens that chapter.</p>
 </section>
 <section id="otsu-watershed-and-lama">
 <h2>Otsu + watershed and LaMa<a class="headerlink" href="#otsu-watershed-and-lama" title="Link to this heading">#</a></h2>
@@ -497,24 +499,33 @@ selects a general/polygon/core–shell/hollow interpretation and, where applicab
 a linked core/cavity or expected side count. Relationships must be valid before
 derived metrics are meaningful. The full manual defines per-field applicability.</p>
 </section>
+<section id="scale-bar-and-filament">
+<h2>Scale bar and Filament<a class="headerlink" href="#scale-bar-and-filament" title="Link to this heading">#</a></h2>
+<p><strong>Add scale bar…</strong> previews the length, units, font, font size, line width and
+corner position on the canvas. <strong>Apply</strong> saves the style with the native project.
+<strong>Edit scale bar…</strong> and <strong>Remove scale bar</strong> update an existing bar.</p>
+<p>Use <strong>Edit → Filament</strong> in Edit mode. <a class="reference internal" href="../user-manual.html#filaments-and-occluded-fragments"><span class="std std-ref">Mark a group and connect visible fragments</span></a>
+to report the visible centerline length, straight-gap estimate and visible widths.</p>
+</section>
 <section id="statistics-and-export-dialogs">
 <h2>Statistics and export dialogs<a class="headerlink" href="#statistics-and-export-dialogs" title="Link to this heading">#</a></h2>
-<p>Statistics selects up to nine displayed metrics, plot appearance/axis settings,
-and separately the set of numerical columns to export. Resizing changes the
-plot area. Export plot and export statistics are independent actions.</p>
+<p>Statistics accepts a named plot group under <strong>Images</strong>. <strong>Object points (mask
+colors)</strong> shows per-object measurements with the same RGB assignments as the
+canvas. Choose up to nine metrics for display and choose the numerical columns
+to export independently. The <a class="reference internal" href="../features/measurements.html"><span class="std std-doc">measurement guide</span></a>
+describes how to create a plot group and share its color scale.</p>
 <p>Mask/image/dataset dialogs select output scope, original/processed pixel copies,
 format, colors/opacity/alpha where applicable, and explicit handling of lossy
 YOLO geometry. Integer label outputs preserve IDs rather than display effects.</p>
 </section>
-<section id="aliases-plugins-and-pdf-help">
-<h2>Aliases, plugins, and PDF help<a class="headerlink" href="#aliases-plugins-and-pdf-help" title="Link to this heading">#</a></h2>
+<section id="aliases-plugins-and-help">
+<h2>Aliases, plugins, and help<a class="headerlink" href="#aliases-plugins-and-help" title="Link to this heading">#</a></h2>
 <p>The alias table maps phrases and validates empty/duplicate/cyclic entries.
 See <a class="reference internal" href="../segmentation/application-tools.html#text-prompt-aliases"><span class="std std-ref">alias examples</span></a>.
 Plugin management offers enable checkboxes, <strong>Apply / reload</strong>, <strong>Remove plugin</strong>,
 and <strong>Close</strong>. Installed plugin actions vary by plugin and are not core controls.</p>
-<p>PDF help provides <strong>Fit width</strong> and a zoom percentage for the complete user,
-developer, or denoising guide. <strong>Diagnostics / versions</strong> supplies runtime
-information for bug reports; it is not a full scientific validation run.</p>
+<p><strong>Help → User Manual</strong> opens the English manual, including the Denoising
+parameters chapter. <strong>Plugin → For Developer (PDF)</strong> opens the developer guide.</p>
 </section>
 </section>
 
@@ -571,8 +582,9 @@ information for bug reports; it is not a full scientific validation run.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retained-crops">Retained crops</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation-and-mask-scaling">Rotation and mask scaling</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#morphology-and-object-properties">Morphology and object properties</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scale-bar-and-filament">Scale bar and Filament</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistics-and-export-dialogs">Statistics and export dialogs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aliases-plugins-and-pdf-help">Aliases, plugins, and PDF help</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aliases-plugins-and-help">Aliases, plugins, and help</a></li>
 </ul>
   </nav></div>
 

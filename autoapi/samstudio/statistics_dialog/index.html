@@ -49,7 +49,7 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/autoapi/samstudio/statistics_dialog/index.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="samstudio.text_prompts" href="../text_prompts/index.html" />
+    <link rel="next" title="samstudio.target_size" href="../target_size/index.html" />
     <link rel="prev" title="samstudio.statistics" href="../statistics/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -347,14 +347,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../edition/index.html">samstudio.edition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exemplars/index.html">samstudio.exemplars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exports/index.html">samstudio.exports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filament_ui/index.html">samstudio.filament_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filaments/index.html">samstudio.filaments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hardware/index.html">samstudio.hardware</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../help_viewer/index.html">samstudio.help_viewer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../image_processing/index.html">samstudio.image_processing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../imageio/index.html">samstudio.imageio</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../inference/index.html">samstudio.inference</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../main_window/index.html">samstudio.main_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metric_colors_ui/index.html">samstudio.metric_colors_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../neural_denoising/index.html">samstudio.neural_denoising</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../palette/index.html">samstudio.palette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot_groups/index.html">samstudio.plot_groups</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../plugin_api/index.html">samstudio.plugin_api</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../plugin_ui/index.html">samstudio.plugin_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../processing/index.html">samstudio.processing</a></li>
@@ -363,13 +367,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../sam31_backend/index.html">samstudio.sam31_backend</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sam3_onnx/index.html">samstudio.sam3_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../savepoints/index.html">samstudio.savepoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../scale_bar/index.html">samstudio.scale_bar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../scale_bar_ui/index.html">samstudio.scale_bar_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../segmentation_ui/index.html">samstudio.segmentation_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../selftest/index.html">samstudio.selftest</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sparse_denoising/index.html">samstudio.sparse_denoising</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../statistics/index.html">samstudio.statistics</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">samstudio.statistics_dialog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../target_size/index.html">samstudio.target_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../target_size_ui/index.html">samstudio.target_size_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../text_prompts/index.html">samstudio.text_prompts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transforms/index.html">samstudio.transforms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/index.html">samstudio.widgets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../workspace_ui/index.html">samstudio.workspace_ui</a></li>
 </ul>
 </details></li>
@@ -461,8 +470,18 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.statistics_dialog.</span></span><span class="sig-name descname"><span class="pre">StatisticsDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">documents</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_objects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.statistics_dialog.</span></span><span class="sig-name descname"><span class="pre">StatisticsDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">documents</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_objects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_plot_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PySide6.QtWidgets.QDialog</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.plot_group_requested">
+<span class="sig-name descname"><span class="pre">plot_group_requested</span></span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.plot_group_requested" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.color_settings_requested">
+<span class="sig-name descname"><span class="pre">color_settings_requested</span></span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.color_settings_requested" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.documents">
 <span class="sig-name descname"><span class="pre">documents</span></span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.documents" title="Link to this definition">#</a></dt>
@@ -481,6 +500,26 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.selected_images">
 <span class="sig-name descname"><span class="pre">selected_images</span></span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.selected_images" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.plot_groups">
+<span class="sig-name descname"><span class="pre">plot_groups</span></span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.plot_groups" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.active_plot_group">
+<span class="sig-name descname"><span class="pre">active_plot_group</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.active_plot_group" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.color_provider">
+<span class="sig-name descname"><span class="pre">color_provider</span></span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.color_provider" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.palette_description">
+<span class="sig-name descname"><span class="pre">palette_description</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.palette_description" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -531,6 +570,11 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.only_selected">
 <span class="sig-name descname"><span class="pre">only_selected</span></span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.only_selected" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.plot_type">
+<span class="sig-name descname"><span class="pre">plot_type</span></span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.plot_type" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -633,6 +677,16 @@
 <span class="sig-name descname"><span class="pre">filtered_documents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.filtered_documents" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.plot_group_name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_group_name</span></span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.plot_group_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.set_plot_groups">
+<span class="sig-name descname"><span class="pre">set_plot_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefer_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.set_plot_groups" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="samstudio.statistics_dialog.StatisticsDialog.refresh">
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.statistics_dialog.StatisticsDialog.refresh" title="Link to this definition">#</a></dt>
@@ -688,11 +742,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="../text_prompts/index.html"
+       href="../target_size/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">samstudio.text_prompts</p>
+        <p class="prev-next-title">samstudio.target_size</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -718,10 +772,16 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.plot_group_requested"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.plot_group_requested</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.color_settings_requested"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.color_settings_requested</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.documents"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.documents</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.current"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.current</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.selected_objects"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.selected_objects</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.selected_images"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.selected_images</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.plot_groups"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.plot_groups</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.active_plot_group"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.active_plot_group</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.color_provider"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.color_provider</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.palette_description"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.palette_description</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.rows"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.rows</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.records"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.records</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.axis_settings"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.axis_settings</span></code></a></li>
@@ -732,6 +792,7 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.unit"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.unit</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.bins"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.bins</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.only_selected"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.only_selected</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.plot_type"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.plot_type</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.metrics_list"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.metrics_list</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.axis_combo"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.axis_combo</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.x_label"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.x_label</span></code></a></li>
@@ -752,6 +813,8 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.single_metric_changed"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.single_metric_changed()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.metrics_changed"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.metrics_changed()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.filtered_documents"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.filtered_documents()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.plot_group_name"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.plot_group_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.set_plot_groups"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.set_plot_groups()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.refresh"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.refresh()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.load_axis_settings"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.load_axis_settings()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.statistics_dialog.StatisticsDialog.choose_color"><code class="docutils literal notranslate"><span class="pre">StatisticsDialog.choose_color()</span></code></a></li>

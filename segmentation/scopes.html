@@ -496,6 +496,19 @@ can start the run immediately when the model is ready.</p>
 CPU starts with a small grid; larger grids can be expensive. Grid density does
 not alter a native SAM3.1 text request. SAM3 ONNX hides this unsupported operation.</p>
 </section>
+<section id="filter-by-target-size">
+<h2>Filter by target size<a class="headerlink" href="#filter-by-target-size" title="Link to this heading">#</a></h2>
+<p>In <strong>Options… → Target size range</strong>, choose <strong>Projected area</strong> or <strong>Equivalent
+circular diameter</strong>, then enter either inclusive limit or both. Leave both
+blank to leave the target range unset. Use px² for area, px for diameter, or
+choose a physical unit such as nm, µm or mm. <strong>Enter pixel sizes for this
+filter</strong> lets you supply X/Y sizes and their unit instead of image calibration.</p>
+<p>The filter measures the preview mask after clipping to the ROI and protecting
+existing objects. It works in Inside ROI only, Whole Image, automatic grid and
+watershed. A configured range replaces the candidate noise floor in these
+scopes. Single object and explicit Refine keep their usual settings. Rerun the
+preview after editing the bounds. See the <a class="reference internal" href="../user-manual.html#target-size-range"><span class="std std-ref">User Manual</span></a>.</p>
+</section>
 <section id="invert-a-selected-region">
 <h2>Invert a selected region<a class="headerlink" href="#invert-a-selected-region" title="Link to this heading">#</a></h2>
 <p>Select area objects and use <strong>Edit → Invert region</strong> or Ctrl+I. Their complement
@@ -597,6 +610,7 @@ successful detector.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-project-whole-image">2. Prompt project, whole image</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#single-object-native-sam">3. Single object (native SAM)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-grid-unannotated-only">4. Automatic grid, unannotated only</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filter-by-target-size">Filter by target size</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#invert-a-selected-region">Invert a selected region</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-comparison">Quick comparison</a></li>
 </ul>

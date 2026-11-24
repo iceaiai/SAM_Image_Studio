@@ -330,12 +330,10 @@
 <li class="toctree-l1"><a class="reference internal" href="menus.html">Menu-by-menu reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dialogs.html">Dialogs and their controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="files.html">Folders, projects, and model files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation-gpu.html">GPU installation and updates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User manual</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../denoising.html">Denoising parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User Manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting installation and operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../downloads.html">CPU version downloads and manuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a></li>
@@ -398,9 +396,9 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="documentation-controls-modes-and-files">
 <h1>Documentation: controls, modes, and files<a class="headerlink" href="#documentation-controls-modes-and-files" title="Link to this heading">#</a></h1>
-<p>Use this section as a lookup while the desktop application is open. Control
-names match the core version 1.4.3 interface; some are visible/enabled only for
-the current mode, model, selection, or running-task state.</p>
+<p>Use this section as a lookup while the desktop application is open. The current
+mode, model, selection and running tasks determine which controls are available.
+See also the <a class="reference internal" href="../segmentation/scopes.html"><span class="std std-doc">illustrated segmentation scopes</span></a>.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workspace.html">Workspace and panels</a></li>
@@ -432,15 +430,6 @@ the current mode, model, selection, or running-task state.</p>
 <li class="toctree-l2"><a class="reference internal" href="modes.html#one-rectangle-different-meanings">One rectangle, different meanings</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html#inside-roi-only">1. Inside ROI only</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html#prompt-project-whole-image">2. Prompt project, whole image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html#single-object-native-sam">3. Single object (native SAM)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html#automatic-grid-unannotated-only">4. Automatic grid, unannotated only</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html#invert-a-selected-region">Invert a selected region</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../segmentation/scopes.html#quick-comparison">Quick comparison</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="dialogs.html">Dialogs and their controls</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="dialogs.html#model-manager-and-inference-options">Model manager and inference options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dialogs.html#processing-and-preview">Processing and preview</a></li>
@@ -448,8 +437,9 @@ the current mode, model, selection, or running-task state.</p>
 <li class="toctree-l2"><a class="reference internal" href="dialogs.html#retained-crops">Retained crops</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dialogs.html#rotation-and-mask-scaling">Rotation and mask scaling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dialogs.html#morphology-and-object-properties">Morphology and object properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs.html#scale-bar-and-filament">Scale bar and Filament</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dialogs.html#statistics-and-export-dialogs">Statistics and export dialogs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dialogs.html#aliases-plugins-and-pdf-help">Aliases, plugins, and PDF help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs.html#aliases-plugins-and-help">Aliases, plugins, and help</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="files.html">Folders, projects, and model files</a><ul>
@@ -464,43 +454,27 @@ the current mode, model, selection, or running-task state.</p>
 <li class="toctree-l2"><a class="reference internal" href="../installation-gpu.html#update-an-existing-installation">4. Update an existing installation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User manual</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User Manual</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#start-modes-and-workspace">Start, modes and workspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#installation-python-and-conda-gpu-setup">Installation, Python and Conda GPU setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#opening-images-and-native-autosaves">Opening images and native autosaves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#excel-pixel-size-lookup">Excel pixel-size lookup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#whole-image-exemplars-single-objects-and-roi">Whole-image exemplars, single objects and ROI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#target-size-range">Target size range</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#automatic-grid-and-text-prompts">Automatic grid and text prompts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#manual-geometry-and-edit-tools">Manual geometry and Edit tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#scale-bars">Scale bars</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#cleaning-and-reversible-image-records">Cleaning and reversible image records</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#processing-restoration-smoothing-and-noise">Processing: restoration, smoothing and noise</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#retained-crops-and-paste-back-workflow">Retained crops and paste-back workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#filaments-and-occluded-fragments">Filaments and occluded fragments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#statistics-and-metric-applicability">Statistics and metric applicability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#metric-colors-and-plot-groups">Metric colors and plot groups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#masks-overlays-and-dataset-export">Masks, overlays and dataset export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#menu-and-control-reference">Menu and control reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#shortcuts-recovery-and-troubleshooting">Shortcuts, recovery and troubleshooting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-manual.html#official-references">Official references</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../denoising.html">Denoising parameters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#workflow-and-physical-interpretation">Workflow and physical interpretation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#dct-and-tv-reconstruction-versus-denoising">DCT and TV: reconstruction versus denoising</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#how-to-read-each-parameter-entry">How to read each parameter entry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#tv-restoration">TV restoration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#tv-bregman-restoration">TV Bregman restoration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#wavelet-sparse-restoration">Wavelet sparse restoration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#non-local-means">Non-local means</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#bilateral-denoise">Bilateral denoise</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#median-denoise">Median denoise</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#dct-sparsity">DCT sparsity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#tv-iterative-notebook">TV iterative (notebook)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#sparse-dictionary-learning">Sparse dictionary learning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#bm3d">BM3D</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#noise2void">Noise2Void</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#n2v2">N2V2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#blind-spot-training-models-and-resource-constraints">Blind-spot training, models and resource constraints</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#smoothing-and-synthetic-noise-controls">Smoothing and synthetic noise controls</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../denoising.html#official-references-and-validation-limits">Official references and validation limits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-manual.html#denoising-parameters">Denoising parameters</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting installation and operation</a><ul>

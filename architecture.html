@@ -347,14 +347,18 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/edition/index.html">samstudio.edition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/exemplars/index.html">samstudio.exemplars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/exports/index.html">samstudio.exports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/filament_ui/index.html">samstudio.filament_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/filaments/index.html">samstudio.filaments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/hardware/index.html">samstudio.hardware</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/help_viewer/index.html">samstudio.help_viewer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/image_processing/index.html">samstudio.image_processing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/imageio/index.html">samstudio.imageio</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/inference/index.html">samstudio.inference</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/main_window/index.html">samstudio.main_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/metric_colors_ui/index.html">samstudio.metric_colors_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/neural_denoising/index.html">samstudio.neural_denoising</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/palette/index.html">samstudio.palette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/plot_groups/index.html">samstudio.plot_groups</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/plugin_api/index.html">samstudio.plugin_api</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/plugin_ui/index.html">samstudio.plugin_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/processing/index.html">samstudio.processing</a></li>
@@ -363,13 +367,18 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/sam31_backend/index.html">samstudio.sam31_backend</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/sam3_onnx/index.html">samstudio.sam3_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/savepoints/index.html">samstudio.savepoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/scale_bar/index.html">samstudio.scale_bar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/scale_bar_ui/index.html">samstudio.scale_bar_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/segmentation_ui/index.html">samstudio.segmentation_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/selftest/index.html">samstudio.selftest</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/sparse_denoising/index.html">samstudio.sparse_denoising</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/statistics/index.html">samstudio.statistics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/statistics_dialog/index.html">samstudio.statistics_dialog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/target_size/index.html">samstudio.target_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/target_size_ui/index.html">samstudio.target_size_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/text_prompts/index.html">samstudio.text_prompts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/transforms/index.html">samstudio.transforms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/widgets/index.html">samstudio.widgets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/samstudio/workspace_ui/index.html">samstudio.workspace_ui</a></li>
 </ul>
 </details></li>
@@ -468,10 +477,13 @@ arguments and <code class="docutils literal notranslate"><span class="pre">--no-
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">transforms</span></code>, <code class="docutils literal notranslate"><span class="pre">savepoints</span></code></p></td>
 <td><p>Coordinated pixel/geometry/calibration transformations and annotation snapshots</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">statistics</span></code>, <code class="docutils literal notranslate"><span class="pre">exports</span></code>, <code class="docutils literal notranslate"><span class="pre">palette</span></code></p></td>
-<td><p>Applicable measurements, dataset/image output, and display colors</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">target_size</span></code>, <code class="docutils literal notranslate"><span class="pre">scale_bar</span></code>, <code class="docutils literal notranslate"><span class="pre">filaments</span></code></p></td>
+<td><p>Calibrated mask size bounds, scale bars and visible centerline measurement</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plugin_api</span></code>, <code class="docutils literal notranslate"><span class="pre">plugin_ui</span></code>, <code class="docutils literal notranslate"><span class="pre">hardware</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">statistics</span></code>, <code class="docutils literal notranslate"><span class="pre">exports</span></code>, <code class="docutils literal notranslate"><span class="pre">palette</span></code>, <code class="docutils literal notranslate"><span class="pre">plot_groups</span></code></p></td>
+<td><p>Measurements, dataset/image output, and color scales shared by masks and plots</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plugin_api</span></code>, <code class="docutils literal notranslate"><span class="pre">plugin_ui</span></code>, <code class="docutils literal notranslate"><span class="pre">hardware</span></code></p></td>
 <td><p>Plugin registration/validation, desktop integration, and NVIDIA/Conda planning</p></td>
 </tr>
 </tbody>
@@ -481,8 +493,10 @@ arguments and <code class="docutils literal notranslate"><span class="pre">--no-
 <h2>State and transactions<a class="headerlink" href="#state-and-transactions" title="Link to this heading">#</a></h2>
 <p>An <code class="docutils literal notranslate"><span class="pre">ImageFrame</span></code> carries acquired pixels and calibration; a <code class="docutils literal notranslate"><span class="pre">Document</span></code> holds
 objects, groups, geometry, and editing/processing records. <code class="docutils literal notranslate"><span class="pre">History</span></code> supports
-Undo/Redo; <code class="docutils literal notranslate"><span class="pre">ProjectStore</span></code> persists native state. Native schema 5 reads earlier
-schemas 1–4. Source images, native projects, dataset exports, app caches, and
+Undo/Redo. <code class="docutils literal notranslate"><span class="pre">ProjectStore</span></code> persists native state. Native schema 6 adds scale
+bars, filament links and per-image metric colors, and reads earlier schemas 1–5.
+Plot groups are workspace preferences that reference frame keys. Source images,
+native projects, dataset exports, app caches, and
 neural training outputs have different lifetimes.</p>
 <p>Segmentation and processing generate previews before commit. GUI actions use
 the normal transaction/autosave path. Background processors work on snapshots

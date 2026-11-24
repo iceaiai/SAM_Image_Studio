@@ -347,14 +347,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../edition/index.html">samstudio.edition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exemplars/index.html">samstudio.exemplars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exports/index.html">samstudio.exports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filament_ui/index.html">samstudio.filament_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filaments/index.html">samstudio.filaments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hardware/index.html">samstudio.hardware</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../help_viewer/index.html">samstudio.help_viewer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../image_processing/index.html">samstudio.image_processing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../imageio/index.html">samstudio.imageio</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../inference/index.html">samstudio.inference</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../main_window/index.html">samstudio.main_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metric_colors_ui/index.html">samstudio.metric_colors_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../neural_denoising/index.html">samstudio.neural_denoising</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../palette/index.html">samstudio.palette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot_groups/index.html">samstudio.plot_groups</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../plugin_api/index.html">samstudio.plugin_api</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../plugin_ui/index.html">samstudio.plugin_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../processing/index.html">samstudio.processing</a></li>
@@ -363,13 +367,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../sam31_backend/index.html">samstudio.sam31_backend</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sam3_onnx/index.html">samstudio.sam3_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../savepoints/index.html">samstudio.savepoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../scale_bar/index.html">samstudio.scale_bar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../scale_bar_ui/index.html">samstudio.scale_bar_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../segmentation_ui/index.html">samstudio.segmentation_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../selftest/index.html">samstudio.selftest</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sparse_denoising/index.html">samstudio.sparse_denoising</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../statistics/index.html">samstudio.statistics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../statistics_dialog/index.html">samstudio.statistics_dialog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../target_size/index.html">samstudio.target_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../target_size_ui/index.html">samstudio.target_size_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../text_prompts/index.html">samstudio.text_prompts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transforms/index.html">samstudio.transforms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/index.html">samstudio.widgets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../workspace_ui/index.html">samstudio.workspace_ui</a></li>
 </ul>
 </details></li>
@@ -450,12 +459,6 @@
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.dialogs.CheckedComboDelegate" title="samstudio.dialogs.CheckedComboDelegate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CheckedComboDelegate</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.dialogs.CheckedComboBox" title="samstudio.dialogs.CheckedComboBox"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CheckedComboBox</span></code></a></p></td>
-<td><p>The check is visual only, so currentText and saved values stay stable.</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.dialogs.ModelDialog" title="samstudio.dialogs.ModelDialog"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelDialog</span></code></a></p></td>
 <td><p></p></td>
 </tr>
@@ -490,65 +493,8 @@
 </table>
 </div>
 </section>
-<section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.dialogs.combo" title="samstudio.dialogs.combo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combo</span></code></a>(items[, name])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.dialogs.buttons" title="samstudio.dialogs.buttons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">buttons</span></code></a>(dialog, layout)</p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="samstudio.dialogs.CheckedComboDelegate">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.dialogs.</span></span><span class="sig-name descname"><span class="pre">CheckedComboDelegate</span></span><a class="headerlink" href="#samstudio.dialogs.CheckedComboDelegate" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PySide6.QtWidgets.QStyledItemDelegate</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="samstudio.dialogs.CheckedComboDelegate.initStyleOption">
-<span class="sig-name descname"><span class="pre">initStyleOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.CheckedComboDelegate.initStyleOption" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="samstudio.dialogs.CheckedComboBox">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.dialogs.</span></span><span class="sig-name descname"><span class="pre">CheckedComboBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.CheckedComboBox" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PySide6.QtWidgets.QComboBox</span></code></p>
-<p>The check is visual only, so currentText and saved values stay stable.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="samstudio.dialogs.CheckedComboBox.paintEvent">
-<span class="sig-name descname"><span class="pre">paintEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.CheckedComboBox.paintEvent" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="samstudio.dialogs.CheckedComboBox.minimumSizeHint">
-<span class="sig-name descname"><span class="pre">minimumSizeHint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.CheckedComboBox.minimumSizeHint" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="samstudio.dialogs.CheckedComboBox.sizeHint">
-<span class="sig-name descname"><span class="pre">sizeHint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.CheckedComboBox.sizeHint" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="samstudio.dialogs.combo">
-<span class="sig-prename descclassname"><span class="pre">samstudio.dialogs.</span></span><span class="sig-name descname"><span class="pre">combo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.combo" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="samstudio.dialogs.buttons">
-<span class="sig-prename descclassname"><span class="pre">samstudio.dialogs.</span></span><span class="sig-name descname"><span class="pre">buttons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dialog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.buttons" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="samstudio.dialogs.ModelDialog">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.dialogs.</span></span><span class="sig-name descname"><span class="pre">ModelDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.ModelDialog" title="Link to this definition">#</a></dt>
@@ -670,7 +616,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="samstudio.dialogs.InferenceOptionsDialog">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.dialogs.</span></span><span class="sig-name descname"><span class="pre">InferenceOptionsDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.InferenceOptionsDialog" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.dialogs.</span></span><span class="sig-name descname"><span class="pre">InferenceOptionsDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.InferenceOptionsDialog" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PySide6.QtWidgets.QDialog</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.dialogs.InferenceOptionsDialog.grid">
@@ -690,6 +636,16 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.dialogs.InferenceOptionsDialog.maximum">
 <span class="sig-name descname"><span class="pre">maximum</span></span><a class="headerlink" href="#samstudio.dialogs.InferenceOptionsDialog.maximum" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.dialogs.InferenceOptionsDialog.target_size">
+<span class="sig-name descname"><span class="pre">target_size</span></span><a class="headerlink" href="#samstudio.dialogs.InferenceOptionsDialog.target_size" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.dialogs.InferenceOptionsDialog.accept">
+<span class="sig-name descname"><span class="pre">accept</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.InferenceOptionsDialog.accept" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -848,6 +804,11 @@
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.dialogs.MaskColorsDialog.swatch_label">
+<span class="sig-name descname"><span class="pre">swatch_label</span></span><a class="headerlink" href="#samstudio.dialogs.MaskColorsDialog.swatch_label" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.dialogs.MaskColorsDialog.swatches">
 <span class="sig-name descname"><span class="pre">swatches</span></span><a class="headerlink" href="#samstudio.dialogs.MaskColorsDialog.swatches" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -858,8 +819,18 @@
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.dialogs.MaskColorsDialog.metric_color">
+<span class="sig-name descname"><span class="pre">metric_color</span></span><a class="headerlink" href="#samstudio.dialogs.MaskColorsDialog.metric_color" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.dialogs.MaskColorsDialog.future">
 <span class="sig-name descname"><span class="pre">future</span></span><a class="headerlink" href="#samstudio.dialogs.MaskColorsDialog.future" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.dialogs.MaskColorsDialog.lookup_note">
+<span class="sig-name descname"><span class="pre">lookup_note</span></span><a class="headerlink" href="#samstudio.dialogs.MaskColorsDialog.lookup_note" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -871,11 +842,16 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="samstudio.dialogs.SaveMasksDialog">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.dialogs.</span></span><span class="sig-name descname"><span class="pre">SaveMasksDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transparent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.SaveMasksDialog" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.dialogs.</span></span><span class="sig-name descname"><span class="pre">SaveMasksDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transparent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.dialogs.SaveMasksDialog" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PySide6.QtWidgets.QDialog</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.dialogs.SaveMasksDialog.document">
 <span class="sig-name descname"><span class="pre">document</span></span><a class="headerlink" href="#samstudio.dialogs.SaveMasksDialog.document" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.dialogs.SaveMasksDialog.object_colors">
+<span class="sig-name descname"><span class="pre">object_colors</span></span><a class="headerlink" href="#samstudio.dialogs.SaveMasksDialog.object_colors" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1006,20 +982,7 @@
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.CheckedComboDelegate"><code class="docutils literal notranslate"><span class="pre">CheckedComboDelegate</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.CheckedComboDelegate.initStyleOption"><code class="docutils literal notranslate"><span class="pre">CheckedComboDelegate.initStyleOption()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.CheckedComboBox"><code class="docutils literal notranslate"><span class="pre">CheckedComboBox</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.CheckedComboBox.paintEvent"><code class="docutils literal notranslate"><span class="pre">CheckedComboBox.paintEvent()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.CheckedComboBox.minimumSizeHint"><code class="docutils literal notranslate"><span class="pre">CheckedComboBox.minimumSizeHint()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.CheckedComboBox.sizeHint"><code class="docutils literal notranslate"><span class="pre">CheckedComboBox.sizeHint()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.combo"><code class="docutils literal notranslate"><span class="pre">combo()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.buttons"><code class="docutils literal notranslate"><span class="pre">buttons()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog"><code class="docutils literal notranslate"><span class="pre">ModelDialog</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.family"><code class="docutils literal notranslate"><span class="pre">ModelDialog.family</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.ModelDialog.variant"><code class="docutils literal notranslate"><span class="pre">ModelDialog.variant</span></code></a></li>
@@ -1054,6 +1017,8 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.InferenceOptionsDialog.score"><code class="docutils literal notranslate"><span class="pre">InferenceOptionsDialog.score</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.InferenceOptionsDialog.area"><code class="docutils literal notranslate"><span class="pre">InferenceOptionsDialog.area</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.InferenceOptionsDialog.maximum"><code class="docutils literal notranslate"><span class="pre">InferenceOptionsDialog.maximum</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.InferenceOptionsDialog.target_size"><code class="docutils literal notranslate"><span class="pre">InferenceOptionsDialog.target_size</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.InferenceOptionsDialog.accept"><code class="docutils literal notranslate"><span class="pre">InferenceOptionsDialog.accept()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.InferenceOptionsDialog.values"><code class="docutils literal notranslate"><span class="pre">InferenceOptionsDialog.values()</span></code></a></li>
 </ul>
 </li>
@@ -1094,14 +1059,18 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.MaskColorsDialog.mode"><code class="docutils literal notranslate"><span class="pre">MaskColorsDialog.mode</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.MaskColorsDialog.by"><code class="docutils literal notranslate"><span class="pre">MaskColorsDialog.by</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.MaskColorsDialog.target"><code class="docutils literal notranslate"><span class="pre">MaskColorsDialog.target</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.MaskColorsDialog.swatch_label"><code class="docutils literal notranslate"><span class="pre">MaskColorsDialog.swatch_label</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.MaskColorsDialog.swatches"><code class="docutils literal notranslate"><span class="pre">MaskColorsDialog.swatches</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.MaskColorsDialog.palette_widget"><code class="docutils literal notranslate"><span class="pre">MaskColorsDialog.palette_widget</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.MaskColorsDialog.metric_color"><code class="docutils literal notranslate"><span class="pre">MaskColorsDialog.metric_color</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.MaskColorsDialog.future"><code class="docutils literal notranslate"><span class="pre">MaskColorsDialog.future</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.MaskColorsDialog.lookup_note"><code class="docutils literal notranslate"><span class="pre">MaskColorsDialog.lookup_note</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.MaskColorsDialog.values"><code class="docutils literal notranslate"><span class="pre">MaskColorsDialog.values()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.SaveMasksDialog"><code class="docutils literal notranslate"><span class="pre">SaveMasksDialog</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.SaveMasksDialog.document"><code class="docutils literal notranslate"><span class="pre">SaveMasksDialog.document</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.SaveMasksDialog.object_colors"><code class="docutils literal notranslate"><span class="pre">SaveMasksDialog.object_colors</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.SaveMasksDialog.format"><code class="docutils literal notranslate"><span class="pre">SaveMasksDialog.format</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.SaveMasksDialog.organization"><code class="docutils literal notranslate"><span class="pre">SaveMasksDialog.organization</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.dialogs.SaveMasksDialog.color"><code class="docutils literal notranslate"><span class="pre">SaveMasksDialog.color</span></code></a></li>

@@ -347,14 +347,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../edition/index.html">samstudio.edition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exemplars/index.html">samstudio.exemplars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exports/index.html">samstudio.exports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filament_ui/index.html">samstudio.filament_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filaments/index.html">samstudio.filaments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hardware/index.html">samstudio.hardware</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../help_viewer/index.html">samstudio.help_viewer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../image_processing/index.html">samstudio.image_processing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../imageio/index.html">samstudio.imageio</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../inference/index.html">samstudio.inference</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../main_window/index.html">samstudio.main_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metric_colors_ui/index.html">samstudio.metric_colors_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../neural_denoising/index.html">samstudio.neural_denoising</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../palette/index.html">samstudio.palette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot_groups/index.html">samstudio.plot_groups</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../plugin_api/index.html">samstudio.plugin_api</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../plugin_ui/index.html">samstudio.plugin_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../processing/index.html">samstudio.processing</a></li>
@@ -363,13 +367,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../sam31_backend/index.html">samstudio.sam31_backend</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sam3_onnx/index.html">samstudio.sam3_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../savepoints/index.html">samstudio.savepoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../scale_bar/index.html">samstudio.scale_bar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../scale_bar_ui/index.html">samstudio.scale_bar_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../segmentation_ui/index.html">samstudio.segmentation_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../selftest/index.html">samstudio.selftest</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sparse_denoising/index.html">samstudio.sparse_denoising</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">samstudio.statistics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../statistics_dialog/index.html">samstudio.statistics_dialog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../target_size/index.html">samstudio.target_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../target_size_ui/index.html">samstudio.target_size_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../text_prompts/index.html">samstudio.text_prompts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transforms/index.html">samstudio.transforms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/index.html">samstudio.widgets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../workspace_ui/index.html">samstudio.workspace_ui</a></li>
 </ul>
 </details></li>
@@ -477,7 +486,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#samstudio.statistics.nested_metrics" title="samstudio.statistics.nested_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nested_metrics</span></code></a>(document, obj, matrix, result)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.statistics.object_values" title="samstudio.statistics.object_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object_values</span></code></a>(document, obj, matrix[, origin])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.statistics.object_values" title="samstudio.statistics.object_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object_values</span></code></a>(document, obj, matrix[, origin, inner_ids])</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#samstudio.statistics.measurement_records" title="samstudio.statistics.measurement_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">measurement_records</span></code></a>(document[, object_ids, ...])</p></td>
@@ -522,7 +531,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="samstudio.statistics.object_values">
-<span class="sig-prename descclassname"><span class="pre">samstudio.statistics.</span></span><span class="sig-name descname"><span class="pre">object_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.statistics.object_values" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">samstudio.statistics.</span></span><span class="sig-name descname"><span class="pre">object_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.statistics.object_values" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">

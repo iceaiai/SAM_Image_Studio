@@ -330,12 +330,10 @@
 <li class="toctree-l1"><a class="reference internal" href="menus.html">Menu-by-menu reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controls.html">Buttons, tools, and segmentation controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modes.html">The four modes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dialogs.html">Dialogs and their controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="files.html">Folders, projects, and model files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation-gpu.html">GPU installation and updates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User manual</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../denoising.html">Denoising parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-manual.html">User Manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting installation and operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../downloads.html">CPU version downloads and manuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../provenance.html">Sources, versions, and licenses</a></li>
@@ -415,10 +413,10 @@
 <td><p>Select one/many annotations; canvas/list selections stay synchronized. Columns show Object, Group, Area, Lock. Visibility/lock controls govern display and editing eligibility. Double-click enters object editing.</p></td>
 </tr>
 <tr class="row-even"><td><p>Groups, right</p></td>
-<td><p>Show labels and counts. <strong>+ Group</strong> creates a label, <strong>Rename</strong> changes it, <strong>Color</strong> changes its color. Double-click selects its objects; choose the active drawing group in the top toolbar.</p></td>
+<td><p>Show group labels, mask counts and the Filament designation. <strong>+ Group</strong> creates a label, <strong>Rename</strong> changes it, <strong>Color</strong> changes its base color. Double-click selects its objects.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Image files, lower right</p></td>
-<td><p>Choose source images, datasets, or stack frames. Multi-select to remove session entries using <strong>Remove selected images</strong> while retaining saved annotations and sources.</p></td>
+<td><p>Choose source images, datasets, or stack frames. Multi-select to create a <strong>Plot group</strong> or remove session entries while retaining saved annotations and sources.</p></td>
 </tr>
 <tr class="row-even"><td><p>Workflow toolbar</p></td>
 <td><p>Choose Mode, model, active Group, and Scope; run, accept, cancel, or configure inference.</p></td>
@@ -427,7 +425,7 @@
 <td><p>Type/run text, manage aliases, and choose positive/negative shape polarity.</p></td>
 </tr>
 <tr class="row-even"><td><p>Drawing tools, left</p></td>
-<td><p>Select/pan, undo/redo, edit/delete, and draw polygon/rectangle/circle/ellipse/point.</p></td>
+<td><p>Select/pan, undo/redo, delete objects, delete eligible vertices or draw geometry.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Region tools</p></td>
 <td><p>Select all, invert, create an object from a region, and reach appearance/transformation tools.</p></td>

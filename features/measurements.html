@@ -440,6 +440,13 @@ their existing scale.</p>
 already assigned. Changing calibration does not change masks; rotated images
 rebuild the physical coordinate basis from their saved transforms.</p>
 </section>
+<section id="add-a-scale-bar">
+<h2>Add a scale bar<a class="headerlink" href="#add-a-scale-bar" title="Link to this heading">#</a></h2>
+<p>Choose <strong>Edit → Add scale bar…</strong>. Use a physical length for a calibrated image
+or px for a pixel reference. Set the corner position, line width, font and
+font size and check the live preview. <strong>Apply</strong> stores the bar in the native
+project. <strong>Edit scale bar…</strong> and <strong>Remove scale bar</strong> are undoable.</p>
+</section>
 <section id="explore-object-and-group-measurements">
 <h2>Explore object and group measurements<a class="headerlink" href="#explore-object-and-group-measurements" title="Link to this heading">#</a></h2>
 <p>Open <strong>Plot Object Statistics…</strong> and choose up to nine metrics for display.
@@ -464,10 +471,13 @@ all/a subset of numerical metrics independently of the nine-metric display.</p>
 <tr class="row-odd"><td><p>Core–shell / hollow</p></td>
 <td><p>Explicitly linked core/cavity size, thickness, center displacement and uniformity</p></td>
 </tr>
-<tr class="row-even"><td><p>Identification and quality</p></td>
+<tr class="row-even"><td><p>Filament</p></td>
+<td><p>Visible centerline length, estimated gap and total lengths, visible-width mean, minimum, maximum, standard deviation and variance</p></td>
+</tr>
+<tr class="row-odd"><td><p>Identification and quality</p></td>
 <td><p>Object ID, particle count, recorded model score</p></td>
 </tr>
-<tr class="row-odd"><td><p>Summaries</p></td>
+<tr class="row-even"><td><p>Summaries</p></td>
 <td><p>Count, mean, median, standard deviation and distributions</p></td>
 </tr>
 </tbody>
@@ -481,6 +491,37 @@ manual objects may have no score.</p>
 <p>Shell/wall thickness is a 2-D boundary-distance estimate, not a 3-D measurement.
 The <a class="reference internal" href="../user-manual.html#statistics-and-metric-applicability"><span class="std std-ref">full manual</span></a> defines
 each metric, formula, unit, and applicability rule.</p>
+</section>
+<section id="measure-filaments-across-gaps">
+<h2>Measure filaments across gaps<a class="headerlink" href="#measure-filaments-across-gaps" title="Link to this heading">#</a></h2>
+<p>Switch to <strong>Edit</strong> and choose <strong>Filament → Mark group as Filament…</strong>. The
+centerline follows the visible outline through bends. To treat an occluded
+filament as one measured object, select two separate visible masks in that
+group, choose <strong>Connect visible fragments…</strong>, and click the two marked ends
+facing the gap. Each free end can connect once. The result reports the visible
+arc length, a straight-line estimate across linked gaps, and their sum.
+Perpendicular cross-sections contribute widths only where a mask is visible.
+Use <a class="reference internal" href="../user-manual.html#filaments-and-occluded-fragments"><span class="std std-ref">Filaments and occluded fragments</span></a>
+for measurement details and disconnect controls.</p>
+</section>
+<section id="share-metric-colors-across-a-plot-group">
+<h2>Share metric colors across a plot group<a class="headerlink" href="#share-metric-colors-across-a-plot-group" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>In <strong>Image files</strong>, Ctrl+click the files or frames to compare and choose
+<strong>Create…</strong> next to <strong>Plot group</strong>. Name the group and check its membership.</p></li>
+<li><p>Choose the measurement for colors, such as projected area or perimeter.
+Set the unit and color count. The default is 20, and the scale is computed
+across the group’s open frames. Choose <strong>Edit…</strong> to reopen these settings.</p></li>
+<li><p>In <strong>Plot Object Statistics…</strong>, select <strong>Plot group: name</strong> under <strong>Images</strong>.
+Choose <strong>Object points (mask colors)</strong> for one point per measured object in
+the displayed mask color. Check up to nine metrics. The color metric can
+differ from the plotted metrics.</p></li>
+</ol>
+<p>Reopen any closed member frames to include them in the group scale and plots.
+Physical palettes use calibrated values in the chosen unit. A mask without a
+value in those units keeps its base color. To color a single image independently,
+use <strong>Edit → Assign mask colors… → By measurement</strong> with <strong>No plot group</strong>
+selected. See the <a class="reference internal" href="../user-manual.html#metric-colors-and-plot-groups"><span class="std std-ref">User Manual</span></a>.</p>
 </section>
 </section>
 
@@ -532,7 +573,10 @@ each metric, formula, unit, and applicability rule.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confirm-the-physical-scale">Confirm the physical scale</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-a-scale-bar">Add a scale bar</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-object-and-group-measurements">Explore object and group measurements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measure-filaments-across-gaps">Measure filaments across gaps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#share-metric-colors-across-a-plot-group">Share metric colors across a plot group</a></li>
 </ul>
   </nav></div>
 

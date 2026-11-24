@@ -49,7 +49,7 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/autoapi/samstudio/palette/index.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="samstudio.plugin_api" href="../plugin_api/index.html" />
+    <link rel="next" title="samstudio.plot_groups" href="../plot_groups/index.html" />
     <link rel="prev" title="samstudio.neural_denoising" href="../neural_denoising/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -347,14 +347,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../edition/index.html">samstudio.edition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exemplars/index.html">samstudio.exemplars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exports/index.html">samstudio.exports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filament_ui/index.html">samstudio.filament_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filaments/index.html">samstudio.filaments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hardware/index.html">samstudio.hardware</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../help_viewer/index.html">samstudio.help_viewer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../image_processing/index.html">samstudio.image_processing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../imageio/index.html">samstudio.imageio</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../inference/index.html">samstudio.inference</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../main_window/index.html">samstudio.main_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metric_colors_ui/index.html">samstudio.metric_colors_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../neural_denoising/index.html">samstudio.neural_denoising</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">samstudio.palette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot_groups/index.html">samstudio.plot_groups</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../plugin_api/index.html">samstudio.plugin_api</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../plugin_ui/index.html">samstudio.plugin_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../processing/index.html">samstudio.processing</a></li>
@@ -363,13 +367,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../sam31_backend/index.html">samstudio.sam31_backend</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sam3_onnx/index.html">samstudio.sam3_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../savepoints/index.html">samstudio.savepoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../scale_bar/index.html">samstudio.scale_bar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../scale_bar_ui/index.html">samstudio.scale_bar_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../segmentation_ui/index.html">samstudio.segmentation_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../selftest/index.html">samstudio.selftest</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sparse_denoising/index.html">samstudio.sparse_denoising</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../statistics/index.html">samstudio.statistics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../statistics_dialog/index.html">samstudio.statistics_dialog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../target_size/index.html">samstudio.target_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../target_size_ui/index.html">samstudio.target_size_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../text_prompts/index.html">samstudio.text_prompts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transforms/index.html">samstudio.transforms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/index.html">samstudio.widgets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../workspace_ui/index.html">samstudio.workspace_ui</a></li>
 </ul>
 </details></li>
@@ -446,12 +455,26 @@
                   
   <section id="module-samstudio.palette">
 <span id="samstudio-palette"></span><h1>samstudio.palette<a class="headerlink" href="#module-samstudio.palette" title="Link to this heading">#</a></h1>
-<p>Fixed, ordered lookup table. Saved RGB values never depend on a session seed.</p>
+<p>Preset mask colors and shared measurement palettes.</p>
 <section id="attributes">
 <h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.palette.LUT20" title="samstudio.palette.LUT20"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LUT20</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.palette.MetricColorScheme" title="samstudio.palette.MetricColorScheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetricColorScheme</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.palette.MetricPalette" title="samstudio.palette.MetricPalette"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetricPalette</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -470,6 +493,18 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.palette.assign_colors" title="samstudio.palette.assign_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_colors</span></code></a>(document, scheme[, object_ids, use_for_new])</p></td>
 <td><p>Assign exact preset colors, or restore the document's group colors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.palette.metric_palette" title="samstudio.palette.metric_palette"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metric_palette</span></code></a>(documents, scheme)</p></td>
+<td><p>Use one equal-width color scale across the supplied frames.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.palette.base_mask_colors" title="samstudio.palette.base_mask_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base_mask_colors</span></code></a>(document)</p></td>
+<td><p>A linked filament has one color, initialized from its first fragment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.palette.image_metric_palette" title="samstudio.palette.image_metric_palette"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_metric_palette</span></code></a>(document)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.palette.document_mask_colors" title="samstudio.palette.document_mask_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">document_mask_colors</span></code></a>(document)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -498,6 +533,63 @@
 <dd><p>Assign exact preset colors, or restore the document’s group colors.</p>
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="samstudio.palette.MetricColorScheme">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.palette.</span></span><span class="sig-name descname"><span class="pre">MetricColorScheme</span></span><a class="headerlink" href="#samstudio.palette.MetricColorScheme" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.palette.MetricColorScheme.metric">
+<span class="sig-name descname"><span class="pre">metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'area'</span></em><a class="headerlink" href="#samstudio.palette.MetricColorScheme.metric" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.palette.MetricColorScheme.count">
+<span class="sig-name descname"><span class="pre">count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em><a class="headerlink" href="#samstudio.palette.MetricColorScheme.count" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.palette.MetricColorScheme.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'px'</span></em><a class="headerlink" href="#samstudio.palette.MetricColorScheme.unit" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="samstudio.palette.MetricPalette">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">samstudio.palette.</span></span><span class="sig-name descname"><span class="pre">MetricPalette</span></span><a class="headerlink" href="#samstudio.palette.MetricPalette" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.palette.MetricPalette.colors">
+<span class="sig-name descname"><span class="pre">colors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#samstudio.palette.MetricPalette.colors" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.palette.MetricPalette.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#samstudio.palette.MetricPalette.description" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="samstudio.palette.metric_palette">
+<span class="sig-prename descclassname"><span class="pre">samstudio.palette.</span></span><span class="sig-name descname"><span class="pre">metric_palette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">documents</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.palette.metric_palette" title="Link to this definition">#</a></dt>
+<dd><p>Use one equal-width color scale across the supplied frames.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="samstudio.palette.base_mask_colors">
+<span class="sig-prename descclassname"><span class="pre">samstudio.palette.</span></span><span class="sig-name descname"><span class="pre">base_mask_colors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.palette.base_mask_colors" title="Link to this definition">#</a></dt>
+<dd><p>A linked filament has one color, initialized from its first fragment.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="samstudio.palette.image_metric_palette">
+<span class="sig-prename descclassname"><span class="pre">samstudio.palette.</span></span><span class="sig-name descname"><span class="pre">image_metric_palette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.palette.image_metric_palette" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="samstudio.palette.document_mask_colors">
+<span class="sig-prename descclassname"><span class="pre">samstudio.palette.</span></span><span class="sig-name descname"><span class="pre">document_mask_colors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.palette.document_mask_colors" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 </section>
 
@@ -521,11 +613,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="../plugin_api/index.html"
+       href="../plot_groups/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">samstudio.plugin_api</p>
+        <p class="prev-next-title">samstudio.plot_groups</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -549,12 +641,28 @@
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.LUT20"><code class="docutils literal notranslate"><span class="pre">LUT20</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.validate_scheme"><code class="docutils literal notranslate"><span class="pre">validate_scheme()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.lookup_color"><code class="docutils literal notranslate"><span class="pre">lookup_color()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.assign_colors"><code class="docutils literal notranslate"><span class="pre">assign_colors()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.MetricColorScheme"><code class="docutils literal notranslate"><span class="pre">MetricColorScheme</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.MetricColorScheme.metric"><code class="docutils literal notranslate"><span class="pre">MetricColorScheme.metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.MetricColorScheme.count"><code class="docutils literal notranslate"><span class="pre">MetricColorScheme.count</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.MetricColorScheme.unit"><code class="docutils literal notranslate"><span class="pre">MetricColorScheme.unit</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.MetricPalette"><code class="docutils literal notranslate"><span class="pre">MetricPalette</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.MetricPalette.colors"><code class="docutils literal notranslate"><span class="pre">MetricPalette.colors</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.MetricPalette.description"><code class="docutils literal notranslate"><span class="pre">MetricPalette.description</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.metric_palette"><code class="docutils literal notranslate"><span class="pre">metric_palette()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.base_mask_colors"><code class="docutils literal notranslate"><span class="pre">base_mask_colors()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.image_metric_palette"><code class="docutils literal notranslate"><span class="pre">image_metric_palette()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.palette.document_mask_colors"><code class="docutils literal notranslate"><span class="pre">document_mask_colors()</span></code></a></li>
 </ul>
 </li>
 </ul>

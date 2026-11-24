@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>User manual &#8212; SAM Image Studio 1.4.4</title>
+    <title>User Manual &#8212; SAM Image Studio 1.4.4</title>
   
   
   
@@ -49,7 +49,7 @@
     <link rel="canonical" href="https://iceaiai.github.io/SAM_Image_Studio/user-manual.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Denoising parameters" href="denoising.html" />
+    <link rel="next" title="Troubleshooting installation and operation" href="troubleshooting.html" />
     <link rel="prev" title="GPU installation and updates" href="installation-gpu.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -334,12 +334,10 @@
 <li class="toctree-l1"><a class="reference internal" href="documentation/menus.html">Menu-by-menu reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation/controls.html">Buttons, tools, and segmentation controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation/modes.html">The four modes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="segmentation/scopes.html">Seg scope: ROI, whole image and single object</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation/dialogs.html">Dialogs and their controls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation/files.html">Folders, projects, and model files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation-gpu.html">GPU installation and updates</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">User manual</a></li>
-<li class="toctree-l1"><a class="reference internal" href="denoising.html">Denoising parameters</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">User Manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting installation and operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="downloads.html">CPU version downloads and manuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="provenance.html">Sources, versions, and licenses</a></li>
@@ -386,7 +384,7 @@
     
     <li class="breadcrumb-item"><a href="documentation/index.html" class="nav-link">Documentation: controls, modes, and files</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">User manual</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">User Manual</span></li>
   </ul>
 </nav>
 </div>
@@ -404,16 +402,14 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="user-manual">
-<h1>User manual<a class="headerlink" href="#user-manual" title="Link to this heading">#</a></h1>
-<p>This is the <strong>original v1.4.2 manual</strong>, preserved for reference. For current
-installation paths and automatic repairs, use <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>.
-Current illustrated <a class="reference internal" href="features/cleaning.html"><span class="std std-doc">cleaning</span></a>,
-<a class="reference internal" href="segmentation/scopes.html"><span class="std std-doc">Seg scopes</span></a>, <a class="reference internal" href="segmentation/sam31.html"><span class="std std-doc">SAM3.1</span></a> and
-<a class="reference internal" href="features/compressed-sensing.html"><span class="std std-doc">compressed-sensing parameters</span></a> describe v1.4.3.</p>
+<h1>User Manual<a class="headerlink" href="#user-manual" title="Link to this heading">#</a></h1>
+<p>This manual covers SAM Image Studio 1.4.4. See <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>
+for the current platform setup instructions and <a class="reference internal" href="#denoising-parameters">Denoising parameters</a>
+for denoising method defaults and units.</p>
 <section id="start-modes-and-workspace">
 <h2>Start, modes and workspace<a class="headerlink" href="#start-modes-and-workspace" title="Link to this heading">#</a></h2>
 <p>SAM Image Studio opens one or many images for annotation, segmentation, calibrated measurements and reversible image processing. Acquired pixels remain available separately from derived pixels. The top-right Objects list and the canvas select the same objects. Source filenames appear in the lower-right Image files list; stacks have child frame entries.</p>
-<p>Manual adds shapes. Segment creates disposable model previews. Clean edits derived image pixels through retained cleaning records. Edit changes existing shapes, rotates images, assigns morphology and scales masks. Switching mode with pending shapes/prompts/previews asks Yes to add, No to discard or Cancel to remain. An incomplete polygon cannot be added.</p>
+<p>Manual adds shapes. Segment creates disposable model previews. Clean edits derived image pixels through retained cleaning records. Edit changes existing shapes, rotates images, scales masks, adds scale bars and configures filament measurements. Switching mode with pending shapes/prompts/previews asks Yes to add, No to discard or Cancel to remain. An incomplete polygon cannot be added.</p>
 <p>Example: open two TIFFs, select the first in Image files, draw one Manual rectangle, then switch to Edit and select it in Objects. The Objects, Groups and Image files docks keep the v1.4 layout and can be resized.</p>
 <p>Startup asks whether to reopen previous images. No leaves the workspace empty and preserves annotation files. Removing an image from the workspace saves its annotations and does not delete its source image or annotation files.</p>
 </section>
@@ -439,7 +435,7 @@ Current illustrated <a class="reference internal" href="features/cleaning.html">
 <section id="opening-images-and-native-autosaves">
 <h2>Opening images and native autosaves<a class="headerlink" href="#opening-images-and-native-autosaves" title="Link to this heading">#</a></h2>
 <p>Open images accepts PNG, JPEG, BMP, TIFF and supported EMD, DM3 and DM4 datasets. Each source filename appears in Image files; stack frames have separate entries. Supported physical calibration is read from the source; unavailable calibration remains in pixel units. Edit image calibration sets X/Y sizes and units manually.</p>
-<p>The v1.4 annotation workflow and COCO export representation are retained. A matching native SAM_Annotations project restores objects, prompts, groups, calibration, exact contours, original/derived pixels, cleaning history and rotation. Native schema 5 also stores the new exemplar prompts and retained crops and reads earlier schemas 1-4.</p>
+<p>The v1.4 annotation workflow and COCO export representation are retained. A matching native SAM_Annotations project restores objects, prompts, groups, calibration, exact contours, original/derived pixels, cleaning history and rotation. Native schema 6 stores scale bars, filament connections, and per-image measurement color settings alongside exemplar prompts and retained crops. It reads native schemas 1–5.</p>
 <p>Committed operations autosave atomically into a .sam.json project, with a previous valid backup. Save project now forces a save; Choose project folder selects another writable destination. Open project JSON can locate its source/frame after moving a project. Preserve the native project for complete editable recovery. Area-mask exports omit point annotations and report their count.</p>
 <p>Example: draw and accept two masks, close the image, then reopen the same TIFF. Its native project restores those masks. Removing selected entries from Image files saves the native projects and only removes them from the workspace. Source images and annotation files remain. At startup, choose Yes to reopen the previous images or No to start empty.</p>
 </section>
@@ -459,10 +455,17 @@ Current illustrated <a class="reference internal" href="features/cleaning.html">
 <p>Single object (native SAM) keeps the ordinary point/box refinement behavior for one object. Inside ROI only predicts from an area prompt and clips its result to that region. With Point (dot) selected, Single object and Inside ROI only are hidden and disabled. A previously selected area-only scope switches to Prompt project, whole image. To use Single object or ROI only, choose an area tool. Point coordinates remain image pixels at every zoom.</p>
 <p>Accepted, hidden and locked foreground masks are protected from accidental replacement. Use Refine selected object explicitly to replace one unlocked foreground object while keeping its identity and group. An inverted exact region can constrain allowed inference pixels; background groups and cleaning objects are not foreground training targets.</p>
 </section>
+<section id="target-size-range">
+<h2>Target size range<a class="headerlink" href="#target-size-range" title="Link to this heading">#</a></h2>
+<p>Open <strong>Models → Segmentation options…</strong> or <strong>Options…</strong> in the workflow toolbar. In <strong>Target size range</strong>, choose <strong>Projected area</strong> or <strong>Equivalent circular diameter</strong> (ECD), then choose pixel or physical units. Area uses squared units. ECD is the diameter of a circle with the same area as the mask.</p>
+<p>Enter a minimum, a maximum, or both. Each blank field leaves that end open. Both fields start blank. Bounds are inclusive and apply after output is clipped to the ROI or around protected annotations. The range works with Inside ROI only, Prompt project, whole image, Automatic grid, and Otsu + watershed. A configured range replaces the candidate noise floor in these scopes. Single object (native SAM) and explicit Refine use their normal behavior.</p>
+<p>Physical limits use the image calibration, including different X/Y sizes. For a filter-specific override, select <strong>Enter pixel sizes for this filter</strong>, enter the X and Y sizes and choose their unit. The override applies only to the filter. Enter equal values for square pixels. For example, with 0.5 nm pixels, a lower area of 25 nm² accepts masks with 100 or more pixels. Leave Maximum blank to accept any larger eligible mask.</p>
+<p>Run a fresh preview after changing the limits and review the eligible masks before accepting them.</p>
+</section>
 <section id="automatic-grid-and-text-prompts">
 <h2>Automatic grid and text prompts<a class="headerlink" href="#automatic-grid-and-text-prompts" title="Link to this heading">#</a></h2>
 <p>Automatic grid, unannotated only starts when selected in Segment with a loaded model, when entering Segment with that selection, or when the model finishes loading in that state. Run preview also starts it explicitly. It ignores any text field and samples unannotated pixels with native SAM point prompts.</p>
-<p>The status bar shows prompt counts and the number of candidate masks. After filtering, the preview reports the resulting count. Zero masks is a visible result, not a silent success; lower the minimum model score/area or increase grid density when appropriate. Larger grids cost more time, especially on CPU. Cancellation preserves accepted annotations.</p>
+<p>The status bar shows prompt counts and the number of candidate masks. After filtering, the preview reports the resulting count. For zero masks, review the score, target size and grid density. Larger grids cost more time, especially on CPU. Cancellation preserves accepted annotations.</p>
 <p>Text prompting has its own Run text segmentation button, in addition to the shared Run preview control. Enter in the text field also runs it. SAM2/2.1 resolve phrases through Grounding DINO Tiny detections and segment those boxes with SAM; SAM3 and SAM3.1 have native text paths. SAM1 hides text controls.</p>
 <p>Aliases map complete phrases and are case-insensitive. Example: nanoparticle -&gt; big dots, powder -&gt; big dots. Aliases can chain; cycles/duplicate conflicting names are rejected. They replace input phrases and do not train the detector. The effective phrase appears in the tooltip and accepted-mask provenance.</p>
 <p>Text does not establish scientific detection accuracy. The verified public text integration image contains vehicles, not nanoparticles. Use the review preview and compare against the acquired image.</p>
@@ -470,10 +473,15 @@ Current illustrated <a class="reference internal" href="features/cleaning.html">
 <section id="manual-geometry-and-edit-tools">
 <h2>Manual geometry and Edit tools<a class="headerlink" href="#manual-geometry-and-edit-tools" title="Link to this heading">#</a></h2>
 <p>Use Manual for points and closed shapes. A polygon closes when a click is within 3 original image pixels of its first point after at least three vertices; Enter and double-click also finish it. Point annotations remain points at every zoom.</p>
-<p>Use Edit to select an object by canvas or list and drag its existing handles. Dragging does not create extra vertices. The handle radius is 5.1 screen pixels, half the previous release’s large radius. The separate deletion radius defaults to 20 image pixels and is adjustable. Repeated Delete removes nearest eligible vertices around the chosen point only in that selected object, retaining at least three per contour.</p>
+<p>Use Edit to select an object by canvas or list and drag its existing handles. Dragging does not create extra vertices. The handle radius is 5.1 screen pixels, half the previous release’s large radius. The separate deletion radius defaults to 20 image pixels and is adjustable. Click near a vertex and choose <strong>Delete vertex</strong> from the drawing toolbar or Edit menu. Each press removes the nearest eligible vertex from that selected object, retaining at least three per contour. <strong>Delete objects</strong> is a separate button that removes the selected annotations. The Delete key invokes Delete vertex in Edit and Delete objects in the other modes.</p>
 <p>Fill holes and Smooth edges open previews. Smooth edges retains editable cubic curves rather than merely changing a jagged display. Batch changes are one undoable operation. Mask sizes and statistics update after applying changes.</p>
 <p>Rotation offers angle presets and arbitrary angles. No padding keeps original dimensions and may crop corners. Rectangle or square padding enlarges the canvas; choose black, neighbor, LaMa or a manually selected background-group fill. Review the result before Apply. Pixels, masks, cleaning records and the physical coordinate basis rotate together. Paste/remove retained crop snapshots before rotating.</p>
 <p>Scale masks / savepoints scales selected unlocked objects or all area objects in their groups, uniformly about each centroid. Enter a factor or use the slider. Clipping at image boundaries and overlaps can occur. Original geometry and result snapshots can be temporary in-memory list entries or local folders with exact JSON and binary masks. Temporary savepoints do not enter project files; local snapshots can be restored only when source/rotation coordinates match.</p>
+</section>
+<section id="scale-bars">
+<h2>Scale bars<a class="headerlink" href="#scale-bars" title="Link to this heading">#</a></h2>
+<p>Choose <strong>Edit → Add scale bar…</strong>. Set the length and its unit, line width, font, font size and corner position. The image previews changes as you type. <strong>Apply</strong> saves the bar in the native project. <strong>Edit scale bar…</strong> reopens it and <strong>Remove scale bar</strong> removes it. Undo and Redo cover these changes.</p>
+<p>Use px for a pixel reference or a physical unit for a calibrated length. The horizontal bar uses the current image X direction of the calibration, including after rotation. Width and font size are in image pixels and scale with zoom. If the bar cannot fit after a calibration or size change, reopen its settings and choose a length and style that fit. The bar is a canvas overlay. Source TIFFs and mask exports retain their underlying pixels.</p>
 </section>
 <section id="cleaning-and-reversible-image-records">
 <h2>Cleaning and reversible image records<a class="headerlink" href="#cleaning-and-reversible-image-records" title="Link to this heading">#</a></h2>
@@ -553,6 +561,13 @@ Current illustrated <a class="reference internal" href="features/cleaning.html">
 <p>Retained crops lists each name, coordinates and protection/paste state. Protect / release changes whether Processing skips its rectangle. Export TIFF writes the actual crop pixels. Paste back defaults to the full rectangle including real background; Mask pixels only pastes just the original selected footprint. Remove snapshot deletes the retained copy without deleting image pixels.</p>
 <p>Crop pixel snapshots and their coordinates persist in native autosave. Pasting is undoable. Paste/remove retained crops before image rotation so coordinates cannot silently become invalid.</p>
 </section>
+<section id="filaments-and-occluded-fragments">
+<h2>Filaments and occluded fragments<a class="headerlink" href="#filaments-and-occluded-fragments" title="Link to this heading">#</a></h2>
+<p>Use <strong>Edit</strong> mode and choose <strong>Edit → Filament → Mark group as Filament…</strong>. Choose a foreground group with the visible masks of fibers, lines or tubes. Each mask is measured along its skeleton centerline, including bends. The centerline extends to the boundary at visible ends. Branched shapes use a principal path between skeleton endpoints; inspect such masks before interpreting their results.</p>
+<p>For a filament interrupted by an occlusion, keep each visible, unbranched section as its own mask in the same group. Ctrl+click two fragment rows in <strong>Objects</strong> and choose <strong>Connect visible fragments…</strong>. Click one marked end on each fragment, choosing the two ends facing the gap. The dashed bridge shows the link. Repeat for additional fragments to make a chain. Select connected fragments and choose <strong>Disconnect selected fragments</strong> to remove their links. Selecting one fragment removes its incident links; selecting several removes links between those selected.</p>
+<p>In <strong>Statistics → Plot Object Statistics…</strong>, choose the Filament metrics. <strong>Visible length</strong> sums the measured centerlines. <strong>Estimated gap length</strong> sums straight distances between linked visible ends. <strong>Estimated total length</strong> adds those two values. Each linked chain appears as one measured filament. Its visible masks remain independently editable and each fragment ID is recorded in the statistics CSV.</p>
+<p>Widths are measured across the visible mask along local normals to the centerline, using the calibrated basis for physical results. The report includes mean, minimum, maximum, population standard deviation and population variance. The mean and variance weight cross-sections by arc length. Width statistics exclude gap segments, and width variance uses squared length units. Check the measured boundaries at your image resolution. If editing a mask leaves an unresolved link, reconnect the fragments before using the estimated lengths.</p>
+</section>
 <section id="statistics-and-metric-applicability">
 <h2>Statistics and metric applicability<a class="headerlink" href="#statistics-and-metric-applicability" title="Link to this heading">#</a></h2>
 <p>Choose current, selected or all open images; filter groups and selected objects. Plot metrics selects at most nine metric choices. Resize the window or drag the divider; use the Matplotlib toolbar for pan, zoom and reset. Auto units separate calibrated physical cohorts from uncalibrated pixel measurements.</p>
@@ -620,7 +635,7 @@ Current illustrated <a class="reference internal" href="features/cleaning.html">
 <td><p>1 if any accepted pixel touches an image edge, otherwise 0.</p></td>
 </tr>
 <tr class="row-even"><td><p>particle_count</p></td>
-<td><p>1 for a particle annotation, 0 for a valid explicitly linked core/cavity. Point annotations are excluded.</p></td>
+<td><p>1 per particle or linked filament. A valid inner core or cavity counts as 0. Point annotations are excluded.</p></td>
 </tr>
 <tr class="row-odd"><td><p>object_id</p></td>
 <td><p>Stable annotation UUID. The plot labels objects by name and short ID; CSV retains the full UUID.</p></td>
@@ -665,6 +680,13 @@ Current illustrated <a class="reference internal" href="features/cleaning.html">
 </table>
 </div>
 <p>Core/shell and hollow measurements require an explicitly linked, fully enclosed, connected inner mask. Invalid/missing relationships produce notes/blank values and do not silently suppress particle counts. A valid linked core/cavity is not counted as a second outer particle. Polygon quality requires the expected side count and a corresponding contour fit. Confidence is a model mask-quality estimate; manual/legacy objects without a model score remain blank.</p>
+</section>
+<section id="metric-colors-and-plot-groups">
+<h2>Metric colors and plot groups<a class="headerlink" href="#metric-colors-and-plot-groups" title="Link to this heading">#</a></h2>
+<p>To color masks in one image, choose <strong>Edit → Assign mask colors… → By measurement</strong>. Pick a metric such as projected area, equivalent diameter or perimeter, the measurement unit and the number of colors. The default is 20 and you can choose up to 256. The palette spans the eligible values in that image. Objects without a value in the chosen units keep their base colors.</p>
+<p>To share a color scale across several images, Ctrl+click their file or frame rows in <strong>Image files</strong>, then choose <strong>Create…</strong> next to <strong>Plot group</strong>. Name the group, confirm the included frames and choose the color metric, units and color count. Selecting a file row includes all its frames. The active group uses a single scale across its open member frames. Other images keep their own colors. Reopen any closed group members to include them in the scale and plots. <strong>Edit…</strong> beside the group selector changes its membership or palette.</p>
+<p>In <strong>Plot Object Statistics…</strong>, choose <strong>Plot group: name</strong> under <strong>Images</strong>. This uses that group for both the plot and the canvas palette. Select <strong>Object points (mask colors)</strong> to plot one point per eligible object in its exact mask color. Change the plotted metrics independently of the color metric, with up to nine checked at once. Use <strong>Histogram</strong> for a distribution, or export all or selected statistics. The CSV includes the mask color and the fragment IDs for filaments.</p>
+<p>Example: group three images from one condition, color by projected area in nm², then plot perimeter, ECD and circularity. A given mask keeps its area color in all three plots. <strong>Save masks… → Color by object</strong> uses those same displayed object colors in its preview and output.</p>
 </section>
 <section id="masks-overlays-and-dataset-export">
 <h2>Masks, overlays and dataset export<a class="headerlink" href="#masks-overlays-and-dataset-export" title="Link to this heading">#</a></h2>
@@ -754,148 +776,156 @@ Current illustrated <a class="reference internal" href="features/cleaning.html">
 <td><p>Make one object red at 40% opacity.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Assign mask colors</p></td>
-<td><p>Use default group colors or the fixed 20-color lookup table by object/group.</p></td>
-<td><p>Use distinct colors for overlapping particles, preserving their IDs.</p></td>
+<td><p>Choose group colors, preset colors or a measurement palette.</p></td>
+<td><p>Color all masks by perimeter using 32 colors.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Vertices / deletion radius</p></td>
-<td><p>Move existing vertices; Delete removes the nearest vertex within a configurable radius in the selected object only.</p></td>
-<td><p>Use a 20-image-pixel deletion radius; neighboring objects stay unchanged.</p></td>
+<tr class="row-even"><td><p>Edit &gt; Delete vertex / Vertex deletion radius</p></td>
+<td><p>Remove the nearest eligible vertex in the selected polygon or contour.</p></td>
+<td><p>Click near a vertex and use a 20-image-pixel deletion radius.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Edit &gt; Fill holes / Smooth edges</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Delete objects</p></td>
+<td><p>Delete the selected annotations.</p></td>
+<td><p>Select two unwanted annotations and use the object-delete button.</p></td>
+</tr>
+<tr class="row-even"><td><p>Edit &gt; Add / Edit / Remove scale bar</p></td>
+<td><p>Preview and save a scale bar on the canvas.</p></td>
+<td><p>Set a 50 nm bar in the lower-right corner.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edit &gt; Filament</p></td>
+<td><p>Mark a group as Filament and connect visible ends across gaps.</p></td>
+<td><p>Link two masks of a bent fiber separated by an occlusion.</p></td>
+</tr>
+<tr class="row-even"><td><p>Edit &gt; Fill holes / Smooth edges</p></td>
 <td><p>Preview exact hole filling or smooth editable cubic contours.</p></td>
 <td><p>Smooth a jagged outline and compare the area before Apply.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Rotate image</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Rotate image</p></td>
 <td><p>Rotate pixels and annotations together; optionally enlarge to a rectangle/square and fill padding.</p></td>
 <td><p>Rotate 30 degrees, select square padding and neighbor fill, then inspect the preview.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Edit &gt; Scale masks / savepoints</p></td>
+<tr class="row-even"><td><p>Edit &gt; Scale masks / savepoints</p></td>
 <td><p>Uniformly scale selected masks or a group about each object centroid.</p></td>
 <td><p>Create original and 1.10x savepoints; restore original if objects grow too far.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Morphology / inner region</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Morphology / inner region</p></td>
 <td><p>Assign morphology and explicit outer/core/cavity links for applicable measurements.</p></td>
 <td><p>Link a separate core mask to its enclosing particle before measuring shell thickness.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Models &gt; Model manager</p></td>
+<tr class="row-even"><td><p>Models &gt; Model manager</p></td>
 <td><p>Choose family, variant, compatible checkpoint and CPU or Conda CUDA device.</p></td>
 <td><p>Download SAM2.1 Tiny for CPU; a local checkpoint must match the selected architecture.</p></td>
 </tr>
-<tr class="row-even"><td><p>Models &gt; Segmentation options</p></td>
-<td><p>Set candidate-grid density, minimum model score/area and maximum masks.</p></td>
-<td><p>Increase grid density when small objects fall between sparse sample points.</p></td>
+<tr class="row-odd"><td><p>Models &gt; Segmentation options</p></td>
+<td><p>Set candidate options and an optional target size range.</p></td>
+<td><p>Use a maximum ECD of 20 nm in a calibrated image.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Models &gt; Text prompt aliases</p></td>
+<tr class="row-even"><td><p>Models &gt; Text prompt aliases</p></td>
 <td><p>Map complete phrases to an effective prompt, without retraining.</p></td>
 <td><p>Map nanoparticle and powder to big dots; the resolved phrase appears in the tooltip.</p></td>
 </tr>
-<tr class="row-even"><td><p>Run preview / Accept masks / Cancel</p></td>
+<tr class="row-odd"><td><p>Run preview / Accept masks / Cancel</p></td>
 <td><p>Generate a disposable preview, commit eligible masks or cancel pending work.</p></td>
 <td><p>Add two positive examples and one negative example; Accept only after inspection.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Remove selected image area</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Remove selected image area</p></td>
 <td><p>Retain removals as visible, reversible cleaning objects.</p></td>
 <td><p>Remove a contamination spot, then choose a fill method.</p></td>
 </tr>
-<tr class="row-even"><td><p>Object context &gt; Delete for cleaning</p></td>
+<tr class="row-odd"><td><p>Object context &gt; Delete for cleaning</p></td>
 <td><p>Convert an unlocked area object into a cleaning region while in Clean mode.</p></td>
 <td><p>Use a drawn mask to remove an unwanted particle from the derived image.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Restore selected area / all edits</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Restore selected area / all edits</p></td>
 <td><p>Restore pixels while retaining other valid cleaning records.</p></td>
 <td><p>Restore a small removed area without erasing a separate filled region.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Fill from neighboring pixels</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Fill from neighboring pixels</p></td>
 <td><p>Estimate fill values from nearby available pixels.</p></td>
 <td><p>Fill a small isolated background spot.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Fill with LaMa</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Fill with LaMa</p></td>
 <td><p>Run asynchronous model-based inpainting inside the requested region.</p></td>
 <td><p>Preview a larger removed contamination region; pixels outside it stay exact.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Background patches</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Background patches</p></td>
 <td><p>Tile source pixels from a selected manual background group.</p></td>
 <td><p>Choose a group named Clean support; its name need not be Background.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Choose / Add / Clear background group</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Choose / Add / Clear background group</p></td>
 <td><p>Select manually drawn polygon/rectangle/ellipse background areas, or clear that selection.</p></td>
 <td><p>Select several clean background patches; reject sources intersecting processed pixels.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Brush radius</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Brush radius</p></td>
 <td><p>Set the radius of the point cleaning brush, independently of SAM point prompts.</p></td>
 <td><p>Use a small brush to remove a thin mark in Clean mode.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Show cleaning regions</p></td>
+<tr class="row-even"><td><p>Show cleaning regions</p></td>
 <td><p>Hide/show the display of cleaning objects; deleting a cleaning object restores its pixels.</p></td>
 <td><p>Hide the removal outline to inspect a filled region.</p></td>
 </tr>
-<tr class="row-even"><td><p>Processing &gt; Denoise</p></td>
-<td><p>Preview TV, TV Bregman, sparse wavelet, non-local means, bilateral or median restoration.</p></td>
+<tr class="row-odd"><td><p>Processing &gt; Denoise</p></td>
+<td><p>Preview restoration and open the Denoising parameters chapter.</p></td>
 <td><p>Compare a TV weight of 0.08 against the original before Apply.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Processing &gt; Smooth (Gaussian)</p></td>
+<tr class="row-even"><td><p>Processing &gt; Smooth (Gaussian)</p></td>
 <td><p>Select an odd kernel size and sigma.</p></td>
 <td><p>Use kernel 5 and sigma 1 for a small spatial smoothing operation.</p></td>
 </tr>
-<tr class="row-even"><td><p>Processing &gt; Crop selected region / masks</p></td>
+<tr class="row-odd"><td><p>Processing &gt; Crop selected region / masks</p></td>
 <td><p>Retain real pixels in the mask bounding rectangle plus 3 pixels of context.</p></td>
 <td><p>Store an irregular particle and its real surrounding background; no artificial black corners are added.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Processing &gt; Retained crops / paste back</p></td>
+<tr class="row-even"><td><p>Processing &gt; Retained crops / paste back</p></td>
 <td><p>Protect/release, export, remove or paste retained crop snapshots.</p></td>
 <td><p>Denoise the rest of the image, then paste the preserved rectangular patch back.</p></td>
 </tr>
-<tr class="row-even"><td><p>Processing &gt; Add noise</p></td>
+<tr class="row-odd"><td><p>Processing &gt; Add noise</p></td>
 <td><p>Add reproducible Gaussian, Poisson or salt-and-pepper noise with adjustable strength/seed.</p></td>
 <td><p>Use a fixed seed to compare two denoisers on the same synthetic noise.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Export &gt; COCO dataset</p></td>
+<tr class="row-even"><td><p>Export &gt; COCO dataset</p></td>
 <td><p>Write exact masks, groups, calibration, attributes and cleaning extensions.</p></td>
 <td><p>Export all open images with an uncleaned image and a separate processed-image copy.</p></td>
 </tr>
-<tr class="row-even"><td><p>Export &gt; YOLO dataset</p></td>
+<tr class="row-odd"><td><p>Export &gt; YOLO dataset</p></td>
 <td><p>Export polygons with explicit handling of holes/disconnected masks.</p></td>
 <td><p>Choose COCO for exact holes, or explicitly review a lossy YOLO conversion.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Save masks / Transparent mask images</p></td>
+<tr class="row-even"><td><p>Save masks / Transparent mask images</p></td>
 <td><p>Choose binary, overlap-weighted grayscale, color masks, labels, overlay, opacity and alpha options.</p></td>
 <td><p>Keep binary masks for training and export a transparent colored overlay for presentation.</p></td>
 </tr>
-<tr class="row-even"><td><p>File &gt; Save original / processed images</p></td>
+<tr class="row-odd"><td><p>File &gt; Save original / processed images</p></td>
 <td><p>Save the acquired image, current processed image or both as TIFF.</p></td>
 <td><p>Keep the acquired TIFF and save a rotated/denoised derivative separately.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Statistics &gt; Plot Object Statistics</p></td>
-<td><p>Choose up to nine metrics, adjust axes/colors and resize the plotted area.</p></td>
-<td><p>Plot ECD, circularity and area together; rename X/Y axes and change bar colors.</p></td>
+<tr class="row-even"><td><p>Statistics &gt; Plot Object Statistics</p></td>
+<td><p>Choose an image scope and up to nine metrics.</p></td>
+<td><p>Plot ECD and perimeter for a named image group, with points colored by mask area.</p></td>
 </tr>
-<tr class="row-even"><td><p>Statistics &gt; Edit image calibration</p></td>
+<tr class="row-odd"><td><p>Statistics &gt; Edit image calibration</p></td>
 <td><p>Enter X/Y physical pixel size and length unit.</p></td>
 <td><p>Use X=0.2 nm and Y=0.3 nm when pixels are anisotropic.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Statistics &gt; Export plot / Export statistics</p></td>
-<td><p>Save a visual plot or all/a subset of numeric metrics independently.</p></td>
-<td><p>Display three metrics but save all 32 available choices and summary tables.</p></td>
+<tr class="row-even"><td><p>Statistics &gt; Export plot / Export statistics</p></td>
+<td><p>Save a visual plot or choose which numerical metrics to export.</p></td>
+<td><p>Display three metrics and save all measurements and summary tables.</p></td>
 </tr>
-<tr class="row-even"><td><p>View &gt; Masks / Contours / Prompts / Panels</p></td>
+<tr class="row-odd"><td><p>View &gt; Masks / Contours / Prompts / Panels</p></td>
 <td><p>Adjust visibility and reopen hidden docks.</p></td>
 <td><p>Hide prompt markers while inspecting a mask, then reopen the Objects panel.</p></td>
 </tr>
-<tr class="row-odd"><td><p>View &gt; Toolbar icon size</p></td>
+<tr class="row-even"><td><p>View &gt; Toolbar icon size</p></td>
 <td><p>Adjust drawing-tool icon sizes. Undo/Redo retain their enlarged controls.</p></td>
 <td><p>Use Large icons on a high-resolution display.</p></td>
 </tr>
-<tr class="row-even"><td><p>Plugin &gt; Install / Manage</p></td>
+<tr class="row-odd"><td><p>Plugin &gt; Install / Manage</p></td>
 <td><p>Install a local plugin folder; enable, disable, reload or remove it.</p></td>
 <td><p>Disable a plugin that fails to load, without changing images or annotations.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Help &gt; User manual (PDF) / Quick start</p></td>
-<td><p>Open this complete English manual inside the GUI or view a short reminder.</p></td>
-<td><p>Use the PDF fit-width and zoom controls to inspect an example.</p></td>
-</tr>
-<tr class="row-even"><td><p>Help &gt; Diagnostics / versions</p></td>
-<td><p>Inspect runtime versions and the current platform.</p></td>
-<td><p>Record diagnostics when reporting a model-loading failure.</p></td>
+<tr class="row-even"><td><p>Help &gt; User Manual</p></td>
+<td><p>Open the English manual for the running app version.</p></td>
+<td><p>Jump to Denoising parameters inside the manual.</p></td>
 </tr>
 </tbody>
 </table>
@@ -932,10 +962,10 @@ Current illustrated <a class="reference internal" href="features/cleaning.html">
 <td><p>Edit existing object</p></td>
 </tr>
 <tr class="row-odd"><td><p>Delete</p></td>
-<td><p>Delete selected object or an eligible selected vertex</p></td>
+<td><p>Delete vertex in Edit mode. Delete objects in other modes.</p></td>
 </tr>
 <tr class="row-even"><td><p>Esc</p></td>
-<td><p>Cancel drawing / prompt preview / running task</p></td>
+<td><p>Cancel a filament connection, drawing, prompt preview or running task</p></td>
 </tr>
 <tr class="row-odd"><td><p>F</p></td>
 <td><p>Reset magnification / fit image</p></td>
@@ -969,6 +999,643 @@ Current illustrated <a class="reference internal" href="features/cleaning.html">
 <p>SPORCO: https://sporco.readthedocs.io/</p>
 <p>BM3D package and licensing: https://pypi.org/project/bm3d/</p>
 </section>
+<section id="denoising-parameters">
+<h2>Denoising parameters<a class="headerlink" href="#denoising-parameters" title="Link to this heading">#</a></h2>
+<section id="workflow-and-physical-interpretation">
+<h3>Workflow and physical interpretation<a class="headerlink" href="#workflow-and-physical-interpretation" title="Link to this heading">#</a></h3>
+<p>Choose Processing &gt; Denoise, select a method and review the controls. Each parameter has an in-dialog ? explanation. The side panel and this guide contain all exposed controls, defaults and suggested values. These are starting points for comparisons, not specimen-specific optimal settings. Defaults reload on each open or method change. Preview first; Apply creates a reversible image record. Keep the acquired source for comparison and save the native .sam.json for exact editable recovery.</p>
+<p>Use whole image or selected region/object masks. Algorithms see the current full image as context, and final compositing changes only the target. Protected retained crop rectangles and pending removed pixels are excluded from Apply. Selecting a target does not train a neural model only inside that mask: training uses the full selected input image plane. To train only on a patch, export/open that patch first. Choose original pixels to process the uncleaned image in its current orientation.</p>
+<p>Unsigned integers normalize to their full dtype range, signed integers to their full type range. Floating inputs already within [0,1] keep [0,1]; other finite floats normalize using observed min/max. All algorithm sigma/threshold/fidelity values refer to these normalized units. For example, sigma 0.04 means approximately 10.2 counts for uint8, or 2621.4 for uint16. If a uint16 detector only uses 0-4095, scale sigma by the full 65535 range or convert deliberately before processing; display brightness is not the processing normalization. Outputs clip to [0,1], then convert to the original type with integer rounding. RGB channels are independent spatial planes. Alpha and outside-target pixels remain exact. No automatic change to acquired image dimensions occurs.</p>
+<p>For a first comparison, estimate noise in a plausibly uniform area, preserve a crop of fine details and try wavelet, NLM and TV. Repeated particles can benefit from patch methods. Gaussian-noise assumptions may be poor for shot noise, stripes, scan drift, correlated artifacts or dose-dependent contrast. Check particle area, edges and lattice features against original pixels; low training loss alone does not establish correctness. Synthetic tests in the validation report are algorithm checks, not universal SEM/TEM accuracy claims.</p>
+</section>
+<section id="dct-and-tv-reconstruction-versus-denoising">
+<h3>DCT and TV: reconstruction versus denoising<a class="headerlink" href="#dct-and-tv-reconstruction-versus-denoising" title="Link to this heading">#</a></h3>
+<p>Reconstruct simulates a sampling experiment from the input: one spatial mask, shared across RGB channels, retains a fraction of observed positions. Random sampling uses np.random.default_rng(seed), without replacement, with max(1, round(fraction<em>H</em>W)) positions. Grid sampling approximates the requested fraction and may have a slightly different count. Missing values initialize by nearest observed neighbor using a Euclidean distance transform, or zero. The notebook comparison uses random 10%, seed 7, nearest initialization and 40 iterations.</p>
+<p>DCT uses scipy.fft.dctn/idctn with norm=’ortho’, axes=(-2,-1), over each full channel plane. It retains coefficients whose absolute value is at least the kth largest threshold, where k=max(1,round(sparsity_fraction<em>H</em>W)); ties can retain more than k. The threshold is recomputed every iteration. It is global hard thresholding, with no blocks. After inverse DCT, update observed positions and clip to [0,1].</p>
+<p>Iterative TV uses forward horizontal/vertical differences with repeated final columns/rows (zero final forward difference). magnitude=sqrt(gx<em>gx+gy</em>gy+gradient_epsilon). Divide each gradient by magnitude, take the backward divergence and form clip(estimate+tv_step*divergence,0,1). Then apply data consistency and clip again. There is no separate lambda. tv_step is not the weight of denoise_tv_chambolle. Large explicit steps can oscillate; denoise defaults to 0.01, while the notebook reconstruction preset retains 0.08.</p>
+<p>At sampled positions residual=observed-proposal. L2 update is residual, L1 update is delta*sign(residual), Huber update is clip(residual,-delta,delta). These reproduce the supplied notebook update rules; they are not interchangeable generic optimizer loss implementations. In reconstruction the update strength is one. Full-sampling L2 therefore returns the input and is not a denoiser. In Denoise every pixel participates but the update is multiplied by fidelity_step &lt; 1, retaining a prior contribution. With L2 this is proposal=(1-eta)<em>prior+eta</em>observed. Denoise initializes from observed pixels and ignores sampling/initialization controls.</p>
+<p>The Notebook reconstruction preset also sets a max-side cap of 256, without enlarging small images. The original notebook converted to RGB/float32 and divided uint8 by 255. Here native grayscale/RGB/uint16 inputs preserve their channel/dtype contract; unsigned-byte RGB has the same normalization. A cap uses area downsampling and linear interpolation back onto the original grid. This is a resolution experiment, not a claim of recovering original high-frequency detail. Leave max_side at 0 for native resolution. For full-sampling identity checks use cap 0.</p>
+</section>
+<section id="how-to-read-each-parameter-entry">
+<h3>How to read each parameter entry<a class="headerlink" href="#how-to-read-each-parameter-entry" title="Link to this heading">#</a></h3>
+<p>Default is the value restored when the dialog opens or the method changes. Range/options are accepted by the GUI and validator; a legal endpoint is not necessarily a sensible specimen setting. Suggested start provides a practical comparison range. Iteration counts are maxima for convergent library solvers and fixed counts for notebook DCT/TV. Spatial sizes are image pixels regardless of display zoom. Intensity quantities use normalized units described above. Disabled fields are retained for switching modes but ignored by that mode. Restore defaults clears custom parameter values without applying an image operation.</p>
+</section>
+<section id="tv-restoration">
+<h3>TV restoration<a class="headerlink" href="#tv-restoration" title="Link to this heading">#</a></h3>
+<p>Use as a baseline for relatively uniform particle regions. Higher weight removes more variation but can flatten gradients and introduce staircase-like appearance. scikit-image Chambolle TV is different from the explicit notebook TV loop.</p>
+<section id="weight">
+<h4>weight<a class="headerlink" href="#weight" title="Link to this heading">#</a></h4>
+<p>Default: 0.08. Allowed range: 0.0001 to 2.0.</p>
+<p>Chambolle TV regularization weight on normalized intensities. Larger weights smooth more. This is not the notebook TV iteration step.</p>
+<p>Suggested start: Start 0.03-0.12; compare particle boundaries and texture.</p>
+</section>
+<section id="iterations">
+<h4>iterations<a class="headerlink" href="#iterations" title="Link to this heading">#</a></h4>
+<p>Default: 100. Allowed range: 1 to 2000.</p>
+<p>Maximum Chambolle iterations; convergence may stop earlier.</p>
+<p>Suggested start: 100; increase to 200 if convergence is incomplete.</p>
+</section>
+<section id="tolerance">
+<h4>tolerance<a class="headerlink" href="#tolerance" title="Link to this heading">#</a></h4>
+<p>Default: 0.0002. Allowed range: 1e-06 to 0.1.</p>
+<p>Relative change stopping tolerance passed as eps.</p>
+<p>Suggested start: 0.0002; smaller values take longer.</p>
+</section>
+</section>
+<section id="tv-bregman-restoration">
+<h3>TV Bregman restoration<a class="headerlink" href="#tv-bregman-restoration" title="Link to this heading">#</a></h3>
+<p>This alternate TV solver uses the inverse weight convention. Lower weight increases smoothing. Do not transfer Chambolle weight values numerically.</p>
+<section id="id1">
+<h4>weight<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<p>Default: 5.0. Allowed range: 0.01 to 100.0.</p>
+<p>Split-Bregman fidelity weight. Its convention is inverse to denoising strength: smaller values smooth more. It is not interchangeable with Chambolle weight.</p>
+<p>Suggested start: Start 2-10, default 5.</p>
+</section>
+<section id="id2">
+<h4>iterations<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<p>Default: 100. Allowed range: 1 to 2000.</p>
+<p>Maximum Split-Bregman iterations.</p>
+<p>Suggested start: 100-200.</p>
+</section>
+<section id="id3">
+<h4>tolerance<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
+<p>Default: 0.001. Allowed range: 1e-06 to 0.1.</p>
+<p>Absolute change tolerance (eps).</p>
+<p>Suggested start: 0.001.</p>
+</section>
+<section id="isotropic">
+<h4>isotropic<a class="headerlink" href="#isotropic" title="Link to this heading">#</a></h4>
+<p>Default: True. Options: true / false.</p>
+<p>Use isotropic TV; false uses directional anisotropic TV.</p>
+<p>Suggested start: True for general particle outlines.</p>
+</section>
+</section>
+<section id="wavelet-sparse-restoration">
+<h3>Wavelet sparse restoration<a class="headerlink" href="#wavelet-sparse-restoration" title="Link to this heading">#</a></h3>
+<p>Small coefficients are shrunk using PyWavelets/scikit-image. Sigma estimation assumes a high-frequency noise component; fine lattice structure can inflate it. Requested levels are capped by wavelet support/image size; too-small images produce a clear error.</p>
+<section id="sigma">
+<h4>sigma<a class="headerlink" href="#sigma" title="Link to this heading">#</a></h4>
+<p>Default: 0.04. Allowed range: 0.0 to 1.0.</p>
+<p>Gaussian noise standard deviation in normalized intensity units; ignored when estimate_sigma is enabled.</p>
+<p>Suggested start: Estimate sigma first; otherwise try 0.01-0.08.</p>
+</section>
+<section id="estimate-sigma">
+<h4>estimate_sigma<a class="headerlink" href="#estimate-sigma" title="Link to this heading">#</a></h4>
+<p>Default: False. Options: true / false.</p>
+<p>Estimate Gaussian sigma from high-frequency wavelet coefficients.</p>
+<p>Suggested start: Enable for a first comparison when noise level is unknown.</p>
+</section>
+<section id="levels">
+<h4>levels<a class="headerlink" href="#levels" title="Link to this heading">#</a></h4>
+<p>Default: 2. Allowed range: 1 to 6.</p>
+<p>Requested decomposition depth, capped by image size and wavelet support.</p>
+<p>Suggested start: 1-3; default 2.</p>
+</section>
+<section id="wavelet">
+<h4>wavelet<a class="headerlink" href="#wavelet" title="Link to this heading">#</a></h4>
+<p>Default: db2. Options: db2, haar, sym4, coif1.</p>
+<p>PyWavelets wavelet family.</p>
+<p>Suggested start: db2 or sym4; Haar is a simple edge-oriented baseline.</p>
+</section>
+<section id="threshold-rule">
+<h4>threshold_rule<a class="headerlink" href="#threshold-rule" title="Link to this heading">#</a></h4>
+<p>Default: BayesShrink. Options: BayesShrink, VisuShrink.</p>
+<p>Adaptive BayesShrink or universal VisuShrink threshold.</p>
+<p>Suggested start: BayesShrink. VisuShrink often smooths more.</p>
+</section>
+<section id="threshold-mode">
+<h4>threshold_mode<a class="headerlink" href="#threshold-mode" title="Link to this heading">#</a></h4>
+<p>Default: soft. Options: soft, hard.</p>
+<p>Soft shrinks retained coefficients; hard only removes coefficients below threshold.</p>
+<p>Suggested start: Soft for a conservative baseline; inspect ringing with hard.</p>
+</section>
+</section>
+<section id="non-local-means">
+<h3>Non-local means<a class="headerlink" href="#non-local-means" title="Link to this heading">#</a></h3>
+<p>Repeated local appearance supplies averaging evidence. Stronger filtering can merge genuinely different weak structures. Search radius increases computation. Fast and reference modes can differ numerically.</p>
+<section id="strength">
+<h4>strength<a class="headerlink" href="#strength" title="Link to this heading">#</a></h4>
+<p>Default: 0.08. Allowed range: 0.001 to 1.0.</p>
+<p>Filter bandwidth h in normalized intensity units. Larger values combine less-similar patches.</p>
+<p>Suggested start: About 0.8-1.2 times a credible Gaussian sigma; compare 0.02-0.10.</p>
+</section>
+<section id="id4">
+<h4>sigma<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<p>Default: 0.03. Allowed range: 0.0 to 1.0.</p>
+<p>Gaussian noise sigma used for patch-distance correction; zero disables this correction.</p>
+<p>Suggested start: Use a measured/estimated value, typically 0.01-0.08.</p>
+</section>
+<section id="patch-size">
+<h4>patch_size<a class="headerlink" href="#patch-size" title="Link to this heading">#</a></h4>
+<p>Default: 5. Allowed range: 1 to 15.</p>
+<p>Odd square patch side in pixels.</p>
+<p>Suggested start: 3, 5 or 7; default 5.</p>
+</section>
+<section id="search-distance">
+<h4>search_distance<a class="headerlink" href="#search-distance" title="Link to this heading">#</a></h4>
+<p>Default: 6. Allowed range: 1 to 25.</p>
+<p>Search radius in pixels; comparisons cover a (2r+1) square neighborhood.</p>
+<p>Suggested start: 6-11 for repeated local structures.</p>
+</section>
+<section id="fast-mode">
+<h4>fast_mode<a class="headerlink" href="#fast-mode" title="Link to this heading">#</a></h4>
+<p>Default: True. Options: true / false.</p>
+<p>Use scikit-image fast NLM; false uses the slower reference approach.</p>
+<p>Suggested start: True for interactive work.</p>
+</section>
+</section>
+<section id="bilateral-denoise">
+<h3>Bilateral denoise<a class="headerlink" href="#bilateral-denoise" title="Link to this heading">#</a></h3>
+<p>A fast spatial/intensity baseline. The per-channel implementation preserves the RGB contract but does not perform vector-color patch matching.</p>
+<section id="sigma-color">
+<h4>sigma_color<a class="headerlink" href="#sigma-color" title="Link to this heading">#</a></h4>
+<p>Default: 0.05. Allowed range: 0.001 to 1.0.</p>
+<p>Intensity similarity scale on normalized pixels.</p>
+<p>Suggested start: 0.02-0.10; smaller values preserve stronger edges.</p>
+</section>
+<section id="sigma-spatial">
+<h4>sigma_spatial<a class="headerlink" href="#sigma-spatial" title="Link to this heading">#</a></h4>
+<p>Default: 3.0. Allowed range: 0.1 to 20.0.</p>
+<p>Spatial Gaussian sigma in image pixels.</p>
+<p>Suggested start: 1-5; default 3.</p>
+</section>
+</section>
+<section id="median-denoise">
+<h3>Median denoise<a class="headerlink" href="#median-denoise" title="Link to this heading">#</a></h3>
+<p>Useful for sparse impulse artifacts; wide windows can remove small real particles. Kernel 1 is an intentional identity setting.</p>
+<section id="kernel-size">
+<h4>kernel_size<a class="headerlink" href="#kernel-size" title="Link to this heading">#</a></h4>
+<p>Default: 3. Allowed range: 1 to 31.</p>
+<p>Odd median window side in pixels. A kernel of 1 leaves the image unchanged.</p>
+<p>Suggested start: 3; use 5 only after checking small-particle loss.</p>
+</section>
+</section>
+<section id="dct-sparsity">
+<h3>DCT sparsity<a class="headerlink" href="#dct-sparsity" title="Link to this heading">#</a></h3>
+<p>Start with native resolution and compare sparsity fractions. Hard global thresholds can ring around sharp boundaries or erase weak structure. The mask in Reconstruct is generated from input pixels; this UI does not import a separate external missing-pixel mask.</p>
+<section id="task">
+<h4>task<a class="headerlink" href="#task" title="Link to this heading">#</a></h4>
+<p>Default: denoise. Options: denoise, reconstruct.</p>
+<p>Denoise uses every input pixel with relaxed fidelity. Reconstruct simulates missing pixels using a sampling mask and hard notebook data consistency.</p>
+<p>Suggested start: denoise for ordinary complete SEM/TEM images; reconstruct for sampling experiments.</p>
+</section>
+<section id="id5">
+<h4>iterations<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
+<p>Default: 40. Allowed range: 1 to 1000.</p>
+<p>Number of prior/fidelity iterations.</p>
+<p>Suggested start: 40 as in the notebook; compare 20-100.</p>
+</section>
+<section id="data-loss">
+<h4>data_loss<a class="headerlink" href="#data-loss" title="Link to this heading">#</a></h4>
+<p>Default: l2. Options: l2, l1, huber.</p>
+<p>L2 uses residual; L1 uses delta*sign(residual); Huber clips residual to +/-delta.</p>
+<p>Suggested start: l2 initially; compare huber for occasional large residuals.</p>
+</section>
+<section id="fidelity-step">
+<h4>fidelity_step<a class="headerlink" href="#fidelity-step" title="Link to this heading">#</a></h4>
+<p>Default: 0.2. Allowed range: 0.0 to 0.99.</p>
+<p>Denoise-only relaxation strength. The prior proposal is pulled partway toward the noisy input, not restored exactly.</p>
+<p>Suggested start: 0.1-0.4. Higher values retain more input noise; never 1 in denoise mode.</p>
+</section>
+<section id="huber-delta">
+<h4>huber_delta<a class="headerlink" href="#huber-delta" title="Link to this heading">#</a></h4>
+<p>Default: 0.05. Allowed range: 1e-06 to 1.0.</p>
+<p>Normalized residual update scale for L1 and Huber; ignored for L2.</p>
+<p>Suggested start: 0.05 as in the notebook; compare 0.01-0.10.</p>
+</section>
+<section id="sample-fraction">
+<h4>sample_fraction<a class="headerlink" href="#sample-fraction" title="Link to this heading">#</a></h4>
+<p>Default: 0.1. Allowed range: 0.001 to 1.0.</p>
+<p>Reconstruct-only fraction of observed pixel positions. Random sampling is without replacement. At 1 with L2, reconstruction returns the input.</p>
+<p>Suggested start: 0.10 for notebook comparison; this is not a denoising strength.</p>
+</section>
+<section id="sampling-method">
+<h4>sampling_method<a class="headerlink" href="#sampling-method" title="Link to this heading">#</a></h4>
+<p>Default: random. Options: random, grid.</p>
+<p>Reconstruct-only random positions or a regular grid; a single mask is shared by RGB channels.</p>
+<p>Suggested start: random for the notebook preset.</p>
+</section>
+<section id="random-seed">
+<h4>random_seed<a class="headerlink" href="#random-seed" title="Link to this heading">#</a></h4>
+<p>Default: 7. Allowed range: 0 to 2147483647.</p>
+<p>Seed for reconstruct-mode sample positions.</p>
+<p>Suggested start: 7 for the notebook preset.</p>
+</section>
+<section id="initialization">
+<h4>initialization<a class="headerlink" href="#initialization" title="Link to this heading">#</a></h4>
+<p>Default: nearest. Options: nearest, zeros.</p>
+<p>Reconstruct-only missing-pixel initialization. Denoise always starts from the observed image.</p>
+<p>Suggested start: nearest, matching the notebook.</p>
+</section>
+<section id="max-side">
+<h4>max_side<a class="headerlink" href="#max-side" title="Link to this heading">#</a></h4>
+<p>Default: 0. Allowed range: 0 to 4096.</p>
+<p>Optional processing resolution cap. 0 uses the native grid. A smaller cap downsamples before processing and interpolates the result back to the original grid.</p>
+<p>Suggested start: 0 for native-resolution SEM/TEM; 256 only for a notebook-resolution comparison.</p>
+</section>
+<section id="sparsity-fraction">
+<h4>sparsity_fraction<a class="headerlink" href="#sparsity-fraction" title="Link to this heading">#</a></h4>
+<p>Default: 0.08. Allowed range: 0.001 to 1.0.</p>
+<p>Retained fraction of full-image 2D DCT coefficients. The hard threshold is recalculated each iteration; threshold ties can retain additional coefficients.</p>
+<p>Suggested start: 0.08 as in the notebook; compare 0.04-0.20. Inspect ringing and weak details.</p>
+</section>
+</section>
+<section id="tv-iterative-notebook">
+<h3>TV iterative (notebook)<a class="headerlink" href="#tv-iterative-notebook" title="Link to this heading">#</a></h3>
+<p>Use Denoise for complete SEM/TEM images. Step 0.01 is a conservative starting point; step 0.08 is retained in the notebook reconstruction preset. Repeated steps do not guarantee monotonic quality improvement.</p>
+<section id="id6">
+<h4>task<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<p>Default: denoise. Options: denoise, reconstruct.</p>
+<p>Denoise uses every input pixel with relaxed fidelity. Reconstruct simulates missing pixels using a sampling mask and hard notebook data consistency.</p>
+<p>Suggested start: denoise for ordinary complete SEM/TEM images; reconstruct for sampling experiments.</p>
+</section>
+<section id="id7">
+<h4>iterations<a class="headerlink" href="#id7" title="Link to this heading">#</a></h4>
+<p>Default: 40. Allowed range: 1 to 1000.</p>
+<p>Number of prior/fidelity iterations.</p>
+<p>Suggested start: 40 as in the notebook; compare 20-100.</p>
+</section>
+<section id="id8">
+<h4>data_loss<a class="headerlink" href="#id8" title="Link to this heading">#</a></h4>
+<p>Default: l2. Options: l2, l1, huber.</p>
+<p>L2 uses residual; L1 uses delta*sign(residual); Huber clips residual to +/-delta.</p>
+<p>Suggested start: l2 initially; compare huber for occasional large residuals.</p>
+</section>
+<section id="id9">
+<h4>fidelity_step<a class="headerlink" href="#id9" title="Link to this heading">#</a></h4>
+<p>Default: 0.2. Allowed range: 0.0 to 0.99.</p>
+<p>Denoise-only relaxation strength. The prior proposal is pulled partway toward the noisy input, not restored exactly.</p>
+<p>Suggested start: 0.1-0.4. Higher values retain more input noise; never 1 in denoise mode.</p>
+</section>
+<section id="id10">
+<h4>huber_delta<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
+<p>Default: 0.05. Allowed range: 1e-06 to 1.0.</p>
+<p>Normalized residual update scale for L1 and Huber; ignored for L2.</p>
+<p>Suggested start: 0.05 as in the notebook; compare 0.01-0.10.</p>
+</section>
+<section id="id11">
+<h4>sample_fraction<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<p>Default: 0.1. Allowed range: 0.001 to 1.0.</p>
+<p>Reconstruct-only fraction of observed pixel positions. Random sampling is without replacement. At 1 with L2, reconstruction returns the input.</p>
+<p>Suggested start: 0.10 for notebook comparison; this is not a denoising strength.</p>
+</section>
+<section id="id12">
+<h4>sampling_method<a class="headerlink" href="#id12" title="Link to this heading">#</a></h4>
+<p>Default: random. Options: random, grid.</p>
+<p>Reconstruct-only random positions or a regular grid; a single mask is shared by RGB channels.</p>
+<p>Suggested start: random for the notebook preset.</p>
+</section>
+<section id="id13">
+<h4>random_seed<a class="headerlink" href="#id13" title="Link to this heading">#</a></h4>
+<p>Default: 7. Allowed range: 0 to 2147483647.</p>
+<p>Seed for reconstruct-mode sample positions.</p>
+<p>Suggested start: 7 for the notebook preset.</p>
+</section>
+<section id="id14">
+<h4>initialization<a class="headerlink" href="#id14" title="Link to this heading">#</a></h4>
+<p>Default: nearest. Options: nearest, zeros.</p>
+<p>Reconstruct-only missing-pixel initialization. Denoise always starts from the observed image.</p>
+<p>Suggested start: nearest, matching the notebook.</p>
+</section>
+<section id="id15">
+<h4>max_side<a class="headerlink" href="#id15" title="Link to this heading">#</a></h4>
+<p>Default: 0. Allowed range: 0 to 4096.</p>
+<p>Optional processing resolution cap. 0 uses the native grid. A smaller cap downsamples before processing and interpolates the result back to the original grid.</p>
+<p>Suggested start: 0 for native-resolution SEM/TEM; 256 only for a notebook-resolution comparison.</p>
+</section>
+<section id="tv-step">
+<h4>tv_step<a class="headerlink" href="#tv-step" title="Link to this heading">#</a></h4>
+<p>Default: 0.01. Allowed range: 0.0001 to 0.24.</p>
+<p>Gradient-divergence iteration step; this is not a TV regularization lambda or Chambolle weight.</p>
+<p>Suggested start: 0.01 for denoising (compare 0.005-0.02). The reconstruction preset uses notebook step 0.08; large steps can oscillate.</p>
+</section>
+<section id="gradient-epsilon">
+<h4>gradient_epsilon<a class="headerlink" href="#gradient-epsilon" title="Link to this heading">#</a></h4>
+<p>Default: 1e-06. Allowed range: 1e-09 to 0.01.</p>
+<p>Positive value added inside sqrt(gx^2+gy^2+epsilon). Forward differences repeat the last row/column.</p>
+<p>Suggested start: 0.000001 as in the notebook.</p>
+</section>
+</section>
+<section id="sparse-dictionary-learning">
+<h3>Sparse dictionary learning<a class="headerlink" href="#sparse-dictionary-learning" title="Link to this heading">#</a></h3>
+<p>A real SPORCO BPDNDictLearn dictionary is fit to seeded patches, using mean-centered data and zero-mean atoms. Inference solves BPDN with the same lambda, restores patch means, includes border patches and averages overlaps. Dictionary update/ADMM tolerances are fixed at 1e-3. Learned dictionaries currently belong to this operation and are not reused as saved neural checkpoints.</p>
+<section id="id16">
+<h4>patch_size<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
+<p>Default: 8. Allowed range: 3 to 24.</p>
+<p>Square image patch side in pixels.</p>
+<p>Suggested start: 6-12; default 8.</p>
+</section>
+<section id="dictionary-atoms">
+<h4>dictionary_atoms<a class="headerlink" href="#dictionary-atoms" title="Link to this heading">#</a></h4>
+<p>Default: 64. Allowed range: 4 to 512.</p>
+<p>Number of dictionary columns. Larger dictionaries represent more patterns and can fit noise.</p>
+<p>Suggested start: 64-128 for 8x8 patches.</p>
+</section>
+<section id="training-patches">
+<h4>training_patches<a class="headerlink" href="#training-patches" title="Link to this heading">#</a></h4>
+<p>Default: 2048. Allowed range: 32 to 20000.</p>
+<p>Maximum randomly selected, mean-centered training patches.</p>
+<p>Suggested start: 1024-4096, with at least as many patches as atoms.</p>
+</section>
+<section id="dictionary-iterations">
+<h4>dictionary_iterations<a class="headerlink" href="#dictionary-iterations" title="Link to this heading">#</a></h4>
+<p>Default: 10. Allowed range: 1 to 100.</p>
+<p>Alternating SPORCO dictionary-learning iterations.</p>
+<p>Suggested start: 10-30; start with 10.</p>
+</section>
+<section id="coding-iterations">
+<h4>coding_iterations<a class="headerlink" href="#coding-iterations" title="Link to this heading">#</a></h4>
+<p>Default: 30. Allowed range: 1 to 500.</p>
+<p>Maximum ADMM iterations per sparse coding/update solve.</p>
+<p>Suggested start: 30-100.</p>
+</section>
+<section id="regularization">
+<h4>regularization<a class="headerlink" href="#regularization" title="Link to this heading">#</a></h4>
+<p>Default: 0.05. Allowed range: 0.0001 to 1.0.</p>
+<p>L1 coefficient penalty lambda for 0.5*||D<em>X-S||^2 + lambda</em>||X||_1.</p>
+<p>Suggested start: 0.02-0.10 after intensity normalization.</p>
+</section>
+<section id="patch-stride">
+<h4>patch_stride<a class="headerlink" href="#patch-stride" title="Link to this heading">#</a></h4>
+<p>Default: 4. Allowed range: 1 to 24.</p>
+<p>Inference patch spacing; it must not exceed patch_size. Edge patches are included.</p>
+<p>Suggested start: Half the patch side; use 1 for more overlap at higher cost.</p>
+</section>
+<section id="inference-batch">
+<h4>inference_batch<a class="headerlink" href="#inference-batch" title="Link to this heading">#</a></h4>
+<p>Default: 256. Allowed range: 16 to 2048.</p>
+<p>Patches sparse-coded together. Controls working memory.</p>
+<p>Suggested start: 128-512.</p>
+</section>
+<section id="id17">
+<h4>random_seed<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
+<p>Default: 7. Allowed range: 0 to 2147483647.</p>
+<p>Seed for initial dictionary and training-patch sampling.</p>
+<p>Suggested start: 7 for repeatable comparisons.</p>
+</section>
+</section>
+<section id="bm3d">
+<h3>BM3D<a class="headerlink" href="#bm3d" title="Link to this heading">#</a></h3>
+<p>Official bm3d 4.0.3 / bm4d 4.2.5 native backend. Gaussian sigma is a standard deviation, not a variance. This backend has academic/non-commercial licensing; installing this application does not replace its upstream terms. See https://pypi.org/project/bm3d/ and the installed bm3d/bm4d licenses. Inputs smaller than 32 pixels on either axis receive reflected context to at least 32x32 before native filtering, then crop back to their original size. This avoids unsafe native block-size edge cases. Cancel becomes effective after the native filtering call returns.</p>
+<section id="id18">
+<h4>sigma<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<p>Default: 0.04. Allowed range: 0.0001 to 0.5.</p>
+<p>Gaussian noise standard deviation in normalized intensity units.</p>
+<p>Suggested start: Estimate the noise; initially compare 0.01-0.08.</p>
+</section>
+<section id="profile">
+<h4>profile<a class="headerlink" href="#profile" title="Link to this heading">#</a></h4>
+<p>Default: np. Options: np, lc.</p>
+<p>Official bm3d normal profile or low-complexity profile.</p>
+<p>Suggested start: np for the main comparison; lc for faster previews.</p>
+</section>
+<section id="stage">
+<h4>stage<a class="headerlink" href="#stage" title="Link to this heading">#</a></h4>
+<p>Default: all. Options: all, hard.</p>
+<p>Both hard-threshold/Wiener stages, or hard-threshold stage only.</p>
+<p>Suggested start: all for final output.</p>
+</section>
+<section id="num-threads">
+<h4>num_threads<a class="headerlink" href="#num-threads" title="Link to this heading">#</a></h4>
+<p>Default: 1. Allowed range: 1 to 32.</p>
+<p>Native BM3D worker threads.</p>
+<p>Suggested start: 1-4; avoid oversubscribing other processing.</p>
+</section>
+</section>
+<section id="noise2void">
+<h3>Noise2Void<a class="headerlink" href="#noise2void" title="Link to this heading">#</a></h3>
+<p>CAREamics 0.3.5 blind-spot self-supervision assumes sufficiently independent noise across neighboring pixels. Correlated scan noise can be learned as signal. Train uses per-plane mean/std normalization internally, undone in prediction. The application disables batch normalization and multiprocessing workers, uses the backend Adam optimizer and default scheduler, and does not enable an experiment logger. Keep sufficient representative training data; one noisy image is a convenience, not a substitute for a dataset/held-out validation.</p>
+<section id="run-mode">
+<h4>run_mode<a class="headerlink" href="#run-mode" title="Link to this heading">#</a></h4>
+<p>Default: train. Options: train, predict.</p>
+<p>Train a blind-spot model on noisy input, or load a previously saved CAREamics model.</p>
+<p>Suggested start: train for a new image; predict only with a compatible trained model.</p>
+</section>
+<section id="model-path">
+<h4>model_path<a class="headerlink" href="#model-path" title="Link to this heading">#</a></h4>
+<p>Default: (empty). Text or filesystem path.</p>
+<p>CAREamics checkpoint path for predict mode. For RGB use a training-output directory with channel_0, channel_1 and channel_2 models.</p>
+<p>Suggested start: Use the checkpoint/directory reported after training.</p>
+</section>
+<section id="output-directory">
+<h4>output_directory<a class="headerlink" href="#output-directory" title="Link to this heading">#</a></h4>
+<p>Default: (empty). Text or filesystem path.</p>
+<p>Optional directory for trained models. Empty uses the application model cache; RGB channels receive separate subdirectories.</p>
+<p>Suggested start: Keep trained models outside source-image folders.</p>
+</section>
+<section id="device">
+<h4>device<a class="headerlink" href="#device" title="Link to this heading">#</a></h4>
+<p>Default: cpu. Options: cpu, cuda, auto.</p>
+<p>Training/inference device. CUDA is permitted only inside Conda; auto selects CUDA there when available.</p>
+<p>Suggested start: cpu for a small trial; use a dedicated Conda GPU environment for larger runs.</p>
+</section>
+<section id="epochs">
+<h4>epochs<a class="headerlink" href="#epochs" title="Link to this heading">#</a></h4>
+<p>Default: 30. Allowed range: 1 to 1000.</p>
+<p>Maximum training epochs.</p>
+<p>Suggested start: 30-100 after a small interface trial; inspect validation behavior.</p>
+</section>
+<section id="steps-per-epoch">
+<h4>steps_per_epoch<a class="headerlink" href="#steps-per-epoch" title="Link to this heading">#</a></h4>
+<p>Default: 20. Allowed range: 1 to 2000.</p>
+<p>Training batches per epoch.</p>
+<p>Suggested start: 20-100; increasing this increases time and exposure to patches.</p>
+</section>
+<section id="id19">
+<h4>patch_size<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
+<p>Default: 64. Allowed range: 16 to 512.</p>
+<p>Training patch side; must fit the image and be divisible by 2^depth.</p>
+<p>Suggested start: 64 or 128; use 32 for a small test.</p>
+</section>
+<section id="batch-size">
+<h4>batch_size<a class="headerlink" href="#batch-size" title="Link to this heading">#</a></h4>
+<p>Default: 8. Allowed range: 1 to 64.</p>
+<p>Training patches per batch.</p>
+<p>Suggested start: 4-16; reduce on limited GPU memory.</p>
+</section>
+<section id="learning-rate">
+<h4>learning_rate<a class="headerlink" href="#learning-rate" title="Link to this heading">#</a></h4>
+<p>Default: 0.0003. Allowed range: 1e-06 to 0.01.</p>
+<p>Adam learning rate.</p>
+<p>Suggested start: 0.0001-0.001, default 0.0003.</p>
+</section>
+<section id="masked-pixel-percentage">
+<h4>masked_pixel_percentage<a class="headerlink" href="#masked-pixel-percentage" title="Link to this heading">#</a></h4>
+<p>Default: 0.2. Allowed range: 0.01 to 10.0.</p>
+<p>Percentage of training pixel positions masked for blind-spot loss; 0.2 means 0.2%, not 20%.</p>
+<p>Suggested start: 0.2-1.5; default follows CAREamics 0.2.</p>
+</section>
+<section id="roi-size">
+<h4>roi_size<a class="headerlink" href="#roi-size" title="Link to this heading">#</a></h4>
+<p>Default: 11. Allowed range: 3 to 31.</p>
+<p>Odd neighborhood side for blind-spot pixel replacement.</p>
+<p>Suggested start: 5-11; default 11.</p>
+</section>
+<section id="depth">
+<h4>depth<a class="headerlink" href="#depth" title="Link to this heading">#</a></h4>
+<p>Default: 2. Allowed range: 1 to 4.</p>
+<p>U-Net downsampling depth.</p>
+<p>Suggested start: 2 for a first trial; 3 for larger patches/data.</p>
+</section>
+<section id="initial-filters">
+<h4>initial_filters<a class="headerlink" href="#initial-filters" title="Link to this heading">#</a></h4>
+<p>Default: 16. Allowed range: 8 to 64.</p>
+<p>Initial U-Net channel count.</p>
+<p>Suggested start: 16-32.</p>
+</section>
+<section id="validation-patches">
+<h4>validation_patches<a class="headerlink" href="#validation-patches" title="Link to this heading">#</a></h4>
+<p>Default: 8. Allowed range: 1 to 128.</p>
+<p>Held-out validation patch count when the input is split automatically.</p>
+<p>Suggested start: 8-32. Same-image validation is not an independent microscopy accuracy study.</p>
+</section>
+<section id="tile-size">
+<h4>tile_size<a class="headerlink" href="#tile-size" title="Link to this heading">#</a></h4>
+<p>Default: 256. Allowed range: 32 to 2048.</p>
+<p>Prediction tile side, padded for small images.</p>
+<p>Suggested start: 256; larger tiles need more memory.</p>
+</section>
+<section id="tile-overlap">
+<h4>tile_overlap<a class="headerlink" href="#tile-overlap" title="Link to this heading">#</a></h4>
+<p>Default: 32. Allowed range: 0 to 256.</p>
+<p>Overlapping prediction context; must be smaller than half the tile side.</p>
+<p>Suggested start: 32 for tile 256.</p>
+</section>
+<section id="id20">
+<h4>random_seed<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
+<p>Default: 7. Allowed range: 0 to 2147483647.</p>
+<p>Seed for training/patch selection. Backend/device differences can still affect numerical reproducibility.</p>
+<p>Suggested start: 7 for comparisons.</p>
+</section>
+</section>
+<section id="n2v2">
+<h3>N2V2<a class="headerlink" href="#n2v2" title="Link to this heading">#</a></h3>
+<p>Uses the official CAREamics use_n2v2=True factory, including its median masking strategy and N2V2 architecture path. It is not ordinary N2V with a changed label. The same parameter interpretation/model persistence rules apply. Same-image validation patches are not an independent image-level assessment.</p>
+<section id="id21">
+<h4>run_mode<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<p>Default: train. Options: train, predict.</p>
+<p>Train a blind-spot model on noisy input, or load a previously saved CAREamics model.</p>
+<p>Suggested start: train for a new image; predict only with a compatible trained model.</p>
+</section>
+<section id="id22">
+<h4>model_path<a class="headerlink" href="#id22" title="Link to this heading">#</a></h4>
+<p>Default: (empty). Text or filesystem path.</p>
+<p>CAREamics checkpoint path for predict mode. For RGB use a training-output directory with channel_0, channel_1 and channel_2 models.</p>
+<p>Suggested start: Use the checkpoint/directory reported after training.</p>
+</section>
+<section id="id23">
+<h4>output_directory<a class="headerlink" href="#id23" title="Link to this heading">#</a></h4>
+<p>Default: (empty). Text or filesystem path.</p>
+<p>Optional directory for trained models. Empty uses the application model cache; RGB channels receive separate subdirectories.</p>
+<p>Suggested start: Keep trained models outside source-image folders.</p>
+</section>
+<section id="id24">
+<h4>device<a class="headerlink" href="#id24" title="Link to this heading">#</a></h4>
+<p>Default: cpu. Options: cpu, cuda, auto.</p>
+<p>Training/inference device. CUDA is permitted only inside Conda; auto selects CUDA there when available.</p>
+<p>Suggested start: cpu for a small trial; use a dedicated Conda GPU environment for larger runs.</p>
+</section>
+<section id="id25">
+<h4>epochs<a class="headerlink" href="#id25" title="Link to this heading">#</a></h4>
+<p>Default: 30. Allowed range: 1 to 1000.</p>
+<p>Maximum training epochs.</p>
+<p>Suggested start: 30-100 after a small interface trial; inspect validation behavior.</p>
+</section>
+<section id="id26">
+<h4>steps_per_epoch<a class="headerlink" href="#id26" title="Link to this heading">#</a></h4>
+<p>Default: 20. Allowed range: 1 to 2000.</p>
+<p>Training batches per epoch.</p>
+<p>Suggested start: 20-100; increasing this increases time and exposure to patches.</p>
+</section>
+<section id="id27">
+<h4>patch_size<a class="headerlink" href="#id27" title="Link to this heading">#</a></h4>
+<p>Default: 64. Allowed range: 16 to 512.</p>
+<p>Training patch side; must fit the image and be divisible by 2^depth.</p>
+<p>Suggested start: 64 or 128; use 32 for a small test.</p>
+</section>
+<section id="id28">
+<h4>batch_size<a class="headerlink" href="#id28" title="Link to this heading">#</a></h4>
+<p>Default: 8. Allowed range: 1 to 64.</p>
+<p>Training patches per batch.</p>
+<p>Suggested start: 4-16; reduce on limited GPU memory.</p>
+</section>
+<section id="id29">
+<h4>learning_rate<a class="headerlink" href="#id29" title="Link to this heading">#</a></h4>
+<p>Default: 0.0003. Allowed range: 1e-06 to 0.01.</p>
+<p>Adam learning rate.</p>
+<p>Suggested start: 0.0001-0.001, default 0.0003.</p>
+</section>
+<section id="id30">
+<h4>masked_pixel_percentage<a class="headerlink" href="#id30" title="Link to this heading">#</a></h4>
+<p>Default: 0.2. Allowed range: 0.01 to 10.0.</p>
+<p>Percentage of training pixel positions masked for blind-spot loss; 0.2 means 0.2%, not 20%.</p>
+<p>Suggested start: 0.2-1.5; default follows CAREamics 0.2.</p>
+</section>
+<section id="id31">
+<h4>roi_size<a class="headerlink" href="#id31" title="Link to this heading">#</a></h4>
+<p>Default: 11. Allowed range: 3 to 31.</p>
+<p>Odd neighborhood side for blind-spot pixel replacement.</p>
+<p>Suggested start: 5-11; default 11.</p>
+</section>
+<section id="id32">
+<h4>depth<a class="headerlink" href="#id32" title="Link to this heading">#</a></h4>
+<p>Default: 2. Allowed range: 1 to 4.</p>
+<p>U-Net downsampling depth.</p>
+<p>Suggested start: 2 for a first trial; 3 for larger patches/data.</p>
+</section>
+<section id="id33">
+<h4>initial_filters<a class="headerlink" href="#id33" title="Link to this heading">#</a></h4>
+<p>Default: 16. Allowed range: 8 to 64.</p>
+<p>Initial U-Net channel count.</p>
+<p>Suggested start: 16-32.</p>
+</section>
+<section id="id34">
+<h4>validation_patches<a class="headerlink" href="#id34" title="Link to this heading">#</a></h4>
+<p>Default: 8. Allowed range: 1 to 128.</p>
+<p>Held-out validation patch count when the input is split automatically.</p>
+<p>Suggested start: 8-32. Same-image validation is not an independent microscopy accuracy study.</p>
+</section>
+<section id="id35">
+<h4>tile_size<a class="headerlink" href="#id35" title="Link to this heading">#</a></h4>
+<p>Default: 256. Allowed range: 32 to 2048.</p>
+<p>Prediction tile side, padded for small images.</p>
+<p>Suggested start: 256; larger tiles need more memory.</p>
+</section>
+<section id="id36">
+<h4>tile_overlap<a class="headerlink" href="#id36" title="Link to this heading">#</a></h4>
+<p>Default: 32. Allowed range: 0 to 256.</p>
+<p>Overlapping prediction context; must be smaller than half the tile side.</p>
+<p>Suggested start: 32 for tile 256.</p>
+</section>
+<section id="id37">
+<h4>random_seed<a class="headerlink" href="#id37" title="Link to this heading">#</a></h4>
+<p>Default: 7. Allowed range: 0 to 2147483647.</p>
+<p>Seed for training/patch selection. Backend/device differences can still affect numerical reproducibility.</p>
+<p>Suggested start: 7 for comparisons.</p>
+</section>
+</section>
+<section id="blind-spot-training-models-and-resource-constraints">
+<h3>Blind-spot training, models and resource constraints<a class="headerlink" href="#blind-spot-training-models-and-resource-constraints" title="Link to this heading">#</a></h3>
+<p>Train fits a separate model for each grayscale/RGB plane. A chosen output folder contains channel_0 (and channel_1/channel_2 for RGB), the backend checkpoints, samstudio_model.ckpt and samstudio_model.json with method/parameters. Empty output_directory creates a unique application-data folder. A folder containing a completed model for the channel is not overwritten. Interrupted training can leave partial backend files; use a new folder when retrying. Prediction accepts a .ckpt or a saved root/channel folder; a saved manifest must match the selected method. An external checkpoint must be a compatible trusted CAREamics model, not an arbitrary U-Net .pt file. The separate plugin developer guide covers TorchScript U-Net integration.</p>
+<p>Training patch side and prediction tile side must be divisible by 2^depth. The training patch must fit the image. At least one pixel per patch must be masked: patch_size^2 * masked_pixel_percentage/100 &gt;= 1. With 0.2%, use at least a 32x32 patch. tile_overlap must be less than half the tile side; use even values for the backend tiler. Depth increases the receptive field and memory use; scale patch/tile sizes accordingly. In Predict mode train-only controls are disabled and the checkpoint architecture is used. Tiling values must also satisfy the loaded checkpoint architecture; native validation reports incompatible choices.</p>
+<p>For a quick interface test, use a 64x64 image, patch 32, depth 1, filters 8, batch 2, validation patches 2, one epoch/one step, tile 32 and overlap 4. This tests train/save/load only; it does not produce validated denoising. For real comparisons start with patch 64-128, depth 2, filters 16-32, 30 epochs and 20 steps, and inspect validation/real details before increasing training. The defaults do not promise convergence. Use more representative data for scientific work and validate on held-out images or known measurements.</p>
+<p>CPU training can be slow. device=auto chooses CUDA only when a dedicated Conda environment and CUDA are both available. Explicit cuda outside Conda or without CUDA fails clearly. A GPU choice does not install drivers. Cancellation is checked between training and prediction batches, and image changes occur only after Apply. Saved models remain when cancelling image preview or undoing image edits. The CPU release includes no pretrained N2V/N2V2 weights.</p>
+</section>
+<section id="smoothing-and-synthetic-noise-controls">
+<h3>Smoothing and synthetic noise controls<a class="headerlink" href="#smoothing-and-synthetic-noise-controls" title="Link to this heading">#</a></h3>
+<p>Processing &gt; Smooth exposes Gaussian kernel_size (default 5, odd 1-101; start 3-7) and sigma (default 1.0, 0.01-30 spatial pixels; start 0.5-1.5). Processing &gt; Add noise offers Gaussian sigma (default 0.03, 0-1; start 0.01-0.05), Poisson peak_counts (default 50, 1-1000000; start 20-200) and Salt-and-pepper amount (default 0.01, 0-1; start 0.001-0.02). Each noise method has seed (default 0, integer 0-2147483647); keep it fixed for comparisons. Poisson peak counts are a synthetic model, not microscope detector calibration. Alpha and outside-target pixels remain exact for these operations too.</p>
+</section>
+<section id="official-references-and-validation-limits">
+<h3>Official references and validation limits<a class="headerlink" href="#official-references-and-validation-limits" title="Link to this heading">#</a></h3>
+<p>scikit-image restoration API: https://scikit-image.org/docs/stable/api/skimage.restoration.html</p>
+<p>SciPy DCT/IDCT API: https://docs.scipy.org/doc/scipy/reference/fft.html</p>
+<p>PyWavelets: https://github.com/PyWavelets/pywt</p>
+<p>SPORCO dictionary learning: https://sporco.readthedocs.io/en/latest/dictlrn/bpdndl.html</p>
+<p>BM3D package, citations and license: https://pypi.org/project/bm3d/</p>
+<p>CAREamics documentation and source: https://careamics.github.io/ ; https://github.com/CAREamics/careamics</p>
+<p>The test report distinguishes CPU numerical execution, one-step blind-spot interface tests and native API contract checks. Actual NVIDIA CUDA and SAM3.1 checkpoint inference require target-hardware validation. Synthetic phantom improvement for selected settings is not a specimen-independent accuracy guarantee.</p>
+</section>
+</section>
 </section>
 
 
@@ -991,11 +1658,11 @@ Current illustrated <a class="reference internal" href="features/cleaning.html">
       </div>
     </a>
     <a class="right-next"
-       href="denoising.html"
+       href="troubleshooting.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Denoising parameters</p>
+        <p class="prev-next-title">Troubleshooting installation and operation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1023,16 +1690,156 @@ Current illustrated <a class="reference internal" href="features/cleaning.html">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-images-and-native-autosaves">Opening images and native autosaves</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#excel-pixel-size-lookup">Excel pixel-size lookup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whole-image-exemplars-single-objects-and-roi">Whole-image exemplars, single objects and ROI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#target-size-range">Target size range</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-grid-and-text-prompts">Automatic grid and text prompts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-geometry-and-edit-tools">Manual geometry and Edit tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scale-bars">Scale bars</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-and-reversible-image-records">Cleaning and reversible image records</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#processing-restoration-smoothing-and-noise">Processing: restoration, smoothing and noise</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retained-crops-and-paste-back-workflow">Retained crops and paste-back workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filaments-and-occluded-fragments">Filaments and occluded fragments</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistics-and-metric-applicability">Statistics and metric applicability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metric-colors-and-plot-groups">Metric colors and plot groups</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#masks-overlays-and-dataset-export">Masks, overlays and dataset export</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menu-and-control-reference">Menu and control reference</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shortcuts-recovery-and-troubleshooting">Shortcuts, recovery and troubleshooting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#official-references">Official references</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#denoising-parameters">Denoising parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-and-physical-interpretation">Workflow and physical interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dct-and-tv-reconstruction-versus-denoising">DCT and TV: reconstruction versus denoising</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-read-each-parameter-entry">How to read each parameter entry</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tv-restoration">TV restoration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#weight">weight</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#iterations">iterations</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tolerance">tolerance</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tv-bregman-restoration">TV Bregman restoration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">weight</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">iterations</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">tolerance</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isotropic">isotropic</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wavelet-sparse-restoration">Wavelet sparse restoration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sigma">sigma</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#estimate-sigma">estimate_sigma</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#levels">levels</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#wavelet">wavelet</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#threshold-rule">threshold_rule</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#threshold-mode">threshold_mode</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-local-means">Non-local means</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#strength">strength</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">sigma</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#patch-size">patch_size</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#search-distance">search_distance</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fast-mode">fast_mode</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bilateral-denoise">Bilateral denoise</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sigma-color">sigma_color</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sigma-spatial">sigma_spatial</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#median-denoise">Median denoise</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kernel-size">kernel_size</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dct-sparsity">DCT sparsity</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#task">task</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">iterations</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#data-loss">data_loss</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fidelity-step">fidelity_step</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#huber-delta">huber_delta</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-fraction">sample_fraction</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-method">sampling_method</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#random-seed">random_seed</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization">initialization</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#max-side">max_side</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sparsity-fraction">sparsity_fraction</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tv-iterative-notebook">TV iterative (notebook)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">task</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">iterations</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">data_loss</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">fidelity_step</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">huber_delta</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">sample_fraction</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">sampling_method</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">random_seed</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">initialization</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">max_side</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tv-step">tv_step</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-epsilon">gradient_epsilon</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sparse-dictionary-learning">Sparse dictionary learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">patch_size</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dictionary-atoms">dictionary_atoms</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#training-patches">training_patches</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dictionary-iterations">dictionary_iterations</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-iterations">coding_iterations</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#regularization">regularization</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#patch-stride">patch_stride</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-batch">inference_batch</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">random_seed</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bm3d">BM3D</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">sigma</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile">profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stage">stage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#num-threads">num_threads</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise2void">Noise2Void</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#run-mode">run_mode</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model-path">model_path</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#output-directory">output_directory</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#device">device</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#epochs">epochs</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#steps-per-epoch">steps_per_epoch</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">patch_size</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-size">batch_size</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-rate">learning_rate</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#masked-pixel-percentage">masked_pixel_percentage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#roi-size">roi_size</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#depth">depth</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-filters">initial_filters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#validation-patches">validation_patches</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tile-size">tile_size</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tile-overlap">tile_overlap</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">random_seed</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n2v2">N2V2</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">run_mode</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">model_path</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">output_directory</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">device</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">epochs</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">steps_per_epoch</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">patch_size</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">batch_size</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">learning_rate</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">masked_pixel_percentage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">roi_size</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">depth</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">initial_filters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">validation_patches</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">tile_size</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">tile_overlap</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">random_seed</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blind-spot-training-models-and-resource-constraints">Blind-spot training, models and resource constraints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing-and-synthetic-noise-controls">Smoothing and synthetic noise controls</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#official-references-and-validation-limits">Official references and validation limits</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

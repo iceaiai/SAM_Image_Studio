@@ -347,14 +347,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../edition/index.html">samstudio.edition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exemplars/index.html">samstudio.exemplars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exports/index.html">samstudio.exports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filament_ui/index.html">samstudio.filament_ui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filaments/index.html">samstudio.filaments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hardware/index.html">samstudio.hardware</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../help_viewer/index.html">samstudio.help_viewer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../image_processing/index.html">samstudio.image_processing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../imageio/index.html">samstudio.imageio</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../inference/index.html">samstudio.inference</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../main_window/index.html">samstudio.main_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metric_colors_ui/index.html">samstudio.metric_colors_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../neural_denoising/index.html">samstudio.neural_denoising</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../palette/index.html">samstudio.palette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot_groups/index.html">samstudio.plot_groups</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../plugin_api/index.html">samstudio.plugin_api</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../plugin_ui/index.html">samstudio.plugin_ui</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">samstudio.processing</a></li>
@@ -363,13 +367,18 @@
 <li class="toctree-l3"><a class="reference internal" href="../sam31_backend/index.html">samstudio.sam31_backend</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sam3_onnx/index.html">samstudio.sam3_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../savepoints/index.html">samstudio.savepoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../scale_bar/index.html">samstudio.scale_bar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../scale_bar_ui/index.html">samstudio.scale_bar_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../segmentation_ui/index.html">samstudio.segmentation_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../selftest/index.html">samstudio.selftest</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sparse_denoising/index.html">samstudio.sparse_denoising</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../statistics/index.html">samstudio.statistics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../statistics_dialog/index.html">samstudio.statistics_dialog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../target_size/index.html">samstudio.target_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../target_size_ui/index.html">samstudio.target_size_ui</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../text_prompts/index.html">samstudio.text_prompts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transforms/index.html">samstudio.transforms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../widgets/index.html">samstudio.widgets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../workspace_ui/index.html">samstudio.workspace_ui</a></li>
 </ul>
 </details></li>
@@ -480,31 +489,34 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#samstudio.processing.refinement_geometry" title="samstudio.processing.refinement_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refinement_geometry</span></code></a>(mask, sigma[, protected])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.processing.filter_proposals" title="samstudio.processing.filter_proposals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_proposals</span></code></a>(masks, protected[, roi, min_area, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.processing.filter_proposal_indices" title="samstudio.processing.filter_proposal_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_proposal_indices</span></code></a>(masks, protected[, roi, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.processing.fill_holes" title="samstudio.processing.fill_holes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fill_holes</span></code></a>(mask[, max_area, protected])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.processing.filter_proposals" title="samstudio.processing.filter_proposals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_proposals</span></code></a>(masks, protected[, roi, min_area, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.processing.smooth_mask" title="samstudio.processing.smooth_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_mask</span></code></a>(mask, sigma[, protected, preserve_holes])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.processing.fill_holes" title="samstudio.processing.fill_holes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fill_holes</span></code></a>(mask[, max_area, protected])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.processing.refine_objects" title="samstudio.processing.refine_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refine_objects</span></code></a>(document, object_ids, method[, parameter])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.processing.smooth_mask" title="samstudio.processing.smooth_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_mask</span></code></a>(mask, sigma[, protected, preserve_holes])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.processing.neighbor_fill" title="samstudio.processing.neighbor_fill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">neighbor_fill</span></code></a>(raw, target)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.processing.refine_objects" title="samstudio.processing.refine_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refine_objects</span></code></a>(document, object_ids, method[, parameter])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.processing.cast_like" title="samstudio.processing.cast_like"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cast_like</span></code></a>(array, dtype)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.processing.neighbor_fill" title="samstudio.processing.neighbor_fill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">neighbor_fill</span></code></a>(raw, target)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.processing.smooth_image" title="samstudio.processing.smooth_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_image</span></code></a>(raw[, method, sigma, size, target])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.processing.cast_like" title="samstudio.processing.cast_like"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cast_like</span></code></a>(array, dtype)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.processing.smooth_image" title="samstudio.processing.smooth_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_image</span></code></a>(raw[, method, sigma, size, target])</p></td>
 <td><p>Filter spatial pixels only. Keep dtype, alpha, nonfinite pixels and the source.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.processing.patch_fill" title="samstudio.processing.patch_fill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">patch_fill</span></code></a>(raw, target, patches[, soften])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.processing.patch_fill" title="samstudio.processing.patch_fill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">patch_fill</span></code></a>(raw, target, patches[, soften])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.processing.measurements" title="samstudio.processing.measurements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">measurements</span></code></a>(document[, object_ids, group_names, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#samstudio.processing.measurements" title="samstudio.processing.measurements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">measurements</span></code></a>(document[, object_ids, group_names, ...])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -567,8 +579,13 @@
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="samstudio.processing.filter_proposal_indices">
+<span class="sig-prename descclassname"><span class="pre">samstudio.processing.</span></span><span class="sig-name descname"><span class="pre">filter_proposal_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duplicate_iou</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.processing.filter_proposal_indices" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="samstudio.processing.filter_proposals">
-<span class="sig-prename descclassname"><span class="pre">samstudio.processing.</span></span><span class="sig-name descname"><span class="pre">filter_proposals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duplicate_iou</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.processing.filter_proposals" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">samstudio.processing.</span></span><span class="sig-name descname"><span class="pre">filter_proposals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duplicate_iou</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.processing.filter_proposals" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -674,6 +691,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.processing.raster_contours"><code class="docutils literal notranslate"><span class="pre">raster_contours()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.processing.smooth_contours"><code class="docutils literal notranslate"><span class="pre">smooth_contours()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.processing.refinement_geometry"><code class="docutils literal notranslate"><span class="pre">refinement_geometry()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.processing.filter_proposal_indices"><code class="docutils literal notranslate"><span class="pre">filter_proposal_indices()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.processing.filter_proposals"><code class="docutils literal notranslate"><span class="pre">filter_proposals()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.processing.fill_holes"><code class="docutils literal notranslate"><span class="pre">fill_holes()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.processing.smooth_mask"><code class="docutils literal notranslate"><span class="pre">smooth_mask()</span></code></a></li>
