@@ -55,7 +55,8 @@ analytics. `.readthedocs.yaml` remains an optional alternative hosting recipe.
 
 ## Normal and offline source downloads
 
-The download list links to immutable Git tag ZIPs. The normal `v1.4.4` tag has
+The current source ZIP follows `main`. The release archives use immutable Git
+tags. The normal `v1.4.4` tag has
 no `samstudio/resources/offline_profile.json`. The `v1.4.4-offline` tag adds that
 marker from `offline/profile.json` and uses the offline guide as its root README.
 Its application version and source are otherwise shared with the normal release.

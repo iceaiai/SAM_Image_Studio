@@ -20,7 +20,7 @@ has a separate installation and gated weights; it is not an ONNX mode switch.
 CPU and GPU installations both need the complete project first. Choose **one**:
 
 - **Download:** open the [CPU version download list](downloads.md), click
-  **Download ZIP** for v1.4.4, and extract the entire archive. The same source
+  **current source ZIP**, and extract the entire archive. The same source
   bundle includes optional GPU setup. Enter the extracted project folder containing
   `pyproject.toml`, `samstudio/`, `packaging/` and `GPU/`.
 - **Clone:** open a terminal in your chosen parent folder and run:
@@ -44,6 +44,9 @@ continue with exactly one CPU or GPU route below.
 3. Open **packaging** in that source folder.
 4. Double-click **Install_CPU.bat** and wait for the installation self-test.
 5. Double-click **Start_GUI.bat**.
+
+For an existing v1.4.4 archive that fails the Python version/architecture
+check, [update its bootstrap script](troubleshooting.md#repair-windows-python-preparation).
 
 For command-line installation, obtain/extract the source first, then enter its
 root. The path below is a fictional example; substitute your chosen folder and

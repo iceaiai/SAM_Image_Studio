@@ -1,7 +1,7 @@
 # CPU install, launch and packaging
 
-First [download the current CPU source ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip),
-extract the complete archive and open `SAM_Image_Studio-1.4.4/`, containing
+First [download the current CPU source ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/heads/main.zip),
+extract the complete archive and open `SAM_Image_Studio-main/`, containing
 `pyproject.toml`.
 Alternatively, clone the full repository and enter its root using the
 [shared download/clone steps](../README.md#first-download-or-clone-the-complete-project-cpu-and-gpu).
@@ -11,6 +11,12 @@ After obtaining the source, run `Install_CPU.bat` then `Start_GUI.bat` from this
 `packaging/` folder on Windows. On Linux run
 `bash packaging/install_cpu.sh` and `bash packaging/start_gui.sh` from the
 repository root. The helpers find the root themselves, including paths with spaces.
+
+For an existing Windows extraction that reports **Prepared Python
+version/architecture check failed**, replace only
+`packaging/bootstrap_python.ps1` with the
+[updated script](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/packaging/bootstrap_python.ps1)
+and rerun `Install_CPU.bat`. The corrected probe reuses a working `.python312`.
 
 `requirements/` stores shared CPU, ONNX and development dependencies. Use the
 project installer for installation or updates; requirements alone do not install

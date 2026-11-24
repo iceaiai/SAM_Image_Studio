@@ -5,6 +5,9 @@ and open its project root. The initial source ZIP is approximately the same
 size as the normal source ZIP. Its runtime, packages and three checkpoints must
 be **pre-downloaded while online** before it can install on a disconnected PC.
 
+On Windows, apply the [bootstrap script update](troubleshooting.md#repair-windows-python-preparation)
+to the offline source folder before preparing and transferring it.
+
 1. On a matching online Windows/Linux x86-64 computer, run
    `offline/Prepare_Offline.bat` or `bash offline/prepare_offline.sh`.
 2. Wait for successful completion and `offline-cache/READY`.

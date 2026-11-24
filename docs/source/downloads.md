@@ -5,9 +5,15 @@ for that version. No Git account or clone command is required for ZIP downloads.
 
 ## CPU application versions
 
+For a new installation, use the **[current source ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/heads/main.zip)**.
+It includes the corrected Windows PowerShell Python 3.12 check. Extract it,
+open `SAM_Image_Studio-main/` and [follow the CPU installation steps](installation.md).
+To repair an existing v1.4.4 Windows extraction, see
+[Repair Windows Python preparation](troubleshooting.md#repair-windows-python-preparation).
+
 | Version | Download | Platforms and contents | After extracting |
 | --- | --- | --- | --- |
-| **1.4.4 — recommended** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip)** · [Source tag](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.4) | Windows/Linux CPU source, automatic Python 3.12 selection/bootstrap; optional GPU setup included | Extract `SAM_Image_Studio-1.4.4/`; Windows: `packaging/Install_CPU.bat`, then `packaging/Start_GUI.bat`; Linux: `bash packaging/install_cpu.sh`, then `bash packaging/start_gui.sh`. |
+| **1.4.4 — tagged archive** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip)** · [Source tag](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.4) | Windows/Linux CPU source, automatic Python 3.12 selection/bootstrap; optional GPU setup included | Extract `SAM_Image_Studio-1.4.4/` and apply the bootstrap fix above on Windows. Run the CPU installer and launcher in `packaging/`. |
 | **1.4.4 — offline CPU** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4-offline.zip)** · [Offline guide](installation-offline.md) | CPU only: SAM1 ViT-B, SAM2.1 Small and Base+; source-sized initial ZIP | Extract `SAM_Image_Studio-1.4.4-offline/`; first run `offline/Prepare_Offline.bat` or `bash offline/prepare_offline.sh` while online. Copy the whole prepared folder, then use the normal CPU installer offline. |
 | **1.4.3 — previous** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip)** · [Source tag](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.3) | Complete Windows/Linux CPU source bundle, including shared optional GPU setup | Open `SAM_Image_Studio-1.4.3/`, containing `pyproject.toml`; Windows: `packaging/Install_CPU.bat`, then `packaging/Start_GUI.bat`; Linux: `bash packaging/install_cpu.sh`, then `bash packaging/start_gui.sh`. |
 | **1.4.2 — original** | **[Download ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip)** · [SHA-256](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SHA256SUMS) | Original, unchanged CPU source archive | Open its inner `SAM_Image_Studio` folder; Windows: `Install_CPU.bat`, then `Start_GUI.bat`; Linux: `bash install_cpu.sh`, then `bash start_gui.sh`. Its earlier installers do not include the v1.4.3 repairs. |
@@ -28,8 +34,8 @@ clone commands once; do not both clone and download unless you want two copies.
 
 ## Which CPU package should I choose?
 
-Use **1.4.4 normal** for new connected installations, or **1.4.4 offline CPU**
-for a fully prepared disconnected installation. Both add Otsu + watershed,
+Use the **current source ZIP** for new connected installations, or **1.4.4
+offline CPU** for a fully prepared disconnected installation. Both add Otsu + watershed,
 signal-scaled noise, processing-input controls and automatic Python preparation.
 The normal edition also includes public SAM3 ONNX text segmentation.
 CPU also supports SAM1 and SAM2/2.1. Native SAM3/SAM3.1 require the separate

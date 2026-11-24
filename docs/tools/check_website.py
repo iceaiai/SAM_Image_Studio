@@ -53,11 +53,15 @@ with sync_playwright() as p:
  page.get_by_role('link',name='Download CPU versions',exact=True).click()
  page.wait_for_load_state('networkidle')
  assert page.url.endswith('/downloads.html')
+ current=page.locator('article').get_by_role('link',name='current source ZIP',exact=True)
+ assert current.get_attribute('href').endswith('/archive/refs/heads/main.zip')
  downloads=page.locator('article').get_by_role('link',name='Download ZIP',exact=True)
  assert downloads.count()==4
  for i, suffix in enumerate(['/archive/refs/tags/v1.4.4.zip','/archive/refs/tags/v1.4.4-offline.zip','/archive/refs/tags/v1.4.3.zip','/uploads/SAM_Image_Studio_v1.4.2_CPU.zip']):
   assert downloads.nth(i).get_attribute('href').endswith(suffix)
  page.screenshot(path='/tmp/samstudio-downloads-desktop.png',full_page=True)
+ page.locator('article').get_by_role('link',name='Repair Windows Python preparation',exact=True).click()
+ assert page.get_by_role('heading',name='Repair Windows Python preparation',exact=True).count()==1
  page.goto(base+'/installation.html',wait_until='networkidle')
  headings=page.locator('article h2').all_text_contents()
  assert headings[0].startswith('First for every route:'),headings

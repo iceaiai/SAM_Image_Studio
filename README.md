@@ -25,7 +25,8 @@ You do not need Git if you download a ZIP.
 
 | CPU version | Download | Package / next step |
 | --- | --- | --- |
-| **1.4.4 — recommended** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip)** | Extract, then run `packaging/Install_CPU.bat` or `bash packaging/install_cpu.sh`; Python 3.12 is prepared automatically on Windows/Linux x86-64. |
+| **Current source — recommended** | **[Download current ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/heads/main.zip)** | Includes the Windows PowerShell bootstrap fix. Extract, then run `packaging/Install_CPU.bat` or `bash packaging/install_cpu.sh`. |
+| 1.4.4 — tagged archive | [Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip) | For Windows CPU setup, apply the [bootstrap fix](https://iceaiai.github.io/SAM_Image_Studio/troubleshooting.html#repair-windows-python-preparation) first. |
 | **1.4.4 — offline CPU** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4-offline.zip)** | Extract and [prepare once online](offline/README.md); then install without network using the normal CPU installer. SAM1 ViT-B + SAM2.1 Small/Base+ only. |
 | 1.4.3 — previous | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip)** | Complete source bundle for Windows/Linux CPU; extract, then use `packaging/Install_CPU.bat` or `bash packaging/install_cpu.sh`. |
 | 1.4.2 — original archive | **[Download ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip)** | Historical CPU source bundle; extract, then use `Install_CPU.bat` or `bash install_cpu.sh` inside its `SAM_Image_Studio` folder. |
@@ -40,8 +41,8 @@ you do not need to download a second source package for GPU installation.
 
 **Download route:** click Download ZIP, extract the entire archive, and open the
 project folder containing `pyproject.toml` and `samstudio/`. Keep the folder contents
-together. The v1.4.4 source ZIP extracts to `SAM_Image_Studio-1.4.4/`; it also contains
-`GPU/` and `packaging/`.
+together. The current source ZIP extracts to `SAM_Image_Studio-main/` and
+contains both `GPU/` and `packaging/`.
 
 **Git alternative, shared by CPU and GPU:** open a terminal in the parent folder
 where you want to keep the project, then run:
