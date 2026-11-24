@@ -423,6 +423,19 @@ replace them with your chosen folder:</p>
 SAM3.1. Windows Anaconda alone is not Linux Conda. Activate the dedicated
 <code class="docutils literal notranslate"><span class="pre">sam-image-studio-sam3</span></code> or <code class="docutils literal notranslate"><span class="pre">sam-image-studio-gpu</span></code> environment before <code class="docutils literal notranslate"><span class="pre">--current</span></code>.
 Application installation into Conda base is rejected.</p>
+<section id="repair-windows-python-preparation">
+<h3>Repair Windows Python preparation<a class="headerlink" href="#repair-windows-python-preparation" title="Link to this heading">#</a></h3>
+<p>The v1.4.4 tagged archive can report <code class="docutils literal notranslate"><span class="pre">Prepared</span> <span class="pre">Python</span> <span class="pre">version/architecture</span> <span class="pre">check</span> <span class="pre">failed</span></code> because Windows PowerShell 5.1 strips a quoted argument from the
+bootstrap’s Python probe. A working 64-bit Python 3.12 can fail this older check.</p>
+<p>In your extracted project, replace <code class="docutils literal notranslate"><span class="pre">packaging\bootstrap_python.ps1</span></code> with the
+<a class="reference external" href="https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/packaging/bootstrap_python.ps1">updated bootstrap script</a>.
+Then run <code class="docutils literal notranslate"><span class="pre">packaging\Install_CPU.bat</span></code> again. The script checks and reuses the
+Python in <code class="docutils literal notranslate"><span class="pre">.python312</span></code> when it starts successfully. For a fresh installation,
+use the <a class="reference internal" href="downloads.html#cpu-application-versions"><span class="std std-ref">current source ZIP</span></a>.</p>
+<p>If the updated script reports that the existing <code class="docutils literal notranslate"><span class="pre">.python312</span></code> cannot start,
+keep the detailed error. Rename only <code class="docutils literal notranslate"><span class="pre">.python312</span></code> to <code class="docutils literal notranslate"><span class="pre">.python312-backup</span></code> before
+retrying the installer. Keep the project folder and its <code class="docutils literal notranslate"><span class="pre">.sam.json</span></code> files.</p>
+</section>
 </section>
 <section id="dependency-problems-handled-by-installation">
 <h2>2. Dependency problems handled by installation<a class="headerlink" href="#dependency-problems-handled-by-installation" title="Link to this heading">#</a></h2>
@@ -617,7 +630,10 @@ tests a full model validation. See <a class="reference internal" href="developme
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confirm-the-folder-and-environment">1. Confirm the folder and environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confirm-the-folder-and-environment">1. Confirm the folder and environment</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#repair-windows-python-preparation">Repair Windows Python preparation</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dependency-problems-handled-by-installation">2. Dependency problems handled by installation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#display-failures-remaining-after-installation">3. Display failures remaining after installation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-login-and-gated-model-access">4. Hugging Face login and gated model access</a></li>
