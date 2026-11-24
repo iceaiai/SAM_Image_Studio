@@ -15,16 +15,16 @@ class MetricColorControls(QGroupBox):
             self.setChecked(scheme is not None)
         scheme = scheme or MetricColorScheme()
         form = QFormLayout(self)
-        self.metric = combo([(label, key) for key, (label, _) in METRICS.items() if key != "object_id"],
-                            "maskMeasurementMetric")
-        self.metric.setCurrentIndex(self.metric.findData(scheme.metric))
+        self.metric_combo = combo([(label, key) for key, (label, _) in METRICS.items() if key != "object_id"],
+                                  "maskMeasurementMetric")
+        self.metric_combo.setCurrentIndex(self.metric_combo.findData(scheme.metric))
         self.unit = combo([("Pixels", "px"), *((u, u) for u in PHYSICAL_UNITS)], "maskMeasurementUnit")
         self.unit.setCurrentIndex(self.unit.findData(scheme.unit))
         self.count = QSpinBox()
         self.count.setObjectName("maskMeasurementColorCount")
         self.count.setRange(2, 256)
         self.count.setValue(scheme.count)
-        form.addRow("Measurement", self.metric)
+        form.addRow("Measurement", self.metric_combo)
         form.addRow("Units", self.unit)
         form.addRow("Colors", self.count)
         note = QLabel("Values share one color scale across the included images. Objects without "
@@ -35,4 +35,4 @@ class MetricColorControls(QGroupBox):
     def value(self):
         if self.isCheckable() and not self.isChecked():
             return None
-        return MetricColorScheme(self.metric.currentData(), self.count.value(), self.unit.currentData())
+        return MetricColorScheme(self.metric_combo.currentData(), self.count.value(), self.unit.currentData())

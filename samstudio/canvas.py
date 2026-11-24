@@ -13,6 +13,9 @@ from .processing import curve_segments, display_rgb, mask_contours
 from .scale_bar_ui import draw_scale_bar
 
 
+DISTANCE_TOOLS = ("measure_line", "measure_curve")
+
+
 def rgb_image(rgb):
     a = np.ascontiguousarray(rgb, dtype=np.uint8)
     return QImage(a.data, a.shape[1], a.shape[0], a.strides[0], QImage.Format.Format_RGB888).copy()
@@ -74,6 +77,9 @@ class ImageCanvas(QWidget):
         self._contour_cache = {}
         self._base_key = None
         self._drawing = []
+        self._distance_image = None
+        self._distance_draft = []
+        self._distance_points = []
         self._cursor = None
         self._pan = None
         self._drag_handle = None
@@ -87,6 +93,8 @@ class ImageCanvas(QWidget):
         self.selected.clear()
         self.edit_mode = False
         self._drawing.clear()
+        self._distance_image = None
+        self.clear_distance_measurement()
         self._drag_handle = None
         self._active_vertex = self._edit_geometry = self._delete_origin = None
         self._base_key = None
@@ -109,6 +117,9 @@ class ImageCanvas(QWidget):
             self._region_contours = []
             self.update()
             return
+        if self._distance_image is not doc.frame.raw:
+            self._distance_image = doc.frame.raw
+            self.clear_distance_measurement()
         source = doc.working if self.use_cleaned and doc.working is not None else doc.frame.raw
         base_key = (id(doc.frame), id(source), doc.revision if source is doc.working else 0,
                     self.brightness, self.contrast)
@@ -192,6 +203,7 @@ class ImageCanvas(QWidget):
         self.tool = tool
         self.tool_changed.emit(tool)
         self._drawing = []
+        self._distance_draft.clear()
         self._cursor = None
         self.setCursor(Qt.CursorShape.ArrowCursor if tool == "select" else Qt.CursorShape.OpenHandCursor if tool == "pan" else Qt.CursorShape.CrossCursor)
         self.update()
@@ -216,6 +228,30 @@ class ImageCanvas(QWidget):
 
     def to_widget(self, point):
         return QPointF(point[0]*self.scale+self.offset.x(), point[1]*self.scale+self.offset.y())
+
+    def clear_distance_measurement(self):
+        self._distance_draft.clear()
+        self._distance_points.clear()
+        self.update()
+
+    def distance_readout(self):
+        points = self._distance_draft or self._distance_points
+        if len(points) < 2 or self.document is None:
+            return ""
+        deltas = np.diff(points, axis=0)
+        pixels = np.linalg.norm(deltas, axis=1).sum()
+        readout = f"{pixels:.5g} px"
+        calibration = self.document.calibration
+        if calibration.valid:
+            physical = np.linalg.norm(deltas @ calibration.matrix().T, axis=1).sum()
+            readout += f" · {physical:.5g} {calibration.length_unit}"
+        return readout
+
+    def _extend_distance_trace(self, point):
+        if self.tool == "measure_line":
+            self._distance_draft[1:] = [point]
+        elif point != self._distance_draft[-1]:
+            self._distance_draft.append(point)
 
     def _selected_object(self):
         if not self.document or len(self.selected) != 1:
@@ -344,6 +380,42 @@ class ImageCanvas(QWidget):
             draw_scale_bar(painter, bar, self.document.calibration, self.document.frame.shape)
         self._draw_filament_guides(painter)
         painter.restore()
+        self._draw_distance_measurement(painter)
+
+    def _draw_distance_measurement(self, painter):
+        points = self._distance_draft or self._distance_points
+        if not points:
+            return
+        start, end = self.to_widget(points[0]), self.to_widget(points[-1])
+        path = QPainterPath(start)
+        for point in points[1:]:
+            path.lineTo(self.to_widget(point))
+        edge = QColor("#173042")
+        highlight = QColor("#67e8f9")
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        painter.setPen(QPen(edge, 5, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin))
+        painter.drawPath(path)
+        painter.setPen(QPen(highlight, 2, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin))
+        painter.drawPath(path)
+        painter.setPen(QPen(edge, 1.5))
+        painter.setBrush(highlight)
+        painter.drawEllipse(start, 3.5, 3.5)
+        if end != start:
+            painter.drawEllipse(end, 3.5, 3.5)
+
+        label = self.distance_readout()
+        if label:
+            metrics = painter.fontMetrics()
+            width = metrics.horizontalAdvance(label) + 16
+            height = metrics.height() + 8
+            x = max(8, min(end.x() + 10, self.width() - width - 8))
+            y = max(8, min(end.y() + 10, self.height() - height - 8))
+            rect = QRectF(x, y, width, height)
+            painter.setPen(Qt.PenStyle.NoPen)
+            painter.setBrush(edge)
+            painter.drawRoundedRect(rect, 5, 5)
+            painter.setPen(QColor("white"))
+            painter.drawText(rect, Qt.AlignmentFlag.AlignCenter, label)
 
     def _draw_filament_guides(self, painter):
         painter.setPen(QPen(QColor("#f59e0b"), 3 / self.scale, Qt.PenStyle.DashLine))
@@ -375,6 +447,11 @@ class ImageCanvas(QWidget):
             return
         point = self.to_image(event.position())
         if self.read_only:
+            return
+        if self.tool in DISTANCE_TOOLS:
+            if point is not None and not self.prompt_input_only and event.button() == Qt.MouseButton.LeftButton:
+                self._distance_draft = [point]
+                self.update()
             return
         if self.filament_picks and event.button() == Qt.MouseButton.LeftButton:
             choices = [((self.to_widget(end) - event.position()).manhattanLength(), ident, index)
@@ -472,6 +549,12 @@ class ImageCanvas(QWidget):
         point = self.to_image(event.position(), True)
         if point is None:
             return
+        if self.tool in DISTANCE_TOOLS:
+            if (self._distance_draft and event.buttons() & Qt.MouseButton.LeftButton
+                    and not (self.read_only or self.prompt_input_only)):
+                self._extend_distance_trace(point)
+                self.update()
+            return
         if self._drag_handle and self._edit_geometry:
             if self._drag_start is not None and (event.position()-self._drag_start).manhattanLength() < 2:
                 return
@@ -491,6 +574,17 @@ class ImageCanvas(QWidget):
         if self._pan:
             self._pan = None
             if self.tool == "pan":self.setCursor(Qt.CursorShape.OpenHandCursor)
+            elif self.tool in DISTANCE_TOOLS:self.setCursor(Qt.CursorShape.CrossCursor)
+            return
+        if self.tool in DISTANCE_TOOLS:
+            if event.button() == Qt.MouseButton.LeftButton and self._distance_draft:
+                point = self.to_image(event.position(), True)
+                if point is not None and not (self.read_only or self.prompt_input_only):
+                    self._extend_distance_trace(point)
+                    if any(a != b for a, b in zip(self._distance_draft, self._distance_draft[1:])):
+                        self._distance_points = self._distance_draft
+                self._distance_draft = []
+                self.update()
             return
         if self._drag_handle:
             obj = self._selected_object()
@@ -579,6 +673,9 @@ class ImageCanvas(QWidget):
         if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and self.tool == "polygon" and self._drawing:
             self.finish_polygon()
         elif event.key() == Qt.Key.Key_Escape:
+            if self.tool in DISTANCE_TOOLS:
+                self.clear_distance_measurement()
+                return
             self._drawing, self._cursor = [], None
             self._drag_handle = self._edit_geometry = None
             self.update()

@@ -6,8 +6,9 @@ import cv2
 import numpy as np
 import pytest
 from matplotlib.colors import to_hex
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QDialog, QDialogButtonBox, QInputDialog
+from PySide6.QtCore import QPointF, QTimer, Qt
+from PySide6.QtGui import QPaintDevice
+from PySide6.QtWidgets import QApplication, QDialog, QDialogButtonBox, QInputDialog, QPushButton
 
 from samstudio import __version__, savepoints
 from samstudio.dialogs import InferenceOptionsDialog, MaskColorsDialog
@@ -49,6 +50,25 @@ def rectangle(document, x, y, w, h, color=None):
     if color is not None:
         obj.color = color
     return obj
+
+
+def accept_rendered_dialog(open_dialog, dialog_class, configure):
+    def interact():
+        dialog = QApplication.activeModalWidget()
+        assert isinstance(dialog, QDialog)
+        try:
+            assert isinstance(dialog, dialog_class)
+            configure(dialog)
+            assert QPaintDevice.width(dialog) > 0
+            assert not dialog.grab().isNull()
+            dialog.findChild(QDialogButtonBox).button(QDialogButtonBox.StandardButton.Ok).click()
+            assert dialog.result() == QDialog.DialogCode.Accepted
+        finally:
+            if dialog.isVisible():
+                dialog.reject()
+
+    QTimer.singleShot(0, interact)
+    open_dialog()
 
 
 def test_help_menu_and_denoise_button_open_versioned_manual(window, qtbot):
@@ -101,6 +121,79 @@ def test_target_size_uses_area_basis_and_optional_manual_pixel_sizes(window, qtb
     settings = controls.value()
     assert settings.minimum is None
     assert settings.pixel_bounds(Calibration())[1] == pytest.approx(6)
+
+
+def test_options_opens_and_accepts_target_size_controls(window, tmp_path):
+    attach(window, image(tmp_path), tmp_path)
+
+    def select_diameter(dialog):
+        controls = dialog.target_size
+        assert QPaintDevice.width(controls) > 0
+        controls.metric_combo.setCurrentIndex(controls.metric_combo.findData("diameter"))
+        assert controls.unit.currentText() == "px"
+        controls.maximum.setText("24")
+
+    accept_rendered_dialog(window.options_button.click, InferenceOptionsDialog, select_diameter)
+    assert window.target_size == TargetSizeRange(metric="diameter", maximum=24)
+    assert not window.errors
+
+
+@pytest.mark.parametrize(
+    ("tool", "calibration", "readout"),
+    [
+        ("measure_line", Calibration(), "20 px"),
+        ("measure_line", Calibration(.5, 2, "nm", "test", True), "20 px · 32.558 nm"),
+        ("measure_curve", Calibration(.5, 2, "nm", "test", True, basis=[[0, -2], [.5, 0]]), "28 px · 38 nm"),
+    ],
+)
+def test_distance_tools_trace_and_measure_in_image_coordinates(window, qtbot, tmp_path, tool, calibration, readout):
+    doc = image(tmp_path, calibration=calibration)
+    attach(window, doc, tmp_path)
+    window.mode.setCurrentText("Segment")
+    doc.draft["points"] = [[40, 40, 1]]
+    before = doc.state()
+    canvas = window.canvas
+    canvas.scale = 4
+    canvas.offset = QPointF(24, 24)
+    canvas.update()
+    qtbot.wait(10)
+    image_before = canvas.grab().toImage()
+    qtbot.mouseClick(window.toolbar.widgetForAction(window.tool_actions[tool]), Qt.MouseButton.LeftButton)
+    assert canvas.tool == tool
+    start, corner, end = [canvas.to_widget(point).toPoint() for point in ((10, 10), (22, 10), (22, 26))]
+    qtbot.mousePress(canvas, Qt.MouseButton.LeftButton, pos=start)
+    qtbot.mouseMove(canvas, pos=corner)
+    qtbot.mouseMove(canvas, pos=end)
+    assert canvas.distance_readout() == readout
+    qtbot.mouseRelease(canvas, Qt.MouseButton.LeftButton, pos=end)
+    assert canvas.distance_readout() == readout
+    assert canvas.grab().toImage() != image_before
+    assert not canvas.preview_masks and doc.state() == before
+
+    canvas.fit_image()
+    assert canvas.distance_readout() == readout
+    qtbot.keyClick(canvas, Qt.Key.Key_Escape)
+    assert not canvas.distance_readout()
+    assert doc.state() == before
+    window.cancel_button.click()
+    assert not doc.draft["points"]
+    assert not window.errors
+
+
+def test_distance_measurement_clears_on_image_switch(window, qtbot, tmp_path):
+    first = image(tmp_path, name="first")
+    second = image(tmp_path, name="second")
+    attach(window, second, tmp_path)
+    attach(window, first, tmp_path)
+    window.mode.setCurrentText("Edit")
+    canvas = window.canvas
+    window.tool_actions["measure_line"].trigger()
+    start, end = [canvas.to_widget(point).toPoint() for point in ((20, 20), (50, 20))]
+    qtbot.mousePress(canvas, Qt.MouseButton.LeftButton, pos=start)
+    qtbot.mouseRelease(canvas, Qt.MouseButton.LeftButton, pos=end)
+    assert canvas.distance_readout().endswith(" px")
+    window.select_document(second.frame.key)
+    assert not canvas.distance_readout()
 
 
 @pytest.mark.parametrize("scope", ["roi", "prompt", "single"])
@@ -173,6 +266,7 @@ def test_scale_bar_previews_edits_and_removes_with_undo(window, tmp_path, monkey
     entry_pixels = window.canvas.grab().toImage()
 
     def add_bar(dialog):
+        assert callable(dialog.font)
         dialog.length.setText("500")
         assert not dialog.controls.button(QDialogButtonBox.StandardButton.Ok).isEnabled()
         assert window.canvas.previewing_scale_bar and window.canvas.scale_bar_preview is None
@@ -330,7 +424,7 @@ def test_pre_feature_project_uses_default_measurement_settings(tmp_path):
     np.testing.assert_array_equal(restored.objects[0].mask, obj.mask)
 
 
-def test_metric_color_count_exceeds_20_and_persists_per_image(window, tmp_path, monkeypatch):
+def test_metric_color_count_exceeds_20_and_persists_per_image(window, qtbot, tmp_path):
     doc = image(tmp_path)
     doc.ensure_group("Particles")
     for value in range(1, 32):
@@ -339,20 +433,28 @@ def test_metric_color_count_exceeds_20_and_persists_per_image(window, tmp_path, 
 
     def choose(dialog):
         dialog.mode.setCurrentIndex(dialog.mode.findData("metric"))
+        assert QPaintDevice.width(dialog.metric_color) > 0
         assert dialog.metric_color.count.value() == 20
         dialog.metric_color.count.setValue(31)
-        return QDialog.DialogCode.Accepted
 
-    monkeypatch.setattr(MaskColorsDialog, "exec", choose)
-    window.mask_colors_action.trigger()
+    accept_rendered_dialog(window.mask_colors_action.trigger, MaskColorsDialog, choose)
     assert len(set(window.canvas.object_colors.values())) == 31
     restored = Document(doc.frame)
     assert store.load(restored)[0] and restored.metric_color_scheme == MetricColorScheme(count=31)
     physical = metric_palette([doc], MetricColorScheme("perimeter", unit="nm"))
     assert not physical.colors
 
+    window.plot_statistics()
+    plot = window.stats_dialogs[0]
+    qtbot.waitUntil(plot.isVisible)
+    color_settings = next(button for button in plot.findChildren(QPushButton) if button.text() == "Mask color settings…")
+    accept_rendered_dialog(color_settings.click, MaskColorsDialog,
+                           lambda dialog: dialog.metric_color.count.setValue(24))
+    assert doc.metric_color_scheme.count == 24 and plot.plot_type.currentData() == "points"
+    plot.close()
 
-def test_named_plot_group_scopes_colors_and_plot_points(window, qtbot, tmp_path, monkeypatch):
+
+def test_named_plot_group_scopes_colors_and_plot_points(window, qtbot, tmp_path):
     a, b, outside = [image(tmp_path, name) for name in ("a", "b", "outside")]
     for doc in (a, b, outside):
         doc.ensure_group("Particles")
@@ -367,13 +469,21 @@ def test_named_plot_group_scopes_colors_and_plot_points(window, qtbot, tmp_path,
 
     def create(dialog):
         dialog.name.setText("Treatment")
-        assert dialog.metric.count.value() == 20
-        return QDialog.DialogCode.Accepted
+        assert QPaintDevice.width(dialog.metric_color) > 0
+        assert dialog.metric_color.count.value() == 20
 
-    monkeypatch.setattr(PlotGroupDialog, "exec", create)
-    window.create_plot_group_action.trigger()
+    create_button = next(button for button in window.files_dock.widget().findChildren(QPushButton)
+                         if button.text() == "Create…")
+    accept_rendered_dialog(create_button.click, PlotGroupDialog, create)
     assert set(window.plot_groups["Treatment"].frames) == {a.frame.key, b.frame.key}
     assert window.active_plot_group == "Treatment"
+
+    def edit(dialog):
+        assert QPaintDevice.width(dialog.metric_color) > 0
+        dialog.metric_color.count.setValue(28)
+
+    accept_rendered_dialog(window.edit_plot_group_button.click, PlotGroupDialog, edit)
+    assert window.plot_groups["Treatment"].scheme.count == 28
     outside_id = ids[outside.frame.key]
     assert window.canvas.object_colors[outside_id] == outside.objects[0].color
     window.select_document(b.frame.key)
@@ -394,6 +504,11 @@ def test_named_plot_group_scopes_colors_and_plot_points(window, qtbot, tmp_path,
     assert list(map(to_hex, scatter.get_facecolors())) == [b_colors[ids[b.frame.key]]] * 2 + [b_colors[larger.id]]
     assert {record["image"] for record in plot.records} == {a.frame.source_path, b.frame.source_path}
     assert [record["mask_color"] for record in plot.records] == list(map(to_hex, scatter.get_facecolors()))
+    color_settings = next(button for button in plot.findChildren(QPushButton) if button.text() == "Mask color settings…")
+    accept_rendered_dialog(color_settings.click, PlotGroupDialog,
+                           lambda dialog: dialog.metric_color.count.setValue(32))
+    assert window.plot_groups["Treatment"].scheme.count == 32
+    b_colors = dict(window.canvas.object_colors)
     for index in range(1, 11):
         plot.metrics_list.item(index).setCheckState(Qt.CheckState.Checked)
     assert len(plot.selected_metrics()) == 9
@@ -404,4 +519,9 @@ def test_named_plot_group_scopes_colors_and_plot_points(window, qtbot, tmp_path,
     plot.scope.setCurrentIndex(plot.scope.findData("plot:Treatment"))
     assert window.active_plot_group == "Treatment" and window.canvas.object_colors == b_colors
     assert "Treatment" in window.settings.value("plot_groups")
+
+    plot.scope.setCurrentIndex(plot.scope.findData("selected"))
+    accept_rendered_dialog(color_settings.click, PlotGroupDialog, lambda dialog: dialog.name.setText("Control"))
+    assert plot.plot_group_name == "Control"
+    assert window.plot_groups["Control"].frames == window.plot_groups["Treatment"].frames
     plot.close()

@@ -115,6 +115,13 @@ Choose **Edit → Add scale bar…**. Set the length and its unit, line width, f
 
 Use px for a pixel reference or a physical unit for a calibrated length. The horizontal bar uses the current image X direction of the calibration, including after rotation. Width and font size are in image pixels and scale with zoom. If the bar cannot fit after a calibration or size change, reopen its settings and choose a length and style that fit. The bar is a canvas overlay. Source TIFFs and mask exports retain their underlying pixels.
 
+## Distance measurements
+
+In the left toolbar, choose **Measure line** and drag from one endpoint to the other. Choose **Measure curve** and drag along the full path to add up its segment lengths. The readout updates as you drag and shows the length in image pixels. For a calibrated image it also shows the length in the image's physical unit, using the X and Y scales and any applied rotation. Set or check those scales in **Statistics → Edit image calibration…**.
+
+Zoom and pan to position the endpoints or follow a curve more closely. The distance stays on the current image until you draw again, switch images or press **Esc** with a measurement tool selected. Measurements are temporary overlays on the canvas.
+
+
 ## Cleaning and reversible image records
 
 In Clean mode select an area, draw a region or use the brush. Remove selected image area stores a visible cleaning object. Alternatively right-click an unlocked area object and choose Delete for cleaning. Choose neighbor interpolation, LaMa or manually selected background patches to fill removed pixels.
@@ -265,6 +272,7 @@ Each row states what a control does and gives an example. Plugin implementation,
 | Edit > Invert region / Ctrl+I | Select the remaining image pixels after the union of selected area masks. | Select particles, invert, then clean only the background. |
 | Edit > Create object from region | Create an exact annotation from a shared pixel selection, retaining holes and disconnected parts. | Turn an inverted background selection into a named area object. |
 | Drawing tools | Manual point, polygon, rectangle, circle and ellipse tools add annotations. | Draw a polygon around an irregular particle; click within 3 image pixels of its first vertex to close. |
+| Measure line / Measure curve | Measure an endpoint distance or a traced path from the left toolbar. | Trace a bend to see its length in pixels and nm on a calibrated image. |
 | Hand / middle-button drag / mouse wheel | Pan and zoom the displayed image. Zoom does not change pixel coordinates. | Zoom to 40x and add a point; it remains a point rather than a one-pixel ROI. |
 | Reset magnification / F | Fit the complete current image to the canvas. | Reset the view after inspecting a small edge region. |
 | Groups > + Group / Rename / Color | Organize objects and choose default group colors. | Create Particle, Core and Cavity groups. |
@@ -324,7 +332,7 @@ Each row states what a control does and gives an example. Plugin implementation,
 | Ctrl+D | Remove selected image area |
 | Ctrl+E | Edit existing object |
 | Delete | Delete vertex in Edit mode. Delete objects in other modes. |
-| Esc | Cancel a filament connection, drawing, prompt preview or running task |
+| Esc | Clear the distance when a measurement tool is selected. Also cancels filament connections, drawings, prompt previews and running tasks. |
 | F | Reset magnification / fit image |
 | Mouse wheel / Hand / middle drag | Zoom / pan |
 | Ctrl+click | Add or remove an object from a multiple selection |

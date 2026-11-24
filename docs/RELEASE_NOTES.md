@@ -1,3 +1,10 @@
+# SAM Image Studio 1.4.4.2
+
+- Repair dialog painting for segmentation options, measurement-based mask colors, and plot group creation and editing. Also fix widget naming conflicts in calibration and scale bar settings.
+- Measure a straight line or a traced curve from the left toolbar. The canvas displays image pixels and the calibrated physical length when available.
+
+---
+
 # SAM Image Studio 1.4.4.1
 
 - Filter segmentation previews by projected area or equivalent diameter in pixels or calibrated units.

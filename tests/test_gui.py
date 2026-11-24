@@ -186,6 +186,7 @@ def test_model_manager_cpu_default_local_checkpoint_and_sam3_notice(qtbot):
 def test_calibration_dialog_preserves_picometer_metadata_units(qtbot):
     cal=Calibration(8.172883192,8.172883192,"pm","EMD metadata",True)
     dialog=CalibrationDialog(cal);qtbot.addWidget(dialog)
+    assert callable(dialog.x) and callable(dialog.y)
     restored=dialog.value()
     assert restored.valid and restored.length_unit=="pm"
     assert restored.area(100)==pytest.approx(cal.area(100))

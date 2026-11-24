@@ -75,8 +75,8 @@ class ScaleBarDialog(QDialog):
         self.line_width.setRange(1, 200)
         self.line_width.setValue(bar.line_width)
         self.line_width.setSuffix(" px")
-        self.font = QFontComboBox()
-        self.font.setCurrentFont(QFont(bar.font_family))
+        self.font_combo = QFontComboBox()
+        self.font_combo.setCurrentFont(QFont(bar.font_family))
         self.font_size = QSpinBox()
         self.font_size.setRange(1, 500)
         self.font_size.setValue(bar.font_size)
@@ -86,7 +86,7 @@ class ScaleBarDialog(QDialog):
         layout.addRow("Length", self.length)
         layout.addRow("Units", self.unit)
         layout.addRow("Line width", self.line_width)
-        layout.addRow("Font", self.font)
+        layout.addRow("Font", self.font_combo)
         layout.addRow("Font size", self.font_size)
         layout.addRow("Position", self.position)
         self.notice = QLabel()
@@ -100,7 +100,7 @@ class ScaleBarDialog(QDialog):
         self.length.textChanged.connect(self.update_preview)
         self.unit.currentIndexChanged.connect(self.update_preview)
         self.line_width.valueChanged.connect(self.update_preview)
-        self.font.currentFontChanged.connect(self.update_preview)
+        self.font_combo.currentFontChanged.connect(self.update_preview)
         self.font_size.valueChanged.connect(self.update_preview)
         self.position.currentIndexChanged.connect(self.update_preview)
         self.update_preview()
@@ -113,7 +113,7 @@ class ScaleBarDialog(QDialog):
             return
         try:
             bar = ScaleBar(length, self.unit.currentText(), self.line_width.value(),
-                           self.font.currentFont().family(), self.font_size.value(), self.position.currentData())
+                           self.font_combo.currentFont().family(), self.font_size.value(), self.position.currentData())
             scale_bar_layout(bar, self.calibration, self.shape)
         except ValueError as error:
             self._set_preview(None, str(error))

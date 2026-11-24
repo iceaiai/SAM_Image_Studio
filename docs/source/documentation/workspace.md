@@ -8,7 +8,7 @@
 | Image files, lower right | Choose source images, datasets, or stack frames. Multi-select to create a **Plot group** or remove session entries while retaining saved annotations and sources. |
 | Workflow toolbar | Choose Mode, model, active Group, and Scope; run, accept, cancel, or configure inference. |
 | Segmentation prompts toolbar | Type/run text, manage aliases, and choose positive/negative shape polarity. |
-| Drawing tools, left | Select/pan, undo/redo, delete objects, delete eligible vertices or draw geometry. |
+| Drawing tools, left | Select, pan, measure a line or curve, undo or redo, delete objects or eligible vertices, and draw geometry. |
 | Region tools | Select all, invert, create an object from a region, and reach appearance/transformation tools. |
 | Status bar | Shows progress, filtered-mask counts, errors, save state, and zoom. Model loading and processing run as background jobs. |
 

@@ -126,18 +126,18 @@ class CalibrationDialog(QDialog):
         self.enabled.setChecked(calibration.valid)
         layout.addWidget(self.enabled)
         form = QFormLayout()
-        self.x, self.y = QDoubleSpinBox(), QDoubleSpinBox()
-        for control in (self.x, self.y):
+        self.pixel_size_x, self.pixel_size_y = QDoubleSpinBox(), QDoubleSpinBox()
+        for control in (self.pixel_size_x, self.pixel_size_y):
             control.setDecimals(9)
             control.setRange(.000000001, 1e12)
-        self.x.setValue(calibration.pixel_size_x or 1)
-        self.y.setValue(calibration.pixel_size_y or 1)
+        self.pixel_size_x.setValue(calibration.pixel_size_x or 1)
+        self.pixel_size_y.setValue(calibration.pixel_size_y or 1)
         units=["pm","nm","µm","mm","m","Å"]
         self.unit = combo(units)
         equivalent=next((u for u in units if LENGTH_UNITS.get(u)==LENGTH_UNITS.get(calibration.length_unit)),"nm")
         self.unit.setCurrentText(equivalent)
-        form.addRow("X pixel size", self.x)
-        form.addRow("Y pixel size", self.y)
+        form.addRow("X pixel size", self.pixel_size_x)
+        form.addRow("Y pixel size", self.pixel_size_y)
         form.addRow("Length unit per pixel", self.unit)
         layout.addLayout(form)
         label = QLabel(f"Current source: {calibration.source}\nChanges apply to this dataset/frame. Both axis scales determine area.")
@@ -146,7 +146,8 @@ class CalibrationDialog(QDialog):
         buttons(self, layout)
 
     def value(self):
-        return Calibration(self.x.value(), self.y.value(), self.unit.currentText(), "user override", self.enabled.isChecked())
+        return Calibration(self.pixel_size_x.value(), self.pixel_size_y.value(), self.unit.currentText(),
+                           "user override", self.enabled.isChecked())
 
 
 class BrightnessDialog(QDialog):

@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QColorDialog, QComboBox,
     QSlider, QSplitter, QToolBar, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget, QDoubleSpinBox, QHeaderView)
 
 from . import __version__
-from .canvas import ImageCanvas
+from .canvas import DISTANCE_TOOLS, ImageCanvas
 from .dialogs import (BrightnessDialog, CalibrationDialog, InferenceOptionsDialog, ModelDialog,
                       RefinementDialog, SaveMasksDialog, StatisticsDialog, combo,
                       SmoothImageDialog, ImagePreviewDialog, MaskColorsDialog, ImageExportDialog)
@@ -78,6 +78,17 @@ def tool_icon(kind, size=28):
     elif kind == "ellipse":painter.drawEllipse(3,8,22,12)
     elif kind == "polygon":painter.drawPolygon(QPolygonF([QPointF(4,19),QPointF(7,6),QPointF(19,4),QPointF(24,15),QPointF(15,23)]))
     elif kind == "point":painter.drawLine(14,4,14,24);painter.drawLine(4,14,24,14)
+    elif kind in DISTANCE_TOOLS:
+        start, end = QPointF(5, 22), QPointF(23, 6)
+        path = QPainterPath(start)
+        if kind == "measure_curve":
+            path.cubicTo(QPointF(15, 22), QPointF(8, 6), end)
+        else:
+            path.lineTo(end)
+        painter.drawPath(path)
+        painter.setBrush(QColor("#f8fafc"))
+        painter.drawEllipse(start, 2.5, 2.5)
+        painter.drawEllipse(end, 2.5, 2.5)
     elif kind == "select":painter.drawPolygon(QPolygonF([QPointF(6,3),QPointF(22,15),QPointF(14,17),QPointF(12,25)]))
     elif kind == "delete":painter.drawRect(8,9,12,15);painter.drawLine(5,6,23,6);painter.drawLine(11,3,17,3)
     elif kind == "delete_vertex":
@@ -195,18 +206,25 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.scale_bar_action = self._action("Add scale bar…", self.edit_scale_bar)
         self.remove_scale_bar_action = self._action("Remove scale bar", self.remove_scale_bar)
         self.remove_action=self._action("Remove selected image area",self.remove_area,"Ctrl+D")
-        self.cancel_action=self._action("Cancel current drawing / preview",self.cancel_operation,"Esc")
+        self.cancel_action=self._action("Cancel current drawing / preview",lambda:self.cancel_operation(clear_measurement=True),"Esc")
         self.addAction(self.cancel_action)
         self.tool_actions={}
         self.tool_group=QActionGroup(self);self.tool_group.setExclusive(True)
         self.fit_action=self._action("Reset magnification / fit image",self.canvas.fit_image,"F","fit")
-        for kind,title in [("select","Select objects (Ctrl+click for multiple)"),("pan","Hand tool: drag to move image"),("polygon","Polygon"),("rectangle","Rectangle"),("circle","Circle"),("ellipse","Ellipse"),("point","Point / cleaning brush")]:
+        for kind,title in [("select","Select objects (Ctrl+click for multiple)"),("pan","Hand tool: drag to move image"),
+                           ("polygon","Polygon"),("rectangle","Rectangle"),("circle","Circle"),("ellipse","Ellipse"),
+                           ("point","Point / cleaning brush"),("measure_line","Measure line"),("measure_curve","Measure curve")]:
             action=self._action(title,lambda checked=False,k=kind:self.canvas.set_tool(k),icon=kind,checkable=True)
             self.tool_group.addAction(action);self.tool_actions[kind]=action
+        self.tool_actions["measure_line"].setToolTip("Measure line — drag between two points. Esc clears the measurement.")
+        self.tool_actions["measure_curve"].setToolTip("Measure curve — drag along a path. Esc clears the measurement.")
         self.tool_actions["select"].setChecked(True)
         self.toolbar=QToolBar("Drawing tools",self);self.toolbar.setObjectName("drawingToolbar");self.toolbar.setMovable(False);self.toolbar.setIconSize(QSize(22,22));self.addToolBar(Qt.ToolBarArea.LeftToolBarArea,self.toolbar)
         for key in ("select","pan"):self.toolbar.addAction(self.tool_actions[key])
         self.toolbar.addAction(self.fit_action)
+        self.toolbar.addSeparator()
+        for key in DISTANCE_TOOLS:
+            self.toolbar.addAction(self.tool_actions[key])
         self.toolbar.addSeparator()
         for action in (self.undo_action,self.redo_action,self.delete_action,self.delete_vertex_action,self.edit_action):self.toolbar.addAction(action)
         for action in (self.undo_action,self.redo_action):
@@ -449,6 +467,8 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.edit_action.setEnabled(has and len(editable)==1 and editable[0].role=="object" and not editable[0].locked and not self.busy)
         self.edit_action.setChecked(self.mode.currentText()=="Edit")
         for kind in ("polygon","rectangle","circle","ellipse","point"):self.tool_actions[kind].setEnabled(self.mode.currentText()!="Edit" and (not self.busy or self._job_prompt_editable))
+        for kind in DISTANCE_TOOLS:
+            self.tool_actions[kind].setEnabled(has and not self.busy)
         name=doc.get_group(doc.background_group_id).name if doc and doc.background_group_id else "not selected"
         self.background_button.setText("Background: "+name+"…");self.background_button.setEnabled(has and not self.busy)
         self._scope_tool_changed()
@@ -1267,10 +1287,13 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             doc.draft["roi"]=None;doc.draft["points"]=[];doc.draft["examples"]=[]
         if self._commit("Accept masks",accept):self.canvas.set_preview([]);self._refine_target=None;self._refresh()
 
-    def cancel_operation(self):
+    def cancel_operation(self, *, clear_measurement=False):
         if self.cancel_filament_link():
             self._refresh_controls()
             self.statusBar().showMessage("Filament connection cancelled.", 5000)
+            return
+        if clear_measurement and not self.busy and self.canvas.tool in DISTANCE_TOOLS:
+            self.canvas.clear_distance_measurement()
             return
         self.preview_timer.stop();self._pending_preview=False;self._prompt_version+=1
         if self.busy:self._job.cancel.set();self.statusBar().showMessage("Stopping after the current model operation…");return

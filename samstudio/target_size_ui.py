@@ -10,9 +10,9 @@ class TargetSizeControls(QGroupBox):
         super().__init__("Target size range", parent)
         self.calibration = calibration
         layout = QFormLayout(self)
-        self.metric = combo([("Projected area", "area"), ("Equivalent circular diameter", "diameter")],
-                            "targetSizeMetric")
-        self.metric.setCurrentIndex(self.metric.findData(settings.metric))
+        self.metric_combo = combo([("Projected area", "area"), ("Equivalent circular diameter", "diameter")],
+                                  "targetSizeMetric")
+        self.metric_combo.setCurrentIndex(self.metric_combo.findData(settings.metric))
         self.unit = combo([], "targetSizeUnit")
         self.minimum = self._number(settings.minimum, "No lower limit")
         self.maximum = self._number(settings.maximum, "No upper limit")
@@ -22,7 +22,7 @@ class TargetSizeControls(QGroupBox):
         self.pixel_y = self._number(settings.pixel_size_y, "Y size per pixel")
         self.pixel_unit = combo(PHYSICAL_UNITS)
         self.pixel_unit.setCurrentText(settings.pixel_unit)
-        layout.addRow("Measure", self.metric)
+        layout.addRow("Measure", self.metric_combo)
         layout.addRow("Units", self.unit)
         layout.addRow("Minimum", self.minimum)
         layout.addRow("Maximum", self.maximum)
@@ -35,7 +35,7 @@ class TargetSizeControls(QGroupBox):
         note.setWordWrap(True)
         layout.addRow(note)
         self._set_units(settings.unit)
-        self.metric.currentIndexChanged.connect(self._set_units)
+        self.metric_combo.currentIndexChanged.connect(self._set_units)
         self.unit.currentIndexChanged.connect(self._update_fields)
         self.override.toggled.connect(self._update_fields)
         self._update_fields()
@@ -48,7 +48,7 @@ class TargetSizeControls(QGroupBox):
 
     def _set_units(self, unit=None):
         previous = unit if isinstance(unit, str) else self.unit.currentData()
-        suffix = "²" if self.metric.currentData() == "area" else ""
+        suffix = "²" if self.metric_combo.currentData() == "area" else ""
         self.unit.blockSignals(True)
         self.unit.clear()
         for name in ("px", *PHYSICAL_UNITS):
@@ -75,7 +75,7 @@ class TargetSizeControls(QGroupBox):
             raise ValueError("Enter numbers for the size limits and pixel sizes, or leave optional limits blank.") from error
         if manual and (x is None or y is None):
             raise ValueError("Enter both X and Y pixel sizes.")
-        settings = TargetSizeRange(self.metric.currentData(), self.unit.currentData(),
+        settings = TargetSizeRange(self.metric_combo.currentData(), self.unit.currentData(),
                                    minimum, maximum, x, y, self.pixel_unit.currentData())
         settings.pixel_bounds(self.calibration)
         return settings

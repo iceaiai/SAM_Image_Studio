@@ -31,6 +31,15 @@ or px for a pixel reference. Set the corner position, line width, font and
 font size and check the live preview. **Apply** stores the bar in the native
 project. **Edit scale bar…** and **Remove scale bar** are undoable.
 
+## Measure a line or curve
+
+Choose **Measure line** in the left toolbar and drag between two points.
+Use **Measure curve** to trace a path and measure its length. The canvas shows
+image pixels and, for calibrated images, the physical distance in the image's
+current unit. The calculation uses both pixel scales, including after rotation.
+Draw again to replace the result, or press **Esc** with the tool selected to clear
+the temporary overlay. See the [User Manual](../user-manual.md#distance-measurements).
+
 ## Explore object and group measurements
 
 Open **Plot Object Statistics…** and choose up to nine metrics for display.

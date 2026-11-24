@@ -56,9 +56,9 @@ class PlotGroupDialog(QDialog):
             item.setFlags(item.flags() | Qt.ItemFlag.ItemIsUserCheckable)
             item.setCheckState(Qt.CheckState.Checked if key in checked else Qt.CheckState.Unchecked)
             self.frames.addItem(item)
-        self.metric = MetricColorControls(existing.scheme if existing else MetricColorScheme(),
-                                          optional=True, parent=self)
-        layout.addWidget(self.metric)
+        self.metric_color = MetricColorControls(existing.scheme if existing else MetricColorScheme(),
+                                              optional=True, parent=self)
+        layout.addWidget(self.metric_color)
         controls = buttons(self, layout)
         if existing:
             remove = controls.addButton("Remove plot group", QDialogButtonBox.ButtonRole.DestructiveRole)
@@ -70,7 +70,7 @@ class PlotGroupDialog(QDialog):
         name = self.name.text().strip()
         if name.casefold() in self.names:
             raise ValueError("Choose a unique plot group name.")
-        return PlotGroup(name, frames, self.metric.value())
+        return PlotGroup(name, frames, self.metric_color.value())
 
     def accept(self):
         try:

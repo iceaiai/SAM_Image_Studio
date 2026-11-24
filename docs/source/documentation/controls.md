@@ -46,6 +46,7 @@ For detailed text/shape interaction and output scope, see the
 | Select objects | Click on a mask/geometry; Ctrl+click builds a multiple selection. |
 | Hand | Drag to pan the image. |
 | Reset magnification / fit image | Fit the current image to the viewport. |
+| Measure line / Measure curve | Drag between endpoints or trace a path to measure its length in image pixels and the calibrated unit when available. |
 | Undo / Redo | Traverse committed editing history; controls are intentionally enlarged. |
 | Delete objects | Delete the selected annotations. Del uses this action outside Edit mode. |
 | Delete vertex | Remove one eligible vertex in Edit mode. Click near a polygon or contour vertex before using the button or Del. |
@@ -82,7 +83,8 @@ accepted mask; ordinary previews protect accepted objects.
 | Ctrl+A / Ctrl+I | Select all objects / Invert region |
 | Ctrl+D | Remove selected image area |
 | Ctrl+E | Edit object vertices |
-| Delete / Esc | Delete eligible selection / Cancel current drawing or task |
+| Delete | Delete eligible selection |
+| Esc | Clear the distance with a measurement tool selected, or cancel the current drawing or task |
 | F | Fit image |
 | Mouse wheel / Hand / middle drag | Zoom / pan |
 | Ctrl+click | Add/remove an object in a multiple selection |
