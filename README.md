@@ -12,11 +12,10 @@ compressed-sensing restoration, with calibrated measurements and editable projec
 [Compressed sensing](https://iceaiai.github.io/SAM_Image_Studio/features/compressed-sensing.html) ·
 [User Manual](https://iceaiai.github.io/SAM_Image_Studio/user-manual.html)
 
-Version **1.4.4** adds Otsu + watershed with adjustable previews, signal-scaled
-Gaussian/Poisson noise, per-image inference input controls, exact rotation reset,
-panel selection buttons and configurable LaMa filling. CPU installers select or
-prepare Python 3.12 automatically. A separate offline CPU edition is available.
-Original v1.4.2 uploads remain unchanged.
+Version **1.4.4.1** adds segmentation size ranges, scale bars, filament
+measurements and shared metric colors for plot groups. CPU installers select or
+prepare Python 3.12 automatically. The same release is available as an offline
+CPU edition.
 
 ## First: download or clone the complete project (CPU and GPU)
 
@@ -25,9 +24,8 @@ You do not need Git if you download a ZIP.
 
 | CPU version | Download | Package / next step |
 | --- | --- | --- |
-| **Current source — recommended** | **[Download current ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/heads/main.zip)** | Includes the Windows PowerShell bootstrap fix. Extract, then run `packaging/Install_CPU.bat` or `bash packaging/install_cpu.sh`. |
-| 1.4.4 — tagged archive | [Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip) | For Windows CPU setup, apply the [bootstrap fix](https://iceaiai.github.io/SAM_Image_Studio/troubleshooting.html#repair-windows-python-preparation) first. |
-| **1.4.4 — offline CPU** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4-offline.zip)** | Extract and [prepare once online](offline/README.md); then install without network using the normal CPU installer. SAM1 ViT-B + SAM2.1 Small/Base+ only. |
+| **1.4.4.1 — recommended** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1.zip)** | Extract, then run `packaging/Install_CPU.bat` on Windows or `bash packaging/install_cpu.sh` on Linux. |
+| **1.4.4.1 — offline CPU** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1-offline.zip)** | Extract and [prepare once online](offline/README.md), then install using the normal CPU installer. Includes SAM1 ViT-B and SAM2.1 Small/Base+. |
 | 1.4.3 — previous | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip)** | Complete source bundle for Windows/Linux CPU; extract, then use `packaging/Install_CPU.bat` or `bash packaging/install_cpu.sh`. |
 | 1.4.2 — original archive | **[Download ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip)** | Historical CPU source bundle; extract, then use `Install_CPU.bat` or `bash install_cpu.sh` inside its `SAM_Image_Studio` folder. |
 
@@ -41,7 +39,7 @@ you do not need to download a second source package for GPU installation.
 
 **Download route:** click Download ZIP, extract the entire archive, and open the
 project folder containing `pyproject.toml` and `samstudio/`. Keep the folder contents
-together. The current source ZIP extracts to `SAM_Image_Studio-main/` and
+together. The standard ZIP extracts to `SAM_Image_Studio-1.4.4.1/` and
 contains both `GPU/` and `packaging/`.
 
 **Git alternative, shared by CPU and GPU:** open a terminal in the parent folder
@@ -57,8 +55,7 @@ for version details and installation steps.
 
 ## Install and start on CPU
 
-First complete the download/extraction or Git steps above and enter the v1.4.4
-project root. Then:
+First complete the download/extraction or Git steps above and enter the project root.
 
 - **Windows:** double-click [`packaging/Install_CPU.bat`](packaging/Install_CPU.bat),
   then [`packaging/Start_GUI.bat`](packaging/Start_GUI.bat).
@@ -127,7 +124,7 @@ python3.12 -m venv .docs-venv
 See [development](docs/source/development.md) and
 [website publishing](docs/source/developer/publishing.md). The website follows
 installation → image workflows → menus/buttons/modes, with a source-generated API.
-Current validation is recorded in [`docs/validation/VALIDATION_v144.md`](docs/validation/VALIDATION_v144.md).
+The 1.4.4 release validation is recorded in [`docs/validation/VALIDATION_v144.md`](docs/validation/VALIDATION_v144.md).
 CPU ONNX inference has been exercised with real weights; this cloud environment
 has no GPU, so no new CUDA performance or native Windows validation is claimed.
 

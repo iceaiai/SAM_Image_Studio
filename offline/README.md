@@ -1,7 +1,7 @@
 # Offline CPU edition: prepare online, install offline
 
-First [download the offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4-offline.zip)
-and extract the **whole** archive. Enter `SAM_Image_Studio-1.4.4-offline/`, the
+First [download the offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1-offline.zip)
+and extract the **whole** archive. Enter `SAM_Image_Studio-1.4.4.1-offline/`, the
 folder containing `pyproject.toml`, `packaging/` and `offline/`. Keep everything
 together. The normal source ZIP does not activate this restricted edition.
 
@@ -45,7 +45,7 @@ Meta's public checkpoint host and the Linux distribution's configured apt mirror
 It retains upstream runtime/package licenses.
 
 Wait for **Offline preparation complete** and `offline-cache/READY`. The manifest
-records hashes, platform and Linux distribution. READY is written only after all
+records the application version, hashes, platform and Linux distribution. READY is written only after all
 stages finish; failed preparation preserves downloads but leaves no READY marker.
 Rerun preparation after fixing a network failure. Never manually create READY or
 skip hash checks. SAM1 and runtime have upstream-pinned digests; the SAM2 checkpoints'
@@ -82,23 +82,12 @@ weights. Example images are under `examples/user_samples/`.
 
 ## Updates and checks
 
-For a new version, download/extract its complete offline source, rerun preparation
-while online, then transfer the prepared folder and use its installer. Keep user
-images, projects and exports separately. There is no need to uninstall system
-Python or change Conda base. Keep a previous working prepared folder until the
-new version passes its self-test. Caches are tied to the app version/platform;
-do not mix arbitrary wheels or replace a model file under an existing manifest.
+For a new version, download its complete offline source and run preparation
+online in the new folder. On the same platform you can copy the existing
+`offline-cache/` into the new folder first to reuse downloaded files.
+Preparation builds the application wheel for the new version and records a
+new manifest. Transfer the prepared folder and run its installer. Keep a
+previous working folder until the new version passes its self-test.
 
 From the target project root, `python3 scripts/install_offline.py --verify-only`
 (or the selected Windows Python) checks the cache before installation.
-
-## Validation limits for 1.4.4
-
-A fresh Linux Python 3.12 environment installed all 126 resolved CPU wheels with
-network access deliberately unavailable, passed `pip check` and the full CPU
-installation self-test. Linux managed-Python extraction and Windows wheel
-metadata resolution were checked. The cloud test environment blocked Meta's
-checkpoint host and its Debian snapshot mirror, so full three-checkpoint/system-
-package preparation and native Windows installation have **not** been verified
-end to end. Those failures leave the preparation incomplete rather than creating
-a misleading ready-to-install cache. See the repository validation report.

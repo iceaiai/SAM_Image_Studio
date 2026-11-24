@@ -12,8 +12,10 @@ import tempfile
 import venv
 
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
 sys.path.insert(0,str(ROOT/'scripts'))
 from bootstrap_python import ensure_python,runtime_archive,download,digest
+from samstudio import __version__
 
 
 def run(command,cwd=ROOT):
@@ -71,10 +73,8 @@ def main():
         run([py,'-m','pip','wheel','--no-deps','--no-build-isolation','--wheel-dir',wheels,stage])
     # Resolve once from local wheels so repeated preparation never installs two
     # cached versions of the same dependency into the offline environment.
-    import tomllib
-    version=tomllib.loads((ROOT/'pyproject.toml').read_text())['project']['version']
     report=cache/'resolved-packages.json'
-    run([py,'-m','pip','install','--dry-run','--ignore-installed','--no-index','--find-links',wheels,'--constraint',constraints,'--report',report,'-r',ROOT/'packaging/requirements/cpu.lock.txt','sam-image-studio=='+version,'SAM-2==1.0','pip==25.2','setuptools==80.9.0','wheel==0.45.1'])
+    run([py,'-m','pip','install','--dry-run','--ignore-installed','--no-index','--find-links',wheels,'--constraint',constraints,'--report',report,'-r',ROOT/'packaging/requirements/cpu.lock.txt','sam-image-studio=='+__version__,'SAM-2==1.0','pip==25.2','setuptools==80.9.0','wheel==0.45.1'])
     from urllib.parse import urlsplit,unquote
     selected=[]
     for item in json.loads(report.read_text())['install']:
@@ -97,7 +97,7 @@ def main():
     (cache/'requirements-hashed.txt').write_text('\n'.join(requirements)+'\n')
     records.append({'path':'requirements-hashed.txt','sha256':digest(cache/'requirements-hashed.txt'),'bytes':(cache/'requirements-hashed.txt').stat().st_size})
     os_release=platform.freedesktop_os_release() if sys.platform.startswith('linux') else {}
-    manifest={'schema':1,'python':'3.12','platform':sys.platform,'machine':platform.machine().lower(),'linux_distribution':{k:os_release[k] for k in ['ID','VERSION_ID'] if k in os_release},'models':models,'files':records,'system_packages_included':bool(system)}
+    manifest={'schema':1,'app_version':__version__,'python':'3.12','platform':sys.platform,'machine':platform.machine().lower(),'linux_distribution':{k:os_release[k] for k in ['ID','VERSION_ID'] if k in os_release},'models':models,'files':records,'system_packages_included':bool(system)}
     (cache/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     (cache/'READY').write_text(digest(cache/'manifest.json')+'\n')
     shutil.rmtree(prep)

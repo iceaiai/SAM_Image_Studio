@@ -28,20 +28,21 @@ def project(tmp_path):
     shutil.copy2(BOOTSTRAP, packaging / BOOTSTRAP.name)
     wrapper = root / "bootstrap test.ps1"
     wrapper.write_text(
+        "param([string]$Action)\n"
         "$PSNativeCommandArgumentPassing = 'Legacy'\n"
-        "& (Join-Path $PSScriptRoot 'packaging/bootstrap_python.ps1') -Action PreparePython\n"
+        "& (Join-Path $PSScriptRoot 'packaging/bootstrap_python.ps1') -Action $Action\n"
         "exit $LASTEXITCODE\n",
         encoding="ascii",
     )
 
-    def run(*, project_only=False):
+    def run(*, project_only=False, action="PreparePython"):
         env = os.environ.copy()
         if project_only:
             env["PATH"] = str(root / "no-system-python")
         options = ["-NoProfile", "-NonInteractive"]
         if os.name == "nt":
             options += ["-ExecutionPolicy", "Bypass"]
-        return subprocess.run([shell, *options, "-File", str(wrapper)], cwd=root, env=env,
+        return subprocess.run([shell, *options, "-File", str(wrapper), "-Action", action], cwd=root, env=env,
                               capture_output=True, text=True, timeout=45)
 
     return root, run
@@ -66,11 +67,8 @@ def test_legacy_argument_mode_reuses_healthy_local_python(project):
     assert not (root / ".install-cache").exists()
 
 
-@pytest.mark.skipif(os.name != "posix", reason="The staged runtime fixture is a POSIX executable.")
-@pytest.mark.parametrize("works", [True, False])
-def test_bootstrap_checks_verified_runtime_before_moving_it_into_place(project, works):
-    root, run = project
-    cache = root / ".install-cache" / "runtime"
+def cache_runtime(root, cache_dir, works=True):
+    cache = root / cache_dir / "runtime"
     cache.mkdir(parents=True)
     archive = cache / "fixture.nupkg"
     executable = zipfile.ZipInfo("tools/python.exe")
@@ -85,6 +83,14 @@ def test_bootstrap_checks_verified_runtime_before_moving_it_into_place(project, 
     manifest = {"windows-x86_64": {"filename": archive.name, "archive_root": "tools",
                                    "sha256": hashlib.sha256(archive.read_bytes()).hexdigest()}}
     (root / "packaging" / "python-runtimes.json").write_text(json.dumps(manifest), encoding="ascii")
+    return archive
+
+
+@pytest.mark.skipif(os.name != "posix", reason="The staged runtime fixture is a POSIX executable.")
+@pytest.mark.parametrize("works", [True, False])
+def test_bootstrap_checks_verified_runtime_before_moving_it_into_place(project, works):
+    root, run = project
+    archive = cache_runtime(root, ".install-cache", works)
 
     result = run(project_only=True)
     local = root / ".python312"
@@ -101,3 +107,24 @@ def test_bootstrap_checks_verified_runtime_before_moving_it_into_place(project, 
         assert "code 37" in result.stderr and "test launch error" in result.stderr
         assert not local.exists()
         assert archive.is_file()
+
+
+@pytest.mark.skipif(os.name != "posix", reason="The staged runtime fixture is a POSIX executable.")
+@pytest.mark.parametrize(("action", "script"), [("PrepareOffline", "prepare_offline"),
+                                                  ("InstallCPU", "install_offline"),
+                                                  ("InstallOffline", "install_offline")])
+def test_offline_actions_use_the_verified_python_cache(project, action, script):
+    root, run = project
+    cache_runtime(root, "offline-cache")
+    resources = root / "samstudio" / "resources"
+    resources.mkdir(parents=True)
+    (resources / "offline_profile.json").write_text("{}", encoding="ascii")
+    scripts = root / "scripts"
+    scripts.mkdir()
+    (scripts / f"{script}.py").write_text(f"print('{script} invoked')", encoding="ascii")
+
+    result = run(project_only=True, action=action)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert f"{script} invoked" in result.stdout
+    assert (root / ".python312" / ".samstudio-owned").is_file()
+    assert not (root / ".install-cache").exists()

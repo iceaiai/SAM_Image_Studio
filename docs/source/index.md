@@ -118,7 +118,7 @@ autosave, calibrated measurements, and reversible processing. Read the
 [application additions guide](segmentation/application-tools.md) to understand
 their scope and limitations.
 
-Version **1.4.4**, based on the v1.4 application line. The optional SAM3/3.1
+Version **{{ app_version }}**, based on the v1.4 application line. The optional SAM3/3.1
 backend requires NVIDIA CUDA, a dedicated Linux/WSL2 Conda environment, and
 approved compatible weights. CPU supports SAM1, SAM2/2.1 and public SAM3 ONNX text segmentation. This website
 documents implementation and recorded checks; it does not claim new CUDA

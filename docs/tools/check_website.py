@@ -53,15 +53,12 @@ with sync_playwright() as p:
  page.get_by_role('link',name='Download CPU versions',exact=True).click()
  page.wait_for_load_state('networkidle')
  assert page.url.endswith('/downloads.html')
- current=page.locator('article').get_by_role('link',name='current source ZIP',exact=True)
- assert current.get_attribute('href').endswith('/archive/refs/heads/main.zip')
+ app_version=runpy.run_path(str(Path(__file__).resolve().parents[2]/'samstudio'/'__init__.py'))['__version__']
  downloads=page.locator('article').get_by_role('link',name='Download ZIP',exact=True)
  assert downloads.count()==4
- for i, suffix in enumerate(['/archive/refs/tags/v1.4.4.zip','/archive/refs/tags/v1.4.4-offline.zip','/archive/refs/tags/v1.4.3.zip','/uploads/SAM_Image_Studio_v1.4.2_CPU.zip']):
+ for i, suffix in enumerate([f'/archive/refs/tags/v{app_version}.zip',f'/archive/refs/tags/v{app_version}-offline.zip','/archive/refs/tags/v1.4.3.zip','/uploads/SAM_Image_Studio_v1.4.2_CPU.zip']):
   assert downloads.nth(i).get_attribute('href').endswith(suffix)
  page.screenshot(path='/tmp/samstudio-downloads-desktop.png',full_page=True)
- page.locator('article').get_by_role('link',name='Repair Windows Python preparation',exact=True).click()
- assert page.get_by_role('heading',name='Repair Windows Python preparation',exact=True).count()==1
  page.goto(base+'/installation.html',wait_until='networkidle')
  headings=page.locator('article h2').all_text_contents()
  assert headings[0].startswith('First for every route:'),headings
@@ -77,7 +74,6 @@ with sync_playwright() as p:
  assert page.get_by_text('Delete vertex',exact=True).count()>=1
  assert page.get_by_text('Delete objects',exact=True).count()>=1
  page.goto(base+'/user-manual.html#denoising-parameters',wait_until='networkidle')
- app_version=runpy.run_path(str(Path(__file__).resolve().parents[2]/'samstudio'/'__init__.py'))['__version__']
  assert f'This manual covers SAM Image Studio {app_version}' in page.locator('article').inner_text()
  for section in ['denoising-parameters','target-size-range','scale-bars','filaments-and-occluded-fragments','metric-colors-and-plot-groups']:
   assert page.locator(f'article section#{section}').count()==1,section

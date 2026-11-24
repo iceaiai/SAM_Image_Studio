@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sam-image-studio"
-version = "1.4.4"
+dynamic = ["version"]
 description = "Desktop microscopy annotation, SAM segmentation, calibrated measurements and reversible cleaning"
 requires-python = ">=3.12,<3.13"
 license = "MIT"
@@ -15,6 +15,9 @@ sam-image-studio = "samstudio.app:main"
 
 [tool.setuptools.packages.find]
 include = ["samstudio*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "samstudio.__version__"}
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

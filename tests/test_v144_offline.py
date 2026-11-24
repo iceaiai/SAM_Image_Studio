@@ -9,6 +9,8 @@ import sys
 import numpy as np
 import pytest
 
+from samstudio import __version__
+
 ROOT=Path(__file__).resolve().parents[1]
 
 def module(name):
@@ -21,7 +23,7 @@ def cache(tmp_path):
     (root/'samstudio/resources').mkdir(parents=True)
     data=folder/'wheels/test.whl';data.parent.mkdir();data.write_bytes(b'Fixture integrity bytes, not a usable wheel')
     model=folder/'models/test.pt';model.write_bytes(b'Fixture integrity bytes, not a checkpoint')
-    m={'platform':sys.platform,'machine':platform.machine().lower(),'files':[{'path':'wheels/test.whl','sha256':hashlib.sha256(data.read_bytes()).hexdigest()}],'models':[{'filename':'test.pt','sha256':hashlib.sha256(model.read_bytes()).hexdigest()}]}
+    m={'app_version':__version__,'platform':sys.platform,'machine':platform.machine().lower(),'files':[{'path':'wheels/test.whl','sha256':hashlib.sha256(data.read_bytes()).hexdigest()}],'models':[{'filename':'test.pt','sha256':hashlib.sha256(model.read_bytes()).hexdigest()}]}
     (root/'samstudio/resources/offline_profile.json').write_text(json.dumps({'models':[{'filename':'test.pt'}]}))
     (folder/'manifest.json').write_text(json.dumps(m));(folder/'READY').write_text(hashlib.sha256((folder/'manifest.json').read_bytes()).hexdigest())
     return root
@@ -35,6 +37,20 @@ def test_offline_cache_rejects_incomplete_or_wrong_machine(cache):
     installer=module('install_offline')
     (cache/'offline-cache/READY').unlink()
     with pytest.raises(RuntimeError,match='not ready'):installer.verify_cache(cache)
+
+@pytest.mark.parametrize('old_version', ['1.4.4', None])
+def test_offline_cache_requires_current_app_version(cache, old_version):
+    installer = module('install_offline')
+    manifest = cache / 'offline-cache/manifest.json'
+    data = json.loads(manifest.read_text())
+    if old_version is None:
+        del data['app_version']
+    else:
+        data['app_version'] = old_version
+    manifest.write_text(json.dumps(data))
+    (manifest.parent / 'READY').write_text(hashlib.sha256(manifest.read_bytes()).hexdigest())
+    with pytest.raises(ValueError, match='Run Prepare Offline with SAM Image Studio'):
+        installer.verify_cache(cache)
 
 def test_offline_download_never_attempts_network_without_cache(tmp_path,monkeypatch):
     bootstrap=module('bootstrap_python')

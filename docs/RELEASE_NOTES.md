@@ -1,3 +1,13 @@
+# SAM Image Studio 1.4.4.1
+
+- Filter segmentation previews by projected area or equivalent diameter in pixels or calibrated units.
+- Add editable scale bars, separate object and vertex deletion, and measure filaments along visible centerlines. Connected fragments report visible and estimated gap lengths separately.
+- Color masks and statistics points by measurement across named plot groups.
+- Open denoising parameters inside the versioned User Manual.
+- Use the shared Windows Python bootstrap for both CPU editions. Offline preparation records the app version alongside the verified packages and models.
+
+---
+
 # SAM Image Studio 1.4.4
 
 - Add model-free Otsu + watershed, exact-region preview, documented parameters and mask acceptance.

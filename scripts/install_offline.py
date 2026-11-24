@@ -11,8 +11,10 @@ import sys
 import venv
 
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
 sys.path.insert(0,str(ROOT/'scripts'))
 from bootstrap_python import ensure_python,digest
+from samstudio import __version__
 
 
 def verify_cache(root=ROOT):
@@ -21,6 +23,9 @@ def verify_cache(root=ROOT):
     if (cache/'READY').read_text().strip()!=digest(manifest_path):raise ValueError('Offline preparation manifest failed verification.')
     m=json.loads(manifest_path.read_text())
     if m['platform']!=sys.platform or m['machine']!=platform.machine().lower():raise ValueError('Prepared OS/architecture does not match this computer. Prepare on a matching computer.')
+    if m.get('app_version') != __version__:
+        prepared = m.get('app_version', 'an earlier release')
+        raise ValueError(f'Offline cache is for {prepared}. Run Prepare Offline with SAM Image Studio {__version__}.')
     for item in m['files']:
         path=cache/item['path']
         if cache.resolve() not in path.resolve().parents:raise ValueError('Invalid offline manifest path.')

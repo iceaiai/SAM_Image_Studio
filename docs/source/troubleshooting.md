@@ -1,6 +1,6 @@
 # Troubleshooting installation and operation
 
-Use current installers from a complete version 1.4.4 source tree. They now handle
+Use current installers from a complete version {{ app_version }} source tree. They handle
 the repeated dependency fixes encountered during v1.4.2 WSL installation. Rerunning
 in an existing dedicated environment is a supported repair; deleting that
 environment is usually unnecessary.
@@ -23,22 +23,6 @@ Both should return `True`. Linux/WSL needs its own path, for example
 SAM3.1. Windows Anaconda alone is not Linux Conda. Activate the dedicated
 `sam-image-studio-sam3` or `sam-image-studio-gpu` environment before `--current`.
 Application installation into Conda base is rejected.
-
-### Repair Windows Python preparation
-
-The v1.4.4 tagged archive can report `Prepared Python version/architecture
-check failed` because Windows PowerShell 5.1 strips a quoted argument from the
-bootstrap's Python probe. A working 64-bit Python 3.12 can fail this older check.
-
-In your extracted project, replace `packaging\bootstrap_python.ps1` with the
-[updated bootstrap script](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/packaging/bootstrap_python.ps1).
-Then run `packaging\Install_CPU.bat` again. The script checks and reuses the
-Python in `.python312` when it starts successfully. For a fresh installation,
-use the [current source ZIP](downloads.md#cpu-application-versions).
-
-If the updated script reports that the existing `.python312` cannot start,
-keep the detailed error. Rename only `.python312` to `.python312-backup` before
-retrying the installer. Keep the project folder and its `.sam.json` files.
 
 ## 2. Dependency problems handled by installation
 
