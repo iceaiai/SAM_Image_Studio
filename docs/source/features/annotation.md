@@ -12,7 +12,9 @@ background groups are chosen explicitly for cleaning.
 Choose **Manual**, then Polygon, Rectangle, Circle, Ellipse, or Point. Area tools
 produce filled annotations; points remain point annotations. A polygon finishes
 with Enter, double-click, or a click near its first vertex after at least three
-vertices. Completed Manual shapes are committed to the active group.
+vertices. The first vertex turns green inside the closing distance. Change the
+14-screen-pixel default under **Edit → Polygon closing distance…**. Use 0 to
+close with Enter or double-click. Completed Manual shapes use the active group.
 
 Select on the canvas or in **Objects**. Ctrl+click supports multiple selection.
 **Select all objects** and **Invert region** let you work with the complement of
@@ -22,9 +24,11 @@ that exact region into a new annotation. Points have no filled area to invert.
 ## Edit geometry and appearance
 
 Switch to **Edit**, select an object, and use **Edit object vertices** to drag
-existing handles. Delete removes an eligible selected vertex or an object,
-depending on the editing state. **Vertex deletion radius…** controls the search
-radius in image pixels. Locked objects are protected.
+existing handles. Set **Vertices per delete** and **Vertex radius (px)**, then
+click near a contour to highlight the closest eligible vertices. **Del** or
+**Delete vertex** removes the highlighted batch in a single undoable operation.
+Choose between one and ten vertices. Each contour keeps at least three vertices.
+**Delete objects** removes whole annotations. Locked objects are protected.
 
 Use **Fill holes…** or **Smooth edges…** for a reviewed mask/contour change.
 **Smooth edges** edits annotation boundaries; **Smooth image pixels…** modifies
@@ -34,6 +38,29 @@ derived image intensities. They solve different tasks.
 and **Object transparency…** control metadata and display. **Assign mask colors…**
 supports default group/object colors or a 20-color lookup table. Colors and
 transparency are display choices, not changes to binary mask ownership.
+
+## Clean up disconnected mask parts
+
+Several disjoint shapes can belong to one mask. In **Edit**, choose **Select
+objects**, right-click the unwanted piece on the image, and select **Remove this
+disconnected part**. The other parts of that mask survive.
+
+Use **Edit → Refine disconnected parts…** to preview cleanup for selected masks.
+Choose **Keep largest connected part** or set a minimum part area in px². The
+largest part always remains. Pixel edges and corners count as connected. Red
+shows the areas to remove. Click **Apply** after reviewing the result.
+
+## Push a mask boundary
+
+In **Edit**, select a single unlocked area mask and choose **Mask pusher** in the
+left toolbar. Set the radius in image pixels on the Image settings toolbar or
+through **Edit → Mask pusher radius…**. Left-drag along the edge to expand the
+mask with a rounded stroke. Right-drag carves inward. Green and red show the
+pending additions and removals. Release to apply the stroke. Use Esc to discard
+an active stroke or Undo to reverse a committed stroke.
+
+The edit applies to the selected mask within the swept circle. An outward
+stroke grows where the circle overlaps the mask.
 
 ## Rotate an image
 

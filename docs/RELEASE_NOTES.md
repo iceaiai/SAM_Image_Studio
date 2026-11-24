@@ -1,3 +1,12 @@
+# SAM Image Studio 1.4.5
+
+- Arrange drawing tools in two columns and toggle each top toolbar from View.
+- Refine disconnected mask parts by area or remove a clicked fragment in Edit.
+- Highlight and remove up to ten vertices in one action. Set the polygon closing distance in screen pixels.
+- Add a circular Mask pusher for expanding and carving a selected mask with an adjustable radius and undoable strokes.
+
+---
+
 # SAM Image Studio 1.4.4.2
 
 - Repair dialog painting for segmentation options, measurement-based mask colors, and plot group creation and editing. Also fix widget naming conflicts in calibration and scale bar settings.

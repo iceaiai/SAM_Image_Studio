@@ -18,10 +18,11 @@ from PySide6.QtCore import QPointF
 from PySide6.QtWidgets import (QApplication, QCheckBox, QColorDialog, QComboBox, QDialog,
     QDialogButtonBox, QDockWidget, QFileDialog, QFormLayout, QHBoxLayout, QInputDialog,
     QLabel, QLineEdit, QMainWindow, QMenu, QMessageBox, QPushButton, QProgressBar,
-    QSlider, QSplitter, QToolBar, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget, QDoubleSpinBox, QHeaderView)
+    QSlider, QSpinBox, QSplitter, QToolBar, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget, QDoubleSpinBox, QHeaderView)
 
 from . import __version__
-from .canvas import DISTANCE_TOOLS, ImageCanvas
+from .canvas import (DISTANCE_TOOLS, MAX_MASK_PUSHER_RADIUS, MAX_POLYGON_CLOSE_DISTANCE,
+                     MAX_VERTEX_DELETE_COUNT, ImageCanvas)
 from .dialogs import (BrightnessDialog, CalibrationDialog, InferenceOptionsDialog, ModelDialog,
                       RefinementDialog, SaveMasksDialog, StatisticsDialog, combo,
                       SmoothImageDialog, ImagePreviewDialog, MaskColorsDialog, ImageExportDialog)
@@ -29,7 +30,8 @@ from .domain import Annotation, Document, Group, History, ProjectStore, pack_mas
 from .exports import export_coco, export_yolo, safe_name, save_cleaned, save_masks, save_image_versions
 from .imageio import SUPPORTED_EXTENSIONS, load_files
 from .inference import InferenceEngine, data_directory, initialize_torch_runtime, lama_fill
-from .processing import bounding_box, brush_mask, cast_like, display_rgb, filter_proposal_indices, neighbor_fill, patch_fill, raster_contours, shape_mask, smooth_image
+from .processing import (bounding_box, brush_mask, cast_like, display_rgb, filter_proposal_indices,
+                         mask_components, neighbor_fill, patch_fill, raster_contours, shape_mask, smooth_image)
 from .palette import assign_colors
 from .dialogs_v14 import PromptAliasesDialog, RotationDialog, MaskScaleDialog, MorphologyDialog
 from .text_prompts import resolve_prompt
@@ -78,6 +80,11 @@ def tool_icon(kind, size=28):
     elif kind == "ellipse":painter.drawEllipse(3,8,22,12)
     elif kind == "polygon":painter.drawPolygon(QPolygonF([QPointF(4,19),QPointF(7,6),QPointF(19,4),QPointF(24,15),QPointF(15,23)]))
     elif kind == "point":painter.drawLine(14,4,14,24);painter.drawLine(4,14,24,14)
+    elif kind == "mask_pusher":
+        painter.drawEllipse(8, 4, 16, 16)
+        painter.drawLine(5, 24, 15, 24)
+        painter.drawLine(5, 24, 8, 21)
+        painter.drawLine(5, 24, 8, 27)
     elif kind in DISTANCE_TOOLS:
         start, end = QPointF(5, 22), QPointF(23, 6)
         path = QPainterPath(start)
@@ -147,11 +154,18 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.project_directory = self.settings.value("project_directory", "") or ""
         self.canvas=ImageCanvas(self);self.canvas.setObjectName("imageCanvas")
         self.canvas.vertex_delete_radius = max(0., min(10000., float(self.settings.value("vertex_delete_radius", 20))))
+        self.canvas.vertex_delete_count = max(1, min(MAX_VERTEX_DELETE_COUNT,
+            self.settings.value("vertex_delete_count", self.canvas.vertex_delete_count, type=int)))
+        self.canvas.polygon_close_distance = max(0, min(MAX_POLYGON_CLOSE_DISTANCE,
+            self.settings.value("polygon_close_distance", self.canvas.polygon_close_distance, type=int)))
+        self.canvas.mask_pusher_radius = max(1, min(MAX_MASK_PUSHER_RADIUS,
+            self.settings.value("mask_pusher_radius", self.canvas.mask_pusher_radius, type=int)))
         self.setCentralWidget(self.canvas)
         self.canvas.selection_changed.connect(self._canvas_selected)
         self.canvas.shape_completed.connect(self._shape_completed)
         self.canvas.prompt_added.connect(self._prompt_added)
         self.canvas.geometry_changed.connect(self._geometry_changed)
+        self.canvas.mask_pushed.connect(self._mask_pushed)
         self.canvas.message.connect(lambda text:self.statusBar().showMessage(text,8000))
         self.canvas.zoom_changed.connect(lambda value:self.zoom_label.setText(f"Zoom {value*100:.0f}%"))
         self.canvas.object_context_requested.connect(self._show_object_context_menu)
@@ -192,6 +206,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.redo_action=self._action("Redo",self.redo,"Ctrl+Y","redo")
         self.delete_action = self._action("Delete objects", self.delete_selected, icon="delete")
         self.delete_vertex_action = self._action("Delete vertex", self.delete_vertex, icon="delete_vertex")
+        self.delete_vertex_action.setToolTip("Delete the highlighted vertices within the radius from one contour.")
         self.edit_action=self._action("Edit object vertices",self.edit_object,"Ctrl+E","edit",True)
         self.select_all_action=self._action("Select all objects",self.select_all_objects,"Ctrl+A")
         self.select_all_action.setToolTip("Select annotation and cleaning objects. Image-smoothing records remain selectable in the Objects panel.")
@@ -213,25 +228,16 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.fit_action=self._action("Reset magnification / fit image",self.canvas.fit_image,"F","fit")
         for kind,title in [("select","Select objects (Ctrl+click for multiple)"),("pan","Hand tool: drag to move image"),
                            ("polygon","Polygon"),("rectangle","Rectangle"),("circle","Circle"),("ellipse","Ellipse"),
-                           ("point","Point / cleaning brush"),("measure_line","Measure line"),("measure_curve","Measure curve")]:
+                           ("point","Point / cleaning brush"),("measure_line","Measure line"),
+                           ("measure_curve","Measure curve"),("mask_pusher","Mask pusher")]:
             action=self._action(title,lambda checked=False,k=kind:self.canvas.set_tool(k),icon=kind,checkable=True)
             self.tool_group.addAction(action);self.tool_actions[kind]=action
         self.tool_actions["measure_line"].setToolTip("Measure line — drag between two points. Esc clears the measurement.")
         self.tool_actions["measure_curve"].setToolTip("Measure curve — drag along a path. Esc clears the measurement.")
+        self.tool_actions["polygon"].setToolTip("Polygon — click to add vertices. Click near the first vertex, press Enter, or double-click to close.")
+        self.tool_actions["mask_pusher"].setToolTip("Mask pusher — in Edit, left-drag to expand the selected mask and right-drag to carve it.")
         self.tool_actions["select"].setChecked(True)
-        self.toolbar=QToolBar("Drawing tools",self);self.toolbar.setObjectName("drawingToolbar");self.toolbar.setMovable(False);self.toolbar.setIconSize(QSize(22,22));self.addToolBar(Qt.ToolBarArea.LeftToolBarArea,self.toolbar)
-        for key in ("select","pan"):self.toolbar.addAction(self.tool_actions[key])
-        self.toolbar.addAction(self.fit_action)
-        self.toolbar.addSeparator()
-        for key in DISTANCE_TOOLS:
-            self.toolbar.addAction(self.tool_actions[key])
-        self.toolbar.addSeparator()
-        for action in (self.undo_action,self.redo_action,self.delete_action,self.delete_vertex_action,self.edit_action):self.toolbar.addAction(action)
-        for action in (self.undo_action,self.redo_action):
-            button=self.toolbar.widgetForAction(action)
-            button.setIconSize(QSize(44,44));button.setFixedSize(72,72)
-        self.toolbar.addSeparator()
-        for key in ("polygon","rectangle","circle","ellipse","point"):self.toolbar.addAction(self.tool_actions[key])
+        self._build_drawing_toolbars()
         file=self.menuBar().addMenu("File")
         file.addAction(self.open_action);file.addAction(self._action("Open folder…",self.open_folder));file.addAction(self._action("Open project JSON…",self.open_project));file.addSeparator()
         file.addAction(self.save_action);file.addAction(self._action("Save project now",self.save_project));file.addAction(self._action("Choose project folder…",self.choose_project_folder));file.addAction(self._action("Save original / processed images…",self.export_images));file.addSeparator()
@@ -248,7 +254,13 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         edit.addAction(self.remove_scale_bar_action)
         self._init_filament_ui(edit)
         edit.addAction(self._action("Vertex deletion radius…",self.change_vertex_delete_radius))
+        edit.addAction(self._action("Vertices per deletion…", self.change_vertex_delete_count))
+        edit.addAction(self._action("Polygon closing distance…", self.change_polygon_close_distance))
+        edit.addAction(self.tool_actions["mask_pusher"])
+        edit.addAction(self._action("Mask pusher radius…", self.change_mask_pusher_radius))
         edit.addSeparator();edit.addAction(self._action("Fill holes…",lambda:self.refine_masks("holes")));edit.addAction(self._action("Smooth edges…",lambda:self.refine_masks("smooth")))
+        self.refine_parts_action = self._action("Refine disconnected parts…", lambda:self.refine_masks("components"))
+        edit.addAction(self.refine_parts_action)
         cleaning=self.menuBar().addMenu("Cleaning");cleaning.addAction(self.remove_action)
         cleaning.addAction(self._action("Restore selected area / all edits",self.restore_area))
         for title,method in [("Fill from neighboring pixels","neighbors"),("Fill with LaMa…","lama"),("Fill with background patches","patches")]:
@@ -260,14 +272,63 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         view=self.menuBar().addMenu("View");view.addAction(self.fit_action)
         for title,attribute,initial in [("Show masks","show_masks",True),("Show contours","show_contours",True),("Show prompt points","show_prompts",True)]:
             action=self._action(title,lambda checked,a=attribute:self.set_canvas_option(a,checked),checkable=True);action.setChecked(initial);view.addAction(action)
+        self.toolbar_menu = view.addMenu("Toolbars")
         sizes=view.addMenu("Toolbar icon size")
-        for name,size in [("Small (default)",22),("Medium",30),("Large",40)]:sizes.addAction(self._action(name,lambda checked=False,n=size:self.toolbar.setIconSize(QSize(n,n))))
+        for name,size in [("Small (default)",22),("Medium",30),("Large",40)]:sizes.addAction(self._action(name,lambda checked=False,n=size:self.set_drawing_icon_size(n)))
         self.view_menu=view
         self.help_menu = self.menuBar().addMenu("Help")
         self.help_menu.addAction(self._action("User Manual", self.open_user_manual))
 
+    def _build_drawing_toolbars(self):
+        tools = self.tool_actions
+        columns = (
+            (tools["select"], self.fit_action, self.undo_action, self.delete_action,
+             tools["point"], tools["polygon"], tools["circle"], tools["measure_line"]),
+            (tools["pan"], self.edit_action, self.redo_action, self.delete_vertex_action,
+             tools["ellipse"], tools["rectangle"], tools["mask_pusher"], tools["measure_curve"]),
+        )
+        area = Qt.ToolBarArea.LeftToolBarArea
+        self.drawing_toolbars = []
+        for index, actions in enumerate(columns):
+            toolbar = QToolBar("Drawing tools" if index == 0 else "Drawing and editing tools", self)
+            toolbar.setObjectName("drawingToolbar" if index == 0 else "drawingToolbarSecondColumn")
+            toolbar.setMovable(False)
+            toolbar.setAllowedAreas(area)
+            if index:
+                self.addToolBarBreak(area)
+            self.addToolBar(area, toolbar)
+            for action in actions:
+                toolbar.addAction(action)
+            self.drawing_toolbars.append(toolbar)
+        self.toolbar = self.drawing_toolbars[0]
+        self.set_drawing_icon_size(22)
+
+    def set_drawing_icon_size(self, size):
+        for toolbar, history_action in zip(self.drawing_toolbars, (self.undo_action, self.redo_action)):
+            toolbar.setIconSize(QSize(size, size))
+            button = toolbar.widgetForAction(history_action)
+            button.setIconSize(QSize(44, 44))
+            button.setFixedSize(72, 72)
+            toolbar.ensurePolished()
+            toolbar.setMinimumHeight(toolbar.sizeHint().height())
+
+    def _add_top_toolbar(self, title, name, *, new_row=True):
+        area = Qt.ToolBarArea.TopToolBarArea
+        toolbar = QToolBar(title, self)
+        toolbar.setObjectName(name)
+        toolbar.setMovable(False)
+        if new_row:
+            self.addToolBarBreak(area)
+        self.addToolBar(area, toolbar)
+        setting = f"toolbars/{name}"
+        toolbar.setVisible(self.settings.value(setting, True, type=bool))
+        toggle = toolbar.toggleViewAction()
+        toggle.triggered.connect(lambda visible: self.settings.setValue(setting, visible))
+        self.toolbar_menu.addAction(toggle)
+        return toolbar
+
     def _build_top(self):
-        bar=QToolBar("Workflow",self);bar.setObjectName("workflowToolbar");bar.setMovable(False);self.addToolBar(Qt.ToolBarArea.TopToolBarArea,bar)
+        bar = self._add_top_toolbar("Workflow", "workflowToolbar", new_row=False)
         self.mode=combo(["Manual","Segment","Clean","Edit"],"workMode");self.mode.currentTextChanged.connect(self.mode_changed)
         self.model_button=QPushButton("Load model…");self.model_button.setObjectName("loadModelButton");self.model_button.clicked.connect(self.model_dialog)
         self.model_label=QLabel("CPU default · model not loaded")
@@ -284,7 +345,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.cancel_button=QPushButton("Cancel / clear");self.cancel_button.setObjectName("cancelButton");self.cancel_button.clicked.connect(self.cancel_operation)
         self.options_button=QPushButton("Options…");self.options_button.clicked.connect(self.inference_options)
         for widget in (QLabel("Mode "),self.mode,self.model_button,self.model_label,QLabel(" Group "),self.group_combo,self.scope,self.run_button,self.accept_button,self.cancel_button,self.options_button):bar.addWidget(widget)
-        second=QToolBar("Image and prompts",self);second.setObjectName("imageToolbar");second.setMovable(False);self.addToolBarBreak(Qt.ToolBarArea.TopToolBarArea);self.addToolBar(Qt.ToolBarArea.TopToolBarArea,second)
+        second = self._add_top_toolbar("Image settings", "imageToolbar")
         self.calibration_label=QLabel("No image")
         self.cleaned_checkbox=QCheckBox("View / infer from processed image");self.cleaned_checkbox.toggled.connect(self._processed_input_changed)
         self.forget_processing_button=QPushButton("Forget processed image…")
@@ -300,14 +361,36 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.vertex_radius_label=QLabel("Vertex radius (px)")
         self.vertex_radius=QDoubleSpinBox();self.vertex_radius.setObjectName("vertexRadius");self.vertex_radius.setRange(0,10000);self.vertex_radius.setDecimals(1);self.vertex_radius.setValue(self.canvas.vertex_delete_radius)
         self.vertex_radius.valueChanged.connect(self.set_vertex_delete_radius)
-        self.vertex_radius_actions=[second.addWidget(self.vertex_radius_label),second.addWidget(self.vertex_radius)]
-        for action in self.vertex_radius_actions:action.setVisible(False)
+        self.vertex_count = QSpinBox()
+        self.vertex_count.setObjectName("vertexDeleteCount")
+        self.vertex_count.setRange(1, MAX_VERTEX_DELETE_COUNT)
+        self.vertex_count.setValue(self.canvas.vertex_delete_count)
+        self.vertex_count.setToolTip("Maximum number of highlighted vertices removed by a single deletion.")
+        self.vertex_count.valueChanged.connect(self.set_vertex_delete_count)
+        self.vertex_toolbar_actions = [second.addWidget(widget) for widget in
+                                      (self.vertex_radius_label, self.vertex_radius, QLabel("Vertices per delete"), self.vertex_count)]
+        self.pusher_radius = QSpinBox()
+        self.pusher_radius.setObjectName("maskPusherRadius")
+        self.pusher_radius.setRange(1, MAX_MASK_PUSHER_RADIUS)
+        self.pusher_radius.setValue(self.canvas.mask_pusher_radius)
+        self.pusher_radius.valueChanged.connect(self.set_mask_pusher_radius)
+        self.pusher_toolbar_actions = [second.addWidget(widget) for widget in
+                                      (QLabel("Mask pusher radius (px)"), self.pusher_radius)]
+        self.canvas.tool_changed.connect(self._show_edit_controls)
+        self._show_edit_controls()
         self.background_button=QPushButton("Background group…");self.background_button.setObjectName("backgroundGroupButton");self.background_button.clicked.connect(self.choose_background_group);second.addWidget(self.background_button)
-        region_bar=QToolBar("Regions and image processing",self);region_bar.setObjectName("regionToolbar");region_bar.setMovable(False)
-        self.addToolBarBreak(Qt.ToolBarArea.TopToolBarArea);self.addToolBar(Qt.ToolBarArea.TopToolBarArea,region_bar)
+        region_bar = self._add_top_toolbar("Regions and image processing", "regionToolbar")
         for action in (self.select_all_action,self.invert_region_action,self.region_object_action,self.smooth_image_action,self.mask_colors_action):region_bar.addAction(action)
         for action in (self.rotation_action,self.scale_masks_action,self.morphology_action):region_bar.addAction(action)
         self.region_label=QLabel("  No region");self.region_label.setObjectName("regionPixelCount");region_bar.addWidget(self.region_label)
+
+    def _show_edit_controls(self):
+        editing = self.mode.currentText() == "Edit"
+        pushing = editing and self.canvas.tool == "mask_pusher"
+        for action in self.vertex_toolbar_actions:
+            action.setVisible(editing and not pushing)
+        for action in self.pusher_toolbar_actions:
+            action.setVisible(pushing)
 
     def _dock(self,title,name,widget):
         dock=QDockWidget(title,self);dock.setObjectName(name);dock.setWidget(widget);dock.setMinimumWidth(300)
@@ -346,6 +429,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
     def _start_job(self,title,function,callback,prompt_editable=False):
         if self.busy:
             self.statusBar().showMessage("Wait for the current operation or click Cancel.",5000);return False
+        self.canvas.cancel_mask_pusher()
         self._job=Job(function);self._job_callback=callback
         self._job_prompt_editable=prompt_editable
         self._job.signals.progress.connect(self._progress_message);self._job.signals.done.connect(self._job_finished)
@@ -460,9 +544,15 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.delete_action.setShortcut(QKeySequence("" if editing else "Delete"))
         self.delete_vertex_action.setShortcut(QKeySequence("Delete" if editing else ""))
         self.delete_vertex_action.setEnabled(editing and len(editable) == 1 and
-                                             editable[0].role == "object" and not editable[0].locked and
+                                             editable[0].role == "object" and editable[0].visible and not editable[0].locked and
                                              editable[0].kind in ("polygon", "mask") and not self.busy
                                              and not self.canvas.filament_picks)
+        refinable = bool(editable) and all(obj.role == "object" and obj.mask is not None and not obj.locked for obj in editable)
+        self.refine_parts_action.setEnabled(refinable and not self.busy)
+        pushing = editing and len(editable) == 1 and refinable and editable[0].visible and not self.busy
+        self.tool_actions["mask_pusher"].setEnabled(pushing)
+        if not pushing and self.canvas.tool == "mask_pusher":
+            self.tool_actions["select"].trigger()
         self._refresh_filament_controls(doc, editable)
         self.edit_action.setEnabled(has and len(editable)==1 and editable[0].role=="object" and not editable[0].locked and not self.busy)
         self.edit_action.setChecked(self.mode.currentText()=="Edit")
@@ -721,7 +811,6 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.canvas.set_preview([]);self._preview_context=None
         if self.busy and self._job_prompt_editable:self._job.cancel.set()
         self.canvas.mode=value;self.canvas.edit_mode=value=="Edit";self.edit_action.setChecked(value=="Edit")
-        for action in self.vertex_radius_actions:action.setVisible(value=="Edit")
         if value=="Segment":self.tool_actions["point"].setChecked(True);self.canvas.set_tool("point")
         elif value=="Clean":self.tool_actions["rectangle"].setChecked(True);self.canvas.set_tool("rectangle")
         else:self.canvas.set_tool("select");self.tool_actions["select"].setChecked(True)
@@ -857,8 +946,12 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         if selected:self._commit("Delete objects / restore cleaning pixels",lambda:self.document.delete_objects(self.canvas.selected))
 
     def delete_vertex(self):
-        if not self.busy and self.document and not self.canvas.filament_picks and not self.canvas.delete_vertex():
-            self.statusBar().showMessage("Click near a polygon or contour vertex, then choose Delete vertex.", 8000)
+        if self.busy or not self.document or self.canvas.filament_picks:
+            return
+        if self.canvas.tool == "mask_pusher":
+            self.statusBar().showMessage("Use Select objects to choose vertices for deletion.", 8000)
+        elif not self.canvas.delete_vertex():
+            self.statusBar().showMessage("Click near a contour or polygon to highlight vertices, then choose Delete vertex.", 8000)
 
     def edit_object(self,checked=True):
         selected=self.selected_objects()
@@ -868,13 +961,35 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.mode.setCurrentText(desired)
         if self.mode.currentText()!=desired:return
         self.canvas.edit_mode=checked;self.edit_action.setChecked(checked);self.canvas.set_tool("select");self.tool_actions["select"].setChecked(True);self.canvas.update()
-        if checked:self.statusBar().showMessage("Drag a handle to move it. Del removes one nearest vertex per press within the shown radius. Edit > Vertex deletion radius changes its size.",12000)
+        if checked:self.statusBar().showMessage("Drag a handle to move it. Set Vertices per delete and click near a contour to highlight the vertices that Delete will remove.",12000)
 
     def change_vertex_delete_radius(self):
         value,ok=QInputDialog.getDouble(self,"Vertex deletion radius",
-            "Radius in image pixels. Each Del removes the nearest remaining vertex\nwithin this radius, in the selected object only.",self.canvas.vertex_delete_radius,0,10000,2)
+            "Radius in image pixels. Delete removes highlighted vertices within this distance from the click.",
+            self.canvas.vertex_delete_radius,0,10000,2)
         if ok:
             self.vertex_radius.setValue(value)
+
+    def change_vertex_delete_count(self):
+        value, accepted = QInputDialog.getInt(self, "Vertices per deletion", "Vertices to remove per Delete press",
+            self.canvas.vertex_delete_count, 1, MAX_VERTEX_DELETE_COUNT)
+        if accepted:
+            self.vertex_count.setValue(value)
+
+    def change_polygon_close_distance(self):
+        value, accepted = QInputDialog.getInt(self, "Polygon closing distance",
+            "Distance from the first vertex in screen pixels (0 disables closing with a nearby click)",
+            self.canvas.polygon_close_distance, 0, MAX_POLYGON_CLOSE_DISTANCE)
+        if accepted:
+            self.canvas.polygon_close_distance = value
+            self.settings.setValue("polygon_close_distance", value)
+            self.canvas.update()
+
+    def change_mask_pusher_radius(self):
+        value, accepted = QInputDialog.getInt(self, "Mask pusher radius", "Radius in image pixels",
+            self.canvas.mask_pusher_radius, 1, MAX_MASK_PUSHER_RADIUS)
+        if accepted:
+            self.pusher_radius.setValue(value)
 
     def edit_scale_bar(self):
         doc = self.document
@@ -898,6 +1013,16 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
     def set_vertex_delete_radius(self,value):
         self.canvas.vertex_delete_radius=value;self.settings.setValue("vertex_delete_radius",value);self.settings.sync();self.canvas.update()
 
+    def set_vertex_delete_count(self, value):
+        self.canvas.vertex_delete_count = value
+        self.settings.setValue("vertex_delete_count", value)
+        self.canvas.update()
+
+    def set_mask_pusher_radius(self, value):
+        self.canvas.mask_pusher_radius = value
+        self.settings.setValue("mask_pusher_radius", value)
+        self.canvas.update()
+
     def toggle_cleaning_regions(self,checked):
         self.show_cleaning_button.setText("Show cleaning regions  √" if checked else "Show cleaning regions")
         self.set_canvas_option("show_cleaning",checked)
@@ -916,24 +1041,41 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
                 if mask is not None and not mask.any():raise ValueError("The edit would remove the object.")
                 obj.kind=geometry["kind"];obj.points=geometry["points"];obj.mask=mask;obj.contours=None
             obj.provenance["last_edit"]="vertex edit"
-        self._commit("Edit vertices",change)
+        self._commit("Delete vertices" if geometry.get("vertices_deleted") else "Edit vertices", change)
+
+    def _replace_mask_pixels(self, obj, mask, label):
+        def replace():
+            obj.mask, obj.kind, obj.points, obj.contours = mask, "mask", [], None
+            obj.provenance["last_edit"] = label.lower()
+        self._commit(label, replace)
+
+    def _mask_pushed(self, ident, original, edited):
+        if self.busy or not self.document or self.mode.currentText() != "Edit":
+            return
+        selected = self.selected_objects()
+        if len(selected) == 1:
+            obj = selected[0]
+            if obj.id == ident and obj.role == "object" and obj.mask is original and obj.visible and not obj.locked:
+                self._replace_mask_pixels(obj, edited, "Push mask boundary")
 
     def undo(self):
         if self.busy or not self.document:return
+        self.canvas.cancel_mask_pusher()
         self.cancel_filament_link()
         self.canvas.set_preview([]);self._refine_target=None
         try:self.histories[self.current_key].undo()
         except Exception as error:self.notify("Undo / autosave",str(error))
-        self.canvas._edit_geometry=self.canvas._active_vertex=self.canvas._delete_origin=None
+        self.canvas._edit_geometry=self.canvas._delete_origin=None
         self._refresh()
 
     def redo(self):
         if self.busy or not self.document:return
+        self.canvas.cancel_mask_pusher()
         self.cancel_filament_link()
         self.canvas.set_preview([]);self._refine_target=None
         try:self.histories[self.current_key].redo()
         except Exception as error:self.notify("Redo / autosave",str(error))
-        self.canvas._edit_geometry=self.canvas._active_vertex=self.canvas._delete_origin=None
+        self.canvas._edit_geometry=self.canvas._delete_origin=None
         self._refresh()
 
     def change_group(self):
@@ -993,20 +1135,43 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             self.objects_tree.clearSelection();item.setSelected(True)
         self._show_object_context_menu(self.objects_tree.viewport().mapToGlobal(position))
 
-    def _show_object_context_menu(self,position):
+    def _show_object_context_menu(self, position, image_point=None):
         if self.busy:return
+        selected = self.selected_objects()
         menu=QMenu(self);menu.addAction(self.edit_action);menu.addAction("Properties…",self.object_properties);menu.addAction("Change group…",self.change_group);menu.addSeparator()
         menu.addAction(self.invert_region_action);menu.addAction(self.region_object_action);menu.addAction(self.mask_colors_action);menu.addSeparator()
         if self.mode.currentText()=="Clean":
             action=menu.addAction("Delete for cleaning",self.delete_for_cleaning)
-            action.setEnabled(bool(self.selected_objects()) and all(o.role=="object" and o.mask is not None and not o.locked for o in self.selected_objects()))
+            action.setEnabled(bool(selected) and all(o.role=="object" and o.mask is not None and not o.locked for o in selected))
         menu.addAction("Infer inside selected object / ROI",self.infer_selected_roi)
         menu.addAction("Prompted inference across image",lambda:self.run_inference(force_whole=True))
         menu.addAction("Automatic grid across unannotated image",lambda:self.run_inference(force_automatic=True))
         refine=menu.addAction("Refine selected object explicitly",self.refine_selected_inference)
-        refine.setEnabled(len(self.selected_objects())==1 and all(o.role=="object" and o.group_id!=self.document.background_group_id and not o.locked and o.mask is not None for o in self.selected_objects()))
+        refine.setEnabled(len(selected)==1 and all(o.role=="object" and o.group_id!=self.document.background_group_id and not o.locked and o.mask is not None for o in selected))
         menu.addSeparator()
-        menu.addAction("Fill holes…",lambda:self.refine_masks("holes"));menu.addAction("Smooth edges…",lambda:self.refine_masks("smooth"));menu.addSeparator();menu.addAction(self.delete_vertex_action);menu.addAction(self.delete_action);menu.exec(position)
+        menu.addAction("Fill holes…",lambda:self.refine_masks("holes"));menu.addAction("Smooth edges…",lambda:self.refine_masks("smooth"))
+        menu.addAction(self.refine_parts_action)
+        if image_point is not None and self.mode.currentText() == "Edit" and len(selected) == 1:
+            obj = selected[0]
+            x, y = map(int, image_point)
+            if obj.role == "object" and not obj.locked and obj.mask is not None and obj.mask[y, x]:
+                menu.addAction("Remove this disconnected part", lambda: self.remove_mask_part(obj.id, x, y))
+        menu.addSeparator();menu.addAction(self.delete_vertex_action);menu.addAction(self.delete_action);menu.exec(position)
+
+    def remove_mask_part(self, ident, x, y):
+        if self.busy or self.mode.currentText() != "Edit":
+            return
+        obj = next((obj for obj in self.selected_objects() if obj.id == ident), None)
+        if obj is None or obj.role != "object" or obj.locked or not obj.visible or obj.mask is None:
+            return
+        height, width = obj.mask.shape
+        if not (0 <= x < width and 0 <= y < height and obj.mask[y, x]):
+            return
+        labels, areas = mask_components(obj.mask)
+        if len(areas) <= 2:
+            self.statusBar().showMessage("The mask has only one connected part.", 6000)
+            return
+        self._replace_mask_pixels(obj, obj.mask & (labels != labels[y, x]), "Remove disconnected part")
 
     def model_dialog(self):
         if self.busy:return
@@ -1292,6 +1457,8 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             self._refresh_controls()
             self.statusBar().showMessage("Filament connection cancelled.", 5000)
             return
+        if self.canvas.cancel_mask_pusher():
+            return
         if clear_measurement and not self.busy and self.canvas.tool in DISTANCE_TOOLS:
             self.canvas.clear_distance_measurement()
             return
@@ -1307,13 +1474,17 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         if not ids:self.notify("Select objects","Select one or more objects in the Objects panel.");return
         dialog=RefinementDialog(self.document,ids,method,self)
         if dialog.exec()==QDialog.DialogCode.Accepted and dialog.results:
+            label = {"holes": "Fill holes", "smooth": "Smooth edges", "components": "Refine disconnected parts"}[method]
+            changed = [obj for obj in self.document.objects if obj.id in dialog.results and
+                       (method != "components" or not np.array_equal(obj.mask, dialog.results[obj.id]))]
+            if not changed:
+                return
             def update():
-                for obj in self.document.objects:
-                    if obj.id in dialog.results:
-                        obj.mask=dialog.results[obj.id].copy();obj.kind="mask";obj.points=[]
-                        obj.contours=copy.deepcopy(dialog.contours.get(obj.id)) if method=="smooth" else None
-                        obj.provenance["last_refinement"]="fill holes" if method=="holes" else "smooth edges"
-            self._commit("Fill holes" if method=="holes" else "Smooth edges",update)
+                for obj in changed:
+                    obj.mask, obj.kind, obj.points = dialog.results[obj.id].copy(), "mask", []
+                    obj.contours = copy.deepcopy(dialog.contours.get(obj.id)) if method == "smooth" else None
+                    obj.provenance["last_refinement"] = label.lower()
+            self._commit(label, update)
 
     def edit_calibration(self):
         if not self.document or self.busy:return

@@ -26,7 +26,7 @@ actions and are documented by their authors.
 | Redo | Reapply an undone operation. | Ctrl+Y |
 | Edit object vertices | Edit existing selected geometry instead of adding another shape. | Ctrl+E |
 | Delete objects | Delete the selected objects. | Del outside Edit |
-| Delete vertex | Delete one eligible vertex near the chosen point in a selected polygon or contour. | Del in Edit |
+| Delete vertex | Delete the highlighted batch of up to ten vertices from one contour. | Del in Edit |
 | Select all objects | Select annotation/cleaning objects; image-smoothing records remain selectable in Objects. | Ctrl+A |
 | Invert region | Make an exact pixel region from the complement of selected area masks or the current region. | Ctrl+I |
 | Create object from region | In Manual/Edit, create an exact mask annotation from the current nonempty region. | — |
@@ -48,8 +48,12 @@ actions and are documented by their authors.
 | Filament → Connect visible fragments… | Pick one visible end on each of two selected fragments to estimate the gap. | — |
 | Filament → Disconnect selected fragments | Remove links incident to one selected fragment or between multiple selected fragments. | — |
 | Vertex deletion radius… | Set the eligible-vertex deletion search radius in image pixels. | — |
+| Vertices per deletion… | Set how many nearby vertices to highlight and remove per Delete press. | — |
+| Polygon closing distance… | Set the screen distance for clicking near the first vertex to close a polygon. | — |
+| Mask pusher / Mask pusher radius… | Expand or carve the selected mask with a circular stroke. Set the circle radius in image pixels. | — |
 | Fill holes… | Preview filling eligible holes in selected area masks. | — |
 | Smooth edges… | Preview smoother editable contours for selected masks; does not smooth image intensities. | — |
+| Refine disconnected parts… | Preview retaining only the largest part or trimming the smaller parts of selected masks. | — |
 
 ## Cleaning
 
@@ -105,6 +109,7 @@ this menu order: remove → choose fill → preview/apply → restore.
 | Show masks | Toggle mask rendering without deleting annotations. | — |
 | Show contours | Toggle annotation outlines. | — |
 | Show prompt points | Toggle prompt marker display. | — |
+| Toolbars | Show or hide Workflow, Image settings, Regions and image processing, and Segmentation prompts individually. | — |
 | Toolbar icon size → Small (default) | Use 22-pixel drawing icons; enlarged Undo/Redo keep their special size. | — |
 | Toolbar icon size → Medium | Use 30-pixel drawing icons. | — |
 | Toolbar icon size → Large | Use 40-pixel drawing icons. | — |

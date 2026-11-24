@@ -158,7 +158,10 @@ def test_distance_tools_trace_and_measure_in_image_coordinates(window, qtbot, tm
     canvas.update()
     qtbot.wait(10)
     image_before = canvas.grab().toImage()
-    qtbot.mouseClick(window.toolbar.widgetForAction(window.tool_actions[tool]), Qt.MouseButton.LeftButton)
+    measure_action = window.tool_actions[tool]
+    button = next(toolbar.widgetForAction(measure_action) for toolbar in window.drawing_toolbars
+                  if measure_action in toolbar.actions())
+    qtbot.mouseClick(button, Qt.MouseButton.LeftButton)
     assert canvas.tool == tool
     start, corner, end = [canvas.to_widget(point).toPoint() for point in ((10, 10), (22, 10), (22, 26))]
     qtbot.mousePress(canvas, Qt.MouseButton.LeftButton, pos=start)

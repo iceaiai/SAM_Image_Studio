@@ -78,7 +78,6 @@ def test_delete_in_vertex_mode_without_active_vertex_preserves_object(window,qtb
     doc=open_image(window,tmp_path,qtbot)
     window._shape_completed("polygon",[[10,10],[80,10],[80,80],[10,80]])
     window.canvas.set_selected([doc.objects[0].id]);window._refresh();window.edit_object(True)
-    window.canvas._active_vertex=None
     qtbot.keyClick(window.canvas,Qt.Key.Key_Delete)
     assert len(doc.objects)==1 and not window.errors
 

@@ -215,19 +215,33 @@ class RefinementDialog(QDialog):
         self.document, self.ids, self.method = document, list(ids), method
         self.results = None
         self.contours = {}
-        self.setWindowTitle("Fill holes" if method == "holes" else "Smooth edges")
+        self.setWindowTitle({"holes": "Fill holes", "smooth": "Smooth edges", "components": "Refine disconnected parts"}[method])
         self.resize(650, 470)
         layout = QVBoxLayout(self)
         layout.addWidget(QLabel(f"Selected objects: {len(ids)}. This edits masks and preserves acquired image pixels."))
         form = QFormLayout()
-        self.value = QDoubleSpinBox()
-        self.value.setDecimals(3)
-        self.value.setRange(0 if method == "holes" else .1, 1e12 if method == "holes" else 50)
-        self.value.setValue(0 if method == "holes" else 1)
-        self.units = combo(["pixel²"] + ([document.calibration.length_unit + "²"] if document.calibration.valid else []))
-        form.addRow("Maximum hole area (0 = all)" if method == "holes" else "Smoothing radius (pixels)",self.value)
-        if method == "holes":
-            form.addRow("Area units",self.units)
+        if method == "components":
+            self.part_policy = combo([("Keep largest connected part", "largest"),
+                                      ("Remove parts smaller than a chosen area", "minimum")])
+            self.part_policy.setObjectName("disconnectedPartPolicy")
+            self.value = QSpinBox()
+            self.value.setObjectName("minimumPartArea")
+            self.value.setRange(1, 1_000_000_000)
+            self.value.setValue(16)
+            self.value.setSuffix(" px²")
+            self.value.setEnabled(False)
+            form.addRow("Cleanup", self.part_policy)
+            form.addRow("Minimum area", self.value)
+            layout.addWidget(QLabel("The largest part of each selected mask is retained."))
+        else:
+            self.value = QDoubleSpinBox()
+            self.value.setDecimals(3)
+            self.value.setRange(0 if method == "holes" else .1, 1e12 if method == "holes" else 50)
+            self.value.setValue(0 if method == "holes" else 1)
+            form.addRow("Maximum hole area (0 = all)" if method == "holes" else "Smoothing radius (pixels)", self.value)
+            if method == "holes":
+                self.units = combo(["pixel²"] + ([document.calibration.length_unit + "²"] if document.calibration.valid else []))
+                form.addRow("Area units", self.units)
         layout.addLayout(form)
         self.preview = QLabel("Choose settings and click Preview.")
         self.preview.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -241,7 +255,14 @@ class RefinementDialog(QDialog):
         self.controls.button(QDialogButtonBox.StandardButton.Ok).setText("Apply")
         self.controls.button(QDialogButtonBox.StandardButton.Ok).setEnabled(False)
         self.value.valueChanged.connect(self.invalidate)
-        self.units.currentIndexChanged.connect(self.invalidate)
+        if method == "holes":
+            self.units.currentIndexChanged.connect(self.invalidate)
+        if method == "components":
+            self.part_policy.currentIndexChanged.connect(self.change_part_policy)
+
+    def change_part_policy(self):
+        self.value.setEnabled(self.part_policy.currentData() == "minimum")
+        self.invalidate()
 
     def invalidate(self):
         self.results = None
@@ -254,6 +275,8 @@ class RefinementDialog(QDialog):
             if self.method == "holes":
                 value = value / self.document.calibration.pixel_area if value and self.units.currentText() != "pixel²" else value
                 value = value or None
+            elif self.method == "components" and self.part_policy.currentData() == "largest":
+                value = None
             self.results = refine_objects(self.document, self.ids, self.method, value)
             self.contours = {}
             if self.method == "smooth":
@@ -274,7 +297,8 @@ class RefinementDialog(QDialog):
             rgb = np.zeros((*before.shape,3),np.uint8)
             rgb[before] = [110,125,140]
             rgb[after] = [20,154,126]
-            rgb[before & ~after] = [226,79,79]
+            removed = np.logical_or.reduce([o.mask & ~self.results[o.id] for o in old])
+            rgb[removed] = [226,79,79]
             self.preview.setPixmap(QPixmap.fromImage(rgb_image(rgb)).scaled(610,240,Qt.AspectRatioMode.KeepAspectRatio,Qt.TransformationMode.SmoothTransformation))
             old_area = sum(o.pixel_area for o in old)
             new_area = sum(int(m.sum()) for m in self.results.values())

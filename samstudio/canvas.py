@@ -2,18 +2,35 @@ from __future__ import annotations
 
 import copy
 import math
+from dataclasses import dataclass
+from heapq import nsmallest
 import numpy as np
-from PySide6.QtCore import QPointF, QRectF, Qt, Signal
+from PySide6.QtCore import QPointF, QRect, QRectF, Qt, Signal
 from PySide6.QtGui import QColor, QImage, QPainter, QPainterPath, QPen
 from PySide6.QtWidgets import QWidget
 
 from .domain import Document, unpack_mask
 from .exports import hex_rgb
-from .processing import curve_segments, display_rgb, mask_contours
+from .processing import curve_segments, display_rgb, mask_contours, push_mask_segment
 from .scale_bar_ui import draw_scale_bar
 
 
 DISTANCE_TOOLS = ("measure_line", "measure_curve")
+MAX_VERTEX_DELETE_COUNT = 10
+MAX_MASK_PUSHER_RADIUS = 1000
+MAX_POLYGON_CLOSE_DISTANCE = 100
+
+
+@dataclass
+class _MaskPusherStroke:
+    object_id: str
+    source_mask: np.ndarray
+    mask: np.ndarray
+    button: Qt.MouseButton
+    radius: int
+    last_point: list[float]
+    bounds: QRect | None = None
+    preview: QImage | None = None
 
 
 def rgb_image(rgb):
@@ -31,10 +48,11 @@ class ImageCanvas(QWidget):
     shape_completed = Signal(str, object)
     prompt_added = Signal(float, float, int)
     geometry_changed = Signal(str, object)
+    mask_pushed = Signal(str, object, object)
     message = Signal(str)
     zoom_changed = Signal(float)
     tool_changed = Signal(str)
-    object_context_requested = Signal(object)
+    object_context_requested = Signal(object, object)
     preview_count_changed = Signal(int)
     filament_end_picked = Signal(str, int)
 
@@ -61,6 +79,9 @@ class ImageCanvas(QWidget):
         self.offset = QPointF()
         self.brush_radius = 12
         self.vertex_delete_radius = 20.0
+        self.vertex_delete_count = 1
+        self.polygon_close_distance = 14
+        self.mask_pusher_radius = 12
         self.handle_radius = 5.1  # screen pixels; half the v1.3 radius
         self.preview_masks = []
         self.scale_bar_preview = None
@@ -80,15 +101,16 @@ class ImageCanvas(QWidget):
         self._distance_image = None
         self._distance_draft = []
         self._distance_points = []
+        self._pusher_stroke = None
         self._cursor = None
         self._pan = None
         self._drag_handle = None
-        self._active_vertex = None
         self._edit_geometry = None
         self._delete_origin = None
         self._drag_start = None
 
     def set_document(self, document, fit=True):
+        self.cancel_mask_pusher()
         self.document = document
         self.selected.clear()
         self.edit_mode = False
@@ -96,7 +118,7 @@ class ImageCanvas(QWidget):
         self._distance_image = None
         self.clear_distance_measurement()
         self._drag_handle = None
-        self._active_vertex = self._edit_geometry = self._delete_origin = None
+        self._edit_geometry = self._delete_origin = None
         self._base_key = None
         self._contour_cache.clear()
         self.preview_masks = []
@@ -117,6 +139,8 @@ class ImageCanvas(QWidget):
             self._region_contours = []
             self.update()
             return
+        if self._pusher_stroke and not self._valid_pusher_stroke():
+            self.cancel_mask_pusher()
         if self._distance_image is not doc.frame.raw:
             self._distance_image = doc.frame.raw
             self.clear_distance_measurement()
@@ -189,8 +213,8 @@ class ImageCanvas(QWidget):
             self.update()
             return
         self.selected = ids
+        self.cancel_mask_pusher()
         self._drag_handle = None
-        self._active_vertex = None
         self._edit_geometry = None
         self._delete_origin = None
         if self.document:
@@ -200,6 +224,7 @@ class ImageCanvas(QWidget):
         self.update()
 
     def set_tool(self, tool):
+        self.cancel_mask_pusher()
         self.tool = tool
         self.tool_changed.emit(tool)
         self._drawing = []
@@ -253,6 +278,49 @@ class ImageCanvas(QWidget):
         elif point != self._distance_draft[-1]:
             self._distance_draft.append(point)
 
+    def cancel_mask_pusher(self):
+        if self._pusher_stroke is None:
+            return False
+        self._pusher_stroke = None
+        self.update()
+        return True
+
+    def _pusher_object(self):
+        obj = self._selected_object()
+        if (self.edit_mode and not self.read_only and not self.prompt_input_only and obj
+                and obj.role == "object" and obj.mask is not None and obj.visible and not obj.locked):
+            return obj
+        return None
+
+    def _valid_pusher_stroke(self):
+        obj = self._pusher_object()
+        stroke = self._pusher_stroke
+        return obj is not None and obj.id == stroke.object_id and obj.mask is stroke.source_mask
+
+    def _extend_mask_pusher(self, point):
+        stroke = self._pusher_stroke
+        if not self._valid_pusher_stroke():
+            self.cancel_mask_pusher()
+            return
+        expand = stroke.button == Qt.MouseButton.LeftButton
+        bounds = push_mask_segment(stroke.mask, stroke.last_point, point, stroke.radius, expand=expand)
+        stroke.last_point = point
+        if bounds is None:
+            return
+        x0, y0, x1, y1 = bounds
+        rect = QRect(x0, y0, x1 - x0, y1 - y0)
+        stroke.bounds = rect if stroke.bounds is None else stroke.bounds.united(rect)
+        rect = stroke.bounds
+        region = np.s_[rect.y():rect.y() + rect.height(), rect.x():rect.x() + rect.width()]
+        changed = stroke.source_mask[region] ^ stroke.mask[region]
+        overlay = np.zeros((*changed.shape, 4), np.uint8)
+        overlay[changed] = [32, 201, 151, 196] if expand else [241, 82, 84, 204]
+        stroke.preview = rgba_image(overlay)
+
+    def _polygon_will_close(self, point):
+        return (self.polygon_close_distance > 0 and point is not None and len(self._drawing) >= 3
+                and math.dist(self._drawing[0], point) * self.scale <= self.polygon_close_distance + 1e-9)
+
     def _selected_object(self):
         if not self.document or len(self.selected) != 1:
             return None
@@ -271,6 +339,23 @@ class ImageCanvas(QWidget):
         if geometry["kind"] == "contours":
             return [(ci, pi, p) for ci, c in enumerate(geometry["contours"]) for pi, p in enumerate(c["points"])]
         return [(0, pi, p) for pi, p in enumerate(geometry.get("points", []))]
+
+    def _vertices_to_delete(self, geometry, handles):
+        if self._delete_origin is None or geometry["kind"] not in ("polygon", "contours"):
+            return []
+        nearby = []
+        for contour_index, point_index, point in handles:
+            distance = math.dist(self._delete_origin, point)
+            if distance <= self.vertex_delete_radius + 1e-9:
+                nearby.append((distance, contour_index, point_index))
+        if not nearby:
+            return []
+        contour_index = min(nearby)[1]
+        points = (geometry["contours"][contour_index]["points"] if geometry["kind"] == "contours"
+                  else geometry["points"])
+        limit = max(0, min(self.vertex_delete_count, MAX_VERTEX_DELETE_COUNT, len(points) - 3))
+        closest = nsmallest(limit, ((distance, pi) for distance, ci, pi in nearby if ci == contour_index))
+        return [(contour_index, pi) for _, pi in closest]
 
     def _draw_geometry(self, painter, geometry, fill=None):
         kind = geometry["kind"]
@@ -331,18 +416,24 @@ class ImageCanvas(QWidget):
                 color = self.object_colors.get(obj.id, obj.color)
                 painter.setPen(QPen(QColor("#245dd8" if selected else color), (4.4 if selected else 2.2)/self.scale))
                 painter.setBrush(Qt.BrushStyle.NoBrush)
-                if selected and self.edit_mode and obj.role != "cleaning" and not obj.locked:
+                editing = selected and self.edit_mode and obj.role == "object" and not obj.locked and self.tool != "mask_pusher"
+                if editing:
                     geometry = self._geometry(obj)
                 elif obj.kind != "mask":
                     geometry = {"kind": obj.kind, "points": obj.points}
                 else:
                     geometry = {"kind": "contours", "contours": self._contours.get(obj.id, [])}
                 self._draw_geometry(painter, geometry)
-                if selected and self.edit_mode and obj.role != "cleaning" and not obj.locked:
-                    painter.setBrush(QColor("white"))
-                    for _, _, point in self._handles(geometry):
+                if editing:
+                    handles = self._handles(geometry)
+                    deleting = set(self._vertices_to_delete(geometry, handles)) if len(self.selected) == 1 else set()
+                    for ci, pi, point in handles:
+                        painter.setBrush(QColor("#fbbf24" if (ci, pi) in deleting else "white"))
                         r = self.handle_radius/self.scale
                         painter.drawRect(QRectF(point[0]-r, point[1]-r, 2*r, 2*r))
+        stroke = self._pusher_stroke
+        if stroke and stroke.preview is not None:
+            painter.drawImage(stroke.bounds.topLeft(), stroke.preview)
         draft = self.document.draft
         if draft.get("roi"):
             painter.setPen(QPen(QColor("#2563eb"), 1.6/self.scale, Qt.PenStyle.DashLine))
@@ -360,7 +451,7 @@ class ImageCanvas(QWidget):
                 painter.setBrush(QColor("#16a475" if label else "#e44848"))
                 painter.setPen(QPen(QColor("white"), 1/self.scale))
                 painter.drawEllipse(QPointF(x, y), 4.5/self.scale, 4.5/self.scale)
-        if self.edit_mode and self._delete_origin is not None:
+        if self.edit_mode and self.tool != "mask_pusher" and self._delete_origin is not None:
             painter.setPen(QPen(QColor("#c27b16"), 1/self.scale, Qt.PenStyle.DashLine))
             painter.setBrush(Qt.BrushStyle.NoBrush)
             painter.drawEllipse(QPointF(*self._delete_origin),self.vertex_delete_radius,self.vertex_delete_radius)
@@ -369,6 +460,12 @@ class ImageCanvas(QWidget):
             painter.setBrush(Qt.BrushStyle.NoBrush)
             points = self._drawing + ([self._cursor] if self._cursor else [])
             if self.tool == "polygon":
+                if self._polygon_will_close(self._cursor):
+                    points = self._drawing + [self._drawing[0]]
+                    painter.setPen(QPen(QColor("#15803d"), 2.2/self.scale))
+                    painter.setBrush(QColor("#dcfce7"))
+                    painter.drawEllipse(QPointF(*points[0]), 5/self.scale, 5/self.scale)
+                    painter.setBrush(Qt.BrushStyle.NoBrush)
                 self._draw_geometry(painter, {"kind": "polyline", "points": points})
             elif self.tool in ("rectangle", "ellipse", "circle") and self._cursor:
                 self._draw_geometry(painter, {"kind": self.tool, "points": [self._drawing[0], self._cursor]})
@@ -379,6 +476,14 @@ class ImageCanvas(QWidget):
         if bar is not None:
             draw_scale_bar(painter, bar, self.document.calibration, self.document.frame.shape)
         self._draw_filament_guides(painter)
+        if self.tool == "mask_pusher" and self._cursor is not None:
+            center = QPointF(*self._cursor)
+            radius = stroke.radius if stroke else self.mask_pusher_radius
+            painter.setBrush(Qt.BrushStyle.NoBrush)
+            painter.setPen(QPen(QColor("#172632"), 3.5/self.scale))
+            painter.drawEllipse(center, radius, radius)
+            painter.setPen(QPen(QColor("white"), 1.5/self.scale))
+            painter.drawEllipse(center, radius, radius)
         painter.restore()
         self._draw_distance_measurement(painter)
 
@@ -442,11 +547,25 @@ class ImageCanvas(QWidget):
     def mousePressEvent(self, event):
         self.setFocus()
         if event.button() == Qt.MouseButton.MiddleButton or self.tool == "pan":
+            self.cancel_mask_pusher()
             self._pan = (event.position(), QPointF(self.offset))
             self.setCursor(Qt.CursorShape.ClosedHandCursor)
             return
         point = self.to_image(event.position())
         if self.read_only:
+            return
+        if self.tool == "mask_pusher":
+            button = event.button()
+            if point is not None and button in (Qt.MouseButton.LeftButton, Qt.MouseButton.RightButton) and not self._pusher_stroke:
+                obj = self._pusher_object()
+                if obj is not None:
+                    self._cursor = point
+                    self._pusher_stroke = _MaskPusherStroke(obj.id, obj.mask, obj.mask.copy(), button,
+                                                           self.mask_pusher_radius, point)
+                    self._extend_mask_pusher(point)
+                    self.update()
+                else:
+                    self.message.emit("Select one visible, unlocked area mask in Edit mode.")
             return
         if self.tool in DISTANCE_TOOLS:
             if point is not None and not self.prompt_input_only and event.button() == Qt.MouseButton.LeftButton:
@@ -473,7 +592,7 @@ class ImageCanvas(QWidget):
                 if picked.id not in self.selected:
                     self.set_selected({picked.id})
                     self.selection_changed.emit(self.selected)
-                self.object_context_requested.emit(event.globalPosition().toPoint())
+                self.object_context_requested.emit(event.globalPosition().toPoint(), point)
             return
         obj = self._selected_object()
         if self.edit_mode and obj and not obj.locked and obj.role != "cleaning" and self.tool == "select":
@@ -484,7 +603,6 @@ class ImageCanvas(QWidget):
                 if math.dist(point, best[2]) * self.scale <= self.handle_radius + 2:
                     self._edit_geometry = geometry
                     self._drag_handle = (best[0], best[1])
-                    self._active_vertex = (best[0], best[1])
                     self._delete_origin = list(point)
                     self._drag_start = QPointF(event.position())
                     self.update()
@@ -495,7 +613,6 @@ class ImageCanvas(QWidget):
                 picked = self.object_at(point)
                 if picked is None or picked.id == obj.id:
                     self._delete_origin = list(point)
-                    self._active_vertex = None
                     self.update()
                     return
         if self.mode == "Segment" and self.tool == "point":
@@ -512,7 +629,7 @@ class ImageCanvas(QWidget):
             if self.mode == "Edit":
                 return
             if self.tool == "polygon":
-                if len(self._drawing) >= 3 and math.dist(point,self._drawing[0]) <= 3.0 + 1e-9:
+                if self._polygon_will_close(point):
                     self.finish_polygon()
                     return
                 self._drawing.append(point)
@@ -549,6 +666,15 @@ class ImageCanvas(QWidget):
         point = self.to_image(event.position(), True)
         if point is None:
             return
+        if self.tool == "mask_pusher":
+            stroke = self._pusher_stroke
+            if stroke and event.buttons() & stroke.button:
+                self._cursor = point
+                self._extend_mask_pusher(point)
+            else:
+                self._cursor = self.to_image(event.position())
+            self.update()
+            return
         if self.tool in DISTANCE_TOOLS:
             if (self._distance_draft and event.buttons() & Qt.MouseButton.LeftButton
                     and not (self.read_only or self.prompt_input_only)):
@@ -574,7 +700,20 @@ class ImageCanvas(QWidget):
         if self._pan:
             self._pan = None
             if self.tool == "pan":self.setCursor(Qt.CursorShape.OpenHandCursor)
-            elif self.tool in DISTANCE_TOOLS:self.setCursor(Qt.CursorShape.CrossCursor)
+            elif self.tool in (*DISTANCE_TOOLS, "mask_pusher"):self.setCursor(Qt.CursorShape.CrossCursor)
+            return
+        if self.tool == "mask_pusher":
+            stroke = self._pusher_stroke
+            if stroke and event.button() == stroke.button:
+                point = self.to_image(event.position(), True)
+                if point is not None:
+                    self._extend_mask_pusher(point)
+                valid = self.cancel_mask_pusher()
+                if valid and stroke.bounds is not None:
+                    if stroke.mask.any():
+                        self.mask_pushed.emit(stroke.object_id, stroke.source_mask, stroke.mask)
+                    else:
+                        self.message.emit("The stroke would erase the entire mask. Try a smaller radius or a shorter stroke.")
             return
         if self.tool in DISTANCE_TOOLS:
             if event.button() == Qt.MouseButton.LeftButton and self._distance_draft:
@@ -629,42 +768,34 @@ class ImageCanvas(QWidget):
         self.update()
 
     def mouseDoubleClickEvent(self, event):
-        if self.tool == "polygon" and not self.read_only:
+        if self.tool == "mask_pusher":
+            self.mousePressEvent(event)
+        elif self.tool == "polygon" and event.button() == Qt.MouseButton.LeftButton and not self.read_only:
             self.finish_polygon()
+
+    def leaveEvent(self, event):
+        if self.tool == "mask_pusher":
+            self._cursor = None
+            self.update()
+        super().leaveEvent(event)
 
     def delete_vertex(self):
         obj = self._selected_object()
-        if not self.edit_mode or not obj or obj.locked:
+        if not self.edit_mode or not obj or obj.locked or obj.role != "object" or not obj.visible:
+            return False
+        if self._delete_origin is None:
             return False
         geometry = self._geometry(obj)
-        handles = self._handles(geometry)
-        origin = self._delete_origin
-        if origin is None and self._active_vertex is not None:
-            chosen = next((h for h in handles if h[:2] == self._active_vertex), None)
-            origin = chosen[2] if chosen else None
-        if origin is None:
-            return False
-        # Each press deletes one vertex, in increasing distance from the click,
-        # and never searches outside this one selected object's geometry.
-        candidates = [h for h in handles if math.dist(origin, h[2]) <= self.vertex_delete_radius + 1e-9]
+        candidates = self._vertices_to_delete(geometry, self._handles(geometry))
         if not candidates:
-            self.message.emit("No more vertices within the deletion radius. Click another location or increase the radius.")
+            self.message.emit("No removable vertices within the radius. Each contour keeps at least three vertices.")
             return True
-        best = min(candidates, key=lambda h: math.dist(origin, h[2]))
-        ci, pi = best[:2]
-        if geometry["kind"] == "contours" and not 0 <= ci < len(geometry["contours"]):
-            self._active_vertex = None
-            return True
-        points = geometry["contours"][ci]["points"] if geometry["kind"] == "contours" else geometry.get("points", [])
-        if not 0 <= pi < len(points):
-            self._active_vertex = None
-            return True
-        if geometry["kind"] not in ("polygon", "contours") or len(points) <= 3:
-            self.message.emit("Only polygon/contour vertices can be removed; retain at least three.")
-            return True
-        points.pop(pi)
-        self._delete_origin = list(origin)
-        self._drag_handle = self._edit_geometry = self._active_vertex = None
+        ci = candidates[0][0]
+        points = geometry["contours"][ci]["points"] if geometry["kind"] == "contours" else geometry["points"]
+        for pi in sorted((pi for _, pi in candidates), reverse=True):
+            points.pop(pi)
+        self._drag_handle = self._edit_geometry = None
+        geometry["vertices_deleted"] = len(candidates)
         self.geometry_changed.emit(obj.id, geometry)
         self.update()
         return True
@@ -673,6 +804,8 @@ class ImageCanvas(QWidget):
         if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and self.tool == "polygon" and self._drawing:
             self.finish_polygon()
         elif event.key() == Qt.Key.Key_Escape:
+            if self.cancel_mask_pusher():
+                return
             if self.tool in DISTANCE_TOOLS:
                 self.clear_distance_measurement()
                 return

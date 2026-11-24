@@ -41,6 +41,9 @@ For detailed text/shape interaction and output scope, see the
 
 ## Drawing tools
 
+The left tools occupy two columns. Each top toolbar has a visibility toggle under
+**View → Toolbars**.
+
 | Tool | Use |
 | --- | --- |
 | Select objects | Click on a mask/geometry; Ctrl+click builds a multiple selection. |
@@ -49,11 +52,12 @@ For detailed text/shape interaction and output scope, see the
 | Measure line / Measure curve | Drag between endpoints or trace a path to measure its length in image pixels and the calibrated unit when available. |
 | Undo / Redo | Traverse committed editing history; controls are intentionally enlarged. |
 | Delete objects | Delete the selected annotations. Del uses this action outside Edit mode. |
-| Delete vertex | Remove one eligible vertex in Edit mode. Click near a polygon or contour vertex before using the button or Del. |
+| Delete vertex | In Edit mode, click near a contour to highlight up to ten eligible vertices. Delete removes the highlighted batch in one step. |
 | Edit object vertices | Edit existing geometry rather than draw a new object. |
-| Polygon | Click vertices; close using Enter, double-click or a near-first-vertex click. |
+| Polygon | Click vertices. Close with Enter, double-click, or a click within the configured screen distance of the first vertex. |
 | Rectangle / Circle / Ellipse | Draw an area used according to Mode and Scope. |
 | Point / cleaning brush | Point annotation/prompt, or a brush in Clean mode. |
+| Mask pusher | In Edit with one unlocked area mask selected, left-drag to expand or right-drag to carve. The radius is in image pixels. |
 
 ## Panel buttons
 
@@ -73,6 +77,10 @@ holes, smooth edges, or delete. **Infer inside selected object / ROI** and
 **Refine selected object explicitly** is required for replacing one unlocked
 accepted mask; ordinary previews protect accepted objects.
 
+**Refine disconnected parts…** previews cleanup inside the selected masks. In
+Edit, right-click a specific fragment on the canvas and choose **Remove this
+disconnected part** to delete that piece.
+
 ## Keyboard and mouse
 
 | Shortcut | Action |
@@ -84,7 +92,7 @@ accepted mask; ordinary previews protect accepted objects.
 | Ctrl+D | Remove selected image area |
 | Ctrl+E | Edit object vertices |
 | Delete | Delete eligible selection |
-| Esc | Clear the distance with a measurement tool selected, or cancel the current drawing or task |
+| Esc | Cancel a mask-pusher stroke, clear a distance measurement, or cancel the current drawing or task |
 | F | Fit image |
 | Mouse wheel / Hand / middle drag | Zoom / pan |
 | Ctrl+click | Add/remove an object in a multiple selection |

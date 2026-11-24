@@ -6,6 +6,8 @@ Manual adds shapes. Segment creates disposable model previews. Clean edits deriv
 
 Example: open two TIFFs, select the first in Image files, draw one Manual rectangle, then switch to Edit and select it in Objects. The Objects, Groups and Image files docks keep the v1.4 layout and can be resized.
 
+The left drawing tools occupy two columns, including Point and Ellipse. Use **View → Toolbars** to show or hide Workflow, Image settings, Regions and image processing, and Segmentation prompts individually. The app remembers these choices when reopened.
+
 Startup asks whether to reopen previous images. No leaves the workspace empty and preserves annotation files. Removing an image from the workspace saves its annotations and does not delete its source image or annotation files.
 
 
@@ -98,15 +100,27 @@ Text does not establish scientific detection accuracy. The verified public text 
 
 ## Manual geometry and Edit tools
 
-Use Manual for points and closed shapes. A polygon closes when a click is within 3 original image pixels of its first point after at least three vertices; Enter and double-click also finish it. Point annotations remain points at every zoom.
+Use Manual for points and closed shapes. After placing at least three polygon vertices, click near the first vertex to close. It turns green when the cursor is close enough. Choose **Edit → Polygon closing distance…** to set the distance in screen pixels. The default is 14 and 0 turns off closing by proximity. Press Enter or double-click to close at any setting. Point annotations remain points at every zoom.
 
-Use Edit to select an object by canvas or list and drag its existing handles. Dragging does not create extra vertices. The handle radius is 5.1 screen pixels, half the previous release's large radius. The separate deletion radius defaults to 20 image pixels and is adjustable. Click near a vertex and choose **Delete vertex** from the drawing toolbar or Edit menu. Each press removes the nearest eligible vertex from that selected object, retaining at least three per contour. **Delete objects** is a separate button that removes the selected annotations. The Delete key invokes Delete vertex in Edit and Delete objects in the other modes.
+In Edit, select an object on the canvas or in the list and drag its existing handles. To delete vertices, choose **Vertices per delete** in the Image settings toolbar and set **Vertex radius (px)**. The radius defaults to 20 image pixels and the count defaults to one. Click near the target contour to highlight the closest eligible vertices in amber, then press **Delete vertex** or **Del**. Each press removes up to ten highlighted vertices from one contour, leaves at least three, and can be undone in one step. These settings are also in the Edit menu. Use the separate **Delete objects** button to remove entire annotations.
 
 Fill holes and Smooth edges open previews. Smooth edges retains editable cubic curves rather than merely changing a jagged display. Batch changes are one undoable operation. Mask sizes and statistics update after applying changes.
 
 Rotation offers angle presets and arbitrary angles. No padding keeps original dimensions and may crop corners. Rectangle or square padding enlarges the canvas; choose black, neighbor, LaMa or a manually selected background-group fill. Review the result before Apply. Pixels, masks, cleaning records and the physical coordinate basis rotate together. Paste/remove retained crop snapshots before rotating.
 
 Scale masks / savepoints scales selected unlocked objects or all area objects in their groups, uniformly about each centroid. Enter a factor or use the slider. Clipping at image boundaries and overlaps can occur. Original geometry and result snapshots can be temporary in-memory list entries or local folders with exact JSON and binary masks. Temporary savepoints do not enter project files; local snapshots can be restored only when source/rotation coordinates match.
+
+## Refine disconnected parts
+
+A mask can contain several disconnected parts under one row in Objects. To remove a specific fragment, switch to **Edit**, choose **Select objects**, and right-click the fragment on the image. Choose **Remove this disconnected part** to remove the connected pixels under the cursor. The object keeps its other parts.
+
+For one or more selected unlocked masks, open **Edit → Refine disconnected parts…**. **Keep largest connected part** retains one part per mask. **Remove parts smaller than a chosen area** keeps parts at or above the minimum in px² and always retains the largest. Pixels touching at edges or corners belong to the same part. Click **Preview** to see removed pixels in red, then **Apply** to commit. Use **Undo** to restore the prior masks.
+
+## Mask pusher
+
+In **Edit**, select one visible, unlocked area mask and choose **Mask pusher** in the left toolbar. Change **Mask pusher radius (px)** in the Image settings toolbar or use **Edit → Mask pusher radius…**. The ring shows the brush footprint in image pixels.
+
+Left-drag along the boundary to add a round sweep where the ring overlaps the mask. Right-drag to carve inward. Green previews added pixels and red previews removed pixels. Release to commit one undoable stroke or press **Esc** while dragging to cancel. Each stroke edits the selected mask within the swept circle and keeps at least part of the object.
 
 
 ## Scale bars
@@ -271,7 +285,7 @@ Each row states what a control does and gives an example. Plugin implementation,
 | Select / Ctrl+click / Ctrl+A | Choose objects on the canvas or in the upper-right Objects list. | Ctrl+click three particles before changing their group. |
 | Edit > Invert region / Ctrl+I | Select the remaining image pixels after the union of selected area masks. | Select particles, invert, then clean only the background. |
 | Edit > Create object from region | Create an exact annotation from a shared pixel selection, retaining holes and disconnected parts. | Turn an inverted background selection into a named area object. |
-| Drawing tools | Manual point, polygon, rectangle, circle and ellipse tools add annotations. | Draw a polygon around an irregular particle; click within 3 image pixels of its first vertex to close. |
+| Drawing tools | Manual point, polygon, rectangle, circle and ellipse tools add annotations. | Click near a polygon's first vertex to close it after at least three vertices. |
 | Measure line / Measure curve | Measure an endpoint distance or a traced path from the left toolbar. | Trace a bend to see its length in pixels and nm on a calibrated image. |
 | Hand / middle-button drag / mouse wheel | Pan and zoom the displayed image. Zoom does not change pixel coordinates. | Zoom to 40x and add a point; it remains a point rather than a one-pixel ROI. |
 | Reset magnification / F | Fit the complete current image to the canvas. | Reset the view after inspecting a small edge region. |
@@ -281,8 +295,12 @@ Each row states what a control does and gives an example. Plugin implementation,
 | Edit > Brightness / contrast | Change display normalization without modifying acquired pixels. | Increase contrast for drawing an uncertain boundary. |
 | Edit > Object color / transparency | Set object appearance separately from numeric labels and mask geometry. | Make one object red at 40% opacity. |
 | Assign mask colors | Choose group colors, preset colors or a measurement palette. | Color all masks by perimeter using 32 colors. |
-| Edit > Delete vertex / Vertex deletion radius | Remove the nearest eligible vertex in the selected polygon or contour. | Click near a vertex and use a 20-image-pixel deletion radius. |
+| Edit > Delete vertex / Vertex deletion radius / Vertices per deletion | Remove up to ten highlighted vertices from one contour. | Choose four vertices per delete and click near the edge to find candidates within 20 image pixels. |
 | Edit > Delete objects | Delete the selected annotations. | Select two unwanted annotations and use the object-delete button. |
+| Edit > Polygon closing distance | Set the screen distance for closing a polygon by clicking near its first vertex. | Increase the default 14 px or enter 0 to close with Enter or double-click. |
+| Edit > Refine disconnected parts | Preview removal of smaller parts within each selected mask. | Keep the largest part of a segmented object while clearing stray lines. |
+| Object context > Remove this disconnected part | In Edit, remove the connected component under the cursor. | Right-click a stray fragment to remove it from the mask. |
+| Edit > Mask pusher | Adjust a selected mask with a circular stroke. | Set a 12 px radius and right-drag to carve into an edge. |
 | Edit > Add / Edit / Remove scale bar | Preview and save a scale bar on the canvas. | Set a 50 nm bar in the lower-right corner. |
 | Edit > Filament | Mark a group as Filament and connect visible ends across gaps. | Link two masks of a bent fiber separated by an occlusion. |
 | Edit > Fill holes / Smooth edges | Preview exact hole filling or smooth editable cubic contours. | Smooth a jagged outline and compare the area before Apply. |
@@ -315,6 +333,7 @@ Each row states what a control does and gives an example. Plugin implementation,
 | Statistics > Edit image calibration | Enter X/Y physical pixel size and length unit. | Use X=0.2 nm and Y=0.3 nm when pixels are anisotropic. |
 | Statistics > Export plot / Export statistics | Save a visual plot or choose which numerical metrics to export. | Display three metrics and save all measurements and summary tables. |
 | View > Masks / Contours / Prompts / Panels | Adjust visibility and reopen hidden docks. | Hide prompt markers while inspecting a mask, then reopen the Objects panel. |
+| View > Toolbars | Toggle each top toolbar independently. | Hide Segmentation prompts while editing a mask. |
 | View > Toolbar icon size | Adjust drawing-tool icon sizes. Undo/Redo retain their enlarged controls. | Use Large icons on a high-resolution display. |
 | Plugin > Install / Manage | Install a local plugin folder; enable, disable, reload or remove it. | Disable a plugin that fails to load, without changing images or annotations. |
 | Help > User Manual | Open the English manual for the running app version. | Jump to Denoising parameters inside the manual. |
@@ -331,8 +350,8 @@ Each row states what a control does and gives an example. Plugin implementation,
 | Ctrl+I | Invert pixel region |
 | Ctrl+D | Remove selected image area |
 | Ctrl+E | Edit existing object |
-| Delete | Delete vertex in Edit mode. Delete objects in other modes. |
-| Esc | Clear the distance when a measurement tool is selected. Also cancels filament connections, drawings, prompt previews and running tasks. |
+| Delete | Remove highlighted vertices in Edit mode. Delete objects in other modes. |
+| Esc | Cancel a mask-pusher stroke, clear a distance measurement, or cancel a filament connection, drawing, preview or running task. |
 | F | Reset magnification / fit image |
 | Mouse wheel / Hand / middle drag | Zoom / pan |
 | Ctrl+click | Add or remove an object from a multiple selection |

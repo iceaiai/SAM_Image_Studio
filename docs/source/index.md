@@ -58,13 +58,12 @@ panel. Keep the full manuals and parameter reference close at hand.
 ::::
 
 ```{image} _static/studio-demo.png
-:alt: SAM Image Studio with the synthetic particle demo, manually supplied reference masks and Objects, Groups and Image files panels
+:alt: SAM Image Studio with two columns of drawing tools, reference masks on a synthetic particle image, and the Objects, Groups and Image files panels
 :class: studio-screen
 :width: 100%
 ```
 
-*Synthetic demo with manually supplied reference masks; this illustrates the
-workspace and is not a SAM3.1 inference result.*
+*Workspace with reference masks on the synthetic particle image.*
 
 ## Illustrated workflow guides
 

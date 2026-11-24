@@ -58,10 +58,10 @@ analytics. `.readthedocs.yaml` remains an optional alternative hosting recipe.
 Set `samstudio.__version__` for each release. It supplies the package metadata,
 the application, the manual and the offline cache version. Small updates
 increment the fourth component, as in the move from `1.4.4.1` to `1.4.4.2`.
-The next larger update is `1.4.5`.
+A larger feature update advances the third component, as in `1.4.5`.
 
 Publish the standard and offline source archives as immutable Git tags. For
-`1.4.4.2`, the standard tag is `v1.4.4.2`. The `v1.4.4.2-offline` tag adds
+`1.4.5`, the standard tag is `v1.4.5`. The `v1.4.5-offline` tag adds
 `samstudio/resources/offline_profile.json` from `offline/profile.json` and
 uses the offline guide as its root README. Both tags share the application
 version and all other source files.

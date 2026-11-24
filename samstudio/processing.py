@@ -75,6 +75,31 @@ def brush_mask(point, radius: float, shape):
     return (xx + .5 - x) ** 2 + (yy + .5 - y) ** 2 <= max(1, radius) ** 2
 
 
+def push_mask_segment(mask, start, end, radius, *, expand):
+    """Apply overlapping circular brush stamps and return the changed bounds."""
+    if start == end:
+        points = (end,)
+    else:
+        steps = math.ceil(math.dist(start, end) / max(.5, radius / 4))
+        xs = np.linspace(start[0], end[0], steps + 1)[1:]
+        ys = np.linspace(start[1], end[1], steps + 1)[1:]
+        points = zip(xs, ys)
+    height, width = mask.shape
+    bounds = None
+    for x, y in points:
+        x0, x1 = max(0, math.floor(x - radius)), min(width, math.ceil(x + radius))
+        y0, y1 = max(0, math.floor(y - radius)), min(height, math.ceil(y + radius))
+        patch = mask[y0:y1, x0:x1]
+        disk = brush_mask((x - x0, y - y0), radius, patch.shape)
+        covered = patch[disk]
+        if not covered.any() or (expand and covered.all()):
+            continue
+        patch[disk] = expand
+        bounds = (x0, y0, x1, y1) if bounds is None else (
+            min(x0, bounds[0]), min(y0, bounds[1]), max(x1, bounds[2]), max(y1, bounds[3]))
+    return bounds
+
+
 def bounding_box(mask):
     yy, xx = np.nonzero(mask)
     if not xx.size:
@@ -234,6 +259,23 @@ def smooth_mask(mask, sigma: float, protected=None, preserve_holes=True):
     return result
 
 
+def mask_components(mask):
+    """Label parts that touch by edges or corners and count their pixels."""
+    count, labels, stats, _ = cv2.connectedComponentsWithStats(mask.astype(np.uint8), connectivity=8)
+    return labels, stats[:count, cv2.CC_STAT_AREA]
+
+
+def trim_disconnected_parts(mask, minimum_area=None):
+    labels, areas = mask_components(mask)
+    if len(areas) <= 2:
+        return mask.copy()
+    largest = int(np.argmax(areas[1:])) + 1
+    keep = np.zeros(len(areas), bool) if minimum_area is None else areas >= minimum_area
+    keep[0] = False
+    keep[largest] = True
+    return keep[labels]
+
+
 def refine_objects(document: Document, object_ids, method: str, parameter=None):
     selected = [o for o in document.objects if o.id in object_ids]
     if not selected:
@@ -243,7 +285,9 @@ def refine_objects(document: Document, object_ids, method: str, parameter=None):
     if any(o.role == "cleaning" for o in selected):
         raise ValueError("Cleaning regions retain their pixel footprint. Delete a cleaning object to restore its pixels.")
     if any(o.mask is None for o in selected):
-        raise ValueError("Fill Holes and Smooth Edges require area masks, not point annotations.")
+        raise ValueError("Mask refinement requires area masks.")
+    if method == "components":
+        return {obj.id: trim_disconnected_parts(obj.mask, parameter) for obj in selected}
     output = {}
     # Each object's old pixels remain protected from every other object's expansion.
     for obj in selected:

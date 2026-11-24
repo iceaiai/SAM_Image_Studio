@@ -4,8 +4,9 @@ import json
 import numpy as np
 import pytest
 from PIL import Image
-from PySide6.QtCore import QPointF, QTimer, Qt
-from PySide6.QtWidgets import QApplication, QDialog, QInputDialog, QMenu, QStyleOptionViewItem
+from PySide6.QtCore import QPoint, QPointF, QTimer, Qt
+from PySide6.QtWidgets import QApplication, QDialog, QInputDialog, QMenu, QStyleOptionViewItem, QToolBar
+from samstudio.app import STYLE
 from samstudio.domain import Document, History, pack_mask, unpack_array
 from samstudio.exports import decode_coco_rle, export_coco, overlap_grayscale, render_mask_pixels, save_masks
 from samstudio.imageio import LoadResult
@@ -214,22 +215,36 @@ def test_background_group_ignores_sam_objects(document):
 
 
 @pytest.mark.parametrize("scale",[0.5,1,2,12])
-def test_polygon_click_closes_within_three_image_pixels(window,document,qtbot,scale):
+def test_polygon_snap_uses_screen_distance_at_every_zoom(window,document,qtbot,scale):
     doc=mount(window,document);doc.objects.clear();window.canvas.refresh()
     canvas=window.canvas;canvas.scale=scale;canvas.offset=QPointF(10,10)
     window.tool_actions["polygon"].trigger()
-    for point in [[20,20],[60,20],[60,60],[22,20]]:
-        qtbot.mouseClick(canvas,Qt.MouseButton.LeftButton,pos=canvas.to_widget(point).toPoint())
+    start = canvas.to_widget((20, 20)).toPoint()
+    for point in (start, start + QPoint(45, 0), start + QPoint(45, 40), start + QPoint(10, 0)):
+        qtbot.mouseClick(canvas,Qt.MouseButton.LeftButton,pos=point)
     assert len(doc.objects)==1 and len(doc.objects[0].points)==3
     assert not canvas._drawing and not window.errors
 
 
-def test_polygon_outside_three_pixel_radius_does_not_close(window,document,qtbot):
+def test_polygon_closing_distance_can_be_changed_or_disabled(window,document,qtbot,monkeypatch):
     doc=mount(window,document);doc.objects.clear();window.canvas.refresh()
-    window.canvas.scale=5;window.canvas.offset=QPointF(5,5);window.tool_actions["polygon"].trigger()
-    for point in [[10,10],[30,10],[30,30],[14,10]]:
-        qtbot.mouseClick(window.canvas,Qt.MouseButton.LeftButton,pos=window.canvas.to_widget(point).toPoint())
-    assert not doc.objects and len(window.canvas._drawing)==4
+    canvas=window.canvas;canvas.scale=2;canvas.offset=QPointF(5,5);window.tool_actions["polygon"].trigger()
+    start = canvas.to_widget((20, 20)).toPoint()
+    for point in (start, start + QPoint(46, 0), start + QPoint(46, 46), start + QPoint(18, 0)):
+        qtbot.mouseClick(canvas,Qt.MouseButton.LeftButton,pos=point)
+    assert not doc.objects and len(canvas._drawing)==4
+    monkeypatch.setattr(QInputDialog, "getInt", lambda *args: (20, True))
+    window.change_polygon_close_distance()
+    assert window.settings.value("polygon_close_distance", type=int) == 20
+    qtbot.mouseClick(canvas, Qt.MouseButton.LeftButton, pos=start + QPoint(18, 0))
+    assert len(doc.objects) == 1
+    monkeypatch.setattr(QInputDialog, "getInt", lambda *args: (0, True))
+    window.change_polygon_close_distance()
+    for point in (start, start + QPoint(50, 0), start + QPoint(50, 46), start + QPoint(2, 0)):
+        qtbot.mouseClick(canvas, Qt.MouseButton.LeftButton, pos=point)
+    assert len(doc.objects) == 1 and len(canvas._drawing) == 4
+    qtbot.keyClick(canvas, Qt.Key.Key_Return)
+    assert len(doc.objects) == 2
 
 
 @pytest.mark.parametrize("mode",["Manual","Segment"])
@@ -272,8 +287,31 @@ def test_hand_pan_reset_fit_and_large_undo_buttons(window,document,qtbot):
     h,w=window.document.frame.shape
     assert canvas.scale==pytest.approx(min((canvas.width()-40)/w,(canvas.height()-40)/h))
     for action in (window.undo_action,window.redo_action):
-        button=window.toolbar.widgetForAction(action)
+        button = next(toolbar.widgetForAction(action) for toolbar in window.drawing_toolbars if action in toolbar.actions())
         assert button.iconSize().width()==44 and button.height()==72
+
+
+def test_two_drawing_columns_and_four_independent_top_toolbar_toggles(window, qtbot):
+    window.setStyleSheet(STYLE)
+    window.resize(1280, 720)
+    window.set_drawing_icon_size(40)
+    qtbot.wait(30)
+    first, second = window.drawing_toolbars
+    assert first.x() < second.x()
+    assert first.widgetForAction(window.tool_actions["point"]).isVisible()
+    assert second.widgetForAction(window.tool_actions["ellipse"]).isVisible()
+    assert all(toolbar.widgetForAction(action).isVisible() for toolbar in (first, second) for action in toolbar.actions())
+    bars = [window.findChild(QToolBar, name) for name in ("workflowToolbar", "imageToolbar", "regionToolbar", "promptToolbar")]
+    toggles = window.toolbar_menu.actions()
+    assert toggles == [bar.toggleViewAction() for bar in bars]
+    for current, toggle in zip(bars, toggles):
+        assert toggle.isChecked() and current.isVisible()
+        toggle.trigger()
+        assert current.isHidden() and not toggle.isChecked()
+        assert not window.settings.value(f"toolbars/{current.objectName()}", type=bool)
+        assert all(not bar.isHidden() for bar in bars if bar is not current)
+        toggle.trigger()
+        assert toggle.isChecked() and current.isVisible()
 
 
 def test_combo_checkmark_changes_without_changing_model_data(window):

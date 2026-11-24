@@ -8,7 +8,7 @@
 | Image files, lower right | Choose source images, datasets, or stack frames. Multi-select to create a **Plot group** or remove session entries while retaining saved annotations and sources. |
 | Workflow toolbar | Choose Mode, model, active Group, and Scope; run, accept, cancel, or configure inference. |
 | Segmentation prompts toolbar | Type/run text, manage aliases, and choose positive/negative shape polarity. |
-| Drawing tools, left | Select, pan, measure a line or curve, undo or redo, delete objects or eligible vertices, and draw geometry. |
+| Drawing tools, left | Two columns for selection, pan, measurements, history, deletion, mask pushing, and drawing shapes including Point and Ellipse. |
 | Region tools | Select all, invert, create an object from a region, and reach appearance/transformation tools. |
 | Status bar | Shows progress, filtered-mask counts, errors, save state, and zoom. Model loading and processing run as background jobs. |
 
@@ -19,15 +19,17 @@ a preview mask count; its tooltip explains applicable proposal/filter diagnostic
 
 Docks can be resized or hidden. Reopen **Objects**, **Groups**, or **Image files**
 through **View**. This release retains the v1.4 Objects/Groups/Image files layout.
+Use **View → Toolbars** to toggle each bar above the image. The app restores those
+choices when reopened.
 
 ```{image} ../_static/studio-demo.png
-:alt: Core workspace using the synthetic demo and manual reference masks, with upper-right objects, groups and lower-right image files
+:alt: Workspace showing two left tool columns, synthetic reference masks, and the Objects, Groups and Image files panels on the right
 :class: studio-screen
 :width: 100%
 ```
 
-The screenshot uses the bundled synthetic image and manually supplied reference
-masks. It demonstrates panels and calibration, not model accuracy.
+The screenshot shows panels and calibration for the bundled synthetic image with
+reference masks.
 
 At startup, **Reopen previous images?** offers Yes or No. No opens an empty
 workspace without deleting saved projects. Removing an image saves it first;
