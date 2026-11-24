@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.canvas &#8212; SAM Image Studio 1.4.4.1</title>
+    <title>samstudio.canvas &#8212; SAM Image Studio 1.4.4.2</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=5b7d9884"></script>
+    <script src="../../../_static/documentation_options.js?v=f62de848"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="samstudio.calibration_table" href="../calibration_table/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.4.1" />
+  <meta name="docsearch:version" content="1.4.4.2" />
   </head>
   
   
@@ -455,6 +455,17 @@
                   
   <section id="module-samstudio.canvas">
 <span id="samstudio-canvas"></span><h1>samstudio.canvas<a class="headerlink" href="#module-samstudio.canvas" title="Link to this heading">#</a></h1>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.canvas.DISTANCE_TOOLS" title="samstudio.canvas.DISTANCE_TOOLS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DISTANCE_TOOLS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
@@ -482,6 +493,11 @@
 </section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="samstudio.canvas.DISTANCE_TOOLS">
+<span class="sig-prename descclassname"><span class="pre">samstudio.canvas.</span></span><span class="sig-name descname"><span class="pre">DISTANCE_TOOLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('measure_line',</span> <span class="pre">'measure_curve')</span></em><a class="headerlink" href="#samstudio.canvas.DISTANCE_TOOLS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="samstudio.canvas.rgb_image">
 <span class="sig-prename descclassname"><span class="pre">samstudio.canvas.</span></span><span class="sig-name descname"><span class="pre">rgb_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rgb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.canvas.rgb_image" title="Link to this definition">#</a></dt>
@@ -727,6 +743,16 @@
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.clear_distance_measurement">
+<span class="sig-name descname"><span class="pre">clear_distance_measurement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.clear_distance_measurement" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.distance_readout">
+<span class="sig-name descname"><span class="pre">distance_readout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.distance_readout" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.paintEvent">
 <span class="sig-name descname"><span class="pre">paintEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.paintEvent" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -828,9 +854,11 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.DISTANCE_TOOLS"><code class="docutils literal notranslate"><span class="pre">DISTANCE_TOOLS</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.rgb_image"><code class="docutils literal notranslate"><span class="pre">rgb_image()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.rgba_image"><code class="docutils literal notranslate"><span class="pre">rgba_image()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas"><code class="docutils literal notranslate"><span class="pre">ImageCanvas</span></code></a><ul class="nav section-nav flex-column">
@@ -880,6 +908,8 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.fit_image"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.fit_image()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.to_image"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.to_image()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.to_widget"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.to_widget()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.clear_distance_measurement"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.clear_distance_measurement()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.distance_readout"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.distance_readout()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.paintEvent"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.paintEvent()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.wheelEvent"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.wheelEvent()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.mousePressEvent"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.mousePressEvent()</span></code></a></li>

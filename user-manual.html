@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>User Manual &#8212; SAM Image Studio 1.4.4.1</title>
+    <title>User Manual &#8212; SAM Image Studio 1.4.4.2</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=5b7d9884"></script>
+    <script src="_static/documentation_options.js?v=f62de848"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="GPU installation and updates" href="installation-gpu.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.4.1" />
+  <meta name="docsearch:version" content="1.4.4.2" />
   </head>
   
   
@@ -403,7 +403,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="user-manual">
 <h1>User Manual<a class="headerlink" href="#user-manual" title="Link to this heading">#</a></h1>
-<p>This manual covers SAM Image Studio 1.4.4.1. See <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>
+<p>This manual covers SAM Image Studio 1.4.4.2. See <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>
 for the current platform setup instructions and <a class="reference internal" href="#denoising-parameters">Denoising parameters</a>
 for denoising method defaults and units.</p>
 <section id="start-modes-and-workspace">
@@ -482,6 +482,11 @@ for denoising method defaults and units.</p>
 <h2>Scale bars<a class="headerlink" href="#scale-bars" title="Link to this heading">#</a></h2>
 <p>Choose <strong>Edit → Add scale bar…</strong>. Set the length and its unit, line width, font, font size and corner position. The image previews changes as you type. <strong>Apply</strong> saves the bar in the native project. <strong>Edit scale bar…</strong> reopens it and <strong>Remove scale bar</strong> removes it. Undo and Redo cover these changes.</p>
 <p>Use px for a pixel reference or a physical unit for a calibrated length. The horizontal bar uses the current image X direction of the calibration, including after rotation. Width and font size are in image pixels and scale with zoom. If the bar cannot fit after a calibration or size change, reopen its settings and choose a length and style that fit. The bar is a canvas overlay. Source TIFFs and mask exports retain their underlying pixels.</p>
+</section>
+<section id="distance-measurements">
+<h2>Distance measurements<a class="headerlink" href="#distance-measurements" title="Link to this heading">#</a></h2>
+<p>In the left toolbar, choose <strong>Measure line</strong> and drag from one endpoint to the other. Choose <strong>Measure curve</strong> and drag along the full path to add up its segment lengths. The readout updates as you drag and shows the length in image pixels. For a calibrated image it also shows the length in the image’s physical unit, using the X and Y scales and any applied rotation. Set or check those scales in <strong>Statistics → Edit image calibration…</strong>.</p>
+<p>Zoom and pan to position the endpoints or follow a curve more closely. The distance stays on the current image until you draw again, switch images or press <strong>Esc</strong> with a measurement tool selected. Measurements are temporary overlays on the canvas.</p>
 </section>
 <section id="cleaning-and-reversible-image-records">
 <h2>Cleaning and reversible image records<a class="headerlink" href="#cleaning-and-reversible-image-records" title="Link to this heading">#</a></h2>
@@ -747,183 +752,187 @@ for denoising method defaults and units.</p>
 <td><p>Manual point, polygon, rectangle, circle and ellipse tools add annotations.</p></td>
 <td><p>Draw a polygon around an irregular particle; click within 3 image pixels of its first vertex to close.</p></td>
 </tr>
-<tr class="row-even"><td><p>Hand / middle-button drag / mouse wheel</p></td>
+<tr class="row-even"><td><p>Measure line / Measure curve</p></td>
+<td><p>Measure an endpoint distance or a traced path from the left toolbar.</p></td>
+<td><p>Trace a bend to see its length in pixels and nm on a calibrated image.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hand / middle-button drag / mouse wheel</p></td>
 <td><p>Pan and zoom the displayed image. Zoom does not change pixel coordinates.</p></td>
 <td><p>Zoom to 40x and add a point; it remains a point rather than a one-pixel ROI.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Reset magnification / F</p></td>
+<tr class="row-even"><td><p>Reset magnification / F</p></td>
 <td><p>Fit the complete current image to the canvas.</p></td>
 <td><p>Reset the view after inspecting a small edge region.</p></td>
 </tr>
-<tr class="row-even"><td><p>Groups &gt; + Group / Rename / Color</p></td>
+<tr class="row-odd"><td><p>Groups &gt; + Group / Rename / Color</p></td>
 <td><p>Organize objects and choose default group colors.</p></td>
 <td><p>Create Particle, Core and Cavity groups.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Object lock / visibility checkboxes</p></td>
+<tr class="row-even"><td><p>Object lock / visibility checkboxes</p></td>
 <td><p>Protect geometry or hide a mask without removing its annotation.</p></td>
 <td><p>Hide an accepted particle; automatic segmentation still protects its mask.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Object properties / Change group</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Object properties / Change group</p></td>
 <td><p>Rename or regroup selected objects using the v1.4 properties dialog.</p></td>
 <td><p>Move one object into the Core group.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Edit &gt; Brightness / contrast</p></td>
+<tr class="row-even"><td><p>Edit &gt; Brightness / contrast</p></td>
 <td><p>Change display normalization without modifying acquired pixels.</p></td>
 <td><p>Increase contrast for drawing an uncertain boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Object color / transparency</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Object color / transparency</p></td>
 <td><p>Set object appearance separately from numeric labels and mask geometry.</p></td>
 <td><p>Make one object red at 40% opacity.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Assign mask colors</p></td>
+<tr class="row-even"><td><p>Assign mask colors</p></td>
 <td><p>Choose group colors, preset colors or a measurement palette.</p></td>
 <td><p>Color all masks by perimeter using 32 colors.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Delete vertex / Vertex deletion radius</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Delete vertex / Vertex deletion radius</p></td>
 <td><p>Remove the nearest eligible vertex in the selected polygon or contour.</p></td>
 <td><p>Click near a vertex and use a 20-image-pixel deletion radius.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Edit &gt; Delete objects</p></td>
+<tr class="row-even"><td><p>Edit &gt; Delete objects</p></td>
 <td><p>Delete the selected annotations.</p></td>
 <td><p>Select two unwanted annotations and use the object-delete button.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Add / Edit / Remove scale bar</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Add / Edit / Remove scale bar</p></td>
 <td><p>Preview and save a scale bar on the canvas.</p></td>
 <td><p>Set a 50 nm bar in the lower-right corner.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Edit &gt; Filament</p></td>
+<tr class="row-even"><td><p>Edit &gt; Filament</p></td>
 <td><p>Mark a group as Filament and connect visible ends across gaps.</p></td>
 <td><p>Link two masks of a bent fiber separated by an occlusion.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Fill holes / Smooth edges</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Fill holes / Smooth edges</p></td>
 <td><p>Preview exact hole filling or smooth editable cubic contours.</p></td>
 <td><p>Smooth a jagged outline and compare the area before Apply.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Edit &gt; Rotate image</p></td>
+<tr class="row-even"><td><p>Edit &gt; Rotate image</p></td>
 <td><p>Rotate pixels and annotations together; optionally enlarge to a rectangle/square and fill padding.</p></td>
 <td><p>Rotate 30 degrees, select square padding and neighbor fill, then inspect the preview.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Scale masks / savepoints</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Scale masks / savepoints</p></td>
 <td><p>Uniformly scale selected masks or a group about each object centroid.</p></td>
 <td><p>Create original and 1.10x savepoints; restore original if objects grow too far.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Edit &gt; Morphology / inner region</p></td>
+<tr class="row-even"><td><p>Edit &gt; Morphology / inner region</p></td>
 <td><p>Assign morphology and explicit outer/core/cavity links for applicable measurements.</p></td>
 <td><p>Link a separate core mask to its enclosing particle before measuring shell thickness.</p></td>
 </tr>
-<tr class="row-even"><td><p>Models &gt; Model manager</p></td>
+<tr class="row-odd"><td><p>Models &gt; Model manager</p></td>
 <td><p>Choose family, variant, compatible checkpoint and CPU or Conda CUDA device.</p></td>
 <td><p>Download SAM2.1 Tiny for CPU; a local checkpoint must match the selected architecture.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Models &gt; Segmentation options</p></td>
+<tr class="row-even"><td><p>Models &gt; Segmentation options</p></td>
 <td><p>Set candidate options and an optional target size range.</p></td>
 <td><p>Use a maximum ECD of 20 nm in a calibrated image.</p></td>
 </tr>
-<tr class="row-even"><td><p>Models &gt; Text prompt aliases</p></td>
+<tr class="row-odd"><td><p>Models &gt; Text prompt aliases</p></td>
 <td><p>Map complete phrases to an effective prompt, without retraining.</p></td>
 <td><p>Map nanoparticle and powder to big dots; the resolved phrase appears in the tooltip.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Run preview / Accept masks / Cancel</p></td>
+<tr class="row-even"><td><p>Run preview / Accept masks / Cancel</p></td>
 <td><p>Generate a disposable preview, commit eligible masks or cancel pending work.</p></td>
 <td><p>Add two positive examples and one negative example; Accept only after inspection.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Remove selected image area</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Remove selected image area</p></td>
 <td><p>Retain removals as visible, reversible cleaning objects.</p></td>
 <td><p>Remove a contamination spot, then choose a fill method.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Object context &gt; Delete for cleaning</p></td>
+<tr class="row-even"><td><p>Object context &gt; Delete for cleaning</p></td>
 <td><p>Convert an unlocked area object into a cleaning region while in Clean mode.</p></td>
 <td><p>Use a drawn mask to remove an unwanted particle from the derived image.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Restore selected area / all edits</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Restore selected area / all edits</p></td>
 <td><p>Restore pixels while retaining other valid cleaning records.</p></td>
 <td><p>Restore a small removed area without erasing a separate filled region.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Fill from neighboring pixels</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Fill from neighboring pixels</p></td>
 <td><p>Estimate fill values from nearby available pixels.</p></td>
 <td><p>Fill a small isolated background spot.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Fill with LaMa</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Fill with LaMa</p></td>
 <td><p>Run asynchronous model-based inpainting inside the requested region.</p></td>
 <td><p>Preview a larger removed contamination region; pixels outside it stay exact.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Background patches</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Background patches</p></td>
 <td><p>Tile source pixels from a selected manual background group.</p></td>
 <td><p>Choose a group named Clean support; its name need not be Background.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Choose / Add / Clear background group</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Choose / Add / Clear background group</p></td>
 <td><p>Select manually drawn polygon/rectangle/ellipse background areas, or clear that selection.</p></td>
 <td><p>Select several clean background patches; reject sources intersecting processed pixels.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Brush radius</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Brush radius</p></td>
 <td><p>Set the radius of the point cleaning brush, independently of SAM point prompts.</p></td>
 <td><p>Use a small brush to remove a thin mark in Clean mode.</p></td>
 </tr>
-<tr class="row-even"><td><p>Show cleaning regions</p></td>
+<tr class="row-odd"><td><p>Show cleaning regions</p></td>
 <td><p>Hide/show the display of cleaning objects; deleting a cleaning object restores its pixels.</p></td>
 <td><p>Hide the removal outline to inspect a filled region.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Processing &gt; Denoise</p></td>
+<tr class="row-even"><td><p>Processing &gt; Denoise</p></td>
 <td><p>Preview restoration and open the Denoising parameters chapter.</p></td>
 <td><p>Compare a TV weight of 0.08 against the original before Apply.</p></td>
 </tr>
-<tr class="row-even"><td><p>Processing &gt; Smooth (Gaussian)</p></td>
+<tr class="row-odd"><td><p>Processing &gt; Smooth (Gaussian)</p></td>
 <td><p>Select an odd kernel size and sigma.</p></td>
 <td><p>Use kernel 5 and sigma 1 for a small spatial smoothing operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Processing &gt; Crop selected region / masks</p></td>
+<tr class="row-even"><td><p>Processing &gt; Crop selected region / masks</p></td>
 <td><p>Retain real pixels in the mask bounding rectangle plus 3 pixels of context.</p></td>
 <td><p>Store an irregular particle and its real surrounding background; no artificial black corners are added.</p></td>
 </tr>
-<tr class="row-even"><td><p>Processing &gt; Retained crops / paste back</p></td>
+<tr class="row-odd"><td><p>Processing &gt; Retained crops / paste back</p></td>
 <td><p>Protect/release, export, remove or paste retained crop snapshots.</p></td>
 <td><p>Denoise the rest of the image, then paste the preserved rectangular patch back.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Processing &gt; Add noise</p></td>
+<tr class="row-even"><td><p>Processing &gt; Add noise</p></td>
 <td><p>Add reproducible Gaussian, Poisson or salt-and-pepper noise with adjustable strength/seed.</p></td>
 <td><p>Use a fixed seed to compare two denoisers on the same synthetic noise.</p></td>
 </tr>
-<tr class="row-even"><td><p>Export &gt; COCO dataset</p></td>
+<tr class="row-odd"><td><p>Export &gt; COCO dataset</p></td>
 <td><p>Write exact masks, groups, calibration, attributes and cleaning extensions.</p></td>
 <td><p>Export all open images with an uncleaned image and a separate processed-image copy.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Export &gt; YOLO dataset</p></td>
+<tr class="row-even"><td><p>Export &gt; YOLO dataset</p></td>
 <td><p>Export polygons with explicit handling of holes/disconnected masks.</p></td>
 <td><p>Choose COCO for exact holes, or explicitly review a lossy YOLO conversion.</p></td>
 </tr>
-<tr class="row-even"><td><p>Save masks / Transparent mask images</p></td>
+<tr class="row-odd"><td><p>Save masks / Transparent mask images</p></td>
 <td><p>Choose binary, overlap-weighted grayscale, color masks, labels, overlay, opacity and alpha options.</p></td>
 <td><p>Keep binary masks for training and export a transparent colored overlay for presentation.</p></td>
 </tr>
-<tr class="row-odd"><td><p>File &gt; Save original / processed images</p></td>
+<tr class="row-even"><td><p>File &gt; Save original / processed images</p></td>
 <td><p>Save the acquired image, current processed image or both as TIFF.</p></td>
 <td><p>Keep the acquired TIFF and save a rotated/denoised derivative separately.</p></td>
 </tr>
-<tr class="row-even"><td><p>Statistics &gt; Plot Object Statistics</p></td>
+<tr class="row-odd"><td><p>Statistics &gt; Plot Object Statistics</p></td>
 <td><p>Choose an image scope and up to nine metrics.</p></td>
 <td><p>Plot ECD and perimeter for a named image group, with points colored by mask area.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Statistics &gt; Edit image calibration</p></td>
+<tr class="row-even"><td><p>Statistics &gt; Edit image calibration</p></td>
 <td><p>Enter X/Y physical pixel size and length unit.</p></td>
 <td><p>Use X=0.2 nm and Y=0.3 nm when pixels are anisotropic.</p></td>
 </tr>
-<tr class="row-even"><td><p>Statistics &gt; Export plot / Export statistics</p></td>
+<tr class="row-odd"><td><p>Statistics &gt; Export plot / Export statistics</p></td>
 <td><p>Save a visual plot or choose which numerical metrics to export.</p></td>
 <td><p>Display three metrics and save all measurements and summary tables.</p></td>
 </tr>
-<tr class="row-odd"><td><p>View &gt; Masks / Contours / Prompts / Panels</p></td>
+<tr class="row-even"><td><p>View &gt; Masks / Contours / Prompts / Panels</p></td>
 <td><p>Adjust visibility and reopen hidden docks.</p></td>
 <td><p>Hide prompt markers while inspecting a mask, then reopen the Objects panel.</p></td>
 </tr>
-<tr class="row-even"><td><p>View &gt; Toolbar icon size</p></td>
+<tr class="row-odd"><td><p>View &gt; Toolbar icon size</p></td>
 <td><p>Adjust drawing-tool icon sizes. Undo/Redo retain their enlarged controls.</p></td>
 <td><p>Use Large icons on a high-resolution display.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Plugin &gt; Install / Manage</p></td>
+<tr class="row-even"><td><p>Plugin &gt; Install / Manage</p></td>
 <td><p>Install a local plugin folder; enable, disable, reload or remove it.</p></td>
 <td><p>Disable a plugin that fails to load, without changing images or annotations.</p></td>
 </tr>
-<tr class="row-even"><td><p>Help &gt; User Manual</p></td>
+<tr class="row-odd"><td><p>Help &gt; User Manual</p></td>
 <td><p>Open the English manual for the running app version.</p></td>
 <td><p>Jump to Denoising parameters inside the manual.</p></td>
 </tr>
@@ -965,7 +974,7 @@ for denoising method defaults and units.</p>
 <td><p>Delete vertex in Edit mode. Delete objects in other modes.</p></td>
 </tr>
 <tr class="row-even"><td><p>Esc</p></td>
-<td><p>Cancel a filament connection, drawing, prompt preview or running task</p></td>
+<td><p>Clear the distance when a measurement tool is selected. Also cancels filament connections, drawings, prompt previews and running tasks.</p></td>
 </tr>
 <tr class="row-odd"><td><p>F</p></td>
 <td><p>Reset magnification / fit image</p></td>
@@ -1694,6 +1703,7 @@ for denoising method defaults and units.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-grid-and-text-prompts">Automatic grid and text prompts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-geometry-and-edit-tools">Manual geometry and Edit tools</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scale-bars">Scale bars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distance-measurements">Distance measurements</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-and-reversible-image-records">Cleaning and reversible image records</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#processing-restoration-smoothing-and-noise">Processing: restoration, smoothing and noise</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retained-crops-and-paste-back-workflow">Retained crops and paste-back workflow</a></li>

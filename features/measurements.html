@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Calibration and statistics &#8212; SAM Image Studio 1.4.4.1</title>
+    <title>Calibration and statistics &#8212; SAM Image Studio 1.4.4.2</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=5b7d9884"></script>
+    <script src="../_static/documentation_options.js?v=f62de848"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Compressed sensing: controls and suggested parameters" href="compressed-sensing.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.4.1" />
+  <meta name="docsearch:version" content="1.4.4.2" />
   </head>
   
   
@@ -447,6 +447,15 @@ or px for a pixel reference. Set the corner position, line width, font and
 font size and check the live preview. <strong>Apply</strong> stores the bar in the native
 project. <strong>Edit scale bar…</strong> and <strong>Remove scale bar</strong> are undoable.</p>
 </section>
+<section id="measure-a-line-or-curve">
+<h2>Measure a line or curve<a class="headerlink" href="#measure-a-line-or-curve" title="Link to this heading">#</a></h2>
+<p>Choose <strong>Measure line</strong> in the left toolbar and drag between two points.
+Use <strong>Measure curve</strong> to trace a path and measure its length. The canvas shows
+image pixels and, for calibrated images, the physical distance in the image’s
+current unit. The calculation uses both pixel scales, including after rotation.
+Draw again to replace the result, or press <strong>Esc</strong> with the tool selected to clear
+the temporary overlay. See the <a class="reference internal" href="../user-manual.html#distance-measurements"><span class="std std-ref">User Manual</span></a>.</p>
+</section>
 <section id="explore-object-and-group-measurements">
 <h2>Explore object and group measurements<a class="headerlink" href="#explore-object-and-group-measurements" title="Link to this heading">#</a></h2>
 <p>Open <strong>Plot Object Statistics…</strong> and choose up to nine metrics for display.
@@ -574,6 +583,7 @@ selected. See the <a class="reference internal" href="../user-manual.html#metric
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confirm-the-physical-scale">Confirm the physical scale</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-a-scale-bar">Add a scale bar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measure-a-line-or-curve">Measure a line or curve</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-object-and-group-measurements">Explore object and group measurements</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measure-filaments-across-gaps">Measure filaments across gaps</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#share-metric-colors-across-a-plot-group">Share metric colors across a plot group</a></li>
