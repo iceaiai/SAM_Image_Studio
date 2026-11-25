@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 from scipy import ndimage as ndi
 
-from .domain import Annotation, Calibration, Document, LENGTH_UNITS
+from .domain import Annotation, Calibration, Document, LENGTH_UNITS, box_shape_corners
 
 
 def display_rgb(raw: np.ndarray, brightness=0.0, contrast=1.0) -> np.ndarray:
@@ -49,12 +49,7 @@ def shape_mask(kind: str, points, shape) -> np.ndarray:
         canvas = np.zeros((h, w), np.uint8)
         cv2.fillPoly(canvas, [np.rint(pts).astype(np.int32)], 1)
         return canvas.astype(bool)
-    if len(pts) != 2:
-        raise ValueError("Draw two corners for this shape.")
-    x0, y0 = np.minimum(pts[0], pts[1])
-    x1, y1 = np.maximum(pts[0], pts[1])
-    if x1 - x0 < 1 or y1 - y0 < 1:
-        raise ValueError("The selected shape is smaller than one pixel.")
+    (x0, y0), (x1, y1) = box_shape_corners(pts)
     if kind == "rectangle":
         mask[max(0, int(math.floor(y0))):min(h, int(math.ceil(y1))),
              max(0, int(math.floor(x0))):min(w, int(math.ceil(x1)))] = True

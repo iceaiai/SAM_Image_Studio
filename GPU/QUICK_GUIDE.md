@@ -20,7 +20,7 @@ Use a dedicated Conda environment with **64-bit Python 3.12**. The installer che
 On Windows, open **Anaconda Prompt** from the Start menu. Use `cd /d` with the full path in double quotes. If extraction produced two folders with the same name, enter the inner folder that contains `GPU\install.py` and `pyproject.toml`. Replace the example path with your actual extracted folder.
 
 ```bat
-cd /d "C:\Work\AI Projects\SAM_Image_Studio-1.4.5.3\SAM_Image_Studio-1.4.5.3"
+cd /d "C:\Work\AI Projects\SAM_Image_Studio-1.4.5.4\SAM_Image_Studio-1.4.5.4"
 dir GPU\install.py
 nvidia-smi
 conda env list

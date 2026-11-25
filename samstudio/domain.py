@@ -17,10 +17,28 @@ import numpy as np
 
 SCHEMA_VERSION = 6
 MAX_DECODED_BYTES = 2_000_000_000
+BOX_SHAPES = ("rectangle", "ellipse", "circle")
 LENGTH_UNITS = {"m": 1.0, "mm": 1e-3, "um": 1e-6, "µm": 1e-6,
                 "μm": 1e-6, "nm": 1e-9, "pm": 1e-12, "Å": 1e-10,
                 "angstrom": 1e-10, "angstroms": 1e-10, "micrometer": 1e-6,
                 "micrometers": 1e-6, "nanometer": 1e-9, "nanometers": 1e-9}
+
+
+class SubpixelShapeError(ValueError):
+    """An area gesture is narrower or shorter than one image pixel."""
+
+
+def box_shape_corners(points):
+    corners = np.asarray(points, dtype=np.float64)
+    if corners.shape != (2, 2):
+        raise ValueError("Draw two corners for this shape.")
+    if not np.isfinite(corners).all():
+        raise ValueError("Shape coordinates must be finite.")
+    lower = np.minimum(corners[0], corners[1])
+    upper = np.maximum(corners[0], corners[1])
+    if np.any(upper - lower < 1):
+        raise SubpixelShapeError("The selected shape is smaller than one pixel.")
+    return lower, upper
 
 
 @dataclass
@@ -552,6 +570,7 @@ class Document:
         examples = draft.get("examples", [])
         if not isinstance(examples, list):
             raise ValueError("Invalid saved exemplar list.")
+        usable_examples = []
         for example in examples:
             pts = np.asarray(example.get("points", []), float)
             minimum = 3 if example.get("kind") == "polygon" else 2
@@ -559,6 +578,14 @@ class Document:
                     or pts.ndim != 2 or pts.shape[1:] != (2,) or len(pts) < minimum
                     or not np.isfinite(pts).all() or example.get("label", 1) not in (0, 1)):
                 raise ValueError("Invalid saved exemplar shape.")
+            if example["kind"] in BOX_SHAPES:
+                try:
+                    box_shape_corners(pts)
+                except SubpixelShapeError:
+                    continue
+            usable_examples.append(example)
+        if "examples" in draft:
+            draft["examples"] = usable_examples
         roi = draft.get("roi")
         if roi is not None:
             if not isinstance(roi, dict):
@@ -567,6 +594,11 @@ class Document:
                 unpack_mask(roi["mask"], shape)
             elif roi.get("kind") not in ("polygon", "rectangle", "ellipse", "circle", "brush") or not roi.get("points"):
                 raise ValueError("Invalid saved region.")
+            elif roi["kind"] in BOX_SHAPES:
+                try:
+                    box_shape_corners(roi["points"])
+                except SubpixelShapeError:
+                    draft["roi"] = None
         from .palette import MetricColorScheme, validate_scheme
         color_scheme = validate_scheme(data.get("color_scheme", {}))
         metric_scheme = data.get("metric_color_scheme")

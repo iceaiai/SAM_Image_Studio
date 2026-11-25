@@ -27,7 +27,8 @@ from .dialogs import (BrightnessDialog, CalibrationDialog, InferenceOptionsDialo
                       RefinementDialog, SaveMasksDialog, StatisticsDialog, combo,
                       SmoothImageDialog, ImagePreviewDialog, MaskColorsDialog, ImageExportDialog,
                       SegmentationPreviewDialog)
-from .domain import Annotation, Document, Group, History, ProjectStore, pack_mask, unpack_mask
+from .domain import (BOX_SHAPES, Annotation, Document, Group, History, ProjectStore,
+                     box_shape_corners, pack_mask, unpack_mask)
 from .exports import export_coco, export_yolo, safe_name, save_cleaned, save_masks, save_image_versions
 from .imageio import SUPPORTED_EXTENSIONS, load_files
 from .inference import InferenceEngine, data_directory, initialize_torch_runtime, lama_fill
@@ -846,6 +847,12 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
     def _shape_completed(self,kind,points):
         if not self.document or self.busy and not self._job_prompt_editable:return
         if self.mode.currentText()=="Edit":return
+        if kind in BOX_SHAPES:
+            try:
+                box_shape_corners(points)
+            except ValueError as error:
+                self.statusBar().showMessage(str(error), 5000)
+                return
         doc=self.document
         if self.mode.currentText()=="Manual":
             if not self._ensure_group():return

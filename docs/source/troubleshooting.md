@@ -116,6 +116,7 @@ memory on large models. Capture the actual error instead of assuming CPU fallbac
 
 ## 6. Unexpected masks, cleaning or reconstruction
 
+- If an older build repeatedly shows **The selected shape is smaller than one pixel**, close it and reopen the original image in 1.4.5.4 or later. The updated app skips unusable saved area drafts and opens the saved objects and valid prompts.
 - Check Mode, Scope, text and pending examples. **Point** hides ROI/single-object
   choices; choose an area tool. See [scope diagrams](segmentation/scopes.md).
 - Automatic grid ignores text. Single object should use empty text for its

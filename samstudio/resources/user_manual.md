@@ -77,6 +77,8 @@ The v1.4 annotation workflow and COCO export representation are retained. A matc
 
 Committed operations autosave atomically into a .sam.json project, with a previous valid backup. Save project now forces a save; Choose project folder selects another writable destination. Open project JSON can locate its source/frame after moving a project. Preserve the native project for complete editable recovery. Area-mask exports omit point annotations and report their count.
 
+When an older autosave contains an unfinished area region or a shape prompt smaller than one pixel, reopen the original image in the current app. It restores the saved annotations and valid prompts and skips the undersized area draft.
+
 Example: draw and accept two masks, close the image, then reopen the same TIFF. Its native project restores those masks. Removing selected entries from Image files saves the native projects and only removes them from the workspace. Source images and annotation files remain. At startup, choose Yes to reopen the previous images or No to start empty.
 
 ### Original and processed input
@@ -180,6 +182,8 @@ On the supplied EMD, try dark polarity, sigma 2, minimum area 300 px² and seed 
 ## Manual geometry and Edit tools
 
 Use Manual for points and closed shapes. After placing at least three polygon vertices, click near the first vertex to close. It turns green when the cursor is close enough. Choose **Edit → Polygon closing distance…** to set the distance in screen pixels. The default is 14 and 0 turns off closing by proximity. Press Enter or double-click to close at any setting. Point annotations remain points at every zoom.
+
+Drag at least one image pixel in both directions for a rectangle, circle or ellipse. The status bar reports gestures below this minimum. You can immediately draw another shape.
 
 In Edit, select an object on the canvas or in the list and drag its existing handles. To delete vertices, choose **Vertices per delete** in the Image settings toolbar and set **Vertex radius (px)**. The radius defaults to 20 image pixels and the count defaults to one. Click near the target contour to highlight the closest eligible vertices in amber, then press **Delete vertex** or **Del**. Each press removes up to ten highlighted vertices from one contour, leaves at least three, and can be undone in one step. These settings are also in the Edit menu. Use the separate **Delete objects** button to remove entire annotations.
 
@@ -487,6 +491,7 @@ Use these chapter names to find the current workflows introduced or changed in e
 
 | Version | Changes and manual chapters |
 | --- | --- |
+| 1.4.5.4 | Rejects subpixel area gestures with a status message and recovers projects with unusable saved area drafts. See **Manual geometry and Edit tools** and **Opening images and native autosaves**. |
 | 1.4.5.3 | **Mask pusher** follows the left-drag direction for inward and outward edits. Esc, Delete vertex and tool changes exit the pusher. |
 | 1.4.5.2 | Reads the **CUDA UMD Version** field in newer NVIDIA driver output and distinguishes a missing version from an older driver. See **Installation, Python and Conda GPU setup**. |
 | 1.4.5.1 | Keyboard deletion of selected pieces under **Refine disconnected parts**, candidate review under **Whole-image exemplars, single objects and ROI**, matching histogram ranges under **Metric colors and plot groups**, drawn links under **Filaments and occluded fragments**, and independent strokes under **Mask pusher**. |

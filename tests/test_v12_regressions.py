@@ -259,6 +259,60 @@ def test_zoomed_point_click_never_becomes_a_subpixel_area(window,document,qtbot,
     assert not window.errors and not window.canvas._drawing
 
 
+@pytest.mark.parametrize(("mode", "scope", "tool"), [
+    ("Manual", None, "rectangle"),
+    ("Clean", None, "circle"),
+    ("Segment", "roi", "rectangle"),
+    ("Segment", "prompt", "ellipse"),
+])
+def test_subpixel_area_gesture_is_transient_and_can_be_redrawn(window, document, qtbot, mode, scope, tool):
+    doc = mount(window, document)
+    window.auto_checkbox.setChecked(False)
+    window.mode.setCurrentText(mode)
+    window.tool_actions[tool].trigger()
+    if scope:
+        window.scope.setCurrentIndex(window.scope.findData(scope))
+    canvas = window.canvas
+    canvas.scale = 10
+    canvas.offset = QPointF(-100, -100)
+
+    def draw(end):
+        qtbot.mousePress(canvas, Qt.MouseButton.LeftButton, pos=canvas.to_widget((20, 20)).toPoint())
+        qtbot.mouseRelease(canvas, Qt.MouseButton.LeftButton, pos=canvas.to_widget(end).toPoint())
+
+    before = doc.state()
+    saved = window.stores[doc.frame.key].path(doc).read_bytes()
+    for end in ((20, 20), (20.4, 31)):
+        draw(end)
+        assert "smaller than one pixel" in window.statusBar().currentMessage()
+        assert not canvas._drawing and canvas._cursor is None and not window.errors
+        assert doc.state() == before and window.stores[doc.frame.key].path(doc).read_bytes() == saved
+
+    draw((30, 28))
+    assert doc.revision == before["revision"] + 1 and not window.errors
+    if mode == "Manual":
+        assert doc.objects[-1].kind == tool and doc.objects[-1].mask.any()
+    elif scope == "prompt":
+        assert doc.draft["examples"][0]["kind"] == tool
+    else:
+        assert window._selection_mask().any()
+
+
+def test_open_autosave_with_subpixel_roi_preserves_objects_and_valid_prompts(window, document):
+    tiny = {"kind": "rectangle", "points": [[20, 25], [20, 25]]}
+    usable = {"kind": "ellipse", "points": [[40, 40], [56, 48]], "label": 1}
+    document.draft.update(roi=tiny, examples=[{**tiny, "label": 0}, usable], points=[[60, 60, 1]])
+    window._store_for(document.frame).save(document)
+    window._opened(LoadResult([document.frame]))
+
+    restored = window.document
+    assert restored.draft["roi"] is None
+    assert restored.draft["examples"] == [usable]
+    assert restored.draft["points"] == [[60, 60, 1]]
+    assert [obj.to_dict() for obj in restored.objects] == [obj.to_dict() for obj in document.objects]
+    assert not window.errors
+
+
 def test_edit_mode_controls_radius_and_does_not_add_points(window,document,qtbot):
     doc=mount(window,document);obj=doc.objects[0]
     window.canvas.set_selected([obj.id]);window.mode.setCurrentText("Edit")

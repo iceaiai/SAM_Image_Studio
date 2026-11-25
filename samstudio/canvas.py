@@ -865,10 +865,10 @@ class ImageCanvas(QWidget):
             self._drawing, self._cursor = [], None
             return
         point = self.to_image(event.position(), True)
+        drawing, self._drawing, self._cursor = self._drawing, [], None
         if point:
-            points = [self._drawing[0], point] if self.tool != "point" else self._drawing + [point]
+            points = [drawing[0], point] if self.tool != "point" else drawing + [point]
             self.shape_completed.emit("brush" if self.tool == "point" else self.tool, points)
-        self._drawing, self._cursor = [], None
         self.update()
 
     def finish_polygon(self):

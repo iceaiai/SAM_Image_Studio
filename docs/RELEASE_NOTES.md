@@ -1,3 +1,10 @@
+# SAM Image Studio 1.4.5.4
+
+- Show a status message for clicks and area gestures narrower or shorter than one image pixel. Reject them before saving a region or prompt.
+- Reopen older projects that saved a subpixel area draft. Skip the unusable draft and recover saved annotations and valid prompts from the same autosave.
+
+---
+
 # SAM Image Studio 1.4.5.3
 
 - Left-drag with Mask pusher to move a mask edge in the direction of the drag, including inward and across different sides. Retracing an active stroke retracts its preview. Right-drag carves with the circular brush.
