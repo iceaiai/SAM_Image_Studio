@@ -25,7 +25,8 @@ from .canvas import (DISTANCE_TOOLS, MAX_MASK_PUSHER_RADIUS, MAX_POLYGON_CLOSE_D
                      MAX_VERTEX_DELETE_COUNT, ImageCanvas)
 from .dialogs import (BrightnessDialog, CalibrationDialog, InferenceOptionsDialog, ModelDialog,
                       RefinementDialog, SaveMasksDialog, StatisticsDialog, combo,
-                      SmoothImageDialog, ImagePreviewDialog, MaskColorsDialog, ImageExportDialog)
+                      SmoothImageDialog, ImagePreviewDialog, MaskColorsDialog, ImageExportDialog,
+                      SegmentationPreviewDialog)
 from .domain import Annotation, Document, Group, History, ProjectStore, pack_mask, unpack_mask
 from .exports import export_coco, export_yolo, safe_name, save_cleaned, save_masks, save_image_versions
 from .imageio import SUPPORTED_EXTENSIONS, load_files
@@ -166,6 +167,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.canvas.prompt_added.connect(self._prompt_added)
         self.canvas.geometry_changed.connect(self._geometry_changed)
         self.canvas.mask_pushed.connect(self._mask_pushed)
+        self.canvas.mask_part_delete_requested.connect(self.delete_selected_mask_part)
         self.canvas.message.connect(lambda text:self.statusBar().showMessage(text,8000))
         self.canvas.zoom_changed.connect(lambda value:self.zoom_label.setText(f"Zoom {value*100:.0f}%"))
         self.canvas.object_context_requested.connect(self._show_object_context_menu)
@@ -207,6 +209,8 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.delete_action = self._action("Delete objects", self.delete_selected, icon="delete")
         self.delete_vertex_action = self._action("Delete vertex", self.delete_vertex, icon="delete_vertex")
         self.delete_vertex_action.setToolTip("Delete the highlighted vertices within the radius from one contour.")
+        self.delete_part_action = self._action("Delete selected mask part", self.delete_selected_mask_part)
+        self.review_preview_action = self._action("Review segmentation preview…", self.review_preview)
         self.edit_action=self._action("Edit object vertices",self.edit_object,"Ctrl+E","edit",True)
         self.select_all_action=self._action("Select all objects",self.select_all_objects,"Ctrl+A")
         self.select_all_action.setToolTip("Select annotation and cleaning objects. Image-smoothing records remain selectable in the Objects panel.")
@@ -236,6 +240,9 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.tool_actions["measure_curve"].setToolTip("Measure curve — drag along a path. Esc clears the measurement.")
         self.tool_actions["polygon"].setToolTip("Polygon — click to add vertices. Click near the first vertex, press Enter, or double-click to close.")
         self.tool_actions["mask_pusher"].setToolTip("Mask pusher — in Edit, left-drag to expand the selected mask and right-drag to carve it.")
+        self.tool_actions["mask_part"] = self._action("Select mask part", self.select_mask_part_tool, checkable=True)
+        self.tool_group.addAction(self.tool_actions["mask_part"])
+        self.canvas.tool_changed.connect(lambda _: self._refresh_delete_controls(self.selected_objects()))
         self.tool_actions["select"].setChecked(True)
         self._build_drawing_toolbars()
         file=self.menuBar().addMenu("File")
@@ -261,12 +268,15 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         edit.addSeparator();edit.addAction(self._action("Fill holes…",lambda:self.refine_masks("holes")));edit.addAction(self._action("Smooth edges…",lambda:self.refine_masks("smooth")))
         self.refine_parts_action = self._action("Refine disconnected parts…", lambda:self.refine_masks("components"))
         edit.addAction(self.refine_parts_action)
+        edit.addAction(self.tool_actions["mask_part"])
+        edit.addAction(self.delete_part_action)
         cleaning=self.menuBar().addMenu("Cleaning");cleaning.addAction(self.remove_action)
         cleaning.addAction(self._action("Restore selected area / all edits",self.restore_area))
         for title,method in [("Fill from neighboring pixels","neighbors"),("Fill with LaMa…","lama"),("Fill with background patches","patches")]:
             cleaning.addAction(self._action(title,lambda checked=False,m=method:self.fill_removed(m)))
         cleaning.addSeparator();cleaning.addAction(self._action("Choose background group…",self.choose_background_group));cleaning.addAction(self._action("Add selection to background group…",self.add_patch));cleaning.addAction(self._action("Clear background group selection",self.clear_patches));cleaning.addAction(self._action("Cleaning brush radius…",self.change_brush_radius))
         models=self.menuBar().addMenu("Models");models.addAction(self._action("Model manager…",self.model_dialog));models.addAction(self._action("Segmentation options…",self.inference_options));models.addAction(self._action("Text prompt aliases…",self.prompt_aliases_dialog))
+        models.addAction(self.review_preview_action)
         exports=self.menuBar().addMenu("Export");exports.addAction(self._action("COCO segmentation dataset…",lambda:self.export_dataset("coco")));exports.addAction(self._action("YOLO segmentation dataset…",lambda:self.export_dataset("yolo")));exports.addSeparator();exports.addAction(self._action("Transparent mask images…",lambda:self.save_mask_dialog(True)))
         statistics=self.statistics_menu=self.menuBar().addMenu("Statistics");statistics.addAction(self._action("Plot Object Statistics…",self.plot_statistics));statistics.addAction(self._action("Edit image calibration…",self.edit_calibration))
         view=self.menuBar().addMenu("View");view.addAction(self.fit_action)
@@ -341,10 +351,14 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.scope.setMaximumWidth(275)
         self.scope.currentIndexChanged.connect(self.inference_scope_changed)
         self.run_button=QPushButton("Run preview");self.run_button.setObjectName("runPreviewButton");self.run_button.clicked.connect(self.run_inference)
+        self.review_button = QPushButton("Review…")
+        self.review_button.setObjectName("reviewPreviewButton")
+        self.review_button.setToolTip("Inspect the pending segmentation masks before accepting them.")
+        self.review_button.clicked.connect(self.review_preview)
         self.accept_button=QPushButton("Accept masks");self.accept_button.setObjectName("acceptMasksButton");self.accept_button.clicked.connect(self.accept_preview)
         self.cancel_button=QPushButton("Cancel / clear");self.cancel_button.setObjectName("cancelButton");self.cancel_button.clicked.connect(self.cancel_operation)
         self.options_button=QPushButton("Options…");self.options_button.clicked.connect(self.inference_options)
-        for widget in (QLabel("Mode "),self.mode,self.model_button,self.model_label,QLabel(" Group "),self.group_combo,self.scope,self.run_button,self.accept_button,self.cancel_button,self.options_button):bar.addWidget(widget)
+        for widget in (QLabel("Mode "),self.mode,self.model_button,self.model_label,QLabel(" Group "),self.group_combo,self.scope,self.run_button,self.review_button,self.accept_button,self.cancel_button,self.options_button):bar.addWidget(widget)
         second = self._add_top_toolbar("Image settings", "imageToolbar")
         self.calibration_label=QLabel("No image")
         self.cleaned_checkbox=QCheckBox("View / infer from processed image");self.cleaned_checkbox.toggled.connect(self._processed_input_changed)
@@ -430,11 +444,15 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         if self.busy:
             self.statusBar().showMessage("Wait for the current operation or click Cancel.",5000);return False
         self.canvas.cancel_mask_pusher()
+        self.canvas.clear_mask_part()
+        self.cancel_filament_link()
         self._job=Job(function);self._job_callback=callback
         self._job_prompt_editable=prompt_editable
         self._job.signals.progress.connect(self._progress_message);self._job.signals.done.connect(self._job_finished)
         self.canvas.read_only=not prompt_editable;self.canvas.prompt_input_only=prompt_editable
         self.files_tree.setEnabled(False);self.model_button.setEnabled(False);self.run_button.setEnabled(False);self.accept_button.setEnabled(False);self.progress.show()
+        self.review_button.setEnabled(False)
+        self.review_preview_action.setEnabled(False)
         self.statusBar().showMessage(title);self.pool.start(self._job);return True
 
     def _progress_message(self,message):
@@ -524,7 +542,10 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.watershed_action.setEnabled(has and not self.busy)
         self.forget_processing_button.setEnabled(has and bool(doc.working is not None or doc.cleaning_history or doc.detached_crops) and not self.busy)
         self.reset_rotation_action.setEnabled(has and bool(doc.rotation) and doc.rotation_reset_state is not None and not self.busy)
-        self.accept_button.setEnabled(has and bool(self.canvas.preview_masks) and not self.busy)
+        can_review = has and bool(self.canvas.preview_masks) and not self.busy
+        self.accept_button.setEnabled(can_review)
+        self.review_button.setEnabled(can_review)
+        self.review_preview_action.setEnabled(can_review)
         self.save_action.setEnabled(has and not self.busy);self.remove_action.setEnabled(has and not self.busy)
         self.scale_bar_action.setEnabled(has and not self.busy)
         has_bar = has and doc.scale_bar is not None
@@ -538,15 +559,9 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.region_object_action.setEnabled(has and self.mode.currentText() in ("Manual","Edit") and pixels>0 and not self.busy)
         history=self.histories.get(self.current_key)
         self.undo_action.setEnabled(bool(history and history.undo_stack) and not self.busy);self.redo_action.setEnabled(bool(history and history.redo_stack) and not self.busy)
-        self.delete_action.setEnabled(has and bool(self.canvas.selected) and not self.busy and not self.canvas.filament_picks)
         editable=self.selected_objects()
         editing = self.mode.currentText() == "Edit"
-        self.delete_action.setShortcut(QKeySequence("" if editing else "Delete"))
-        self.delete_vertex_action.setShortcut(QKeySequence("Delete" if editing else ""))
-        self.delete_vertex_action.setEnabled(editing and len(editable) == 1 and
-                                             editable[0].role == "object" and editable[0].visible and not editable[0].locked and
-                                             editable[0].kind in ("polygon", "mask") and not self.busy
-                                             and not self.canvas.filament_picks)
+        self._refresh_delete_controls(editable)
         refinable = bool(editable) and all(obj.role == "object" and obj.mask is not None and not obj.locked for obj in editable)
         self.refine_parts_action.setEnabled(refinable and not self.busy)
         pushing = editing and len(editable) == 1 and refinable and editable[0].visible and not self.busy
@@ -939,14 +954,42 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
     def selected_objects(self):
         return [o for o in self.document.objects if o.id in self.canvas.selected] if self.document else []
 
+    def _refresh_delete_controls(self, selected):
+        editing = self.canvas.edit_mode
+        part_tool = editing and self.canvas.tool == "mask_part"
+        available = self.document is not None and not self.busy and not self.canvas.filament_link_active
+        self.tool_actions["mask_part"].setEnabled(editing and available)
+        self.delete_action.setEnabled(available and bool(selected))
+        self.delete_action.setShortcut(QKeySequence("" if editing else "Delete"))
+        self.delete_part_action.setEnabled(part_tool and available)
+        self.delete_vertex_action.setShortcut(QKeySequence("Delete" if editing and not part_tool else ""))
+        self.delete_vertex_action.setEnabled(available and editing and not part_tool and len(selected) == 1
+                                             and selected[0].role == "object" and selected[0].visible
+                                             and not selected[0].locked and selected[0].kind in ("polygon", "mask"))
+
+    def select_mask_part_tool(self):
+        if self.document and self.canvas.edit_mode and not self.busy:
+            self.canvas.set_tool("mask_part")
+            self.statusBar().showMessage("Click a disconnected mask part to highlight it, then press Delete.", 10000)
+
+    def delete_selected_mask_part(self):
+        if self.busy or self.canvas.tool != "mask_part":
+            return
+        part = self.canvas.selected_mask_part()
+        if part is None:
+            self.statusBar().showMessage("Click a disconnected part of a mask first.", 6000)
+            return
+        self.canvas.clear_mask_part()
+        self.remove_mask_part(*part)
+
     def delete_selected(self):
-        if self.busy or not self.document or self.canvas.filament_picks:return
+        if self.busy or not self.document or self.canvas.filament_link_active:return
         selected=self.selected_objects()
         if any(o.locked for o in selected):self.notify("Locked object","Unlock the selected objects before deleting them.");return
         if selected:self._commit("Delete objects / restore cleaning pixels",lambda:self.document.delete_objects(self.canvas.selected))
 
     def delete_vertex(self):
-        if self.busy or not self.document or self.canvas.filament_picks:
+        if self.busy or not self.document or self.canvas.filament_link_active or self.canvas.tool == "mask_part":
             return
         if self.canvas.tool == "mask_pusher":
             self.statusBar().showMessage("Use Select objects to choose vertices for deletion.", 8000)
@@ -1061,6 +1104,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
     def undo(self):
         if self.busy or not self.document:return
         self.canvas.cancel_mask_pusher()
+        self.canvas.clear_mask_part()
         self.cancel_filament_link()
         self.canvas.set_preview([]);self._refine_target=None
         try:self.histories[self.current_key].undo()
@@ -1071,6 +1115,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
     def redo(self):
         if self.busy or not self.document:return
         self.canvas.cancel_mask_pusher()
+        self.canvas.clear_mask_part()
         self.cancel_filament_link()
         self.canvas.set_preview([]);self._refine_target=None
         try:self.histories[self.current_key].redo()
@@ -1427,6 +1472,14 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         finally:self._mode_guard=False
         self.run_inference(force_whole=False)
 
+    def review_preview(self):
+        if self.document is None or self.busy or not self.canvas.preview_masks:
+            return
+        source = (self._preview_context or {}).get("input")
+        dialog = SegmentationPreviewDialog(self.document, self.canvas.preview_masks,
+                                           source in ("cleaned", "processed"), self)
+        dialog.exec()
+
     def accept_preview(self):
         if not self.document or self.busy or not self.canvas.preview_masks:return
         if not self._ensure_group():return
@@ -1457,7 +1510,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             self._refresh_controls()
             self.statusBar().showMessage("Filament connection cancelled.", 5000)
             return
-        if self.canvas.cancel_mask_pusher():
+        if self.canvas.cancel_mask_pusher() or self.canvas.clear_mask_part():
             return
         if clear_measurement and not self.busy and self.canvas.tool in DISTANCE_TOOLS:
             self.canvas.clear_distance_measurement()
@@ -1500,7 +1553,8 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             return
         dialog = StatisticsDialog(self.documents.values(), self.document, self.canvas.selected,
                                   self.selected_images(), self, plot_groups=self.plot_groups,
-                                  active_plot_group=self.active_plot_group, color_provider=self._mask_colors)
+                                  active_plot_group=self.active_plot_group, color_provider=self._mask_colors,
+                                  palette_provider=self._mask_palette)
         dialog.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         dialog.plot_group_requested.connect(self.set_active_plot_group)
         dialog.color_settings_requested.connect(lambda: self._plot_color_settings(dialog))
@@ -1519,8 +1573,9 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
                 dialog.scope.setCurrentIndex(dialog.scope.findData(f"plot:{group.name}"))
         else:
             self.assign_mask_colors()
-        if (self._active_plot_palette() is not None or
-                self.document is not None and self.document.metric_color_scheme is not None):
+        if (dialog.plot_type.currentData() != "mask_histogram" and
+                (self._active_plot_palette() is not None or
+                 self.document is not None and self.document.metric_color_scheme is not None)):
             dialog.plot_type.setCurrentIndex(dialog.plot_type.findData("points"))
 
     def set_canvas_option(self,attribute,value):

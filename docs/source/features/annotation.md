@@ -41,9 +41,10 @@ transparency are display choices, not changes to binary mask ownership.
 
 ## Clean up disconnected mask parts
 
-Several disjoint shapes can belong to one mask. In **Edit**, choose **Select
-objects**, right-click the unwanted piece on the image, and select **Remove this
-disconnected part**. The other parts of that mask survive.
+Several disjoint shapes can belong to one mask. In **Edit** mode, choose
+**Edit → Select mask part**, click the unwanted piece to highlight it, then
+press **Delete**. To remove a piece from the context menu, right-click it with
+**Select objects** active and choose **Remove this disconnected part**.
 
 Use **Edit → Refine disconnected parts…** to preview cleanup for selected masks.
 Choose **Keep largest connected part** or set a minimum part area in px². The
@@ -60,7 +61,9 @@ pending additions and removals. Release to apply the stroke. Use Esc to discard
 an active stroke or Undo to reverse a committed stroke.
 
 The edit applies to the selected mask within the swept circle. An outward
-stroke grows where the circle overlaps the mask.
+stroke grows wherever the circle reaches the mask as it was at the beginning
+of that stroke. Move the circle to another edge to continue there, or release
+and start a new stroke on any side.
 
 ## Rotate an image
 

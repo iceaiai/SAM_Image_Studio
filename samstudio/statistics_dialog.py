@@ -1,4 +1,5 @@
 from __future__ import annotations
+from collections import Counter
 import math
 import numpy as np
 from PySide6.QtCore import Qt, Signal
@@ -12,12 +13,50 @@ from .palette import document_mask_colors, image_metric_palette
 from .statistics import METRICS,METRIC_DEFINITIONS,measurement_records,summary_records,export_statistics
 
 
+def _palette_bin_edges(palette, key, unit):
+    if palette is None or not palette.edges or key != palette.scheme.metric:
+        return None
+    source = palette.scheme.unit
+    if source == unit:
+        factor = 1.
+    elif source in LENGTH_UNITS and unit in LENGTH_UNITS:
+        factor = (LENGTH_UNITS[source] / LENGTH_UNITS[unit]) ** max(0, METRICS[key][1])
+    else:
+        return None
+    edges = np.asarray(palette.edges) * factor
+    if len(edges) == 2 and edges[0] == edges[1]:
+        # A constant measurement uses the middle swatch and one visible column.
+        center = edges[0]
+        half_width = max(abs(center) * .025, .5 if unit == "px" else 1e-12)
+        edges = np.array([center - half_width, center + half_width])
+    return edges if np.isfinite(edges).all() and (np.diff(edges) > 0).all() else None
+
+
+def _stacked_color_bars(ax, left, widths, contributions):
+    counts = Counter()
+    for index, color, count in contributions:
+        counts[index, color] += count
+    totals = np.zeros(len(left))
+    positions, heights, spans, bottoms, colors = [], [], [], [], []
+    for (index, color), count in sorted(counts.items()):
+        if count <= 0:
+            continue
+        positions.append(left[index])
+        heights.append(count)
+        spans.append(widths[index])
+        bottoms.append(totals[index])
+        colors.append(color)
+        totals[index] += count
+    if heights:
+        ax.bar(positions, heights, width=spans, bottom=bottoms, color=colors, align="edge", edgecolor="white")
+
+
 class StatisticsDialog(QDialog):
     plot_group_requested = Signal(str)
     color_settings_requested = Signal()
 
     def __init__(self,documents,current,selected_objects=None,selected_images=None,parent=None,
-                 *, plot_groups=None, active_plot_group=None, color_provider=None):
+                 *, plot_groups=None, active_plot_group=None, color_provider=None, palette_provider=None):
         super().__init__(parent)
         from matplotlib.figure import Figure
         from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg,NavigationToolbar2QT
@@ -25,6 +64,7 @@ class StatisticsDialog(QDialog):
         self.plot_groups = {}
         self.active_plot_group = None
         self.color_provider = color_provider or document_mask_colors
+        self.palette_provider = palette_provider or (image_metric_palette if color_provider is None else lambda doc: None)
         self.palette_description = ""
         self.rows=[];self.records=[];self.axis_settings={};self.plot_keys=[];self._updating=False;self._bar_color='#245dd8'
         self.setWindowTitle('Plot Object Statistics');self.resize(1320,850)
@@ -32,6 +72,7 @@ class StatisticsDialog(QDialog):
         self.scope=combo([], "statisticsImageScope");self.group=combo(['All groups'])
         self.metric_combo=combo([(label,key) for key,(label,dim) in METRICS.items()])
         self.unit=combo(['Auto','Pixels','nm','µm','mm']);self.bins=QSpinBox();self.bins.setRange(2,500);self.bins.setValue(20)
+        self.bins.setToolTip("Matching measurement histograms use the color palette's own ranges.")
         self.only_selected=QCheckBox('Selected objects only')
         for title,widget in [('Images',self.scope),('Group',self.group),('Single metric',self.metric_combo),('Units',self.unit),('Bins',self.bins)]:
             col=QVBoxLayout();col.addWidget(QLabel(title));col.addWidget(widget);row.addLayout(col)
@@ -40,7 +81,8 @@ class StatisticsDialog(QDialog):
         appearance.addWidget(self.only_selected)
         appearance.addStretch()
         appearance.addWidget(QLabel("Plot type"))
-        self.plot_type = combo([("Histogram", "histogram"), ("Object points (mask colors)", "points")], "statisticsPlotType")
+        self.plot_type = combo([("Histogram", "histogram"), ("Histogram (mask colors)", "mask_histogram"),
+                                ("Object points (mask colors)", "points")], "statisticsPlotType")
         appearance.addWidget(self.plot_type)
         if color_provider is not None:
             color_settings = QPushButton("Mask color settings…")
@@ -136,7 +178,7 @@ class StatisticsDialog(QDialog):
     def _scope_changed(self):
         name = self.plot_group_name
         if name is not None:
-            if self.plot_groups[name].scheme is not None:
+            if self.plot_groups[name].scheme is not None and self.plot_type.currentData() != "mask_histogram":
                 self.plot_type.blockSignals(True)
                 self.plot_type.setCurrentIndex(self.plot_type.findData("points"))
                 self.plot_type.blockSignals(False)
@@ -153,12 +195,17 @@ class StatisticsDialog(QDialog):
         physical_unit=physical_unit if physical_unit in LENGTH_UNITS else None
         self.rows=[];self.records=[];excluded=0
         metric = self.metric_combo.currentData()
-        for doc in docs:
+        colored = self.plot_type.currentData() == "mask_histogram"
+        palettes = [self.palette_provider(doc) if colored else None for doc in docs]
+        shared_palette = palettes[0] if palettes and all(p is palettes[0] for p in palettes) else None
+        for doc, palette in zip(docs, palettes):
             ids=self.selected_objects if self.only_selected.isChecked() else None;groups=[self.group.currentText()] if self.group.currentIndex()>0 else None
             records, skip = measurement_records(doc, ids, groups, physical_unit)
             colors = self.color_provider(doc)
             for record in records:
                 record["mask_color"] = colors[record["object_id"]]
+                if palette is not None and palette.bins:
+                    record["mask_color_bin"] = palette.bins.get(doc.frame.key, {}).get(record["object_id"])
                 self.rows.append({**record, "pixel_area": record["area_px"], "physical_area": record["area_physical"],
                                   "metric": metric, "pixel_value": record.get(metric + "_px"),
                                   "physical_value": record.get(metric + "_physical")})
@@ -189,27 +236,51 @@ class StatisticsDialog(QDialog):
         if not panels:
             ax=self.figure.add_subplot(111);ax.text(.5,.5,'No eligible objects or metrics',ha='center',va='center',transform=ax.transAxes);ax.set_axis_off()
         points = self.plot_type.currentData() == "points"
-        self.color_button.setEnabled(not points)
+        self.color_button.setEnabled(not (points or colored))
+        used_palette_bins = used_manual_bins = False
         for i,(key,suffix,label,records) in enumerate(panels):
             ax=self.figure.add_subplot(rows,cols,i+1);plot_key=key+'|'+label;self.plot_keys.append(plot_key)
             options=self.axis_settings.get(plot_key,{});color=options.get('color','#245dd8')
-            samples = [(index, record.get(key + "_" + suffix), record["mask_color"])
+            samples = [(index, record.get(key + "_" + suffix), record["mask_color"], record.get("mask_color_bin"))
                        for index, record in enumerate(records, start=1)]
-            samples = [(index, value, rgb) for index, value, rgb in samples
+            samples = [(index, value, rgb, slot) for index, value, rgb, slot in samples
                        if value is not None and np.isfinite(value)]
-            values = [value for _, value, _ in samples]
+            values = [value for _, value, _, _ in samples]
             if key=='object_id':
                 object_colors = [r["mask_color"] for r in records]
                 if points:
                     ax.scatter(range(len(records)), range(1, len(records) + 1), c=object_colors)
                 else:
-                    ax.bar(range(len(records)), [1]*len(records), color=color)
+                    ax.bar(range(len(records)), [1]*len(records), color=object_colors if colored else color)
                 ax.set_xticks(range(len(records)),[r['name']+'\n'+r['object_id'][:8] for r in records],rotation=60)
             elif points and samples:
-                ax.scatter(values, [index for index, _, _ in samples], c=[rgb for _, _, rgb in samples])
+                ax.scatter(values, [index for index, _, _, _ in samples], c=[rgb for _, _, rgb, _ in samples])
             elif key=='particle_count' and not points:
-                groups=sorted({r['group'] for r in records});counts=[sum(r['particle_count_px'] for r in records if r['group']==g) for g in groups];ax.bar(groups,counts,color=color)
-            elif values:ax.hist(values,bins=self.bins.value(),color=color,edgecolor='white')
+                groups = sorted({r["group"] for r in records})
+                if colored:
+                    index_by_group = {group: index for index, group in enumerate(groups)}
+                    _stacked_color_bars(ax, np.arange(len(groups)) - .4, np.full(len(groups), .8),
+                        ((index_by_group[r["group"]], r["mask_color"], r["particle_count_px"]) for r in records))
+                    ax.set_xticks(range(len(groups)), groups)
+                else:
+                    counts = [sum(r["particle_count_px"] for r in records if r["group"] == group) for group in groups]
+                    ax.bar(groups, counts, color=color)
+            elif values and colored:
+                edges = _palette_bin_edges(shared_palette, key, "px" if suffix == "px" else physical_unit)
+                slots = [slot for _, _, _, slot in samples]
+                if edges is not None and all(slot is not None for slot in slots):
+                    counts = np.bincount(slots, minlength=len(shared_palette.swatches))
+                    ax.bar(edges[:-1], counts, width=np.diff(edges), color=shared_palette.swatches,
+                           align="edge", edgecolor="white")
+                    used_palette_bins = True
+                else:
+                    edges = np.histogram_bin_edges(values, bins=self.bins.value())
+                    bins = np.searchsorted(edges[1:-1], values, side="right")
+                    _stacked_color_bars(ax, edges[:-1], np.diff(edges),
+                                        ((index, sample[2], 1) for index, sample in zip(bins, samples)))
+                    ax.set_xlim(float(edges[0]), float(edges[-1]), auto=True)
+                    used_manual_bins = True
+            elif values and not points:ax.hist(values,bins=self.bins.value(),color=color,edgecolor='white')
             else:ax.text(.5,.5,'Not applicable / unavailable',ha='center',va='center',transform=ax.transAxes)
             default_x=METRICS[key][0]+(f' ({label})' if label else '')
             default_y = "Object index" if points else "Particle count" if key == "particle_count" else "Object count"
@@ -224,12 +295,13 @@ class StatisticsDialog(QDialog):
         old=self.axis_combo.currentData();self.axis_combo.blockSignals(True);self.axis_combo.clear()
         for key in self.plot_keys:self.axis_combo.addItem(key,key)
         self.axis_combo.setCurrentIndex(max(0,self.axis_combo.findData(old)));self.axis_combo.blockSignals(False);self.load_axis_settings()
+        self.bins.setEnabled(not points and (not used_palette_bins or used_manual_bins))
         self.canvas.draw_idle()
         summary = f'{len(self.records)} measured objects · {sum(r["particle_count_px"] for r in self.records):g} counted · {excluded} point/open annotations excluded.'
         plot_group = self.plot_groups.get(self.plot_group_name)
         if plot_group is not None:
             summary += f" {len(docs)}/{len(plot_group.frames)} plot group frames open."
-        if points:
+        if points or colored:
             active_group = self.plot_groups.get(self.active_plot_group)
             uses_active_palette = (active_group is not None and active_group.scheme is not None
                                    and any(doc.frame.key in active_group.frames for doc in docs))
@@ -239,6 +311,10 @@ class StatisticsDialog(QDialog):
                 palette = image_metric_palette(docs[0])
                 if palette is not None:
                     summary += "\n" + palette.description
+        if used_palette_bins:
+            summary += "\nMatching histogram columns use the measurement color ranges."
+        if used_manual_bins:
+            summary += "\nAdditional histogram bins stack the objects by their mask colors."
         self.summary.setText(summary)
 
     def load_axis_settings(self):

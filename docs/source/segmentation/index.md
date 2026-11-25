@@ -2,7 +2,8 @@
 
 First decide **what describes the target** and **where masks may appear**.
 Text/shape/point prompts describe the target. Scope and exact regions control
-the output. A disposable preview becomes an annotation only after **Accept masks**.
+the output. Use **Review…** to zoom into all pending masks or view one candidate
+at a time. A disposable preview becomes an annotation after **Accept masks**.
 
 | Goal | Start here |
 | --- | --- |

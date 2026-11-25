@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout, QHBoxLayo
     QLineEdit, QListWidget, QListWidgetItem, QMessageBox, QPushButton, QVBoxLayout)
 
 from .metric_colors_ui import MetricColorControls
-from .palette import MetricColorScheme, base_mask_colors, document_mask_colors, metric_palette
+from .palette import MetricColorScheme, base_mask_colors, image_metric_palette, metric_palette
 from .widgets import buttons, combo
 
 
@@ -196,12 +196,17 @@ class PlotGroupWorkflowMixin:
             self._plot_palette_cache = (key, palette)
         return palette
 
-    def _mask_colors(self, document):
+    def _mask_palette(self, document):
         group = self.plot_groups.get(self.active_plot_group)
         if group is None or group.scheme is None or document.frame.key not in group.frames:
-            return document_mask_colors(document)
+            return image_metric_palette(document)
+        return self._active_plot_palette()
+
+    def _mask_colors(self, document):
         colors = base_mask_colors(document)
-        colors.update(self._active_plot_palette().colors.get(document.frame.key, {}))
+        palette = self._mask_palette(document)
+        if palette is not None:
+            colors.update(palette.colors.get(document.frame.key, {}))
         return colors
 
     def _refresh_plot_group_controls(self):

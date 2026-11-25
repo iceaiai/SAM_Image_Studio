@@ -45,7 +45,8 @@ actions and are documented by their authors.
 | Remove scale bar | Remove the current image's scale bar. | — |
 | Filament → Mark group as Filament… | Enable centerline length and width measurement for a foreground group in Edit mode. | — |
 | Filament → Use particle measurements for group… | Remove the Filament designation and the group's links. | — |
-| Filament → Connect visible fragments… | Pick one visible end on each of two selected fragments to estimate the gap. | — |
+| Filament → Connect visible fragments… | Pick detected ends, or draw across the gap if automatic endpoints are unavailable. | — |
+| Filament → Draw filament connection… | Draw from within one selected mask tip to within the other to estimate the intervening gap. | — |
 | Filament → Disconnect selected fragments | Remove links incident to one selected fragment or between multiple selected fragments. | — |
 | Vertex deletion radius… | Set the eligible-vertex deletion search radius in image pixels. | — |
 | Vertices per deletion… | Set how many nearby vertices to highlight and remove per Delete press. | — |
@@ -54,6 +55,7 @@ actions and are documented by their authors.
 | Fill holes… | Preview filling eligible holes in selected area masks. | — |
 | Smooth edges… | Preview smoother editable contours for selected masks; does not smooth image intensities. | — |
 | Refine disconnected parts… | Preview retaining only the largest part or trimming the smaller parts of selected masks. | — |
+| Select mask part / Delete selected mask part | Highlight a single disconnected piece in Edit and remove it. | Del with Select mask part active |
 
 ## Cleaning
 
@@ -94,7 +96,7 @@ this menu order: remove → choose fill → preview/apply → restore.
 
 | Menu entry | What it does | Shortcut |
 | --- | --- | --- |
-| Plot Object Statistics… | Choose an image scope, histogram or mask-colored points, and up to nine displayed metrics. | — |
+| Plot Object Statistics… | Choose an image scope, plain or mask-colored histograms, or mask-colored points, and up to nine displayed metrics. | — |
 | Create plot group from selected images… | Save a named set of frames with an optional shared measurement color scale. | — |
 | Edit active plot group… | Change its name, membership or color settings, or remove the group. | — |
 | Edit image calibration… | Set physical X/Y pixel sizes and length unit. | — |

@@ -71,9 +71,12 @@ each metric, formula, unit, and applicability rule.
 Switch to **Edit** and choose **Filament → Mark group as Filament…**. The
 centerline follows the visible outline through bends. To treat an occluded
 filament as one measured object, select two separate visible masks in that
-group, choose **Connect visible fragments…**, and click the two marked ends
-facing the gap. Each free end can connect once. The result reports the visible
-arc length, a straight-line estimate across linked gaps, and their sum.
+group, choose **Draw filament connection…**, and drag from just inside one
+tip to just inside the other. The line direction determines where it meets the
+mask boundaries. **Connect visible fragments…** offers detected ends when
+available and switches to drawing when the masks have no usable open centerline.
+Repeat with neighboring masks to build a chain. The result reports the visible
+arc length, an estimate across linked gaps, and their sum when both resolve.
 Perpendicular cross-sections contribute widths only where a mask is visible.
 Use [Filaments and occluded fragments](../user-manual.md#filaments-and-occluded-fragments)
 for measurement details and disconnect controls.
@@ -89,6 +92,11 @@ for measurement details and disconnect controls.
    Choose **Object points (mask colors)** for one point per measured object in
    the displayed mask color. Check up to nine metrics. The color metric can
    differ from the plotted metrics.
+
+For a distribution, choose **Histogram (mask colors)**. A histogram of the
+color measurement uses the palette's exact intervals and colors, including
+conversion between physical display units. For another measurement, the bins
+use the chosen count and stack objects by their displayed mask colors.
 
 Reopen any closed member frames to include them in the group scale and plots.
 Physical palettes use calibrated values in the chosen unit. A mask without a

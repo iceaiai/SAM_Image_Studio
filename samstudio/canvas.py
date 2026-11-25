@@ -11,7 +11,7 @@ from PySide6.QtWidgets import QWidget
 
 from .domain import Document, unpack_mask
 from .exports import hex_rgb
-from .processing import curve_segments, display_rgb, mask_contours, push_mask_segment
+from .processing import bounding_box, curve_segments, display_rgb, mask_components, mask_contours, push_mask_segment
 from .scale_bar_ui import draw_scale_bar
 
 
@@ -33,6 +33,15 @@ class _MaskPusherStroke:
     preview: QImage | None = None
 
 
+@dataclass
+class _MaskPartSelection:
+    object_id: str
+    source_mask: np.ndarray
+    pixel: tuple[int, int]
+    position: tuple[int, int]
+    overlay: QImage
+
+
 def rgb_image(rgb):
     a = np.ascontiguousarray(rgb, dtype=np.uint8)
     return QImage(a.data, a.shape[1], a.shape[0], a.strides[0], QImage.Format.Format_RGB888).copy()
@@ -49,12 +58,14 @@ class ImageCanvas(QWidget):
     prompt_added = Signal(float, float, int)
     geometry_changed = Signal(str, object)
     mask_pushed = Signal(str, object, object)
+    mask_part_delete_requested = Signal()
     message = Signal(str)
     zoom_changed = Signal(float)
     tool_changed = Signal(str)
     object_context_requested = Signal(object, object)
     preview_count_changed = Signal(int)
     filament_end_picked = Signal(str, int)
+    filament_connection_drawn = Signal(object, object)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -89,6 +100,9 @@ class ImageCanvas(QWidget):
         self.filament_picks = {}
         self.filament_first = None
         self.filament_bridges = []
+        self.draw_filament_connection = False
+        self.filament_connection_draft = None
+        self._mask_part = None
         self.object_colors = {}
         self._base = self._overlay = self._preview = None
         self._region = None
@@ -111,6 +125,7 @@ class ImageCanvas(QWidget):
 
     def set_document(self, document, fit=True):
         self.cancel_mask_pusher()
+        self.clear_mask_part()
         self.document = document
         self.selected.clear()
         self.edit_mode = False
@@ -126,6 +141,8 @@ class ImageCanvas(QWidget):
         self.filament_picks = {}
         self.filament_first = None
         self.filament_bridges = []
+        self.draw_filament_connection = False
+        self.filament_connection_draft = None
         self.object_colors = {}
         self.refresh()
         if fit:
@@ -141,6 +158,8 @@ class ImageCanvas(QWidget):
             return
         if self._pusher_stroke and not self._valid_pusher_stroke():
             self.cancel_mask_pusher()
+        if self._mask_part and self.selected_mask_part() is None:
+            self.clear_mask_part()
         if self._distance_image is not doc.frame.raw:
             self._distance_image = doc.frame.raw
             self.clear_distance_measurement()
@@ -188,8 +207,10 @@ class ImageCanvas(QWidget):
     def set_preview(self, masks):
         self.preview_masks = list(masks)
         self.preview_count_changed.emit(len(self.preview_masks))
-        if self.document and masks:
-            mask = np.logical_or.reduce(masks)
+        if self.document and self.preview_masks:
+            mask = self.preview_masks[0].copy()
+            for candidate in self.preview_masks[1:]:
+                mask |= candidate
             out = np.zeros((*mask.shape, 4), np.uint8)
             out[mask] = [45, 138, 255, 140]
             self._preview = rgba_image(out)
@@ -214,6 +235,7 @@ class ImageCanvas(QWidget):
             return
         self.selected = ids
         self.cancel_mask_pusher()
+        self.clear_mask_part()
         self._drag_handle = None
         self._edit_geometry = None
         self._delete_origin = None
@@ -225,12 +247,57 @@ class ImageCanvas(QWidget):
 
     def set_tool(self, tool):
         self.cancel_mask_pusher()
+        self.clear_mask_part()
         self.tool = tool
         self.tool_changed.emit(tool)
         self._drawing = []
         self._distance_draft.clear()
         self._cursor = None
         self.setCursor(Qt.CursorShape.ArrowCursor if tool == "select" else Qt.CursorShape.OpenHandCursor if tool == "pan" else Qt.CursorShape.CrossCursor)
+        self.update()
+
+    @property
+    def filament_link_active(self):
+        return bool(self.filament_picks) or self.draw_filament_connection
+
+    def clear_mask_part(self):
+        if self._mask_part is None:
+            return False
+        self._mask_part = None
+        self.update()
+        return True
+
+    def selected_mask_part(self):
+        part = self._mask_part
+        obj = self._selected_object()
+        if (part and obj and obj.id == part.object_id and obj.mask is part.source_mask
+                and obj.visible and not obj.locked):
+            return part.object_id, *part.pixel
+        return None
+
+    def _select_mask_part(self, point):
+        self.clear_mask_part()
+        if point is None:
+            return
+        x, y = map(int, point)
+        obj = self._selected_object()
+        if obj is None or obj.mask is None or not obj.visible or not obj.mask[y, x]:
+            obj = self.object_at(point)
+        if obj is None or obj.role != "object" or obj.mask is None or obj.locked:
+            self.message.emit("Click a visible, unlocked area mask to select a disconnected part.")
+            return
+        labels, areas = mask_components(obj.mask)
+        if len(areas) <= 2:
+            self.message.emit("This mask has only one connected part.")
+            return
+        part = labels == labels[y, x]
+        left, top, width, height = bounding_box(part)
+        overlay = np.zeros((height, width, 4), np.uint8)
+        overlay[part[top:top+height, left:left+width]] = [251, 146, 60, 211]
+        self.set_selected({obj.id})
+        self.selection_changed.emit(self.selected)
+        self._mask_part = _MaskPartSelection(obj.id, obj.mask, (x, y), (left, top), rgba_image(overlay))
+        self.message.emit("Selected mask part. Press Delete to remove it or Esc to clear the selection.")
         self.update()
 
     def fit_image(self):
@@ -303,7 +370,8 @@ class ImageCanvas(QWidget):
             self.cancel_mask_pusher()
             return
         expand = stroke.button == Qt.MouseButton.LeftButton
-        bounds = push_mask_segment(stroke.mask, stroke.last_point, point, stroke.radius, expand=expand)
+        bounds = push_mask_segment(stroke.mask, stroke.last_point, point, stroke.radius,
+                                   expand=expand, source_mask=stroke.source_mask)
         stroke.last_point = point
         if bounds is None:
             return
@@ -416,7 +484,8 @@ class ImageCanvas(QWidget):
                 color = self.object_colors.get(obj.id, obj.color)
                 painter.setPen(QPen(QColor("#245dd8" if selected else color), (4.4 if selected else 2.2)/self.scale))
                 painter.setBrush(Qt.BrushStyle.NoBrush)
-                editing = selected and self.edit_mode and obj.role == "object" and not obj.locked and self.tool != "mask_pusher"
+                editing = (selected and self.edit_mode and obj.role == "object" and not obj.locked
+                           and self.tool not in ("mask_pusher", "mask_part") and not self.filament_link_active)
                 if editing:
                     geometry = self._geometry(obj)
                 elif obj.kind != "mask":
@@ -434,6 +503,8 @@ class ImageCanvas(QWidget):
         stroke = self._pusher_stroke
         if stroke and stroke.preview is not None:
             painter.drawImage(stroke.bounds.topLeft(), stroke.preview)
+        if self._mask_part is not None:
+            painter.drawImage(*self._mask_part.position, self._mask_part.overlay)
         draft = self.document.draft
         if draft.get("roi"):
             painter.setPen(QPen(QColor("#2563eb"), 1.6/self.scale, Qt.PenStyle.DashLine))
@@ -451,7 +522,8 @@ class ImageCanvas(QWidget):
                 painter.setBrush(QColor("#16a475" if label else "#e44848"))
                 painter.setPen(QPen(QColor("white"), 1/self.scale))
                 painter.drawEllipse(QPointF(x, y), 4.5/self.scale, 4.5/self.scale)
-        if self.edit_mode and self.tool != "mask_pusher" and self._delete_origin is not None:
+        if (self.edit_mode and self.tool == "select" and not self.filament_link_active
+                and self._delete_origin is not None):
             painter.setPen(QPen(QColor("#c27b16"), 1/self.scale, Qt.PenStyle.DashLine))
             painter.setBrush(Qt.BrushStyle.NoBrush)
             painter.drawEllipse(QPointF(*self._delete_origin),self.vertex_delete_radius,self.vertex_delete_radius)
@@ -526,6 +598,9 @@ class ImageCanvas(QWidget):
         painter.setPen(QPen(QColor("#f59e0b"), 3 / self.scale, Qt.PenStyle.DashLine))
         for first, second in self.filament_bridges:
             painter.drawLine(QPointF(*first), QPointF(*second))
+        if self.filament_connection_draft:
+            first, second = self.filament_connection_draft
+            painter.drawLine(QPointF(*first), QPointF(*second))
         painter.setPen(QPen(QColor("#292524"), 1.5 / self.scale))
         for options in self.filament_picks.values():
             for _, point in options:
@@ -548,15 +623,28 @@ class ImageCanvas(QWidget):
         self.setFocus()
         if event.button() == Qt.MouseButton.MiddleButton or self.tool == "pan":
             self.cancel_mask_pusher()
+            self.filament_connection_draft = None
             self._pan = (event.position(), QPointF(self.offset))
             self.setCursor(Qt.CursorShape.ClosedHandCursor)
             return
         point = self.to_image(event.position())
         if self.read_only:
             return
+        if self.draw_filament_connection:
+            if point is not None and event.button() == Qt.MouseButton.LeftButton and not self.prompt_input_only:
+                self.filament_connection_draft = (point, point)
+                self.update()
+            return
+        if self.tool == "mask_part" and event.button() == Qt.MouseButton.LeftButton:
+            if self.edit_mode and not self.prompt_input_only:
+                self._select_mask_part(point)
+            return
         if self.tool == "mask_pusher":
             button = event.button()
-            if point is not None and button in (Qt.MouseButton.LeftButton, Qt.MouseButton.RightButton) and not self._pusher_stroke:
+            if button in (Qt.MouseButton.LeftButton, Qt.MouseButton.RightButton):
+                self.cancel_mask_pusher()
+                if point is None:
+                    return
                 obj = self._pusher_object()
                 if obj is not None:
                     self._cursor = point
@@ -666,12 +754,18 @@ class ImageCanvas(QWidget):
         point = self.to_image(event.position(), True)
         if point is None:
             return
+        if self.draw_filament_connection:
+            if self.filament_connection_draft and event.buttons() & Qt.MouseButton.LeftButton:
+                self.filament_connection_draft = (self.filament_connection_draft[0], point)
+                self.update()
+            return
         if self.tool == "mask_pusher":
             stroke = self._pusher_stroke
             if stroke and event.buttons() & stroke.button:
                 self._cursor = point
                 self._extend_mask_pusher(point)
             else:
+                self.cancel_mask_pusher()
                 self._cursor = self.to_image(event.position())
             self.update()
             return
@@ -700,7 +794,16 @@ class ImageCanvas(QWidget):
         if self._pan:
             self._pan = None
             if self.tool == "pan":self.setCursor(Qt.CursorShape.OpenHandCursor)
-            elif self.tool in (*DISTANCE_TOOLS, "mask_pusher"):self.setCursor(Qt.CursorShape.CrossCursor)
+            elif self.draw_filament_connection or self.tool in (*DISTANCE_TOOLS, "mask_pusher", "mask_part"):
+                self.setCursor(Qt.CursorShape.CrossCursor)
+            else:self.setCursor(Qt.CursorShape.ArrowCursor)
+            return
+        if self.draw_filament_connection:
+            if self.filament_connection_draft and event.button() == Qt.MouseButton.LeftButton:
+                start = self.filament_connection_draft[0]
+                self.filament_connection_draft = None
+                self.update()
+                self.filament_connection_drawn.emit(start, self.to_image(event.position()))
             return
         if self.tool == "mask_pusher":
             stroke = self._pusher_stroke
@@ -768,7 +871,7 @@ class ImageCanvas(QWidget):
         self.update()
 
     def mouseDoubleClickEvent(self, event):
-        if self.tool == "mask_pusher":
+        if self.tool in ("mask_pusher", "mask_part"):
             self.mousePressEvent(event)
         elif self.tool == "polygon" and event.button() == Qt.MouseButton.LeftButton and not self.read_only:
             self.finish_polygon()
@@ -801,10 +904,12 @@ class ImageCanvas(QWidget):
         return True
 
     def keyPressEvent(self, event):
-        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and self.tool == "polygon" and self._drawing:
+        if event.key() == Qt.Key.Key_Delete and self.tool == "mask_part" and self.edit_mode:
+            self.mask_part_delete_requested.emit()
+        elif event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and self.tool == "polygon" and self._drawing:
             self.finish_polygon()
         elif event.key() == Qt.Key.Key_Escape:
-            if self.cancel_mask_pusher():
+            if self.cancel_mask_pusher() or self.clear_mask_part():
                 return
             if self.tool in DISTANCE_TOOLS:
                 self.clear_distance_measurement()

@@ -486,7 +486,7 @@ class Document:
                 "color_scheme": copy.deepcopy(self.color_scheme),
                 "metric_color_scheme": asdict(self.metric_color_scheme) if self.metric_color_scheme is not None else None,
                 "scale_bar": asdict(self.scale_bar) if self.scale_bar is not None else None,
-                "filament_links": [asdict(link) for link in self.filament_links],
+                "filament_links": [link.to_dict() for link in self.filament_links],
                 "detached_crops": copy.deepcopy(self.detached_crops), "revision": self.revision}
 
     def forget_processing(self):

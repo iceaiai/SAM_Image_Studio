@@ -14,6 +14,7 @@ important Segment choices before you run a preview.
 | Group | Select the group receiving new annotations. |
 | Scope | Whole-image examples, Single object, Inside ROI only, or Automatic grid. |
 | Run preview | Generate a provisional segmentation according to the active scope/prompts. |
+| Review… | Inspect all pending segmentation candidates or one candidate. Toggle the overlay and zoom or pan. |
 | Accept masks | Commit eligible current preview masks to annotations. |
 | Cancel / clear | Cancel current work/drawing and discard pending preview/prompts. |
 | Options… | Configure candidate controls and optional area or diameter bounds. |
@@ -91,7 +92,7 @@ disconnected part** to delete that piece.
 | Ctrl+A / Ctrl+I | Select all objects / Invert region |
 | Ctrl+D | Remove selected image area |
 | Ctrl+E | Edit object vertices |
-| Delete | Delete eligible selection |
+| Delete | Remove the highlighted component with Select mask part active, eligible vertices in Edit, or selected objects in other modes |
 | Esc | Cancel a mask-pusher stroke, clear a distance measurement, or cancel the current drawing or task |
 | F | Fit image |
 | Mouse wheel / Hand / middle drag | Zoom / pan |

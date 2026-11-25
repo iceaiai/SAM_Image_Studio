@@ -1,3 +1,13 @@
+# SAM Image Studio 1.4.5.1
+
+- Select a disconnected mask part in Edit and press Delete to remove it.
+- Review and zoom into pending segmentation candidates before accepting masks.
+- Use mask colors and matching measurement ranges in histograms.
+- Draw a filament connection across a gap. Detected-endpoint linking offers this mode when it cannot find suitable endpoints.
+- Start independent Mask pusher strokes on any side. During a stroke, outward pushes follow the current point of contact with the original boundary.
+
+---
+
 # SAM Image Studio 1.4.5
 
 - Arrange drawing tools in two columns and toggle each top toolbar from View.

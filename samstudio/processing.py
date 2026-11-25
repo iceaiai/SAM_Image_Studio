@@ -75,8 +75,8 @@ def brush_mask(point, radius: float, shape):
     return (xx + .5 - x) ** 2 + (yy + .5 - y) ** 2 <= max(1, radius) ** 2
 
 
-def push_mask_segment(mask, start, end, radius, *, expand):
-    """Apply overlapping circular brush stamps and return the changed bounds."""
+def push_mask_segment(mask, start, end, radius, *, expand, source_mask=None):
+    """Apply circular stamps, using the original stroke mask for outward contact."""
     if start == end:
         points = (end,)
     else:
@@ -85,14 +85,15 @@ def push_mask_segment(mask, start, end, radius, *, expand):
         ys = np.linspace(start[1], end[1], steps + 1)[1:]
         points = zip(xs, ys)
     height, width = mask.shape
+    contact_mask = source_mask if expand and source_mask is not None else mask
     bounds = None
     for x, y in points:
         x0, x1 = max(0, math.floor(x - radius)), min(width, math.ceil(x + radius))
         y0, y1 = max(0, math.floor(y - radius)), min(height, math.ceil(y + radius))
-        patch = mask[y0:y1, x0:x1]
+        region = np.s_[y0:y1, x0:x1]
+        patch = mask[region]
         disk = brush_mask((x - x0, y - y0), radius, patch.shape)
-        covered = patch[disk]
-        if not covered.any() or (expand and covered.all()):
+        if not contact_mask[region][disk].any() or (expand and patch[disk].all()):
             continue
         patch[disk] = expand
         bounds = (x0, y0, x1, y1) if bounds is None else (

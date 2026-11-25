@@ -12,9 +12,9 @@ compressed-sensing restoration, with calibrated measurements and editable projec
 [Compressed sensing](https://iceaiai.github.io/SAM_Image_Studio/features/compressed-sensing.html) ·
 [User Manual](https://iceaiai.github.io/SAM_Image_Studio/user-manual.html)
 
-Version **1.4.5** adds disconnected-mask cleanup, a circular mask pusher,
-batch vertex deletion and configurable polygon closing. Draw and edit from two
-columns of tools. The release is also available as an offline CPU edition.
+Version **1.4.5.1** adds keyboard deletion of selected mask parts, a segmentation
+review window, measurement-colored histograms, and drawn filament connections.
+The release is also available as an offline CPU edition.
 
 ## First: download or clone the complete project (CPU and GPU)
 
@@ -23,8 +23,8 @@ You do not need Git if you download a ZIP.
 
 | CPU version | Download | Package / next step |
 | --- | --- | --- |
-| **1.4.5 — recommended** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.zip)** | Extract, then run `packaging/Install_CPU.bat` on Windows or `bash packaging/install_cpu.sh` on Linux. |
-| **1.4.5 — offline CPU** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5-offline.zip)** | Extract and [prepare once online](offline/README.md), then install using the normal CPU installer. Includes SAM1 ViT-B and SAM2.1 Small/Base+. |
+| **1.4.5.1 — recommended** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1.zip)** | Extract, then run `packaging/Install_CPU.bat` on Windows or `bash packaging/install_cpu.sh` on Linux. |
+| **1.4.5.1 — offline CPU** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-offline.zip)** | Extract and [prepare once online](offline/README.md), then install using the normal CPU installer. Includes SAM1 ViT-B and SAM2.1 Small/Base+. |
 | 1.4.3 — earlier | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip)** | Complete source bundle for Windows/Linux CPU; extract, then use `packaging/Install_CPU.bat` or `bash packaging/install_cpu.sh`. |
 | 1.4.2 — original archive | **[Download ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip)** | Historical CPU source bundle; extract, then use `Install_CPU.bat` or `bash install_cpu.sh` inside its `SAM_Image_Studio` folder. |
 
@@ -38,7 +38,7 @@ you do not need to download a second source package for GPU installation.
 
 **Download route:** click Download ZIP, extract the entire archive, and open the
 project folder containing `pyproject.toml` and `samstudio/`. Keep the folder contents
-together. The standard ZIP extracts to `SAM_Image_Studio-1.4.5/` and
+together. The standard ZIP extracts to `SAM_Image_Studio-1.4.5.1/` and
 contains both `GPU/` and `packaging/`.
 
 **Git alternative, shared by CPU and GPU:** open a terminal in the parent folder

@@ -1,6 +1,6 @@
 """Geometry savepoints. Temporary collections never enter project/autosave state."""
 from __future__ import annotations
-from dataclasses import asdict, replace
+from dataclasses import replace
 import hashlib
 import json
 from pathlib import Path
@@ -21,7 +21,7 @@ def capture(document, name='original'):
     return {'schema':'samstudio-mask-savepoint-1','id':str(uuid.uuid4()),'name':name.strip(),
             'source_key':document.frame.key,'coordinates':coordinate_signature(document),
             'shape':list(document.frame.shape),'groups':[vars(g).copy() for g in document.groups],
-            'filament_links': [asdict(link) for link in document.filament_links],
+            'filament_links': [link.to_dict() for link in document.filament_links],
             'objects':[o.to_dict() for o in document.objects if o.role=='object']}
 
 

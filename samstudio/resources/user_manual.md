@@ -66,6 +66,8 @@ Prompt project, whole image means that examples describe the desired object type
 
 With Live prompt preview enabled, adding an example schedules a background update. Newer input supersedes older preview results; accepted objects remain protected. Preview masks are disposable until Accept masks. Cancel clears pending examples. CPU searches may take time; the status bar reports progress while the interface remains available.
 
+When candidates are ready, click **Review…** next to **Run preview** to inspect them before **Accept masks**. Choose all candidates or a single candidate, turn the overlay on and off, and zoom or pan to check the outline against the image. Close the review window to return to the pending masks.
+
 SAM3 uses native image concept prompting. SAM3.1 uses the official multiplex predictor on a lossless single PNG frame, with its own sam3.1_multiplex.pt checkpoint. SAM3.1 receives all positive/negative boxes together in normalized top-left XYWH format; point exemplars first produce an instance whose box becomes a concept prompt. SAM3.1 is GPU-only and requires the separate Linux/WSL2 Conda environment and approved facebook/sam3.1 weights. Other shapes and points first identify an exemplar object, whose bounding box becomes a SAM3 concept example. SAM1/2 use the application's candidate-and-retrieval layer: propose masks, pool SAM features, compare image/shape descriptors and filter using positive/negative examples. Repeated small objects also receive template-based candidate seeds. This is a heuristic retrieval layer, not native SAM3 or a trained nanoparticle classifier.
 
 Example: mark one bright particle positive, then mark a contamination feature negative. The preview searches for similar particles throughout the image. Add another positive particle if size or appearance varies. A clearly negative type suppresses similar candidate types; an explicitly negative object is excluded. When positive and negative appearances cannot be distinguished, inspect and correct the preview.
@@ -112,7 +114,7 @@ Scale masks / savepoints scales selected unlocked objects or all area objects in
 
 ## Refine disconnected parts
 
-A mask can contain several disconnected parts under one row in Objects. To remove a specific fragment, switch to **Edit**, choose **Select objects**, and right-click the fragment on the image. Choose **Remove this disconnected part** to remove the connected pixels under the cursor. The object keeps its other parts.
+A mask can contain several disconnected parts under one row in Objects. In **Edit**, choose **Edit → Select mask part**, click the fragment on the image to highlight it in orange, then press **Delete**. You can also right-click a fragment with **Select objects** and choose **Remove this disconnected part**. Either action removes the connected pixels in that piece and keeps the object's other parts. Use **Esc** to clear the highlighted part or switch to **Select objects** to resume vertex editing.
 
 For one or more selected unlocked masks, open **Edit → Refine disconnected parts…**. **Keep largest connected part** retains one part per mask. **Remove parts smaller than a chosen area** keeps parts at or above the minimum in px² and always retains the largest. Pixels touching at edges or corners belong to the same part. Click **Preview** to see removed pixels in red, then **Apply** to commit. Use **Undo** to restore the prior masks.
 
@@ -120,7 +122,7 @@ For one or more selected unlocked masks, open **Edit → Refine disconnected par
 
 In **Edit**, select one visible, unlocked area mask and choose **Mask pusher** in the left toolbar. Change **Mask pusher radius (px)** in the Image settings toolbar or use **Edit → Mask pusher radius…**. The ring shows the brush footprint in image pixels.
 
-Left-drag along the boundary to add a round sweep where the ring overlaps the mask. Right-drag to carve inward. Green previews added pixels and red previews removed pixels. Release to commit one undoable stroke or press **Esc** while dragging to cancel. Each stroke edits the selected mask within the swept circle and keeps at least part of the object.
+Left-drag along the boundary to add a round sweep where the ring touches the mask as it was when you pressed the mouse. You can move to another side during the drag or start a new stroke there. Right-drag to carve inward. Green previews added pixels and red previews removed pixels. Release to commit one undoable stroke or press **Esc** while dragging to cancel. Each stroke edits the selected mask within the swept circle and keeps at least part of the object.
 
 
 ## Scale bars
@@ -195,9 +197,11 @@ Crop pixel snapshots and their coordinates persist in native autosave. Pasting i
 
 Use **Edit** mode and choose **Edit → Filament → Mark group as Filament…**. Choose a foreground group with the visible masks of fibers, lines or tubes. Each mask is measured along its skeleton centerline, including bends. The centerline extends to the boundary at visible ends. Branched shapes use a principal path between skeleton endpoints; inspect such masks before interpreting their results.
 
-For a filament interrupted by an occlusion, keep each visible, unbranched section as its own mask in the same group. Ctrl+click two fragment rows in **Objects** and choose **Connect visible fragments…**. Click one marked end on each fragment, choosing the two ends facing the gap. The dashed bridge shows the link. Repeat for additional fragments to make a chain. Select connected fragments and choose **Disconnect selected fragments** to remove their links. Selecting one fragment removes its incident links; selecting several removes links between those selected.
+For a filament interrupted by an occlusion, keep each visible section as its own mask in the same group. Ctrl+click two fragment rows in **Objects** and choose **Edit → Filament → Draw filament connection…**. Drag a straight line from just inside one tip to just inside the facing tip on the other mask. The app trims the line to the two boundaries and draws a dashed bridge across the gap. This works with branched masks. **Connect visible fragments…** lets you click detected ends and switches to drawing when it cannot find a usable open centerline.
 
-In **Statistics → Plot Object Statistics…**, choose the Filament metrics. **Visible length** sums the measured centerlines. **Estimated gap length** sums straight distances between linked visible ends. **Estimated total length** adds those two values. Each linked chain appears as one measured filament. Its visible masks remain independently editable and each fragment ID is recorded in the statistics CSV.
+Repeat with each neighboring pair to make a chain. Choose **Disconnect selected fragments** to remove links. Selecting one fragment removes its incident links. Selecting several removes the links between those fragments.
+
+In **Statistics → Plot Object Statistics…**, choose the Filament metrics. **Visible length** sums the measured centerlines. **Estimated gap length** sums straight distances between linked visible ends. **Estimated total length** adds those two values when the visible traces and gaps are resolved. Each linked chain appears as one measured filament. Its visible masks remain independently editable and each fragment ID is recorded in the statistics CSV.
 
 Widths are measured across the visible mask along local normals to the centerline, using the calibrated basis for physical results. The report includes mean, minimum, maximum, population standard deviation and population variance. The mean and variance weight cross-sections by arc length. Width statistics exclude gap segments, and width variance uses squared length units. Check the measured boundaries at your image resolution. If editing a mask leaves an unresolved link, reconnect the fragments before using the estimated lengths.
 
@@ -255,6 +259,8 @@ To share a color scale across several images, Ctrl+click their file or frame row
 
 In **Plot Object Statistics…**, choose **Plot group: name** under **Images**. This uses that group for both the plot and the canvas palette. Select **Object points (mask colors)** to plot one point per eligible object in its exact mask color. Change the plotted metrics independently of the color metric, with up to nine checked at once. Use **Histogram** for a distribution, or export all or selected statistics. The CSV includes the mask color and the fragment IDs for filaments.
 
+Select **Histogram (mask colors)** to color columns. When the plotted metric uses the same measurement and scale as the masks, the histogram uses the palette ranges and their exact colors. Compatible physical units convert automatically, such as nm² to µm². With a different metric or multiple independent color scales, each bin stacks counts in the objects' mask colors. **Bins** controls those other ranges.
+
 Example: group three images from one condition, color by projected area in nm², then plot perimeter, ECD and circularity. A given mask keeps its area color in all three plots. **Save masks… → Color by object** uses those same displayed object colors in its preview and output.
 
 ## Masks, overlays and dataset export
@@ -299,6 +305,7 @@ Each row states what a control does and gives an example. Plugin implementation,
 | Edit > Delete objects | Delete the selected annotations. | Select two unwanted annotations and use the object-delete button. |
 | Edit > Polygon closing distance | Set the screen distance for closing a polygon by clicking near its first vertex. | Increase the default 14 px or enter 0 to close with Enter or double-click. |
 | Edit > Refine disconnected parts | Preview removal of smaller parts within each selected mask. | Keep the largest part of a segmented object while clearing stray lines. |
+| Edit > Select mask part / Delete selected mask part | Highlight and delete just one disconnected part. | Click a stray piece and press Delete. |
 | Object context > Remove this disconnected part | In Edit, remove the connected component under the cursor. | Right-click a stray fragment to remove it from the mask. |
 | Edit > Mask pusher | Adjust a selected mask with a circular stroke. | Set a 12 px radius and right-drag to carve into an edge. |
 | Edit > Add / Edit / Remove scale bar | Preview and save a scale bar on the canvas. | Set a 50 nm bar in the lower-right corner. |
@@ -310,7 +317,7 @@ Each row states what a control does and gives an example. Plugin implementation,
 | Models > Model manager | Choose family, variant, compatible checkpoint and CPU or Conda CUDA device. | Download SAM2.1 Tiny for CPU; a local checkpoint must match the selected architecture. |
 | Models > Segmentation options | Set candidate options and an optional target size range. | Use a maximum ECD of 20 nm in a calibrated image. |
 | Models > Text prompt aliases | Map complete phrases to an effective prompt, without retraining. | Map nanoparticle and powder to big dots; the resolved phrase appears in the tooltip. |
-| Run preview / Accept masks / Cancel | Generate a disposable preview, commit eligible masks or cancel pending work. | Add two positive examples and one negative example; Accept only after inspection. |
+| Run preview / Review / Accept masks / Cancel | Generate, inspect, commit or clear pending masks. | Review one candidate up close before accepting the preview. |
 | Cleaning > Remove selected image area | Retain removals as visible, reversible cleaning objects. | Remove a contamination spot, then choose a fill method. |
 | Object context > Delete for cleaning | Convert an unlocked area object into a cleaning region while in Clean mode. | Use a drawn mask to remove an unwanted particle from the derived image. |
 | Cleaning > Restore selected area / all edits | Restore pixels while retaining other valid cleaning records. | Restore a small removed area without erasing a separate filled region. |
@@ -350,7 +357,7 @@ Each row states what a control does and gives an example. Plugin implementation,
 | Ctrl+I | Invert pixel region |
 | Ctrl+D | Remove selected image area |
 | Ctrl+E | Edit existing object |
-| Delete | Remove highlighted vertices in Edit mode. Delete objects in other modes. |
+| Delete | Remove the highlighted mask part with Select mask part active. Otherwise remove eligible vertices in Edit or selected objects in the other modes. |
 | Esc | Cancel a mask-pusher stroke, clear a distance measurement, or cancel a filament connection, drawing, preview or running task. |
 | F | Reset magnification / fit image |
 | Mouse wheel / Hand / middle drag | Zoom / pan |

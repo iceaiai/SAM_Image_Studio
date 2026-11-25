@@ -73,6 +73,7 @@ with sync_playwright() as p:
  assert page.get_by_text('Read pixel sizes from Excel…',exact=True).count()>=1
  assert page.get_by_text('Delete vertex',exact=True).count()>=1
  assert page.get_by_text('Delete objects',exact=True).count()>=1
+ assert page.get_by_text('Filament → Draw filament connection…',exact=True).count()==1
  page.goto(base+'/user-manual.html#denoising-parameters',wait_until='networkidle')
  assert f'This manual covers SAM Image Studio {app_version}' in page.locator('article').inner_text()
  for section in ['denoising-parameters','target-size-range','scale-bars','distance-measurements','refine-disconnected-parts','mask-pusher','filaments-and-occluded-fragments','metric-colors-and-plot-groups']:
@@ -83,6 +84,7 @@ with sync_playwright() as p:
  page.goto(base+'/features/measurements.html',wait_until='networkidle')
  assert page.get_by_role('heading',name='Measure a line or curve',exact=True).count()==1
  assert page.get_by_role('heading',name='Share metric colors across a plot group',exact=True).count()==1
+ assert page.locator('article').get_by_text('Histogram (mask colors)',exact=True).count()==1
  for path,heading in [('/features/cleaning.html','Data cleaning: remove, fill and restore'),('/segmentation/scopes.html','Seg scope: ROI, whole image and single object'),('/features/compressed-sensing.html','Compressed sensing: controls and suggested parameters'),('/segmentation/sam3-onnx.html','SAM3 ONNX: public text segmentation'),('/segmentation/watershed.html','Otsu + watershed: parameters and preview'),('/features/examples.html','Example microscopy images'),('/features/processing.html','Image restoration and processing')]:
   page.goto(base+path,wait_until='networkidle')
   assert page.get_by_role('heading',name=heading,exact=True).count()==1

@@ -80,6 +80,23 @@ def test_disconnected_mask_pieces_can_be_removed_by_click_and_refinement(window,
     window.undo()
     np.testing.assert_array_equal(doc.objects[0].mask, mask)
 
+    window.tool_actions["mask_part"].trigger()
+    part_position = canvas.to_widget((28.5, 31.5)).toPoint()
+    qtbot.keyClick(canvas, Qt.Key.Key_Delete)
+    np.testing.assert_array_equal(doc.objects[0].mask, mask)
+    qtbot.mouseClick(canvas, Qt.MouseButton.LeftButton, pos=part_position)
+    assert canvas.selected_mask_part() == (ident, 28, 31) and not canvas.grab().isNull()
+    qtbot.keyClick(canvas, Qt.Key.Key_Escape)
+    assert canvas.selected_mask_part() is None
+    qtbot.mouseClick(canvas, Qt.MouseButton.LeftButton, pos=part_position)
+    assert canvas.selected_mask_part() == (ident, 28, 31)
+    qtbot.keyClick(canvas, Qt.Key.Key_Delete)
+    assert [obj.id for obj in doc.objects] == [ident, other]
+    np.testing.assert_array_equal(doc.objects[0].mask, main | triangle)
+    window.undo()
+    window.tool_actions["select"].trigger()
+    np.testing.assert_array_equal(doc.objects[0].mask, mask)
+
     def refine(included, largest, expected):
         window.canvas.set_selected(included)
         window._refresh()
@@ -184,14 +201,31 @@ def test_mask_pusher_edits_only_the_swept_ring_and_is_undoable(window, document,
         np.testing.assert_array_equal(doc.frame.raw, raw)
 
     drag(Qt.MouseButton.LeftButton, (33, 50), (24, 58))
+    left_added = doc.objects[0].mask.copy()
+    assert left_added.sum() > original.sum() and not (original & ~left_added).any()
+    drag(Qt.MouseButton.LeftButton, (88, 51), (98, 61))
     added = doc.objects[0].mask.copy()
-    assert added.sum() > original.sum() and not (original & ~added).any()
+    assert (added[:, 89:] & ~left_added[:, 89:]).any()
+    np.testing.assert_array_equal(added[:, :70], left_added[:, :70])
     drag(Qt.MouseButton.RightButton, (35, 46), (45, 46))
     carved = doc.objects[0].mask
     assert carved.sum() < added.sum() and not (carved & ~added).any()
     assert doc.objects[0].id == ident and doc.objects[0].contours is None
     window.undo()
     np.testing.assert_array_equal(doc.objects[0].mask, added)
+    window.undo()
+    np.testing.assert_array_equal(doc.objects[0].mask, left_added)
+    window.undo()
+    np.testing.assert_array_equal(doc.objects[0].mask, original)
+
+    path = [canvas.to_widget(point).toPoint() for point in ((35, 50), (8, 50), (8, 10), (55, 10), (55, 35))]
+    qtbot.mousePress(canvas, Qt.MouseButton.LeftButton, pos=path[0])
+    for point in path[1:]:
+        qtbot.mouseMove(canvas, pos=point)
+    qtbot.mouseRelease(canvas, Qt.MouseButton.LeftButton, pos=path[-1])
+    changed = doc.objects[0].mask & ~original
+    assert changed[42:58, :35].any() and changed[:32, 48:62].any()
+    assert not changed[:, :18].any() and not changed[:16].any()
     window.undo()
     np.testing.assert_array_equal(doc.objects[0].mask, original)
 

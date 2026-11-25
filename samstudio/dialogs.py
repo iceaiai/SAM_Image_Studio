@@ -10,8 +10,8 @@ from PySide6.QtWidgets import (QCheckBox, QColorDialog, QComboBox, QDialog, QDia
     QDoubleSpinBox, QFileDialog, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QMessageBox,
     QPushButton, QSlider, QSpinBox, QVBoxLayout, QWidget, QGridLayout, QButtonGroup, QToolButton)
 
-from .canvas import rgb_image, rgba_image
-from .domain import Calibration, LENGTH_UNITS
+from .canvas import ImageCanvas, rgb_image, rgba_image
+from .domain import Calibration, Document, LENGTH_UNITS
 from .exports import render_mask_pixels, write_measurement_csv
 from .inference import CATALOG
 from .processing import display_rgb, measurements, refine_objects, refinement_geometry
@@ -387,6 +387,52 @@ class ImagePreviewDialog(QDialog):
         layout.addWidget(QLabel("Both panels use the original intensity scale. Apply records a reversible edit; acquired pixels remain available."))
         controls = QDialogButtonBox(QDialogButtonBox.StandardButton.Apply|QDialogButtonBox.StandardButton.Cancel)
         controls.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(self.accept);controls.rejected.connect(self.reject);layout.addWidget(controls)
+
+
+class SegmentationPreviewDialog(QDialog):
+    def __init__(self, document, masks, use_processed=False, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Review segmentation preview")
+        self.resize(1000, 720)
+        self._masks = tuple(masks)
+        layout = QVBoxLayout(self)
+        toolbar = QHBoxLayout()
+        self.candidate_combo = combo([("All candidates", None),
+                                     *((f"Candidate {i + 1}", i) for i in range(len(self._masks)))],
+                                    "reviewPreviewCandidate")
+        self.show_overlay = QCheckBox("Show mask overlay")
+        self.show_overlay.setChecked(True)
+        fit = QPushButton("Fit image")
+        for widget in (QLabel(f"{len(self._masks)} pending masks"), self.candidate_combo, self.show_overlay, fit):
+            toolbar.addWidget(widget)
+        toolbar.addStretch()
+        layout.addLayout(toolbar)
+        self.canvas = ImageCanvas(self)
+        self.canvas.read_only = True
+        self.canvas.set_tool("pan")
+        reference = Document(document.frame)
+        if use_processed:
+            reference.working = document.working
+            self.canvas.use_cleaned = True
+        self.canvas.set_document(reference, fit=False)
+        layout.addWidget(self.canvas, 1)
+        layout.addWidget(QLabel("Drag to pan. Scroll to zoom. Close to return to Accept masks."))
+        close = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
+        close.rejected.connect(self.reject)
+        layout.addWidget(close)
+        self.candidate_combo.currentIndexChanged.connect(self._show_candidate)
+        self.show_overlay.toggled.connect(self._show_candidate)
+        fit.clicked.connect(self.canvas.fit_image)
+        self._show_candidate()
+
+    def _show_candidate(self):
+        index = self.candidate_combo.currentData()
+        masks = self._masks if index is None else (self._masks[index],)
+        self.canvas.set_preview(masks if self.show_overlay.isChecked() else ())
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.canvas.fit_image()
 
 
 class MaskColorsDialog(QDialog):

@@ -38,7 +38,7 @@ def test_offline_cache_rejects_incomplete_or_wrong_machine(cache):
     (cache/'offline-cache/READY').unlink()
     with pytest.raises(RuntimeError,match='not ready'):installer.verify_cache(cache)
 
-@pytest.mark.parametrize('old_version', ['1.4.4.2', None])
+@pytest.mark.parametrize('old_version', ['1.4.5', None])
 def test_offline_cache_requires_current_app_version(cache, old_version):
     installer = module('install_offline')
     manifest = cache / 'offline-cache/manifest.json'

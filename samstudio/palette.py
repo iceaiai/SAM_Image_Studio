@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import math
+import numpy as np
 
 LUT20 = (
     ("Blue", "#1f77b4"), ("Light blue", "#aec7e8"),
@@ -78,6 +79,10 @@ class MetricColorScheme:
 class MetricPalette:
     colors: dict[str, dict[str, str]]
     description: str
+    scheme: MetricColorScheme
+    edges: tuple[float, ...] = ()
+    swatches: tuple[str, ...] = ()
+    bins: dict[str, dict[str, int]] | None = None
 
 
 def metric_palette(documents, scheme):
@@ -100,17 +105,23 @@ def metric_palette(documents, scheme):
                 samples.append((document.frame.key, ids, value))
 
     if not samples:
-        return MetricPalette({}, f"{label} · no values in the selected units")
+        return MetricPalette({}, f"{label} · no values in the selected units", scheme)
     low = min(sample[2] for sample in samples)
     high = max(sample[2] for sample in samples)
-    colors = [to_hex(colormaps["plasma"](index / (scheme.count - 1))) for index in range(scheme.count)]
-    by_frame = {}
-    for key, ids, value in samples:
-        index = min(scheme.count - 1, int((value - low) / (high - low) * scheme.count)) if high > low else scheme.count // 2
-        by_frame.setdefault(key, {}).update(dict.fromkeys(ids, colors[index]))
+    swatches = tuple(to_hex(colormaps["plasma"](index / (scheme.count - 1))) for index in range(scheme.count))
+    if high == low:
+        edges, swatches = (low, high), (swatches[scheme.count // 2],)
+    else:
+        edges = tuple(np.linspace(low, high, scheme.count + 1))
+    indices = np.searchsorted(edges[1:-1], [value for _, _, value in samples], side="right")
+    by_frame, by_bin = {}, {}
+    for (key, ids, _), index in zip(samples, indices):
+        by_frame.setdefault(key, {}).update(dict.fromkeys(ids, swatches[index]))
+        by_bin.setdefault(key, {}).update(dict.fromkeys(ids, int(index)))
 
     unit = "°" if dimension == -1 else "" if dimension == 0 else scheme.unit + ("²" if dimension == 2 else "")
-    return MetricPalette(by_frame, f"{label} · {low:.4g}–{high:.4g} {unit} · {scheme.count} colors".strip())
+    description = f"{label} · {low:.4g}–{high:.4g} {unit} · {scheme.count} colors".strip()
+    return MetricPalette(by_frame, description, scheme, edges, swatches, by_bin)
 
 
 def base_mask_colors(document):

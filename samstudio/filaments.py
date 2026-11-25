@@ -29,8 +29,11 @@ class FilamentLink:
     second_id: str
     first_anchor: tuple[float, float]
     second_anchor: tuple[float, float]
+    drawn: bool = False
 
     def __post_init__(self):
+        if type(self.drawn) is not bool:
+            raise ValueError("Invalid filament connection type.")
         for name in ("first_anchor", "second_anchor"):
             point = np.asarray(getattr(self, name), dtype=float)
             if point.shape != (2,) or not np.isfinite(point).all():
@@ -40,6 +43,13 @@ class FilamentLink:
     @property
     def ends(self):
         return ((self.first_id, self.first_anchor), (self.second_id, self.second_anchor))
+
+    def to_dict(self):
+        result = {"first_id": self.first_id, "second_id": self.second_id,
+                  "first_anchor": self.first_anchor, "second_anchor": self.second_anchor}
+        if self.drawn:
+            result["drawn"] = True
+        return result
 
 
 def _chain_root(parents, node):
@@ -233,8 +243,41 @@ def open_endpoints(traces):
     return None
 
 
-def resolve_bridge(link, endpoints):
-    """Snap saved anchors to the nearest current visible endpoints."""
+def _drawn_bridge(link, masks):
+    first, second = (masks.get(ident) for ident, _ in link.ends)
+    if first is None or second is None:
+        return None
+    # Anchors are in pixel-center coordinates, as are the skeleton traces.
+    # Intersect the drawn line with pixel edges to isolate the missing interval.
+    start = np.asarray(link.first_anchor) + .5
+    end = np.asarray(link.second_anchor) + .5
+    delta = end - start
+    size = np.asarray(first.shape[::-1])
+    if (not delta.any() or np.any(start < 0) or np.any(end < 0)
+            or np.any(start >= size) or np.any(end >= size)):
+        return None
+    crossings = [np.array([0., 1.])]
+    for a, b, step in zip(start, end, delta):
+        if step:
+            low, high = sorted((a, b))
+            crossings.append((np.arange(math.floor(low) + 1, math.ceil(high)) - a) / step)
+    cuts = np.unique(np.concatenate(crossings))
+    middle = (cuts[:-1] + cuts[1:]) / 2
+    x, y = np.floor(start + middle[:, None] * delta).astype(int).T
+    if not first[y[0], x[0]] or not second[y[-1], x[-1]]:
+        return None
+    exit_first = cuts[np.flatnonzero(first[y, x])[-1] + 1]
+    enter_second = cuts[np.flatnonzero(second[y, x])[0]]
+    if exit_first > enter_second:
+        return None
+    return [(link.first_id, None, start + exit_first * delta - .5),
+            (link.second_id, None, start + enter_second * delta - .5)]
+
+
+def resolve_bridge(link, endpoints, masks=None):
+    """Resolve detected endpoints or trim a drawn line to the two mask boundaries."""
+    if link.drawn:
+        return _drawn_bridge(link, masks or {})
     resolved = []
     for ident, anchor in link.ends:
         pair = endpoints.get(ident)
@@ -248,28 +291,32 @@ def resolve_bridge(link, endpoints):
 def filament_values(members, links, matrix, mask_keys):
     traces = {obj.id: fragment_traces(obj, matrix, mask_keys[obj.id]) for obj in members}
     visible = [trace for pieces in traces.values() for trace in pieces if trace is not None]
-    if not visible:
-        return {}, "A visible centerline could not be resolved at this pixel resolution."
     notes = []
     if any(len(pieces) > 1 for pieces in traces.values()):
-        notes.append("Disconnected components in a mask contribute visible length only.")
-    if any(trace is None for pieces in traces.values() for trace in pieces):
+        notes.append("Traceable disconnected components contribute to visible measurements.")
+    unresolved = any(trace is None for pieces in traces.values() for trace in pieces)
+    if unresolved:
         notes.append("Some components were too small or ambiguous to trace.")
     if any(trace.branched for trace in visible):
         notes.append("Branched masks use a principal path between skeleton ends.")
 
     endpoints = {ident: open_endpoints(pieces) for ident, pieces in traces.items()}
+    masks = {obj.id: obj.mask for obj in members}
     used = set()
     gap = 0.
     for link in links:
-        bridge = resolve_bridge(link, endpoints)
-        if bridge is None or any((ident, index) in used for ident, index, _ in bridge):
+        bridge = resolve_bridge(link, endpoints, masks)
+        if bridge is None or any((ident, index) in used for ident, index, _ in bridge if index is not None):
             gap = None
             notes.append("An endpoint could not be resolved. Disconnect and reconnect the edited fragments.")
             break
-        used.update((ident, index) for ident, index, _ in bridge)
+        used.update((ident, index) for ident, index, _ in bridge if index is not None)
         gap += float(np.linalg.norm(matrix @ (bridge[1][2] - bridge[0][2])))
 
+    if not visible:
+        values = {"filament_gap_length": gap} if links else {}
+        notes.append("A visible centerline could not be resolved at this pixel resolution.")
+        return values, " ".join(notes)
     length = sum(trace.length for trace in visible)
     widths = np.concatenate([trace.widths for trace in visible])
     weights = np.concatenate([trace.weights for trace in visible])
@@ -278,7 +325,7 @@ def filament_values(members, links, matrix, mask_keys):
     return {
         "filament_visible_length": length,
         "filament_gap_length": gap,
-        "filament_total_length": length + gap if gap is not None else None,
+        "filament_total_length": length + gap if gap is not None and not (unresolved and any(link.drawn for link in links)) else None,
         "filament_width_mean": mean,
         "filament_width_min": float(widths.min()),
         "filament_width_max": float(widths.max()),

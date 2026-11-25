@@ -11,7 +11,7 @@ from PySide6.QtGui import QPaintDevice
 from PySide6.QtWidgets import QApplication, QDialog, QDialogButtonBox, QInputDialog, QPushButton
 
 from samstudio import __version__, savepoints
-from samstudio.dialogs import InferenceOptionsDialog, MaskColorsDialog
+from samstudio.dialogs import InferenceOptionsDialog, MaskColorsDialog, SegmentationPreviewDialog
 from samstudio.domain import Calibration, Document, History, ImageFrame, ProjectStore
 from samstudio.exports import hex_rgb, render_mask_pixels
 from samstudio.filaments import FilamentLink
@@ -136,6 +136,48 @@ def test_options_opens_and_accepts_target_size_controls(window, tmp_path):
     accept_rendered_dialog(window.options_button.click, InferenceOptionsDialog, select_diameter)
     assert window.target_size == TargetSizeRange(metric="diameter", maximum=24)
     assert not window.errors
+
+
+def test_review_pending_masks_before_accepting(window, qtbot, tmp_path):
+    doc = image(tmp_path)
+    doc.ensure_group("Particles")
+    attach(window, doc, tmp_path)
+    window.mode.setCurrentText("Segment")
+    first = np.zeros(doc.frame.shape, bool)
+    second = first.copy()
+    first[10:18, 20:30] = True
+    second[32:40, 42:56] = True
+    assert not window.review_button.isEnabled()
+    window.canvas.set_preview([first, second])
+    window._preview_context = {"method": "SAM", "input": "original", "confidence_scores": [.84, .96]}
+    window._refresh_controls()
+    before = doc.state()
+
+    def inspect_preview():
+        dialog = QApplication.activeModalWidget()
+        assert isinstance(dialog, QDialog)
+        try:
+            assert isinstance(dialog, SegmentationPreviewDialog)
+            assert len(dialog.canvas.preview_masks) == 2
+            assert QPaintDevice.width(dialog) > 0 and not dialog.grab().isNull()
+            dialog.candidate_combo.setCurrentIndex(2)
+            [candidate] = dialog.canvas.preview_masks
+            np.testing.assert_array_equal(candidate, second)
+            dialog.show_overlay.setChecked(False)
+            assert not dialog.canvas.preview_masks
+            assert doc.state() == before
+        finally:
+            dialog.findChild(QDialogButtonBox).button(QDialogButtonBox.StandardButton.Close).click()
+
+    assert window.review_button.isEnabled()
+    QTimer.singleShot(0, inspect_preview)
+    window.review_button.click()
+    assert doc.state() == before and len(window.canvas.preview_masks) == 2
+    window.accept_button.click()
+    assert len(doc.objects) == 2 and not window.review_button.isEnabled()
+    np.testing.assert_array_equal(doc.objects[0].mask, first)
+    np.testing.assert_array_equal(doc.objects[1].mask, second)
+    assert [obj.provenance["confidence_score"] for obj in doc.objects] == [.84, .96]
 
 
 @pytest.mark.parametrize(
@@ -411,6 +453,74 @@ def test_filament_rejects_invalid_chains_and_prunes_deleted_fragments(tmp_path):
     assert len(measurement_records(doc)[0]) == 2
 
 
+def test_draw_filament_connections_without_detected_endpoints(window, qtbot, tmp_path):
+    doc = image(tmp_path, calibration=Calibration(.5, 2, "nm", "test", True))
+    group = doc.ensure_group("Fibers")
+    doc.set_filament_group(group.id, True)
+    branched = np.zeros(doc.frame.shape, bool)
+    branched[30:35, 10:41] = True
+    branched[15:31, 22:27] = True
+    a = doc.add_object("mask", mask=branched)
+    b = rectangle(doc, 56, 30, 30, 5)
+    c = rectangle(doc, 105, 30, 15, 5)
+    store = attach(window, doc, tmp_path)
+    window.mode.setCurrentText("Edit")
+    canvas = window.canvas
+    canvas.scale = 2
+    canvas.offset = QPointF(12, 18)
+
+    def use_pair(first, second):
+        ids = {first.id, second.id}
+        canvas.set_selected(ids)
+        window._canvas_selected(ids)
+
+    def drag(x0, x1):
+        start, end = (canvas.to_widget((x, 32.5)).toPoint() for x in (x0, x1))
+        qtbot.mousePress(canvas, Qt.MouseButton.LeftButton, pos=start)
+        qtbot.mouseMove(canvas, pos=end)
+        assert canvas.filament_connection_draft and not canvas.grab().isNull()
+        qtbot.mouseRelease(canvas, Qt.MouseButton.LeftButton, pos=end)
+
+    use_pair(a, b)
+    window.connect_filament_action.trigger()
+    assert canvas.draw_filament_connection and not canvas.filament_picks
+    drag(37.5, 39.5)
+    assert not doc.filament_links and canvas.draw_filament_connection
+    drag(59.5, 37.5)
+    [bridge] = canvas.filament_bridges
+    np.testing.assert_allclose(bridge, [[56, 32.5], [41, 32.5]])
+    [first_link] = doc.filament_links
+    assert first_link.drawn and not canvas.filament_link_active
+    use_pair(b, c)
+    window.draw_filament_action.trigger()
+    drag(83.5, 106.5)
+    [result], _ = measurement_records(doc)
+    assert result["fragment_ids"] == (a.id, b.id, c.id)
+    assert result["filament_gap_length_px"] == pytest.approx(34)
+    assert result["filament_gap_length_physical"] == pytest.approx(17)
+    assert result["filament_total_length_px"] == pytest.approx(result["filament_visible_length_px"] + 34)
+    assert "Branched masks" in result["applicability_note"]
+    restored = Document(doc.frame)
+    assert store.load(restored)[0] and restored.filament_links == doc.filament_links
+    rotate_document(restored, 90, "rectangle")
+    [rotated], _ = measurement_records(restored)
+    assert rotated["filament_gap_length_physical"] == pytest.approx(17)
+    window.undo()
+    assert len(doc.filament_links) == 1 and not window.errors
+
+
+def test_drawn_filament_gap_remains_measurable_when_visible_trace_is_unresolved(tmp_path):
+    doc = image(tmp_path)
+    group = doc.ensure_group("Fibers")
+    doc.set_filament_group(group.id, True)
+    a, b = [rectangle(doc, x, 20, 1, 1) for x in (10, 20)]
+    doc.connect_filament(FilamentLink(a.id, b.id, (10, 20), (20, 20), drawn=True))
+    [record], _ = measurement_records(doc)
+    assert record["filament_gap_length_px"] == 9
+    assert record["filament_visible_length_px"] is record["filament_total_length_px"] is None
+    assert record["filament_width_mean_px"] is None
+
+
 def test_pre_feature_project_uses_default_measurement_settings(tmp_path):
     doc = image(tmp_path)
     doc.ensure_group("Particles")
@@ -512,6 +622,14 @@ def test_named_plot_group_scopes_colors_and_plot_points(window, qtbot, tmp_path)
                            lambda dialog: dialog.metric_color.count.setValue(32))
     assert window.plot_groups["Treatment"].scheme.count == 32
     b_colors = dict(window.canvas.object_colors)
+    plot.plot_type.setCurrentIndex(plot.plot_type.findData("mask_histogram"))
+    [axis] = plot.figure.axes
+    palette = window._mask_palette(a)
+    assert not plot.bins.isEnabled() and len(axis.patches) == 32
+    np.testing.assert_allclose([bar.get_x() for bar in axis.patches], palette.edges[:-1])
+    assert [(bar.get_height(), to_hex(bar.get_facecolor())) for bar in axis.patches if bar.get_height()] == [
+        (2, b_colors[ids[b.frame.key]]), (1, b_colors[larger.id])]
+    plot.plot_type.setCurrentIndex(plot.plot_type.findData("points"))
     for index in range(1, 11):
         plot.metrics_list.item(index).setCheckState(Qt.CheckState.Checked)
     assert len(plot.selected_metrics()) == 9
@@ -527,4 +645,36 @@ def test_named_plot_group_scopes_colors_and_plot_points(window, qtbot, tmp_path)
     accept_rendered_dialog(color_settings.click, PlotGroupDialog, lambda dialog: dialog.name.setText("Control"))
     assert plot.plot_group_name == "Control"
     assert window.plot_groups["Control"].frames == window.plot_groups["Treatment"].frames
+    plot.close()
+
+
+def test_colored_histogram_converts_palette_ranges_and_stacks_mixed_bins(window, qtbot, tmp_path):
+    doc = image(tmp_path, calibration=Calibration(100, 100, "nm", "test", True))
+    doc.ensure_group("Particles")
+    a = rectangle(doc, 5, 5, 2, 6)
+    b = rectangle(doc, 30, 5, 4, 4)
+    c = rectangle(doc, 65, 5, 10, 10)
+    doc.metric_color_scheme = MetricColorScheme(metric="area", count=32, unit="nm")
+    attach(window, doc, tmp_path)
+    colors = window.canvas.object_colors
+    assert len({colors[a.id], colors[b.id], colors[c.id]}) == 3
+    window.plot_statistics()
+    plot = window.stats_dialogs[0]
+    qtbot.waitUntil(plot.isVisible)
+    plot.unit.setCurrentText("µm")
+    plot.plot_type.setCurrentIndex(plot.plot_type.findData("mask_histogram"))
+    [axis] = plot.figure.axes
+    palette = window._mask_palette(doc)
+    np.testing.assert_allclose([bar.get_x() for bar in axis.patches], np.asarray(palette.edges[:-1]) / 1e6)
+    assert [(bar.get_height(), to_hex(bar.get_facecolor())) for bar in axis.patches if bar.get_height()] == [
+        (1, colors[a.id]), (1, colors[b.id]), (1, colors[c.id])]
+
+    plot.metric_combo.setCurrentIndex(plot.metric_combo.findData("perimeter"))
+    plot.bins.setValue(2)
+    [axis] = plot.figure.axes
+    low, stacked, high = axis.patches
+    assert plot.bins.isEnabled()
+    assert low.get_x() == stacked.get_x() and stacked.get_y() == 1 and high.get_x() > low.get_x()
+    assert {to_hex(bar.get_facecolor()) for bar in (low, stacked)} == {colors[a.id], colors[b.id]}
+    assert to_hex(high.get_facecolor()) == colors[c.id]
     plot.close()
