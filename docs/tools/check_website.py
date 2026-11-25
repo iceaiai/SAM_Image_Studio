@@ -149,6 +149,8 @@ with sync_playwright() as p:
  assert manual_versions == release_versions, manual_versions
  page.goto(base+'/features/annotation.html',wait_until='networkidle')
  assert page.get_by_role('heading',name='Push a mask boundary',exact=True).count()==1
+ push_guide = page.locator('article section#push-a-mask-boundary').inner_text()
+ assert 'inward to push it back' in push_guide and 'Delete vertex' in push_guide
  assert page.get_by_role('heading',name='Clean up disconnected mask parts',exact=True).count()==1
  page.goto(base+'/features/measurements.html',wait_until='networkidle')
  assert page.get_by_role('heading',name='Measure a line or curve',exact=True).count()==1

@@ -20,13 +20,13 @@ Use a dedicated Conda environment with **64-bit Python 3.12**. The installer che
 On Windows, open **Anaconda Prompt** from the Start menu. Use `cd /d` with the full path in double quotes. If extraction produced two folders with the same name, enter the inner folder that contains `GPU\install.py` and `pyproject.toml`. Replace the example path with your actual extracted folder.
 
 ```bat
-cd /d "C:\Work\AI Projects\SAM_Image_Studio-1.4.5.2\SAM_Image_Studio-1.4.5.2"
+cd /d "C:\Work\AI Projects\SAM_Image_Studio-1.4.5.3\SAM_Image_Studio-1.4.5.3"
 dir GPU\install.py
 nvidia-smi
 conda env list
 ```
 
-The driver may display **CUDA Version** or **CUDA UMD Version**. Both fields are supported in 1.4.5.2. For example, an RTX 3060 reporting CUDA UMD 13.3 uses the supported PyTorch CUDA 12.8 wheels. If 1.4.5.1 shows `cuda_runtime_max: null` with a numeric CUDA UMD version, update the application using step 4.
+The driver may display **CUDA Version** or **CUDA UMD Version**. Both fields are supported starting in 1.4.5.2. For example, an RTX 3060 reporting CUDA UMD 13.3 uses the supported PyTorch CUDA 12.8 wheels. If 1.4.5.1 shows `cuda_runtime_max: null` with a numeric CUDA UMD version, update the application using step 4.
 
 On Linux, use your initialized Conda terminal in the project root.
 

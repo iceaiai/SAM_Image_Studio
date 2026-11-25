@@ -53,12 +53,12 @@ The left tools occupy two columns. Each top toolbar has a visibility toggle unde
 | Measure line / Measure curve | Drag between endpoints or trace a path to measure its length in image pixels and the calibrated unit when available. |
 | Undo / Redo | Traverse committed editing history; controls are intentionally enlarged. |
 | Delete objects | Delete the selected annotations. Del uses this action outside Edit mode. |
-| Delete vertex | In Edit mode, click near a contour to highlight up to ten eligible vertices. Delete removes the highlighted batch in one step. |
+| Delete vertex | Return from Mask pusher to vertex editing. Click near a contour to highlight up to ten eligible vertices, then press Delete to remove the batch. |
 | Edit object vertices | Edit existing geometry rather than draw a new object. |
 | Polygon | Click vertices. Close with Enter, double-click, or a click within the configured screen distance of the first vertex. |
 | Rectangle / Circle / Ellipse | Draw an area used according to Mode and Scope. |
 | Point / cleaning brush | Point annotation/prompt, or a brush in Clean mode. |
-| Mask pusher | In Edit with one unlocked area mask selected, left-drag to expand or right-drag to carve. The radius is in image pixels. |
+| Mask pusher | In Edit with one unlocked area mask selected, left-drag to move an edge inward or outward. Right-drag to carve. The radius is in image pixels. |
 
 ## Panel buttons
 
@@ -92,8 +92,8 @@ disconnected part** to delete that piece.
 | Ctrl+A / Ctrl+I | Select all objects / Invert region |
 | Ctrl+D | Remove selected image area |
 | Ctrl+E | Edit object vertices |
-| Delete | Remove the highlighted component with Select mask part active, eligible vertices in Edit, or selected objects in other modes |
-| Esc | Cancel a mask-pusher stroke, clear a distance measurement, or cancel the current drawing or task |
+| Delete | Exit Mask pusher, remove the highlighted component with Select mask part active, delete eligible vertices in Edit, or delete selected objects in other modes |
+| Esc | Exit Mask pusher and discard its active preview, clear a distance measurement, or cancel the current drawing or task |
 | F | Fit image |
 | Mouse wheel / Hand / middle drag | Zoom / pan |
 | Ctrl+click | Add/remove an object in a multiple selection |

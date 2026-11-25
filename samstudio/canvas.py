@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import copy
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from heapq import nsmallest
 import numpy as np
 from PySide6.QtCore import QPointF, QRect, QRectF, Qt, Signal
@@ -11,7 +11,8 @@ from PySide6.QtWidgets import QWidget
 
 from .domain import Document, unpack_mask
 from .exports import hex_rgb
-from .processing import bounding_box, curve_segments, display_rgb, mask_components, mask_contours, push_mask_segment
+from .processing import (bounding_box, carve_mask_segment, curve_segments, display_rgb, mask_components,
+                         mask_contours, push_mask_segment)
 from .scale_bar_ui import draw_scale_bar
 
 
@@ -31,6 +32,7 @@ class _MaskPusherStroke:
     last_point: list[float]
     bounds: QRect | None = None
     preview: QImage | None = None
+    offsets: dict[tuple[int, int], np.ndarray] = field(default_factory=dict)
 
 
 @dataclass
@@ -248,12 +250,14 @@ class ImageCanvas(QWidget):
     def set_tool(self, tool):
         self.cancel_mask_pusher()
         self.clear_mask_part()
+        if tool != self.tool:
+            self._drag_handle = self._edit_geometry = self._delete_origin = self._drag_start = None
         self.tool = tool
-        self.tool_changed.emit(tool)
         self._drawing = []
         self._distance_draft.clear()
         self._cursor = None
         self.setCursor(Qt.CursorShape.ArrowCursor if tool == "select" else Qt.CursorShape.OpenHandCursor if tool == "pan" else Qt.CursorShape.CrossCursor)
+        self.tool_changed.emit(tool)
         self.update()
 
     @property
@@ -362,16 +366,18 @@ class ImageCanvas(QWidget):
     def _valid_pusher_stroke(self):
         obj = self._pusher_object()
         stroke = self._pusher_stroke
-        return obj is not None and obj.id == stroke.object_id and obj.mask is stroke.source_mask
+        return stroke is not None and obj is not None and obj.id == stroke.object_id and obj.mask is stroke.source_mask
 
     def _extend_mask_pusher(self, point):
         stroke = self._pusher_stroke
         if not self._valid_pusher_stroke():
             self.cancel_mask_pusher()
             return
-        expand = stroke.button == Qt.MouseButton.LeftButton
-        bounds = push_mask_segment(stroke.mask, stroke.last_point, point, stroke.radius,
-                                   expand=expand, source_mask=stroke.source_mask)
+        if stroke.button == Qt.MouseButton.LeftButton:
+            bounds = push_mask_segment(stroke.mask, stroke.source_mask, stroke.offsets,
+                                       stroke.last_point, point, stroke.radius)
+        else:
+            bounds = carve_mask_segment(stroke.mask, stroke.last_point, point, stroke.radius)
         stroke.last_point = point
         if bounds is None:
             return
@@ -380,9 +386,15 @@ class ImageCanvas(QWidget):
         stroke.bounds = rect if stroke.bounds is None else stroke.bounds.united(rect)
         rect = stroke.bounds
         region = np.s_[rect.y():rect.y() + rect.height(), rect.x():rect.x() + rect.width()]
-        changed = stroke.source_mask[region] ^ stroke.mask[region]
-        overlay = np.zeros((*changed.shape, 4), np.uint8)
-        overlay[changed] = [32, 201, 151, 196] if expand else [241, 82, 84, 204]
+        original, edited = stroke.source_mask[region], stroke.mask[region]
+        added = edited & ~original
+        removed = original & ~edited
+        if not (added.any() or removed.any()):
+            stroke.preview = None
+            return
+        overlay = np.zeros((*edited.shape, 4), np.uint8)
+        overlay[added] = [32, 201, 151, 196]
+        overlay[removed] = [241, 82, 84, 204]
         stroke.preview = rgba_image(overlay)
 
     def _polygon_will_close(self, point):
@@ -812,7 +824,7 @@ class ImageCanvas(QWidget):
                 if point is not None:
                     self._extend_mask_pusher(point)
                 valid = self.cancel_mask_pusher()
-                if valid and stroke.bounds is not None:
+                if valid and stroke.preview is not None:
                     if stroke.mask.any():
                         self.mask_pushed.emit(stroke.object_id, stroke.source_mask, stroke.mask)
                     else:
@@ -909,7 +921,10 @@ class ImageCanvas(QWidget):
         elif event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and self.tool == "polygon" and self._drawing:
             self.finish_polygon()
         elif event.key() == Qt.Key.Key_Escape:
-            if self.cancel_mask_pusher() or self.clear_mask_part():
+            if self.tool == "mask_pusher":
+                self.set_tool("select")
+                return
+            if self.clear_mask_part():
                 return
             if self.tool in DISTANCE_TOOLS:
                 self.clear_distance_measurement()

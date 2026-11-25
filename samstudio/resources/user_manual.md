@@ -201,7 +201,9 @@ For one or more selected unlocked masks, open **Edit → Refine disconnected par
 
 In **Edit**, select one visible, unlocked area mask and choose **Mask pusher** in the left toolbar. Change **Mask pusher radius (px)** in the Image settings toolbar or use **Edit → Mask pusher radius…**. The ring shows the brush footprint in image pixels.
 
-Left-drag along the boundary to add a round sweep where the ring touches the mask as it was when you pressed the mouse. You can move to another side during the drag or start a new stroke there. Right-drag to carve inward. Green previews added pixels and red previews removed pixels. Release to commit one undoable stroke or press **Esc** while dragging to cancel. Each stroke edits the selected mask within the swept circle and keeps at least part of the object.
+Left-drag across an edge in the direction you want it to move. Drag from inside the mask toward the outside to expand the edge. Drag from outside toward the mask to push the edge back. Retrace the path while holding the button to retract that part of the preview. Right-drag to carve with the circular brush. Green previews added pixels and red previews removed pixels. Release to commit one undoable stroke. Each stroke edits the selected mask within the swept circle.
+
+Press **Esc** or choose another tool to exit Mask pusher and discard any pending stroke. **Delete vertex** returns you to vertex editing. Click near the contour to highlight vertices, then press Delete.
 
 
 ## Scale bars
@@ -409,7 +411,7 @@ Each row states what a control does and gives an example. Plugin implementation,
 | Edit > Refine disconnected parts | Preview removal of smaller parts within each selected mask. | Keep the largest part of a segmented object while clearing stray lines. |
 | Edit > Select mask part / Delete selected mask part | Highlight and delete just one disconnected part. | Click a stray piece and press Delete. |
 | Object context > Remove this disconnected part | In Edit, remove the connected component under the cursor. | Right-click a stray fragment to remove it from the mask. |
-| Edit > Mask pusher | Adjust a selected mask with a circular stroke. | Set a 12 px radius and right-drag to carve into an edge. |
+| Edit > Mask pusher | Move a selected mask edge in the direction of the drag. | Set a 12 px radius and left-drag from outside toward the boundary to push it inward. Right-drag to carve. |
 | Edit > Add / Edit / Remove scale bar | Preview and save a scale bar on the canvas. | Set a 50 nm bar in the lower-right corner. |
 | Edit > Filament | Mark a group as Filament and connect visible ends across gaps. | Link two masks of a bent fiber separated by an occlusion. |
 | Edit > Filament > Draw filament connection | Join selected visible fragments with a path drawn across their gap. | Drag in the direction the fiber follows over an obstruction. |
@@ -465,8 +467,8 @@ Each row states what a control does and gives an example. Plugin implementation,
 | Ctrl+I | Invert pixel region |
 | Ctrl+D | Remove selected image area |
 | Ctrl+E | Edit existing object |
-| Delete | Remove the highlighted mask part with Select mask part active. Otherwise remove eligible vertices in Edit or selected objects in the other modes. |
-| Esc | Cancel a mask-pusher stroke, clear a distance measurement, or cancel a filament connection, drawing, preview or running task. |
+| Delete | Exit Mask pusher, remove a highlighted mask part or eligible vertices in Edit, or delete selected objects in other modes. |
+| Esc | Exit Mask pusher and discard its active preview, clear a distance measurement, or cancel a filament connection, drawing, preview or running task. |
 | F | Reset magnification / fit image |
 | Mouse wheel / Hand / middle drag | Zoom / pan |
 | Ctrl+click | Add or remove an object from a multiple selection |
@@ -485,6 +487,7 @@ Use these chapter names to find the current workflows introduced or changed in e
 
 | Version | Changes and manual chapters |
 | --- | --- |
+| 1.4.5.3 | **Mask pusher** follows the left-drag direction for inward and outward edits. Esc, Delete vertex and tool changes exit the pusher. |
 | 1.4.5.2 | Reads the **CUDA UMD Version** field in newer NVIDIA driver output and distinguishes a missing version from an older driver. See **Installation, Python and Conda GPU setup**. |
 | 1.4.5.1 | Keyboard deletion of selected pieces under **Refine disconnected parts**, candidate review under **Whole-image exemplars, single objects and ROI**, matching histogram ranges under **Metric colors and plot groups**, drawn links under **Filaments and occluded fragments**, and independent strokes under **Mask pusher**. |
 | 1.4.5 | Two-column tools and toolbar visibility under **Start, modes and workspace**, disconnected-part cleanup under **Refine disconnected parts**, batch vertex deletion and adjustable closing distance under **Manual geometry and Edit tools**, and the adjustable push/carve brush under **Mask pusher**. |

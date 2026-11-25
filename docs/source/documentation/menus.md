@@ -51,7 +51,7 @@ actions and are documented by their authors.
 | Vertex deletion radius… | Set the eligible-vertex deletion search radius in image pixels. | — |
 | Vertices per deletion… | Set how many nearby vertices to highlight and remove per Delete press. | — |
 | Polygon closing distance… | Set the screen distance for clicking near the first vertex to close a polygon. | — |
-| Mask pusher / Mask pusher radius… | Expand or carve the selected mask with a circular stroke. Set the circle radius in image pixels. | — |
+| Mask pusher / Mask pusher radius… | Move the selected mask edge in the direction of a left drag, or right-drag to carve. Set the radius in image pixels. | Esc to exit |
 | Fill holes… | Preview filling eligible holes in selected area masks. | — |
 | Smooth edges… | Preview smoother editable contours for selected masks; does not smooth image intensities. | — |
 | Refine disconnected parts… | Preview retaining only the largest part or trimming the smaller parts of selected masks. | — |

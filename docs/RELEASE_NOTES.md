@@ -1,3 +1,10 @@
+# SAM Image Studio 1.4.5.3
+
+- Left-drag with Mask pusher to move a mask edge in the direction of the drag, including inward and across different sides. Retracing an active stroke retracts its preview. Right-drag carves with the circular brush.
+- Delete vertex switches from Mask pusher to vertex editing. Esc or changing tools exits Mask pusher and discards any pending stroke.
+
+---
+
 # SAM Image Studio 1.4.5.2
 
 - Detect the CUDA driver capability from both `CUDA Version` and `CUDA UMD Version` in `nvidia-smi`. A Windows RTX 3060 reporting CUDA UMD 13.3 selects the supported PyTorch CUDA 12.8 wheels.

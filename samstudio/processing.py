@@ -75,8 +75,8 @@ def brush_mask(point, radius: float, shape):
     return (xx + .5 - x) ** 2 + (yy + .5 - y) ** 2 <= max(1, radius) ** 2
 
 
-def push_mask_segment(mask, start, end, radius, *, expand, source_mask=None):
-    """Apply circular stamps, using the original stroke mask for outward contact."""
+def carve_mask_segment(mask, start, end, radius):
+    """Remove covered pixels with circular stamps and return the changed bounds."""
     if start == end:
         points = (end,)
     else:
@@ -85,19 +85,89 @@ def push_mask_segment(mask, start, end, radius, *, expand, source_mask=None):
         ys = np.linspace(start[1], end[1], steps + 1)[1:]
         points = zip(xs, ys)
     height, width = mask.shape
-    contact_mask = source_mask if expand and source_mask is not None else mask
     bounds = None
     for x, y in points:
         x0, x1 = max(0, math.floor(x - radius)), min(width, math.ceil(x + radius))
         y0, y1 = max(0, math.floor(y - radius)), min(height, math.ceil(y + radius))
-        region = np.s_[y0:y1, x0:x1]
-        patch = mask[region]
+        patch = mask[y0:y1, x0:x1]
         disk = brush_mask((x - x0, y - y0), radius, patch.shape)
-        if not contact_mask[region][disk].any() or (expand and patch[disk].all()):
+        if not patch[disk].any():
             continue
-        patch[disk] = expand
+        patch[disk] = False
         bounds = (x0, y0, x1, y1) if bounds is None else (
             min(x0, bounds[0]), min(y0, bounds[1]), max(x1, bounds[2]), max(y1, bounds[3]))
+    return bounds
+
+
+def push_mask_segment(mask, source_mask, offsets, start, end, radius):
+    """Displace the local boundary along the drag and return the changed bounds."""
+    dx, dy = end[0] - start[0], end[1] - start[1]
+    distance = math.hypot(dx, dy)
+    if not distance:
+        return None
+    height, width = mask.shape
+    x0 = max(0, math.floor(min(start[0], end[0]) - radius))
+    x1 = min(width, math.ceil(max(start[0], end[0]) + radius))
+    y0 = max(0, math.floor(min(start[1], end[1]) - radius))
+    y1 = min(height, math.ceil(max(start[1], end[1]) + radius))
+    # The sampling offset is limited to the brush radius. A uniform source
+    # in that neighborhood cannot change unless it meets an image edge.
+    margin = math.ceil(radius) + 1
+    sample_left, sample_top = x0 - margin, y0 - margin
+    sample_right, sample_bottom = x1 + margin, y1 + margin
+    neighborhood = source_mask[max(0, sample_top):sample_bottom, max(0, sample_left):sample_right]
+    interior = 0 <= sample_left and sample_right <= width and 0 <= sample_top and sample_bottom <= height
+    if not neighborhood.any() or (interior and neighborhood.all()):
+        return None
+
+    ux, uy = dx / distance, dy / distance
+    bounds = None
+    tile_size = 256
+    # Store offsets only in tiles touched by the stroke, even on large frames.
+    for tile_y in range(y0 // tile_size * tile_size, y1, tile_size):
+        for tile_x in range(x0 // tile_size * tile_size, x1, tile_size):
+            left, top = max(tile_x, x0), max(tile_y, y0)
+            right, bottom = min(tile_x + tile_size, x1), min(tile_y + tile_size, y1)
+            cols = np.arange(left, right, dtype=np.float32)[None, :]
+            rows = np.arange(top, bottom, dtype=np.float32)[:, None]
+            x = (cols + .5 - start[0]) / radius
+            y = (rows + .5 - start[1]) / radius
+            along = x * ux + y * uy
+            cross = x * uy - y * ux
+            falloff = np.maximum(0, 1 - cross * cross)
+            reach = np.sqrt(falloff)
+            low = np.clip(-along, -reach, reach)
+            high = np.clip(distance / radius - along, -reach, reach)
+            # Integral of the squared radial falloff across the part of this
+            # segment inside the disk. Retracing it subtracts the same offset.
+            low2, high2 = low * low, high * high
+            weight = radius * (
+                high * (falloff**2 - high2 * ((2 / 3) * falloff - high2 / 5))
+                - low * (falloff**2 - low2 * ((2 / 3) * falloff - low2 / 5))
+            )
+            if not weight.any():
+                continue
+            key = (tile_x, tile_y)
+            if key not in offsets:
+                offsets[key] = np.zeros((2, min(tile_size, height - tile_y), min(tile_size, width - tile_x)),
+                                        np.float32)
+            x_offset, y_offset = offsets[key][:, top - tile_y:bottom - tile_y, left - tile_x:right - tile_x]
+            x_offset += weight * ux
+            y_offset += weight * uy
+            limited = np.maximum(1, np.hypot(x_offset, y_offset) / radius)
+            # Resample the stroke's original mask once per pixel to avoid
+            # repeatedly smoothing the edge during small mouse movements.
+            samples = ndi.map_coordinates(
+                source_mask, [rows - y_offset / limited, cols - x_offset / limited],
+                output=np.float32, order=1, mode="grid-constant", prefilter=False,
+            )
+            region = np.s_[top:bottom, left:right]
+            edited = (samples > .5) | ((samples == .5) & source_mask[region])
+            if np.array_equal(mask[region], edited):
+                continue
+            mask[region] = edited
+            bounds = (left, top, right, bottom) if bounds is None else (
+                min(left, bounds[0]), min(top, bounds[1]), max(right, bounds[2]), max(bottom, bounds[3]))
     return bounds
 
 

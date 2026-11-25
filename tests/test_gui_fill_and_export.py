@@ -4,7 +4,7 @@ from PySide6.QtCore import QPointF, QTimer, Qt
 from PySide6.QtWidgets import QApplication, QDialog, QDialogButtonBox, QFileDialog, QInputDialog, QMenu, QPushButton
 from samstudio.imageio import LoadResult
 from samstudio.dialogs import RefinementDialog,SaveMasksDialog,ImageExportDialog
-from samstudio.processing import shape_mask
+from samstudio.processing import push_mask_segment, shape_mask
 
 
 def mount(window,document):
@@ -223,9 +223,11 @@ def test_mask_pusher_edits_only_the_swept_ring_and_is_undoable(window, document,
     for point in path[1:]:
         qtbot.mouseMove(canvas, pos=point)
     qtbot.mouseRelease(canvas, Qt.MouseButton.LeftButton, pos=path[-1])
-    changed = doc.objects[0].mask & ~original
-    assert changed[42:58, :35].any() and changed[:32, 48:62].any()
-    assert not changed[:, :18].any() and not changed[:16].any()
+    edited = doc.objects[0].mask
+    additions = edited & ~original
+    removals = original & ~edited
+    assert additions[42:58, :35].any() and removals[32:40, 48:62].any()
+    assert not additions[:, :18].any() and not additions[:32].any()
     window.undo()
     np.testing.assert_array_equal(doc.objects[0].mask, original)
 
@@ -234,7 +236,9 @@ def test_mask_pusher_edits_only_the_swept_ring_and_is_undoable(window, document,
     qtbot.mousePress(canvas, Qt.MouseButton.RightButton, pos=location)
     qtbot.keyClick(canvas, Qt.Key.Key_Escape)
     qtbot.mouseRelease(canvas, Qt.MouseButton.RightButton, pos=location)
+    assert canvas.tool == "select" and not tool.isChecked()
     assert canvas._pusher_stroke is None and doc.state() == before
+    tool.trigger()
     qtbot.mouseClick(canvas, Qt.MouseButton.LeftButton, pos=canvas.to_widget((120, 90)).toPoint())
     assert doc.state() == before
     window.pusher_radius.setValue(300)
@@ -242,6 +246,134 @@ def test_mask_pusher_edits_only_the_swept_ring_and_is_undoable(window, document,
     assert doc.state() == before and "erase the entire" in window.statusBar().currentMessage()
     window._commit("Lock mask", lambda: setattr(doc.objects[0], "locked", True))
     assert not tool.isEnabled() and canvas.tool == "select" and not window.errors
+
+
+@pytest.mark.parametrize("vertical", [False, True], ids=["horizontal", "vertical"])
+def test_mask_pusher_moves_inward_on_a_reverse_drag(window, document, qtbot, vertical):
+    document.objects.clear()
+    original = np.zeros(document.frame.shape, bool)
+    original[35:89, 35:89] = True
+    object_id = document.add_object("mask", mask=original.copy()).id
+    doc = mount(window, document)
+    window.mode.setCurrentText("Edit")
+    canvas = window.canvas
+    canvas.set_selected({object_id})
+    window._refresh()
+    window.tool_actions["mask_pusher"].trigger()
+    window.pusher_radius.setValue(8)
+    canvas.scale = 2
+    canvas.offset = QPointF(12, 16)
+
+    def position(x, y):
+        return canvas.to_widget((y, x) if vertical else (x, y)).toPoint()
+
+    left = Qt.MouseButton.LeftButton
+    start, end = position(84, 56), position(99, 56)
+    before = doc.state()
+    qtbot.mouseClick(canvas, left, pos=start)
+    assert doc.state() == before
+
+    # Reverse while holding the button, then release the restored preview.
+    qtbot.mousePress(canvas, left, pos=start)
+    for x in range(85, 100):
+        qtbot.mouseMove(canvas, pos=position(x, 56))
+    pushed = canvas._pusher_stroke.mask.copy()
+    assert (pushed & ~original).any() and not (original & ~pushed).any()
+    np.testing.assert_array_equal(doc.objects[0].mask, original)
+    qtbot.mouseMove(canvas, pos=start)
+    assert canvas._pusher_stroke.preview is None
+    qtbot.mouseRelease(canvas, left, pos=start)
+    assert doc.state() == before and not window.histories[doc.frame.key].undo_stack
+
+    # A single coalesced move applies the same deformation on release.
+    qtbot.mousePress(canvas, left, pos=start)
+    qtbot.mouseRelease(canvas, left, pos=end)
+    np.testing.assert_array_equal(doc.objects[0].mask, pushed)
+
+    # Start a new stroke on the outside of the edited edge and push it inward.
+    qtbot.mousePress(canvas, left, pos=end)
+    qtbot.mouseMove(canvas, pos=start)
+    assert canvas._pusher_stroke.preview is not None
+    qtbot.mouseRelease(canvas, left, pos=start)
+    inward = doc.objects[0].mask
+    assert (pushed & ~inward).any() and not (inward & ~pushed).any()
+
+    # The opposite edge also moves inward when approached from outside.
+    qtbot.mousePress(canvas, left, pos=position(26, 56))
+    qtbot.mouseRelease(canvas, left, pos=position(44, 56))
+    opposite = doc.objects[0].mask
+    assert (inward & ~opposite).any() and not (opposite & ~inward).any()
+    axis_region = np.s_[65:, :] if vertical else np.s_[:, 65:]
+    np.testing.assert_array_equal(inward[axis_region], opposite[axis_region])
+    assert len(window.histories[doc.frame.key].undo_stack) == 3
+    assert not window.errors
+
+
+def test_delete_vertex_and_tool_changes_leave_mask_pusher(window, document, qtbot):
+    document.objects.clear()
+    points = [[35, 48], [49, 33], [68, 36], [85, 50], [76, 70], [62, 85], [42, 82], [30, 68]]
+    mask = shape_mask("polygon", points, document.frame.shape)
+    object_id = document.add_object("polygon", points, mask).id
+    doc = mount(window, document)
+    window.mode.setCurrentText("Edit")
+    canvas = window.canvas
+    canvas.set_selected({object_id})
+    window._refresh()
+    pusher = window.tool_actions["mask_pusher"]
+    delete_vertex = window.drawing_toolbars[1].widgetForAction(window.delete_vertex_action)
+    vertex = canvas.to_widget(points[0]).toPoint()
+    left = Qt.MouseButton.LeftButton
+    before = doc.state()
+
+    qtbot.mouseClick(canvas, left, pos=vertex)
+    pusher.trigger()
+    qtbot.mouseMove(canvas, pos=vertex)
+    assert canvas._cursor is not None
+    qtbot.mouseClick(delete_vertex, left)
+    assert canvas.tool == "select" and window.tool_actions["select"].isChecked() and not pusher.isChecked()
+    assert canvas._cursor is None and canvas._pusher_stroke is None and doc.state() == before
+    qtbot.waitUntil(lambda: window.vertex_radius.isVisible() and not window.pusher_radius.isVisible())
+
+    qtbot.mouseClick(canvas, left, pos=vertex)
+    qtbot.mouseClick(delete_vertex, left)
+    assert len(doc.objects[0].points) == len(points) - 1 and doc.objects[0].id == object_id
+    before = doc.state()
+
+    pusher.trigger()
+    start, end = [canvas.to_widget(point).toPoint() for point in ((80, 50), (97, 50))]
+    qtbot.mousePress(canvas, left, pos=start)
+    qtbot.mouseMove(canvas, pos=end)
+    assert canvas._pusher_stroke.preview is not None
+    window.tool_actions["measure_line"].trigger()
+    qtbot.mouseRelease(canvas, left, pos=end)
+    assert canvas.tool == "measure_line" and canvas._cursor is None and not pusher.isChecked()
+    assert canvas._pusher_stroke is None and doc.state() == before
+
+    pusher.trigger()
+    qtbot.keyClick(canvas, Qt.Key.Key_Escape)
+    assert canvas.tool == "select" and window.tool_actions["select"].isChecked() and not pusher.isChecked()
+    assert canvas._cursor is None and doc.state() == before and not window.errors
+
+
+def test_mask_pusher_preserves_a_thin_mask_across_processing_tiles():
+    source = np.zeros((128, 160), bool)
+    source[12:122, 66:69] = True
+    path = [(x, 66) for x in range(60, 83)]
+    edited = source.copy()
+    offsets = {}
+    for start, end in zip(path, path[1:]):
+        push_mask_segment(edited, source, offsets, start, end, 12)
+
+    assert edited[12:122].any(axis=1).all()
+    assert (edited & ~source).any() and (source & ~edited).any()
+    tiled = np.zeros((540, 560), bool)
+    region = np.s_[188:316, 189:349]
+    tiled[region] = source
+    result = tiled.copy()
+    push_mask_segment(result, tiled, {}, (60 + 189, 66 + 188), (82 + 189, 66 + 188), 12)
+    expected = tiled.copy()
+    expected[region] = edited
+    np.testing.assert_array_equal(result, expected)
 
 
 def test_gui_save_export_commands_create_files(window,document,tmp_path,monkeypatch):

@@ -12,9 +12,9 @@ compressed-sensing restoration, with calibrated measurements and editable projec
 [Compressed sensing](https://iceaiai.github.io/SAM_Image_Studio/features/compressed-sensing.html) ·
 [User Manual](https://iceaiai.github.io/SAM_Image_Studio/user-manual.html)
 
-Version **1.4.5.2** fixes GPU detection on Windows systems whose NVIDIA driver
-reports **CUDA UMD Version**. The standard ZIP includes the GPU Quick Guide and
-the update steps for existing Conda environments.
+Version **1.4.5.3** makes Mask pusher move edges in either direction and return
+to vertex editing when you choose **Delete vertex**. The standard ZIP includes
+the GPU Quick Guide and update steps for existing Conda environments.
 
 ## First: download or clone the complete project (CPU and GPU)
 
@@ -23,11 +23,11 @@ You do not need Git if you download a ZIP.
 
 | Version | Downloads | Main changes |
 | --- | --- | --- |
-| **1.4.5.2 — recommended** | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.2.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.2-offline.zip) | Detects newer NVIDIA driver output containing **CUDA UMD Version**. |
-| 1.4.5.1 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-docs.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-offline-docs.zip) | Adds keyboard deletion of mask pieces, segmentation review, measurement-colored histograms, and hand-drawn filament links. Fixes Mask pusher strokes when changing sides. |
+| **1.4.5.3 — recommended** | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.3.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.3-offline.zip) | Adds directional mask pushing, including inward moves, and exits the pusher on Delete vertex, Esc or a tool change. |
+| 1.4.5.2 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.2.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.2-offline.zip) | Detects newer NVIDIA driver output containing **CUDA UMD Version**. |
+| 1.4.5.1 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-docs.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-offline-docs.zip) | Adds keyboard deletion of mask pieces, segmentation review, measurement-colored histograms, and hand-drawn filament links. Updates contact handling for outward pusher strokes. |
 | 1.4.5 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5-offline.zip) | Adds two-column tools, mask-fragment cleanup, a circular mask pusher, batch vertex deletion, and adjustable polygon closure. |
 | 1.4.4.2 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.2.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.2-offline.zip) | Adds calibrated line and curve rulers and fixes crashes in segmentation options, mask-color, and plot-group dialogs. |
-| 1.4.4.1 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1-offline.zip) | Adds segmentation size filters, editable scale bars, filament measurements, and shared colors for plot groups. |
 | 1.4.3 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip) | Adds public SAM3 ONNX text segmentation, updates CPU/GPU installers, and publishes illustrated guides. |
 | 1.4.2 — First stable version | [CPU ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip) | Includes calibrated segmentation, Excel pixel-size lookup, image restoration, and bundled manuals. |
 
@@ -48,7 +48,7 @@ you do not need to download a second source package for GPU installation.
 
 **Download route:** choose a ZIP, extract the entire archive, and open the
 project folder containing `pyproject.toml` and `samstudio/`. Keep the folder contents
-together. The standard 1.4.5.2 ZIP extracts to `SAM_Image_Studio-1.4.5.2/`.
+together. The standard 1.4.5.3 ZIP extracts to `SAM_Image_Studio-1.4.5.3/`.
 It includes `GPU/QUICK_GUIDE.md` and the updated User Manual.
 
 **Git alternative, shared by CPU and GPU:** open a terminal in the parent folder

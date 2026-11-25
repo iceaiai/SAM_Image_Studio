@@ -1,7 +1,7 @@
 # Offline CPU edition: prepare online, install offline
 
-First [download the offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.2-offline.zip)
-and extract the **whole** archive. Enter `SAM_Image_Studio-1.4.5.2-offline/`, the
+First [download the offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.3-offline.zip)
+and extract the **whole** archive. Enter `SAM_Image_Studio-1.4.5.3-offline/`, the
 folder containing `pyproject.toml`, `packaging/` and `offline/`. Keep everything
 together. The normal source ZIP does not activate this restricted edition.
 

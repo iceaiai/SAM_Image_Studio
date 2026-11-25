@@ -55,15 +55,18 @@ shows the areas to remove. Click **Apply** after reviewing the result.
 
 In **Edit**, select a single unlocked area mask and choose **Mask pusher** in the
 left toolbar. Set the radius in image pixels on the Image settings toolbar or
-through **Edit → Mask pusher radius…**. Left-drag along the edge to expand the
-mask with a rounded stroke. Right-drag carves inward. Green and red show the
-pending additions and removals. Release to apply the stroke. Use Esc to discard
-an active stroke or Undo to reverse a committed stroke.
+through **Edit → Mask pusher radius…**. Left-drag across an edge in the direction
+you want it to move. Drag outward to expand an edge or inward to push it back.
+Retrace the path while holding the button to retract that part of the preview.
+Right-drag to carve with the circular brush.
 
-The edit applies to the selected mask within the swept circle. An outward
-stroke grows wherever the circle reaches the mask as it was at the beginning
-of that stroke. Move the circle to another edge to continue there, or release
-and start a new stroke on any side.
+Green and red show where the stroke adds and removes pixels. Release to apply
+the edit to the selected mask within the swept circle. Undo reverses a committed
+stroke.
+
+Press **Esc** or switch tools to exit Mask pusher and discard an active preview.
+Click **Delete vertex** to return to vertex editing, then click near a contour
+to highlight the vertices you want to remove.
 
 ## Rotate an image
 

@@ -208,7 +208,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.redo_action=self._action("Redo",self.redo,"Ctrl+Y","redo")
         self.delete_action = self._action("Delete objects", self.delete_selected, icon="delete")
         self.delete_vertex_action = self._action("Delete vertex", self.delete_vertex, icon="delete_vertex")
-        self.delete_vertex_action.setToolTip("Delete the highlighted vertices within the radius from one contour.")
+        self.delete_vertex_action.setToolTip("Switch from Mask pusher to vertex editing, or delete the highlighted vertices.")
         self.delete_part_action = self._action("Delete selected mask part", self.delete_selected_mask_part)
         self.review_preview_action = self._action("Review segmentation preview…", self.review_preview)
         self.edit_action=self._action("Edit object vertices",self.edit_object,"Ctrl+E","edit",True)
@@ -239,10 +239,10 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.tool_actions["measure_line"].setToolTip("Measure line — drag between two points. Esc clears the measurement.")
         self.tool_actions["measure_curve"].setToolTip("Measure curve — drag along a path. Esc clears the measurement.")
         self.tool_actions["polygon"].setToolTip("Polygon — click to add vertices. Click near the first vertex, press Enter, or double-click to close.")
-        self.tool_actions["mask_pusher"].setToolTip("Mask pusher — in Edit, left-drag to expand the selected mask and right-drag to carve it.")
+        self.tool_actions["mask_pusher"].setToolTip("Mask pusher — left-drag an edge in either direction, right-drag to carve, or press Esc to exit.")
         self.tool_actions["mask_part"] = self._action("Select mask part", self.select_mask_part_tool, checkable=True)
         self.tool_group.addAction(self.tool_actions["mask_part"])
-        self.canvas.tool_changed.connect(lambda _: self._refresh_delete_controls(self.selected_objects()))
+        self.canvas.tool_changed.connect(self._drawing_tool_changed)
         self.tool_actions["select"].setChecked(True)
         self._build_drawing_toolbars()
         file=self.menuBar().addMenu("File")
@@ -826,9 +826,9 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         self.canvas.set_preview([]);self._preview_context=None
         if self.busy and self._job_prompt_editable:self._job.cancel.set()
         self.canvas.mode=value;self.canvas.edit_mode=value=="Edit";self.edit_action.setChecked(value=="Edit")
-        if value=="Segment":self.tool_actions["point"].setChecked(True);self.canvas.set_tool("point")
-        elif value=="Clean":self.tool_actions["rectangle"].setChecked(True);self.canvas.set_tool("rectangle")
-        else:self.canvas.set_tool("select");self.tool_actions["select"].setChecked(True)
+        if value=="Segment":self.canvas.set_tool("point")
+        elif value=="Clean":self.canvas.set_tool("rectangle")
+        else:self.canvas.set_tool("select")
         if value=="Segment" and self.scope.currentData()=="automatic" and self.engine.ready:self.preview_timer.start()
         self._refresh()
 
@@ -954,6 +954,10 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
     def selected_objects(self):
         return [o for o in self.document.objects if o.id in self.canvas.selected] if self.document else []
 
+    def _drawing_tool_changed(self, tool):
+        self.tool_actions[tool].setChecked(True)
+        self._refresh_delete_controls(self.selected_objects())
+
     def _refresh_delete_controls(self, selected):
         editing = self.canvas.edit_mode
         part_tool = editing and self.canvas.tool == "mask_part"
@@ -992,8 +996,8 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         if self.busy or not self.document or self.canvas.filament_link_active or self.canvas.tool == "mask_part":
             return
         if self.canvas.tool == "mask_pusher":
-            self.statusBar().showMessage("Use Select objects to choose vertices for deletion.", 8000)
-        elif not self.canvas.delete_vertex():
+            self.canvas.set_tool("select")
+        if not self.canvas.delete_vertex():
             self.statusBar().showMessage("Click near a contour or polygon to highlight vertices, then choose Delete vertex.", 8000)
 
     def edit_object(self,checked=True):
@@ -1003,7 +1007,7 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
         desired="Edit" if checked else "Manual"
         self.mode.setCurrentText(desired)
         if self.mode.currentText()!=desired:return
-        self.canvas.edit_mode=checked;self.edit_action.setChecked(checked);self.canvas.set_tool("select");self.tool_actions["select"].setChecked(True);self.canvas.update()
+        self.canvas.edit_mode=checked;self.edit_action.setChecked(checked);self.canvas.set_tool("select")
         if checked:self.statusBar().showMessage("Drag a handle to move it. Set Vertices per delete and click near a contour to highlight the vertices that Delete will remove.",12000)
 
     def change_vertex_delete_radius(self):
@@ -1510,7 +1514,10 @@ class MainWindow(CalibrationTableMixin, WorkspaceWorkflowMixin, ProcessingWorkfl
             self._refresh_controls()
             self.statusBar().showMessage("Filament connection cancelled.", 5000)
             return
-        if self.canvas.cancel_mask_pusher() or self.canvas.clear_mask_part():
+        if self.canvas.tool == "mask_pusher":
+            self.canvas.set_tool("select")
+            return
+        if self.canvas.clear_mask_part():
             return
         if clear_measurement and not self.busy and self.canvas.tool in DISTANCE_TOOLS:
             self.canvas.clear_distance_measurement()
