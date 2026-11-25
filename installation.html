@@ -501,6 +501,9 @@ the provided helper selects the correct distribution for the environment.</p>
 <h2>NVIDIA GPU with Conda<a class="headerlink" href="#nvidia-gpu-with-conda" title="Link to this heading">#</a></h2>
 <p>First download/extract or clone the complete current source using the common
 steps above and enter its root. All GPU setup files live under <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>.</p>
+<p>On Windows, the GPU guide shows how to enter a quoted path in <strong>Anaconda Prompt</strong>
+when ZIP extraction creates two nested folders with the same name.
+<a class="reference internal" href="installation-gpu.html#select-the-route-and-install"><span class="std std-ref">Windows folder and installer steps</span></a></p>
 <p>For <strong>SAM1/2 and SAM3 ONNX</strong> on Windows or Linux, open an initialized Conda
 terminal in that folder, then run:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-gpu<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip<span class="w"> </span>-y
@@ -517,11 +520,9 @@ python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current<sp
 python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </pre></div>
 </div>
-<p>These creation steps are for first installation only. No application packages
-are installed into Conda base. For complete prerequisites, quoted paths,
-authentication and update steps, read the
-<a class="reference internal" href="installation-gpu.html"><span class="std std-doc">GPU installation guide</span></a>, or the
-<a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/blob/main/GPU/INSTALLATION.md">full guide on GitHub</a>.</p>
+<p>Create the environment only for a first installation. If you already installed
+SAM Image Studio, activate the existing dedicated environment and use the
+update commands. <a class="reference internal" href="installation-gpu.html#update-an-existing-installation"><span class="std std-ref">GPU update guide</span></a></p>
 </section>
 <section id="choose-a-model-after-installation">
 <h2>Choose a model after installation<a class="headerlink" href="#choose-a-model-after-installation" title="Link to this heading">#</a></h2>
@@ -535,15 +536,34 @@ local HF login. See <a class="reference internal" href="segmentation/sam31.html"
 </section>
 <section id="update-without-uninstalling">
 <h2>Update without uninstalling<a class="headerlink" href="#update-without-uninstalling" title="Link to this heading">#</a></h2>
-<p>Close the GUI, update/extract the <strong>complete</strong> new source, and enter its root.
-For the existing app-owned CPU environment, rerun its installer. For an activated
-dedicated CPU environment, use <code class="docutils literal notranslate"><span class="pre">--current</span></code>. GPU uses <code class="docutils literal notranslate"><span class="pre">GPU/install.py</span> <span class="pre">--current</span></code>
-and, for native SAM3.1, <code class="docutils literal notranslate"><span class="pre">--sam3</span></code>. Do not recreate the same Conda environment for
-every update, and do not install only a requirements file as an app update.</p>
+<p>Close the GUI. Extract the complete new ZIP, or run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span> <span class="pre">--ff-only</span></code> in
+your source checkout. Enter the folder containing <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>. Keep your
+source images, <code class="docutils literal notranslate"><span class="pre">.sam.json</span></code> projects, exports and model cache.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Existing installation</p></th>
+<th class="head"><p>Update</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>GPU with Conda</strong></p></td>
+<td><p>Activate your existing environment by name, run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">GPU/install.py</span> <span class="pre">--current</span></code> from the updated source, then <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">samstudio</span></code>. Include <code class="docutils literal notranslate"><span class="pre">--sam3</span></code> for the native SAM3/3.1 environment in Linux/WSL2.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>CPU in a dedicated environment</strong></p></td>
+<td><p>Activate your existing 64-bit Python 3.12 environment and run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">scripts/install_environment.py</span> <span class="pre">--backend</span> <span class="pre">cpu</span> <span class="pre">--current</span></code>, then <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">samstudio</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CPU with project-local <code class="docutils literal notranslate"><span class="pre">.venv</span></code></strong></p></td>
+<td><p>Rerun the CPU helper in an updated checkout to reuse its <code class="docutils literal notranslate"><span class="pre">.venv</span></code>. When extracting into a new folder, the helper prepares a local environment there. To reuse the old <code class="docutils literal notranslate"><span class="pre">.venv</span></code>, activate it from its original path and use the dedicated CPU commands.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Offline CPU</strong></p></td>
+<td><p>Reuse the downloaded cache files on a matching platform. Rerun offline preparation in the new source before running the normal installer on the target. See the <a class="reference internal" href="installation-offline.html"><span class="std std-doc">offline instructions</span></a>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>Version 1.4.3 automatically handles the Qt/font/XCB libraries and
 <code class="docutils literal notranslate"><span class="pre">pkg_resources</span></code> compatibility encountered with the earlier v1.4.2 installation.
-The installer performs these repairs; normal users need no per-library commands.
-Keep source images, <code class="docutils literal notranslate"><span class="pre">.sam.json</span></code> projects, exports and model caches separately.</p>
+The installer performs these repairs; normal users need no per-library commands.</p>
 </section>
 <section id="storage-network-and-diagnostics">
 <h2>Storage, network and diagnostics<a class="headerlink" href="#storage-network-and-diagnostics" title="Link to this heading">#</a></h2>
