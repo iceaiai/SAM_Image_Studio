@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Troubleshooting installation and operation &#8212; SAM Image Studio 1.4.5.2</title>
+    <title>Troubleshooting installation and operation &#8212; SAM Image Studio 1.4.5.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=e4ebd452"></script>
+    <script src="_static/documentation_options.js?v=80240416"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="User Manual" href="user-manual.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5.2" />
+  <meta name="docsearch:version" content="1.4.5.3" />
   </head>
   
   
@@ -403,7 +403,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="troubleshooting-installation-and-operation">
 <h1>Troubleshooting installation and operation<a class="headerlink" href="#troubleshooting-installation-and-operation" title="Link to this heading">#</a></h1>
-<p>Use current installers from a complete version 1.4.5.2 source tree. They handle
+<p>Use current installers from a complete version 1.4.5.3 source tree. They handle
 the repeated dependency fixes encountered during v1.4.2 WSL installation. Rerunning
 in an existing dedicated environment is a supported repair; deleting that
 environment is usually unnecessary.</p>
@@ -527,7 +527,7 @@ field does not bypass a gate. For public text weights without HF login, choose
 a supported NVIDIA device. The installer does not install drivers; AMD/Intel
 GPUs use the CPU route. Native SAM3.1 requires Linux/WSL2 and matching weights.</p>
 <p>If 1.4.5.1 reports <code class="docutils literal notranslate"><span class="pre">cuda_runtime_max:</span> <span class="pre">null</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> shows a numeric
-<strong>CUDA UMD Version</strong>, update to 1.4.5.2 and rerun <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">GPU/install.py</span> <span class="pre">--current</span></code>
+<strong>CUDA UMD Version</strong>, update to 1.4.5.2 or later and rerun <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">GPU/install.py</span> <span class="pre">--current</span></code>
 in your existing Conda environment. The updated installer reads both CUDA
 version labels. For example, CUDA UMD 13.3 with an RTX 3060 selects the supported
 CUDA 12.8 PyTorch wheels. <a class="reference internal" href="installation-gpu.html#update-an-existing-installation"><span class="std std-ref">GPU update steps</span></a></p>

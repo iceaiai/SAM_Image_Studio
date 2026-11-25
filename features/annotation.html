@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Manual annotation and editing &#8212; SAM Image Studio 1.4.5.2</title>
+    <title>Manual annotation and editing &#8212; SAM Image Studio 1.4.5.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=e4ebd452"></script>
+    <script src="../_static/documentation_options.js?v=80240416"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Example microscopy images" href="examples.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5.2" />
+  <meta name="docsearch:version" content="1.4.5.3" />
   </head>
   
   
@@ -461,14 +461,16 @@ shows the areas to remove. Click <strong>Apply</strong> after reviewing the resu
 <h2>Push a mask boundary<a class="headerlink" href="#push-a-mask-boundary" title="Link to this heading">#</a></h2>
 <p>In <strong>Edit</strong>, select a single unlocked area mask and choose <strong>Mask pusher</strong> in the
 left toolbar. Set the radius in image pixels on the Image settings toolbar or
-through <strong>Edit → Mask pusher radius…</strong>. Left-drag along the edge to expand the
-mask with a rounded stroke. Right-drag carves inward. Green and red show the
-pending additions and removals. Release to apply the stroke. Use Esc to discard
-an active stroke or Undo to reverse a committed stroke.</p>
-<p>The edit applies to the selected mask within the swept circle. An outward
-stroke grows wherever the circle reaches the mask as it was at the beginning
-of that stroke. Move the circle to another edge to continue there, or release
-and start a new stroke on any side.</p>
+through <strong>Edit → Mask pusher radius…</strong>. Left-drag across an edge in the direction
+you want it to move. Drag outward to expand an edge or inward to push it back.
+Retrace the path while holding the button to retract that part of the preview.
+Right-drag to carve with the circular brush.</p>
+<p>Green and red show where the stroke adds and removes pixels. Release to apply
+the edit to the selected mask within the swept circle. Undo reverses a committed
+stroke.</p>
+<p>Press <strong>Esc</strong> or switch tools to exit Mask pusher and discard an active preview.
+Click <strong>Delete vertex</strong> to return to vertex editing, then click near a contour
+to highlight the vertices you want to remove.</p>
 </section>
 <section id="rotate-an-image">
 <h2>Rotate an image<a class="headerlink" href="#rotate-an-image" title="Link to this heading">#</a></h2>

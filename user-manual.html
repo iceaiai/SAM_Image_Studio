@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>User Manual &#8212; SAM Image Studio 1.4.5.2</title>
+    <title>User Manual &#8212; SAM Image Studio 1.4.5.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=e4ebd452"></script>
+    <script src="_static/documentation_options.js?v=80240416"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="GPU installation and updates" href="installation-gpu.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5.2" />
+  <meta name="docsearch:version" content="1.4.5.3" />
   </head>
   
   
@@ -403,7 +403,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="user-manual">
 <h1>User Manual<a class="headerlink" href="#user-manual" title="Link to this heading">#</a></h1>
-<p>This manual covers SAM Image Studio 1.4.5.2. See <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>
+<p>This manual covers SAM Image Studio 1.4.5.3. See <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>
 for the current platform setup instructions and <a class="reference internal" href="#denoising-parameters">Denoising parameters</a>
 for denoising method defaults and units.</p>
 <section id="start-modes-and-workspace">
@@ -601,7 +601,8 @@ python<span class="w"> </span>-m<span class="w"> </span>samstudio
 <section id="mask-pusher">
 <h2>Mask pusher<a class="headerlink" href="#mask-pusher" title="Link to this heading">#</a></h2>
 <p>In <strong>Edit</strong>, select one visible, unlocked area mask and choose <strong>Mask pusher</strong> in the left toolbar. Change <strong>Mask pusher radius (px)</strong> in the Image settings toolbar or use <strong>Edit → Mask pusher radius…</strong>. The ring shows the brush footprint in image pixels.</p>
-<p>Left-drag along the boundary to add a round sweep where the ring touches the mask as it was when you pressed the mouse. You can move to another side during the drag or start a new stroke there. Right-drag to carve inward. Green previews added pixels and red previews removed pixels. Release to commit one undoable stroke or press <strong>Esc</strong> while dragging to cancel. Each stroke edits the selected mask within the swept circle and keeps at least part of the object.</p>
+<p>Left-drag across an edge in the direction you want it to move. Drag from inside the mask toward the outside to expand the edge. Drag from outside toward the mask to push the edge back. Retrace the path while holding the button to retract that part of the preview. Right-drag to carve with the circular brush. Green previews added pixels and red previews removed pixels. Release to commit one undoable stroke. Each stroke edits the selected mask within the swept circle.</p>
+<p>Press <strong>Esc</strong> or choose another tool to exit Mask pusher and discard any pending stroke. <strong>Delete vertex</strong> returns you to vertex editing. Click near the contour to highlight vertices, then press Delete.</p>
 </section>
 <section id="scale-bars">
 <h2>Scale bars<a class="headerlink" href="#scale-bars" title="Link to this heading">#</a></h2>
@@ -997,8 +998,8 @@ python<span class="w"> </span>-m<span class="w"> </span>samstudio
 <td><p>Right-click a stray fragment to remove it from the mask.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Edit &gt; Mask pusher</p></td>
-<td><p>Adjust a selected mask with a circular stroke.</p></td>
-<td><p>Set a 12 px radius and right-drag to carve into an edge.</p></td>
+<td><p>Move a selected mask edge in the direction of the drag.</p></td>
+<td><p>Set a 12 px radius and left-drag from outside toward the boundary to push it inward. Right-drag to carve.</p></td>
 </tr>
 <tr class="row-even"><td><p>Edit &gt; Add / Edit / Remove scale bar</p></td>
 <td><p>Preview and save a scale bar on the canvas.</p></td>
@@ -1203,10 +1204,10 @@ python<span class="w"> </span>-m<span class="w"> </span>samstudio
 <td><p>Edit existing object</p></td>
 </tr>
 <tr class="row-odd"><td><p>Delete</p></td>
-<td><p>Remove the highlighted mask part with Select mask part active. Otherwise remove eligible vertices in Edit or selected objects in the other modes.</p></td>
+<td><p>Exit Mask pusher, remove a highlighted mask part or eligible vertices in Edit, or delete selected objects in other modes.</p></td>
 </tr>
 <tr class="row-even"><td><p>Esc</p></td>
-<td><p>Cancel a mask-pusher stroke, clear a distance measurement, or cancel a filament connection, drawing, preview or running task.</p></td>
+<td><p>Exit Mask pusher and discard its active preview, clear a distance measurement, or cancel a filament connection, drawing, preview or running task.</p></td>
 </tr>
 <tr class="row-odd"><td><p>F</p></td>
 <td><p>Reset magnification / fit image</p></td>
@@ -1235,28 +1236,31 @@ python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>1.4.5.2</p></td>
+<tr class="row-even"><td><p>1.4.5.3</p></td>
+<td><p><strong>Mask pusher</strong> follows the left-drag direction for inward and outward edits. Esc, Delete vertex and tool changes exit the pusher.</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.4.5.2</p></td>
 <td><p>Reads the <strong>CUDA UMD Version</strong> field in newer NVIDIA driver output and distinguishes a missing version from an older driver. See <strong>Installation, Python and Conda GPU setup</strong>.</p></td>
 </tr>
-<tr class="row-odd"><td><p>1.4.5.1</p></td>
+<tr class="row-even"><td><p>1.4.5.1</p></td>
 <td><p>Keyboard deletion of selected pieces under <strong>Refine disconnected parts</strong>, candidate review under <strong>Whole-image exemplars, single objects and ROI</strong>, matching histogram ranges under <strong>Metric colors and plot groups</strong>, drawn links under <strong>Filaments and occluded fragments</strong>, and independent strokes under <strong>Mask pusher</strong>.</p></td>
 </tr>
-<tr class="row-even"><td><p>1.4.5</p></td>
+<tr class="row-odd"><td><p>1.4.5</p></td>
 <td><p>Two-column tools and toolbar visibility under <strong>Start, modes and workspace</strong>, disconnected-part cleanup under <strong>Refine disconnected parts</strong>, batch vertex deletion and adjustable closing distance under <strong>Manual geometry and Edit tools</strong>, and the adjustable push/carve brush under <strong>Mask pusher</strong>.</p></td>
 </tr>
-<tr class="row-odd"><td><p>1.4.4.2</p></td>
+<tr class="row-even"><td><p>1.4.4.2</p></td>
 <td><p><strong>Distance measurements</strong> covers calibrated line and curve rulers. Dialog fixes apply to <strong>Target size range</strong>, <strong>Scale bars</strong>, calibration and <strong>Metric colors and plot groups</strong>.</p></td>
 </tr>
-<tr class="row-even"><td><p>1.4.4.1</p></td>
+<tr class="row-odd"><td><p>1.4.4.1</p></td>
 <td><p><strong>Target size range</strong>, <strong>Scale bars</strong>, separate object and vertex deletion, <strong>Filaments and occluded fragments</strong>, <strong>Metric colors and plot groups</strong>, versioned help and <strong>Denoising parameters</strong>, and shared Windows Python bootstrap and version-checked offline preparation under <strong>Installation, Python and Conda GPU setup</strong>.</p></td>
 </tr>
-<tr class="row-odd"><td><p>1.4.4</p></td>
+<tr class="row-even"><td><p>1.4.4</p></td>
 <td><p><strong>Otsu + watershed</strong>, signal-scaled synthetic noise under <strong>Processing</strong>, original input and undoable discard under <strong>Opening images and native autosaves</strong>, ONNX diagnostics under <strong>Model manager and SAM3 ONNX</strong>, rotation reset, panel selection, LaMa controls under <strong>Cleaning and reversible image records</strong>, and local Python and offline CPU setup under <strong>Installation, Python and Conda GPU setup</strong>.</p></td>
 </tr>
-<tr class="row-even"><td><p>1.4.3</p></td>
+<tr class="row-odd"><td><p>1.4.3</p></td>
 <td><p><strong>Installation, Python and Conda GPU setup</strong> covers the CPU/GPU folder layout and in-place updates. <strong>Model manager and SAM3 ONNX</strong> covers public ONNX and native-model access. <strong>Whole-image exemplars, single objects and ROI</strong> covers selected-mask exemplars and scope behavior.</p></td>
 </tr>
-<tr class="row-odd"><td><p>1.4.2</p></td>
+<tr class="row-even"><td><p>1.4.2</p></td>
 <td><p>First stable version. See <strong>Excel pixel-size lookup</strong>, <strong>Whole-image exemplars, single objects and ROI</strong>, <strong>Processing</strong>, <strong>Denoising parameters</strong>, and the annotation, cleaning, measurement, export, recovery and plugin chapters.</p></td>
 </tr>
 </tbody>

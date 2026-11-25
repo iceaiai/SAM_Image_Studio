@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>GPU installation and updates &#8212; SAM Image Studio 1.4.5.2</title>
+    <title>GPU installation and updates &#8212; SAM Image Studio 1.4.5.3</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=e4ebd452"></script>
+    <script src="_static/documentation_options.js?v=80240416"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Folders, projects, and model files" href="documentation/files.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5.2" />
+  <meta name="docsearch:version" content="1.4.5.3" />
   </head>
   
   
@@ -417,13 +417,13 @@
 <p>Use a dedicated Conda environment with <strong>64-bit Python 3.12</strong>. The installer checks the driver, selects the matching Torch and ONNX Runtime dependencies, prepares missing Ubuntu Qt libraries and runs installation checks. Installing Ubuntu system libraries can require your sudo password.</p>
 <p><strong>Windows or Linux for SAM1/2 and SAM3 ONNX</strong></p>
 <p>On Windows, open <strong>Anaconda Prompt</strong> from the Start menu. Use <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/d</span></code> with the full path in double quotes. If extraction produced two folders with the same name, enter the inner folder that contains <code class="docutils literal notranslate"><span class="pre">GPU\install.py</span></code> and <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>. Replace the example path with your actual extracted folder.</p>
-<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span><span class="k">cd</span> /d <span class="s2">"C:\Work\AI Projects\SAM_Image_Studio-1.4.5.2\SAM_Image_Studio-1.4.5.2"</span>
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span><span class="k">cd</span> /d <span class="s2">"C:\Work\AI Projects\SAM_Image_Studio-1.4.5.3\SAM_Image_Studio-1.4.5.3"</span>
 <span class="k">dir</span> GPU\install.py
 nvidia-smi
 conda env list
 </pre></div>
 </div>
-<p>The driver may display <strong>CUDA Version</strong> or <strong>CUDA UMD Version</strong>. Both fields are supported in 1.4.5.2. For example, an RTX 3060 reporting CUDA UMD 13.3 uses the supported PyTorch CUDA 12.8 wheels. If 1.4.5.1 shows <code class="docutils literal notranslate"><span class="pre">cuda_runtime_max:</span> <span class="pre">null</span></code> with a numeric CUDA UMD version, update the application using step 4.</p>
+<p>The driver may display <strong>CUDA Version</strong> or <strong>CUDA UMD Version</strong>. Both fields are supported starting in 1.4.5.2. For example, an RTX 3060 reporting CUDA UMD 13.3 uses the supported PyTorch CUDA 12.8 wheels. If 1.4.5.1 shows <code class="docutils literal notranslate"><span class="pre">cuda_runtime_max:</span> <span class="pre">null</span></code> with a numeric CUDA UMD version, update the application using step 4.</p>
 <p>On Linux, use your initialized Conda terminal in the project root.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">list</span></code> shows your existing SAM Image Studio GPU environment, go to <strong>4. Update an existing installation</strong>. For a first installation, run these commands in order.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-gpu<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip<span class="w"> </span>-y
