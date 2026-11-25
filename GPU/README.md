@@ -3,6 +3,8 @@
 This folder collects GPU setup files. Run commands from the **repository root**,
 the folder containing `pyproject.toml`, `samstudio/` and `GPU/`.
 
+- **[GPU quick installation guide](QUICK_GUIDE.md)** for setup, first launch
+  and a test preview.
 - **[Full GPU installation guide](INSTALLATION.md)**: Windows, WSL2, native SAM3.1,
   local authentication, updates and troubleshooting.
 - `install.py`: hardware-aware installer; defaults to a new dedicated environment.

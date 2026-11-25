@@ -103,8 +103,11 @@ with sync_playwright() as p:
  assert 'conda activate sam-image-studio-gpu' in page.locator('article').inner_text()
  page.goto(base+'/installation-gpu.html',wait_until='networkidle')
  assert page.get_by_role('heading',name='1. Obtain the complete project first',exact=True).count()==1
- assert 'python GPU/install.py --current --sam3' in page.locator('article').inner_text()
- assert '{include}' not in page.locator('article').inner_text()
+ gpu_guide = page.locator('article')
+ for command in ['nvidia-smi', 'conda activate sam-image-studio-gpu',
+                 'python GPU/install.py --current --sam3', 'python -m samstudio.selftest --device cuda']:
+  assert command in gpu_guide.inner_text(), command
+ assert '{include}' not in gpu_guide.inner_text()
  page.goto(base+'/documentation/menus.html',wait_until='networkidle')
  assert page.get_by_role('heading',name='Processing',exact=True).count()==1
  assert page.get_by_text('Read pixel sizes from Excel…',exact=True).count()>=1
@@ -113,8 +116,14 @@ with sync_playwright() as p:
  assert page.get_by_text('Filament → Draw filament connection…',exact=True).count()==1
  page.goto(base+'/user-manual.html#denoising-parameters',wait_until='networkidle')
  assert f'This manual covers SAM Image Studio {app_version}' in page.locator('article').inner_text()
- for section in ['denoising-parameters','target-size-range','scale-bars','distance-measurements','refine-disconnected-parts','mask-pusher','filaments-and-occluded-fragments','metric-colors-and-plot-groups']:
+ for section in ['denoising-parameters', 'target-size-range', 'scale-bars', 'distance-measurements',
+                 'refine-disconnected-parts', 'mask-pusher', 'filaments-and-occluded-fragments',
+                 'metric-colors-and-plot-groups', 'offline-cpu-edition', 'nvidia-gpu-with-conda',
+                 'original-and-processed-input', 'model-manager-and-sam3-onnx', 'otsu-watershed',
+                 'cleaning-and-reversible-image-records', 'local-plugins']:
   assert page.locator(f'article section#{section}').count()==1,section
+ manual_versions = page.locator('article section#release-coverage tbody tr td:first-child').all_inner_texts()
+ assert manual_versions == release_versions, manual_versions
  page.goto(base+'/features/annotation.html',wait_until='networkidle')
  assert page.get_by_role('heading',name='Push a mask boundary',exact=True).count()==1
  assert page.get_by_role('heading',name='Clean up disconnected mask parts',exact=True).count()==1

@@ -77,7 +77,8 @@ separately when you choose **Load model…**.
 
 First download and extract the current complete source, or clone it using the
 shared steps above, and enter its root. All GPU setup entry points, dependency
-files and instructions are in **[GPU/](GPU/README.md)**.
+files and instructions are in the [GPU folder](GPU/README.md). Start with the
+[GPU quick installation guide](GPU/QUICK_GUIDE.md).
 Use a dedicated Anaconda/Conda environment. Native SAM3.1 requires Linux/WSL2;
 SAM1/2 and SAM3 ONNX also have a native Windows GPU installation path.
 Routine updates reuse the environment; uninstalling is unnecessary.
@@ -103,7 +104,7 @@ clipping. Native point/shape concepts use the separate SAM3.1 backend. See the
 
 | Folder | Contents |
 | --- | --- |
-| [`GPU/`](GPU/) | GPU README, installation/update guide, installer, launchers and optional GPU requirements. |
+| [`GPU/`](GPU/) | GPU quick guide, detailed installation guide, installer, launchers and optional GPU requirements. |
 | [`packaging/`](packaging/) | CPU launch/install/uninstall helpers, shared requirement files and Windows build recipe. |
 | [`samstudio/`](samstudio/) | Application package; keep this location for Python imports. |
 | [`docs/`](docs/) | Sphinx site source, illustrated guides, original manuals, release notes and validation records. |

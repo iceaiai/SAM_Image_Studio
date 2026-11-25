@@ -23,7 +23,7 @@ cd SAM_Image_Studio
 
 ZIP users do not need to run Git commands. Keep the complete source tree
 rather than downloading individual installers. The [CPU download list](https://iceaiai.github.io/SAM_Image_Studio/downloads.html)
-also describes the original v1.4.2 archive; use the current release for these GPU steps.
+also describes the 1.4.2 archive, the first stable version. Use the current release for these GPU steps.
 
 ## 2. Open the correct terminal and project folder
 

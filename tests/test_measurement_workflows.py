@@ -79,7 +79,17 @@ def test_help_menu_and_denoise_button_open_versioned_manual(window, qtbot):
     manual = window.findChild(UserManualDialog)
     qtbot.waitUntil(manual.isVisible)
     assert __version__ in manual.windowTitle()
-    assert manual.browser.toPlainText().startswith(f"SAM Image Studio {__version__} User Manual")
+    manual_text = manual.browser.toPlainText()
+    assert manual_text.startswith(f"SAM Image Studio {__version__} User Manual")
+    for chapter in (
+        "Offline CPU edition",
+        "NVIDIA GPU with Conda",
+        "Original and processed input",
+        "Model manager and SAM3 ONNX",
+        "Otsu + watershed",
+        "Release coverage",
+    ):
+        assert chapter in manual_text
     assert manual.browser.verticalScrollBar().value() == 0
     manual.close()
 

@@ -7,7 +7,7 @@ All application environments use **64-bit Python 3.12**.
 | What you want | Installation |
 | --- | --- |
 | CPU annotation, SAM1/2, public SAM3 ONNX text | CPU instructions below |
-| NVIDIA GPU, SAM1/2 or public SAM3 ONNX | [GPU / Anaconda guide](installation-gpu.md) |
+| NVIDIA GPU, SAM1/2 or public SAM3 ONNX | [GPU quick installation guide](installation-gpu.md) |
 | Native SAM3.1 text and positive/negative shapes | [Linux/WSL2 GPU guide](installation-gpu.md) |
 | Disconnected CPU, SAM1 + SAM2.1 Small/Base+ | [Offline source edition and preparation](installation-offline.md) |
 | Website development only | [Documentation build](development.md#build-the-sphinx-documentation) |
@@ -20,7 +20,7 @@ has a separate installation and gated weights; it is not an ONNX mode switch.
 CPU and GPU installations both need the complete project first. Choose **one**:
 
 - **Download:** open the [CPU version download list](downloads.md), click
-  **Download ZIP** for the latest standard edition, and extract the entire archive. The same source
+  **Standard ZIP** for the latest version, and extract the entire archive. The same source
   bundle includes optional GPU setup. Enter the extracted project folder containing
   `pyproject.toml`, `samstudio/`, `packaging/` and `GPU/`.
 - **Clone:** open a terminal in your chosen parent folder and run:
