@@ -412,26 +412,46 @@ for denoising method defaults and units.</p>
 <p>Manual adds shapes. Segment creates disposable model previews. Clean edits derived image pixels through retained cleaning records. Edit changes existing shapes, rotates images, scales masks, adds scale bars and configures filament measurements. Switching mode with pending shapes/prompts/previews asks Yes to add, No to discard or Cancel to remain. An incomplete polygon cannot be added.</p>
 <p>Example: open two TIFFs, select the first in Image files, draw one Manual rectangle, then switch to Edit and select it in Objects. The Objects, Groups and Image files docks keep the v1.4 layout and can be resized.</p>
 <p>The left drawing tools occupy two columns, including Point and Ellipse. Use <strong>View → Toolbars</strong> to show or hide Workflow, Image settings, Regions and image processing, and Segmentation prompts individually. The app remembers these choices when reopened.</p>
+<p>The <strong>Objects</strong>, <strong>Groups</strong> and <strong>Image files</strong> panels each have <strong>Select all</strong> and <strong>Deselect all</strong> for their own list. Select image files or individual frames to organize a plot group. Use the visibility and lock columns in Objects to control each object’s display and edit protection.</p>
 <p>Startup asks whether to reopen previous images. No leaves the workspace empty and preserves annotation files. Removing an image from the workspace saves its annotations and does not delete its source image or annotation files.</p>
 </section>
 <section id="installation-python-and-conda-gpu-setup">
 <h2>Installation, Python and Conda GPU setup<a class="headerlink" href="#installation-python-and-conda-gpu-setup" title="Link to this heading">#</a></h2>
-<p>Use 64-bit Python 3.12. Extract the complete release into a writable folder. On Windows run Install_CPU.bat, then Start_GUI.bat. The CPU environment is local to the application. Run Install_Python_3_12.bat if Python 3.12 is missing; other Python versions may remain installed.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">winget</span> <span class="n">install</span> <span class="o">--</span><span class="n">exact</span> <span class="o">--</span><span class="nb">id</span> <span class="n">Python</span><span class="o">.</span><span class="n">Python</span><span class="mf">.3.12</span> <span class="o">--</span><span class="n">architecture</span> <span class="n">x64</span> <span class="o">--</span><span class="n">scope</span> <span class="n">user</span> <span class="o">--</span><span class="n">source</span> <span class="n">winget</span>
+<p>Download and extract the complete release into a writable folder, or clone the repository. The project root contains <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, <code class="docutils literal notranslate"><span class="pre">samstudio/</span></code>, <code class="docutils literal notranslate"><span class="pre">packaging/</span></code> and <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>. Run terminal commands from that folder. All installation routes use 64-bit Python 3.12.</p>
+<section id="cpu-windows-and-linux">
+<h3>CPU, Windows and Linux<a class="headerlink" href="#cpu-windows-and-linux" title="Link to this heading">#</a></h3>
+<p>On Windows, open <strong>packaging</strong>, run <strong>Install_CPU.bat</strong> and wait for the self-test. Double-click <strong>Start_GUI.bat</strong> to launch.</p>
+<p>On Linux, run the following commands. A distribution-provided <code class="docutils literal notranslate"><span class="pre">python3</span></code> launches the bootstrap. On Ubuntu and WSL, installing missing Qt/font/XCB libraries can require your sudo password.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>packaging/install_cpu.sh
+bash<span class="w"> </span>packaging/start_gui.sh
 </pre></div>
 </div>
-<p>For a GPU, install Miniforge/Conda, open its prompt, change to the extracted application folder and inspect the detected NVIDIA devices. GPU execution is permitted only inside Conda. The installer reads driver capability and GPU architecture; it does not install or change drivers. AMD/Intel hardware uses the CPU path in this release.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">install_conda_gpu</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">inspect</span>
-<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">install_conda_gpu</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">name</span> <span class="n">sam</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">studio</span><span class="o">-</span><span class="n">gpu</span> <span class="o">--</span><span class="n">dry</span><span class="o">-</span><span class="n">run</span>
-<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">install_conda_gpu</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">name</span> <span class="n">sam</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">studio</span><span class="o">-</span><span class="n">gpu</span>
-<span class="n">conda</span> <span class="n">activate</span> <span class="n">sam</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">studio</span><span class="o">-</span><span class="n">gpu</span>
-<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">samstudio</span>
+<p>The helpers select a compatible Python or prepare a verified runtime under <code class="docutils literal notranslate"><span class="pre">.python312/</span></code> (PSF Python from NuGet on Windows and python-build-standalone on Linux x86-64). On other CPU architectures, provide an existing compatible Python 3.12. Packages go into the project-local <code class="docutils literal notranslate"><span class="pre">.venv</span></code>. To use an existing dedicated Python 3.12 environment, activate it and run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">scripts/install_environment.py</span> <span class="pre">--backend</span> <span class="pre">cpu</span> <span class="pre">--current</span></code>, then <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">samstudio</span></code>. Model weights download separately when loaded.</p>
+</section>
+<section id="offline-cpu-edition">
+<h3>Offline CPU edition<a class="headerlink" href="#offline-cpu-edition" title="Link to this heading">#</a></h3>
+<p>Download the <strong>Offline CPU ZIP</strong> and extract it on an online computer matching the target OS and architecture. For Ubuntu package preparation, use the same Ubuntu release. Run <code class="docutils literal notranslate"><span class="pre">offline\Prepare_Offline.bat</span></code> on Windows or <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">offline/prepare_offline.sh</span></code> on Linux. Wait for <code class="docutils literal notranslate"><span class="pre">offline-cache/READY</span></code> and transfer the prepared project folder, including the complete cache, to the offline computer. The cache contains the verified runtime, dependency wheels, available system packages and SAM1 ViT-B / SAM2.1 Small and Base+ checkpoints. The cache manifest records the app version. Use the matching source version and prepare its cache again for an update.</p>
+<p>Run the same CPU install and launch commands on the target. They recognize the prepared cache, verify it and install into <code class="docutils literal notranslate"><span class="pre">.venv-offline</span></code>. In <strong>Load model…</strong> choose one of the bundled variants. The offline edition supports those three variants. Use the regular edition for text-model downloads and GPU installation.</p>
+</section>
+<section id="nvidia-gpu-with-conda">
+<h3>NVIDIA GPU with Conda<a class="headerlink" href="#nvidia-gpu-with-conda" title="Link to this heading">#</a></h3>
+<p>Open a Miniforge or Anaconda terminal and run <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> to check driver visibility. Use Linux Conda inside Linux/WSL2, with a working WSLg display on WSL2. WSLg startup selects X11 when the display is available and no Qt platform is explicitly set. For SAM1/2 and SAM3 ONNX on Windows or Linux, run the following commands from the project root.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-gpu<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip<span class="w"> </span>-y
+conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-gpu
+python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current
+python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </pre></div>
 </div>
-<p>If Python is not available in the initial prompt, use conda run -n base python for the installer command. Install_GPU_Conda.bat does this on Windows. A custom environment name must also be used when activating or running it. Start_GUI_GPU.bat targets the default environment name.</p>
-<p>For an existing dedicated environment: conda create -n sam-image-studio-gpu python=3.12 pip, then conda activate sam-image-studio-gpu, then python scripts/install_conda_gpu.py –current. Installation into the Conda base environment is rejected. The setup selects the supported PyTorch 2.7.1 CUDA 11.8, 12.6 or 12.8 wheel index from driver/architecture information.</p>
-<p>SAM3 CPU is not advertised as a verified backend. Optional native SAM3 uses Linux/WSL2 Conda, CUDA 12.6 or later and approved Hugging Face checkpoint access. Use –sam3 with the installer in Linux/WSL2. Native Windows Conda is supported by the setup path for SAM1/2; native SAM3 Windows inference is not verified. Access to gated model weights remains the user’s choice.</p>
-<p>CPU inference and native Qt events are tested on Linux. This machine has no NVIDIA GPU: simulated GPU reports test setup decisions, not CUDA execution. Run a real local model preview and acceptance check after GPU installation. See GPU_CONDA_GUIDE.md for commands, troubleshooting and environment removal.</p>
+<p>For native SAM3 and SAM3.1 on Linux/WSL2, use an NVIDIA driver with CUDA 12.6 or newer capability and create the dedicated native-model environment.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-sam3<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip<span class="w"> </span>-y
+conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-sam3
+python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current<span class="w"> </span>--sam3
+python<span class="w"> </span>-m<span class="w"> </span>samstudio
+</pre></div>
+</div>
+<p>On native Windows, <code class="docutils literal notranslate"><span class="pre">GPU\Install_GPU_Conda.bat</span></code> and <code class="docutils literal notranslate"><span class="pre">GPU\Start_GUI_GPU.bat</span></code> use the default <code class="docutils literal notranslate"><span class="pre">sam-image-studio-gpu</span></code> environment. Use a dedicated environment for GPU execution. The installer uses driver and hardware capabilities to select the runtime. Try <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">GPU/install.py</span> <span class="pre">--inspect</span></code> for detected devices or add <code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> to the install command to check its plan. For detailed instructions in the source folder, open <strong>GPU/QUICK_GUIDE.md</strong> or <strong>GPU/INSTALLATION.md</strong>.</p>
+<p>After installation, choose the model and <strong>NVIDIA CUDA GPU (Conda)</strong> in <strong>Load model…</strong>. Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">samstudio.selftest</span> <span class="pre">--device</span> <span class="pre">cuda</span></code> and try a model preview on your own machine. To update, obtain the new complete source, activate your existing dedicated environment where applicable, and rerun the corresponding installer. Preserve native projects and model caches when replacing a source folder.</p>
+</section>
 </section>
 <section id="opening-images-and-native-autosaves">
 <h2>Opening images and native autosaves<a class="headerlink" href="#opening-images-and-native-autosaves" title="Link to this heading">#</a></h2>
@@ -439,6 +459,11 @@ for denoising method defaults and units.</p>
 <p>The v1.4 annotation workflow and COCO export representation are retained. A matching native SAM_Annotations project restores objects, prompts, groups, calibration, exact contours, original/derived pixels, cleaning history and rotation. Native schema 6 stores scale bars, filament connections, and per-image measurement color settings alongside exemplar prompts and retained crops. It reads native schemas 1–5.</p>
 <p>Committed operations autosave atomically into a .sam.json project, with a previous valid backup. Save project now forces a save; Choose project folder selects another writable destination. Open project JSON can locate its source/frame after moving a project. Preserve the native project for complete editable recovery. Area-mask exports omit point annotations and report their count.</p>
 <p>Example: draw and accept two masks, close the image, then reopen the same TIFF. Its native project restores those masks. Removing selected entries from Image files saves the native projects and only removes them from the workspace. Source images and annotation files remain. At startup, choose Yes to reopen the previous images or No to start empty.</p>
+<section id="original-and-processed-input">
+<h3>Original and processed input<a class="headerlink" href="#original-and-processed-input" title="Link to this heading">#</a></h3>
+<p>Newly opened or reopened images start with the unprocessed pixels in the current orientation. Toggle <strong>View / infer from processed image</strong> to change both the displayed pixels and the input to segmentation. The app remembers your choice per frame during the session. Applying a processing operation can select the processed view automatically. Turn the checkbox off to compare against the original while keeping the saved processing.</p>
+<p>Use <strong>Forget processed image…</strong> and confirm to discard this image’s cleaning and processing results and retained pixel snapshots. This preserves foreground annotations and the current orientation. Use <strong>Undo</strong> to recover the discarded state.</p>
+</section>
 </section>
 <section id="excel-pixel-size-lookup">
 <h2>Excel pixel-size lookup<a class="headerlink" href="#excel-pixel-size-lookup" title="Link to this heading">#</a></h2>
@@ -468,9 +493,90 @@ for denoising method defaults and units.</p>
 <h2>Automatic grid and text prompts<a class="headerlink" href="#automatic-grid-and-text-prompts" title="Link to this heading">#</a></h2>
 <p>Automatic grid, unannotated only starts when selected in Segment with a loaded model, when entering Segment with that selection, or when the model finishes loading in that state. Run preview also starts it explicitly. It ignores any text field and samples unannotated pixels with native SAM point prompts.</p>
 <p>The status bar shows prompt counts and the number of candidate masks. After filtering, the preview reports the resulting count. For zero masks, review the score, target size and grid density. Larger grids cost more time, especially on CPU. Cancellation preserves accepted annotations.</p>
-<p>Text prompting has its own Run text segmentation button, in addition to the shared Run preview control. Enter in the text field also runs it. SAM2/2.1 resolve phrases through Grounding DINO Tiny detections and segment those boxes with SAM; SAM3 and SAM3.1 have native text paths. SAM1 hides text controls.</p>
+<p>Text prompting has its own <strong>Run text segmentation</strong> button, in addition to the shared <strong>Run preview</strong> control. Enter in the text field also runs it. SAM2/2.1 resolves phrases through Grounding DINO Tiny detections and segments those boxes with SAM. Native SAM3 and SAM3.1 have their own text paths. SAM3 ONNX has a public text-only path. The prompt controls identify the loaded model family. SAM1 hides text controls.</p>
 <p>Aliases map complete phrases and are case-insensitive. Example: nanoparticle -&gt; big dots, powder -&gt; big dots. Aliases can chain; cycles/duplicate conflicting names are rejected. They replace input phrases and do not train the detector. The effective phrase appears in the tooltip and accepted-mask provenance.</p>
-<p>Text does not establish scientific detection accuracy. The verified public text integration image contains vehicles, not nanoparticles. Use the review preview and compare against the acquired image.</p>
+<p>Use <strong>Review…</strong> to compare the candidates against acquired pixels. For whole-image exemplar search, selected accepted masks can also serve as examples while their own annotations remain protected.</p>
+</section>
+<section id="model-manager-and-sam3-onnx">
+<h2>Model manager and SAM3 ONNX<a class="headerlink" href="#model-manager-and-sam3-onnx" title="Link to this heading">#</a></h2>
+<p>Use <strong>Load model…</strong> or <strong>Models → Model manager…</strong> to choose the family, variant, checkpoint and device. A local checkpoint must match the chosen variant. SAM1/2 supports native instance prompts and automatic grid. Native SAM3 uses shared image features for its instance and ROI path. Native SAM3.1 supports text and positive or negative shape concepts using its multiplex predictor. Native SAM3/3.1 uses CUDA on Linux/WSL2 in this distribution.</p>
+<p>For native SAM3 and SAM3.1, obtain approved Hugging Face access for the selected family. Use your existing local Hugging Face login, paste an approved read token into the optional masked field, or choose an authentic matching local checkpoint. The app does not save the optional field. SAM3.1 uses <code class="docutils literal notranslate"><span class="pre">sam3.1_multiplex.pt</span></code>.</p>
+<section id="run-public-sam3-onnx-text-segmentation">
+<h3>Run public SAM3 ONNX text segmentation<a class="headerlink" href="#run-public-sam3-onnx-text-segmentation" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Choose <strong>SAM3 ONNX → ViT-H · text prompts</strong> and CPU or a configured CUDA device. CUDA ONNX Runtime requires CUDA 12.x and cuDNN 9. The legacy CUDA 11.8 plan uses CPU for ONNX and CUDA for SAM1/2.</p></li>
+<li><p>Leave the model folder blank to download and verify the files, or choose <strong>Browse ONNX model folder…</strong>. The public weights need no Hugging Face login. A local folder needs the three ONNX graphs (<code class="docutils literal notranslate"><span class="pre">sam3_image_encoder.onnx</span></code>, <code class="docutils literal notranslate"><span class="pre">sam3_language_encoder.onnx</span></code>, <code class="docutils literal notranslate"><span class="pre">sam3_decoder.onnx</span></code>) and their three <code class="docutils literal notranslate"><span class="pre">.onnx.data</span></code> files, about 3.53 GiB in total. On a disconnected machine with a standard installation, also supply <code class="docutils literal notranslate"><span class="pre">bpe_simple_vocab_16e6.txt.gz</span></code> or retain the verified tokenizer cache. Downloads resume and verified model and tokenizer files are reused.</p></li>
+<li><p>In <strong>Segment</strong>, select <strong>Prompt project, whole image</strong>, enter a short visual phrase such as <code class="docutils literal notranslate"><span class="pre">white</span> <span class="pre">dots</span></code> and choose <strong>Run text segmentation</strong>. For ROI inference, select an area tool and <strong>Inside ROI only</strong>, draw the region, then run the text. The encoder uses whole-image context and the app clips the result to the exact ROI. The app also applies inverse-region limits, score and size filters, and protection of accepted annotations.</p></li>
+<li><p>Inspect <strong>Preview: N masks</strong> and its tooltip for raw model proposals, masks after the score threshold and eligible preview masks. Choose <strong>Review…</strong>, then <strong>Accept masks</strong>. An empty preview with zero raw proposals calls for another visual phrase. If raw proposals exist, check the score, size range, ROI and overlapping annotations.</p></li>
+</ol>
+<p>The export supports text, including aliases, with up to 30 text tokens plus start/end tokens. Clear any old point or shape examples before running it. Use SAM1/2 or the appropriate native SAM3 family for geometric instance prompts, shape concepts or grid modes. ONNX caches image features while pixels stay the same and text features for repeated phrases.</p>
+<p>On the supplied images in <code class="docutils literal notranslate"><span class="pre">examples/user_samples/</span></code>, <strong>0058-Ceta_190_kx_1615.emd</strong> gave 52 raw proposals for <code class="docutils literal notranslate"><span class="pre">black</span> <span class="pre">dots</span></code>. <strong>STEM_image.tif</strong> gave 16 for <code class="docutils literal notranslate"><span class="pre">white</span> <span class="pre">dots</span></code> and zero for <code class="docutils literal notranslate"><span class="pre">particles</span></code>. These examples demonstrate how wording and filters affect a preview.</p>
+</section>
+</section>
+<section id="otsu-watershed">
+<h2>Otsu + watershed<a class="headerlink" href="#otsu-watershed" title="Link to this heading">#</a></h2>
+<p>Choose <strong>Models → Otsu + watershed…</strong> to separate bright or dark objects and split touching particles without loading a model. Select a destination group. A current region limits the output to that region. Clear it to process the whole image. Accepted and protected annotations are excluded. The target size range can also filter the results.</p>
+<p>Set parameters or choose <strong>Restore defaults</strong>. Each <strong>?</strong> explains the control. Click <strong>Preview</strong> to generate provisional masks and see their count. Use <strong>Review…</strong> if you want to inspect individual candidates, then <strong>Accept masks</strong> to save them or <strong>Cancel / clear</strong> to discard them. Acceptance records the parameters with the objects.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Control</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>What to adjust</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Polarity</p></td>
+<td><p>Auto</p></td>
+<td><p>Set bright or dark explicitly if automatic background estimation gives the wrong foreground.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Gaussian sigma</p></td>
+<td><p>1.5 px</p></td>
+<td><p>Increase pre-threshold smoothing to suppress noise. Check small or touching objects for merging.</p></td>
+</tr>
+<tr class="row-even"><td><p>Threshold offset</p></td>
+<td><p>0</p></td>
+<td><p>Positive offsets shrink bright foreground and expand dark foreground.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Minimum area</p></td>
+<td><p>20 px²</p></td>
+<td><p>Remove small components and final fragments.</p></td>
+</tr>
+<tr class="row-even"><td><p>Opening radius</p></td>
+<td><p>0 px</p></td>
+<td><p>Remove speckles or thin bridges before splitting.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fill holes</p></td>
+<td><p>On</p></td>
+<td><p>Turn off to preserve cavities in the mask.</p></td>
+</tr>
+<tr class="row-even"><td><p>Seed distance</p></td>
+<td><p>12 px</p></td>
+<td><p>Increase spacing to reduce excess splitting. Decrease it for close centers.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Seed height</p></td>
+<td><p>2 px</p></td>
+<td><p>Increase to reject shallow distance peaks.</p></td>
+</tr>
+<tr class="row-even"><td><p>Distance sigma</p></td>
+<td><p>1 px</p></td>
+<td><p>Smooth the distance map before finding peaks.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Compactness</p></td>
+<td><p>0</p></td>
+<td><p>Increase for more regular shapes. Compare the result on elongated objects.</p></td>
+</tr>
+<tr class="row-even"><td><p>Watershed line</p></td>
+<td><p>Off</p></td>
+<td><p>Turn on to leave a one-pixel boundary between adjacent labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Maximum objects</p></td>
+<td><p>300</p></td>
+<td><p>Limit output to this many objects, largest first.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>On the supplied EMD, try dark polarity, sigma 2, minimum area 300 px² and seed distance 35 px. For the supplied STEM TIFF, try bright polarity, sigma 2, minimum area 1,000 px² and seed distance 100 px.</p>
 </section>
 <section id="manual-geometry-and-edit-tools">
 <h2>Manual geometry and Edit tools<a class="headerlink" href="#manual-geometry-and-edit-tools" title="Link to this heading">#</a></h2>
@@ -478,6 +584,7 @@ for denoising method defaults and units.</p>
 <p>In Edit, select an object on the canvas or in the list and drag its existing handles. To delete vertices, choose <strong>Vertices per delete</strong> in the Image settings toolbar and set <strong>Vertex radius (px)</strong>. The radius defaults to 20 image pixels and the count defaults to one. Click near the target contour to highlight the closest eligible vertices in amber, then press <strong>Delete vertex</strong> or <strong>Del</strong>. Each press removes up to ten highlighted vertices from one contour, leaves at least three, and can be undone in one step. These settings are also in the Edit menu. Use the separate <strong>Delete objects</strong> button to remove entire annotations.</p>
 <p>Fill holes and Smooth edges open previews. Smooth edges retains editable cubic curves rather than merely changing a jagged display. Batch changes are one undoable operation. Mask sizes and statistics update after applying changes.</p>
 <p>Rotation offers angle presets and arbitrary angles. No padding keeps original dimensions and may crop corners. Rectangle or square padding enlarges the canvas; choose black, neighbor, LaMa or a manually selected background-group fill. Review the result before Apply. Pixels, masks, cleaning records and the physical coordinate basis rotate together. Paste/remove retained crop snapshots before rotating.</p>
+<p><strong>Edit → Reset rotation…</strong> restores the saved image and annotations from immediately before the first rotation. The confirmation also covers changes made after that snapshot. Use <strong>Undo</strong> to recover the pre-reset state.</p>
 <p>Scale masks / savepoints scales selected unlocked objects or all area objects in their groups, uniformly about each centroid. Enter a factor or use the slider. Clipping at image boundaries and overlaps can occur. Original geometry and result snapshots can be temporary in-memory list entries or local folders with exact JSON and binary masks. Temporary savepoints do not enter project files; local snapshots can be restored only when source/rotation coordinates match.</p>
 </section>
 <section id="refine-disconnected-parts">
@@ -504,6 +611,34 @@ for denoising method defaults and units.</p>
 <h2>Cleaning and reversible image records<a class="headerlink" href="#cleaning-and-reversible-image-records" title="Link to this heading">#</a></h2>
 <p>In Clean mode select an area, draw a region or use the brush. Remove selected image area stores a visible cleaning object. Alternatively right-click an unlocked area object and choose Delete for cleaning. Choose neighbor interpolation, LaMa or manually selected background patches to fill removed pixels.</p>
 <p>Background-patch sources must be manually added area objects in one explicitly selected group. Any group name is allowed. Sources may be polygon, ellipse or rectangle regions; pixels outside irregular masks are not sampled. Sources intersecting already-modified image pixels are rejected.</p>
+<p><strong>Fill with LaMa…</strong> uses a compatible checkpoint that you supply. Its controls prepare the model input and blend the output within the removal region. The defaults are all zero.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Control</p></th>
+<th class="head"><p>Range</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Mask dilation</p></td>
+<td><p>0–64 px</p></td>
+<td><p>Expand the mask the model sees. Try 1–4 px at contaminated edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Context margin</p></td>
+<td><p>0–2,048 px</p></td>
+<td><p>Use the full frame at 0. Set a margin for local processing around the target.</p></td>
+</tr>
+<tr class="row-even"><td><p>Max side</p></td>
+<td><p>0–8,192 px</p></td>
+<td><p>Keep native resolution at 0. Setting a maximum can reduce memory use.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Blend width</p></td>
+<td><p>0–128 px</p></td>
+<td><p>Blend inside the target boundary. Check whether the blend retains contamination near the edge.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>Preview the fill, then Apply or Cancel. Only the target pixels change. Show cleaning regions controls display. Delete a cleaning object to restore its footprint while replaying remaining edits. Native JSON and COCO cleaning extensions keep footprints, replacement pixels, methods and restoration history separately from foreground annotations.</p>
 <p>Example: remove a contamination spot, fill from clean support patches, then delete that cleaning record if the fill is unsuitable. A separate denoising operation remains replayable. Derived-image saving never overwrites the acquired source.</p>
 </section>
@@ -554,10 +689,10 @@ for denoising method defaults and units.</p>
 <td><p>Odd kernel 5 and sigma 1. The kernel width and standard deviation are independently selectable.</p></td>
 </tr>
 <tr class="row-even"><td><p>Gaussian noise</p></td>
-<td><p>Sigma 0.03 of the processing intensity range and an explicit seed. Same seed/settings reproduce the same added noise.</p></td>
+<td><p>Sigma 0.03 of the observed signal span by default. Choose storage span or absolute data units when needed.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Poisson noise</p></td>
-<td><p>Peak counts 50 and a seed. Lower counts increase relative shot noise; this is an intensity model, not detector calibration.</p></td>
+<td><p>Peak counts 1,000 and strength 1 by default. Lower counts increase relative shot noise.</p></td>
 </tr>
 <tr class="row-even"><td><p>Salt and pepper noise</p></td>
 <td><p>Amount 0.01 and a seed. Creates synthetic impulse noise for algorithm comparisons.</p></td>
@@ -565,8 +700,9 @@ for denoising method defaults and units.</p>
 </tbody>
 </table>
 </div>
-<p>Parameters that use intensity fractions operate on normalized real pixels: unsigned integers use their full type range; signed integers use their type range; floating images already in [0,1] retain that range; other floating images use their observed minimum/maximum. Integer results are rounded/clipped back to their original type. RGB channels are processed spatially and independently. Alpha and pixels outside the target remain exact.</p>
-<p>Each control has a ? button and a side-panel explanation with its default, allowed range/options and suggested starting values. Restore defaults resets the current method. Help &gt; Denoising parameter guide opens the separate complete parameter PDF.</p>
+<p>Restoration parameters in intensity fractions use normalized data. Integers use the storage range. Floating-point images already in [0,1] keep that range, and other floating-point images use their observed minimum and maximum. Integer results are rounded and clipped to their original type. RGB channels are processed spatially and independently. Alpha and pixels outside the target remain exact.</p>
+<p>Gaussian and Poisson noise default to <code class="docutils literal notranslate"><span class="pre">image_range</span></code>, the 0.5–99.5 percentile span of the observed signal. They add a sampled residual to the original data and preserve the baseline before clipping. Before and after previews use a common intensity scale from the original. Keep the seed fixed to reproduce the same noise when comparing methods.</p>
+<p>Each control has a <strong>?</strong> button and a side-panel explanation of its default, allowed values and suggested starting settings. <strong>Restore defaults</strong> resets the current method. Choose <strong>Processing → Denoise… → Denoising parameters</strong> to open the corresponding chapter directly. <strong>Help → User Manual</strong> opens the full manual and displays the running app version.</p>
 <p>DCT and iterative TV offer Denoise and Reconstruct tasks. Denoise uses all input pixels with a relaxed fidelity update; it never hard-replaces all pixels with the original. Reconstruct simulates missing pixels from the chosen input. The Notebook reconstruction preset selects random 10% sampling without replacement, seed 7, nearest initialization, 40 L2 iterations and processing max side 256. With a resolution cap, output is interpolated back onto the original grid. Native-resolution processing is the ordinary default. The preset does not force a grayscale or integer source into RGB; applying the same spatial operation to each RGB channel matches the notebook channel handling.</p>
 <p>For Noise2Void/N2V2, Train fits and saves a model, then previews prediction. Start with the supplied defaults, suitable patch sizes and representative regions. A one-epoch trial only verifies execution. Models and checkpoints are saved before image Apply, and remain if you cancel the preview or undo the image operation. Empty output directory creates a unique application-data model directory, reported in progress/provenance. Predict accepts a compatible CAREamics checkpoint or the saved folder. Use only trusted checkpoint files. CPU is supported; CUDA requires a dedicated Conda environment. Training runs in a worker with cancellation between batches. Cancel for BM3D/other native solvers takes effect after the current native call returns.</p>
 <p>Denoising can change real TEM/SEM features, including lattice contrast and boundaries. Compare against acquired pixels and retain the method/parameters. The software does not claim one default is optimal for every specimen or detector.</p>
@@ -694,6 +830,21 @@ for denoising method defaults and units.</p>
 <tr class="row-odd"><td><p>wall_uniformity</p></td>
 <td><p>Coefficient of variation of sampled wall thickness; lower is more uniform.</p></td>
 </tr>
+<tr class="row-even"><td><p>Filament visible length</p></td>
+<td><p>Sum of lengths along visible centerlines.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Filament estimated gap length</p></td>
+<td><p>Length of the user-drawn or endpoint connection paths across gaps.</p></td>
+</tr>
+<tr class="row-even"><td><p>Filament estimated total length</p></td>
+<td><p>Visible length plus estimated gap length.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Filament mean, minimum and maximum width</p></td>
+<td><p>Summary of local perpendicular cross-sections through visible masks.</p></td>
+</tr>
+<tr class="row-even"><td><p>Filament width standard deviation and variance</p></td>
+<td><p>Spread of the visible widths, in length units and squared length units, respectively.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -704,6 +855,7 @@ for denoising method defaults and units.</p>
 <p>To color masks in one image, choose <strong>Edit → Assign mask colors… → By measurement</strong>. Pick a metric such as projected area, equivalent diameter or perimeter, the measurement unit and the number of colors. The default is 20 and you can choose up to 256. The palette spans the eligible values in that image. Objects without a value in the chosen units keep their base colors.</p>
 <p>To share a color scale across several images, Ctrl+click their file or frame rows in <strong>Image files</strong>, then choose <strong>Create…</strong> next to <strong>Plot group</strong>. Name the group, confirm the included frames and choose the color metric, units and color count. Selecting a file row includes all its frames. The active group uses a single scale across its open member frames. Other images keep their own colors. Reopen any closed group members to include them in the scale and plots. <strong>Edit…</strong> beside the group selector changes its membership or palette.</p>
 <p>In <strong>Plot Object Statistics…</strong>, choose <strong>Plot group: name</strong> under <strong>Images</strong>. This uses that group for both the plot and the canvas palette. Select <strong>Object points (mask colors)</strong> to plot one point per eligible object in its exact mask color. Change the plotted metrics independently of the color metric, with up to nine checked at once. Use <strong>Histogram</strong> for a distribution, or export all or selected statistics. The CSV includes the mask color and the fragment IDs for filaments.</p>
+<p>Choose <strong>µm</strong> in the <strong>Units</strong> drop-down at the top of the plot dialog. Lengths display in µm, and projected area and width variance display in µm². The image needs physical calibration, set in <strong>Statistics → Edit image calibration…</strong> or loaded through image metadata or Excel lookup.</p>
 <p>Select <strong>Histogram (mask colors)</strong> to color columns. When the plotted metric uses the same measurement and scale as the masks, the histogram uses the palette ranges and their exact colors. Compatible physical units convert automatically, such as nm² to µm². With a different metric or multiple independent color scales, each bin stacks counts in the objects’ mask colors. <strong>Bins</strong> controls those other ranges.</p>
 <p>Example: group three images from one condition, color by projected area in nm², then plot perimeter, ECD and circularity. A given mask keeps its area color in all three plots. <strong>Save masks… → Color by object</strong> uses those same displayed object colors in its preview and output.</p>
 </section>
@@ -714,6 +866,10 @@ for denoising method defaults and units.</p>
 <p>Image-only export independently saves the original acquired TIFF, the current processed TIFF or both. Original means the exact acquired unrotated frame. Processed includes rotation/cleaning/denoising. Dataset and overlay uncleaned images use current orientation so annotations remain aligned.</p>
 <p>COCO saves exact RLE masks, attributes, categories, physical calibration and separate cleaning/background extensions. Standard COCO area stays in pixel squared; physical values are separate. YOLO polygons cannot exactly encode holes/disconnected masks; reject or explicitly accept reviewed lossy conversion and inspect its report. Create independent training/validation splits before training.</p>
 <p>Example: export an exact COCO dataset with both uncleaned and processed image copies, then save a transparent colored overlay for inspection. Keep native projects for complete editable recovery.</p>
+</section>
+<section id="local-plugins">
+<h2>Local plugins<a class="headerlink" href="#local-plugins" title="Link to this heading">#</a></h2>
+<p>Use <strong>Plugin → Install local plugin folder…</strong> and select a trusted folder containing <code class="docutils literal notranslate"><span class="pre">plugin.json</span></code>. The installed plugin is enabled and its registered actions or processors appear in <strong>Plugin</strong>. A processor uses the same parameter, target, preview and Apply workflow as built-in processing. Use <strong>Manage / reload plugins…</strong>, change the enabled checkboxes, then choose <strong>Apply / reload</strong>. Select an entry and choose <strong>Remove plugin</strong> to uninstall it. The plugin menu also opens <strong>For Developer (PDF)</strong> for implementation and the U-Net example.</p>
 </section>
 <section id="menu-and-control-reference">
 <h2>Menu and control reference<a class="headerlink" href="#menu-and-control-reference" title="Link to this heading">#</a></h2>
@@ -745,6 +901,14 @@ for denoising method defaults and units.</p>
 <tr class="row-even"><td><p>Image files &gt; Remove selected images</p></td>
 <td><p>Remove selected entries, including all frames beneath selected file entries. Annotation files remain.</p></td>
 <td><p>Select two source files and remove them without deleting either image or JSON.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Objects, Groups and Image files &gt; Select all / Deselect all</p></td>
+<td><p>Change the selection in one panel.</p></td>
+<td><p>Select all open image rows for a plot group.</p></td>
+</tr>
+<tr class="row-even"><td><p>Image files &gt; Plot group &gt; Create / Edit</p></td>
+<td><p>Choose the member frames and a shared measurement palette.</p></td>
+<td><p>Color three calibrated images by perimeter on the same scale.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Edit &gt; Undo / Redo</p></td>
 <td><p>Reverse and reapply a committed operation. Large toolbar controls are available.</p></td>
@@ -838,13 +1002,21 @@ for denoising method defaults and units.</p>
 <td><p>Mark a group as Filament and connect visible ends across gaps.</p></td>
 <td><p>Link two masks of a bent fiber separated by an occlusion.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Fill holes / Smooth edges</p></td>
+<tr class="row-even"><td><p>Edit &gt; Filament &gt; Draw filament connection</p></td>
+<td><p>Join selected visible fragments with a path drawn across their gap.</p></td>
+<td><p>Drag in the direction the fiber follows over an obstruction.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edit &gt; Fill holes / Smooth edges</p></td>
 <td><p>Preview exact hole filling or smooth editable cubic contours.</p></td>
 <td><p>Smooth a jagged outline and compare the area before Apply.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Edit &gt; Rotate image</p></td>
+<tr class="row-even"><td><p>Edit &gt; Rotate image</p></td>
 <td><p>Rotate pixels and annotations together; optionally enlarge to a rectangle/square and fill padding.</p></td>
 <td><p>Rotate 30 degrees, select square padding and neighbor fill, then inspect the preview.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edit &gt; Reset rotation</p></td>
+<td><p>Restore image and annotation state saved before the first rotation.</p></td>
+<td><p>Recover the original geometry and use Undo if you need the rotated edits again.</p></td>
 </tr>
 <tr class="row-even"><td><p>Edit &gt; Scale masks / savepoints</p></td>
 <td><p>Uniformly scale selected masks or a group about each object centroid.</p></td>
@@ -866,89 +1038,105 @@ for denoising method defaults and units.</p>
 <td><p>Map complete phrases to an effective prompt, without retraining.</p></td>
 <td><p>Map nanoparticle and powder to big dots; the resolved phrase appears in the tooltip.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Run preview / Review / Accept masks / Cancel</p></td>
+<tr class="row-odd"><td><p>Models &gt; Otsu + watershed</p></td>
+<td><p>Preview particle masks from image intensity and distance peaks.</p></td>
+<td><p>Choose dark polarity and tune seed distance to split touching EMD particles.</p></td>
+</tr>
+<tr class="row-even"><td><p>Run preview / Review / Accept masks / Cancel</p></td>
 <td><p>Generate, inspect, commit or clear pending masks.</p></td>
 <td><p>Review one candidate up close before accepting the preview.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Remove selected image area</p></td>
+<tr class="row-odd"><td><p>View / infer from processed image</p></td>
+<td><p>Select original or processed pixels for display and inference.</p></td>
+<td><p>Turn it off to test segmentation using original pixels.</p></td>
+</tr>
+<tr class="row-even"><td><p>Forget processed image</p></td>
+<td><p>Discard processing and crop snapshots in one undoable action.</p></td>
+<td><p>Clear test denoising while keeping the annotations and current orientation.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cleaning &gt; Remove selected image area</p></td>
 <td><p>Retain removals as visible, reversible cleaning objects.</p></td>
 <td><p>Remove a contamination spot, then choose a fill method.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Object context &gt; Delete for cleaning</p></td>
+<tr class="row-even"><td><p>Object context &gt; Delete for cleaning</p></td>
 <td><p>Convert an unlocked area object into a cleaning region while in Clean mode.</p></td>
 <td><p>Use a drawn mask to remove an unwanted particle from the derived image.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Restore selected area / all edits</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Restore selected area / all edits</p></td>
 <td><p>Restore pixels while retaining other valid cleaning records.</p></td>
 <td><p>Restore a small removed area without erasing a separate filled region.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Fill from neighboring pixels</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Fill from neighboring pixels</p></td>
 <td><p>Estimate fill values from nearby available pixels.</p></td>
 <td><p>Fill a small isolated background spot.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Fill with LaMa</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Fill with LaMa</p></td>
 <td><p>Run asynchronous model-based inpainting inside the requested region.</p></td>
 <td><p>Preview a larger removed contamination region; pixels outside it stay exact.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Background patches</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Background patches</p></td>
 <td><p>Tile source pixels from a selected manual background group.</p></td>
 <td><p>Choose a group named Clean support; its name need not be Background.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Choose / Add / Clear background group</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Choose / Add / Clear background group</p></td>
 <td><p>Select manually drawn polygon/rectangle/ellipse background areas, or clear that selection.</p></td>
 <td><p>Select several clean background patches; reject sources intersecting processed pixels.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Brush radius</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Brush radius</p></td>
 <td><p>Set the radius of the point cleaning brush, independently of SAM point prompts.</p></td>
 <td><p>Use a small brush to remove a thin mark in Clean mode.</p></td>
 </tr>
-<tr class="row-even"><td><p>Show cleaning regions</p></td>
+<tr class="row-odd"><td><p>Show cleaning regions</p></td>
 <td><p>Hide/show the display of cleaning objects; deleting a cleaning object restores its pixels.</p></td>
 <td><p>Hide the removal outline to inspect a filled region.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Processing &gt; Denoise</p></td>
+<tr class="row-even"><td><p>Processing &gt; Denoise</p></td>
 <td><p>Preview restoration and open the Denoising parameters chapter.</p></td>
 <td><p>Compare a TV weight of 0.08 against the original before Apply.</p></td>
 </tr>
-<tr class="row-even"><td><p>Processing &gt; Smooth (Gaussian)</p></td>
+<tr class="row-odd"><td><p>Processing &gt; Smooth (Gaussian)</p></td>
 <td><p>Select an odd kernel size and sigma.</p></td>
 <td><p>Use kernel 5 and sigma 1 for a small spatial smoothing operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Processing &gt; Crop selected region / masks</p></td>
+<tr class="row-even"><td><p>Processing &gt; Crop selected region / masks</p></td>
 <td><p>Retain real pixels in the mask bounding rectangle plus 3 pixels of context.</p></td>
 <td><p>Store an irregular particle and its real surrounding background; no artificial black corners are added.</p></td>
 </tr>
-<tr class="row-even"><td><p>Processing &gt; Retained crops / paste back</p></td>
+<tr class="row-odd"><td><p>Processing &gt; Retained crops / paste back</p></td>
 <td><p>Protect/release, export, remove or paste retained crop snapshots.</p></td>
 <td><p>Denoise the rest of the image, then paste the preserved rectangular patch back.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Processing &gt; Add noise</p></td>
+<tr class="row-even"><td><p>Processing &gt; Add noise</p></td>
 <td><p>Add reproducible Gaussian, Poisson or salt-and-pepper noise with adjustable strength/seed.</p></td>
 <td><p>Use a fixed seed to compare two denoisers on the same synthetic noise.</p></td>
 </tr>
-<tr class="row-even"><td><p>Export &gt; COCO dataset</p></td>
+<tr class="row-odd"><td><p>Export &gt; COCO dataset</p></td>
 <td><p>Write exact masks, groups, calibration, attributes and cleaning extensions.</p></td>
 <td><p>Export all open images with an uncleaned image and a separate processed-image copy.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Export &gt; YOLO dataset</p></td>
+<tr class="row-even"><td><p>Export &gt; YOLO dataset</p></td>
 <td><p>Export polygons with explicit handling of holes/disconnected masks.</p></td>
 <td><p>Choose COCO for exact holes, or explicitly review a lossy YOLO conversion.</p></td>
 </tr>
-<tr class="row-even"><td><p>Save masks / Transparent mask images</p></td>
+<tr class="row-odd"><td><p>Save masks / Transparent mask images</p></td>
 <td><p>Choose binary, overlap-weighted grayscale, color masks, labels, overlay, opacity and alpha options.</p></td>
 <td><p>Keep binary masks for training and export a transparent colored overlay for presentation.</p></td>
 </tr>
-<tr class="row-odd"><td><p>File &gt; Save original / processed images</p></td>
+<tr class="row-even"><td><p>File &gt; Save original / processed images</p></td>
 <td><p>Save the acquired image, current processed image or both as TIFF.</p></td>
 <td><p>Keep the acquired TIFF and save a rotated/denoised derivative separately.</p></td>
 </tr>
-<tr class="row-even"><td><p>Statistics &gt; Plot Object Statistics</p></td>
+<tr class="row-odd"><td><p>Statistics &gt; Plot Object Statistics</p></td>
 <td><p>Choose an image scope and up to nine metrics.</p></td>
 <td><p>Plot ECD and perimeter for a named image group, with points colored by mask area.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Statistics &gt; Edit image calibration</p></td>
+<tr class="row-even"><td><p>Statistics &gt; Edit image calibration</p></td>
 <td><p>Enter X/Y physical pixel size and length unit.</p></td>
 <td><p>Use X=0.2 nm and Y=0.3 nm when pixels are anisotropic.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Statistics &gt; Read pixel sizes from Excel / Forget automatic Excel lookup</p></td>
+<td><p>Assign pixel sizes by name or clear the table association.</p></td>
+<td><p>Match one row to all frames of the source TIFF.</p></td>
 </tr>
 <tr class="row-even"><td><p>Statistics &gt; Export plot / Export statistics</p></td>
 <td><p>Save a visual plot or choose which numerical metrics to export.</p></td>
@@ -1030,6 +1218,41 @@ for denoising method defaults and units.</p>
 <p>On save failure choose a writable project destination before closing. On recovery failure, retain the project and its backup and confirm the source/frame/fingerprint. Keep acquired images separate from cleaned output.</p>
 <p>Uninstall_CPU scripts remove only app-owned marked environments/build folders. Projects, images, exports and cached models are preserved. Remove an optional GPU environment explicitly with conda env remove -n sam-image-studio-gpu. Close the GUI first.</p>
 <p>Validation reports are supplied with the release. Defined regression cases do not prove every possible image or future dependency version is defect-free. Native Windows/macOS, CUDA and real SAM3 weights require local acceptance when not exercised by the release test machine.</p>
+</section>
+<section id="release-coverage">
+<h2>Release coverage<a class="headerlink" href="#release-coverage" title="Link to this heading">#</a></h2>
+<p>Use these chapter names to find the current workflows introduced or changed in each published version.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Version</p></th>
+<th class="head"><p>Changes and manual chapters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1.4.5.1</p></td>
+<td><p>Keyboard deletion of selected pieces under <strong>Refine disconnected parts</strong>, candidate review under <strong>Whole-image exemplars, single objects and ROI</strong>, matching histogram ranges under <strong>Metric colors and plot groups</strong>, drawn links under <strong>Filaments and occluded fragments</strong>, and independent strokes under <strong>Mask pusher</strong>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.4.5</p></td>
+<td><p>Two-column tools and toolbar visibility under <strong>Start, modes and workspace</strong>, disconnected-part cleanup under <strong>Refine disconnected parts</strong>, batch vertex deletion and adjustable closing distance under <strong>Manual geometry and Edit tools</strong>, and the adjustable push/carve brush under <strong>Mask pusher</strong>.</p></td>
+</tr>
+<tr class="row-even"><td><p>1.4.4.2</p></td>
+<td><p><strong>Distance measurements</strong> covers calibrated line and curve rulers. Dialog fixes apply to <strong>Target size range</strong>, <strong>Scale bars</strong>, calibration and <strong>Metric colors and plot groups</strong>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.4.4.1</p></td>
+<td><p><strong>Target size range</strong>, <strong>Scale bars</strong>, separate object and vertex deletion, <strong>Filaments and occluded fragments</strong>, <strong>Metric colors and plot groups</strong>, versioned help and <strong>Denoising parameters</strong>, and shared Windows Python bootstrap and version-checked offline preparation under <strong>Installation, Python and Conda GPU setup</strong>.</p></td>
+</tr>
+<tr class="row-even"><td><p>1.4.4</p></td>
+<td><p><strong>Otsu + watershed</strong>, signal-scaled synthetic noise under <strong>Processing</strong>, original input and undoable discard under <strong>Opening images and native autosaves</strong>, ONNX diagnostics under <strong>Model manager and SAM3 ONNX</strong>, rotation reset, panel selection, LaMa controls under <strong>Cleaning and reversible image records</strong>, and local Python and offline CPU setup under <strong>Installation, Python and Conda GPU setup</strong>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.4.3</p></td>
+<td><p><strong>Installation, Python and Conda GPU setup</strong> covers the CPU/GPU folder layout and in-place updates. <strong>Model manager and SAM3 ONNX</strong> covers public ONNX and native-model access. <strong>Whole-image exemplars, single objects and ROI</strong> covers selected-mask exemplars and scope behavior.</p></td>
+</tr>
+<tr class="row-even"><td><p>1.4.2</p></td>
+<td><p>First stable version. See <strong>Excel pixel-size lookup</strong>, <strong>Whole-image exemplars, single objects and ROI</strong>, <strong>Processing</strong>, <strong>Denoising parameters</strong>, and the annotation, cleaning, measurement, export, recovery and plugin chapters.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 <section id="official-references">
 <h2>Official references<a class="headerlink" href="#official-references" title="Link to this heading">#</a></h2>
@@ -1670,7 +1893,47 @@ for denoising method defaults and units.</p>
 </section>
 <section id="smoothing-and-synthetic-noise-controls">
 <h3>Smoothing and synthetic noise controls<a class="headerlink" href="#smoothing-and-synthetic-noise-controls" title="Link to this heading">#</a></h3>
-<p>Processing &gt; Smooth exposes Gaussian kernel_size (default 5, odd 1-101; start 3-7) and sigma (default 1.0, 0.01-30 spatial pixels; start 0.5-1.5). Processing &gt; Add noise offers Gaussian sigma (default 0.03, 0-1; start 0.01-0.05), Poisson peak_counts (default 50, 1-1000000; start 20-200) and Salt-and-pepper amount (default 0.01, 0-1; start 0.001-0.02). Each noise method has seed (default 0, integer 0-2147483647); keep it fixed for comparisons. Poisson peak counts are a synthetic model, not microscope detector calibration. Alpha and outside-target pixels remain exact for these operations too.</p>
+<p><strong>Processing → Smooth (Gaussian)…</strong> accepts an odd kernel size from 1 to 101 (default 5) and sigma from 0.01 to 30 spatial pixels (default 1). Try a kernel of 3–7 and sigma of 0.5–1.5.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Processing → Add noise…</strong></p></th>
+<th class="head"><p>Default and range</p></th>
+<th class="head"><p>Starting values</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Gaussian sigma</p></td>
+<td><p>0.03, range 0–1,000,000</p></td>
+<td><p>Try 0.01–0.05 with <code class="docutils literal notranslate"><span class="pre">image_range</span></code>. With <code class="docutils literal notranslate"><span class="pre">data_units</span></code>, sigma is an absolute pixel-value standard deviation.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Gaussian scale</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">image_range</span></code></p></td>
+<td><p>Use <code class="docutils literal notranslate"><span class="pre">dtype_range</span></code> for full storage span or <code class="docutils literal notranslate"><span class="pre">data_units</span></code> for absolute units.</p></td>
+</tr>
+<tr class="row-even"><td><p>Poisson peak counts</p></td>
+<td><p>1,000, range 1–1,000,000</p></td>
+<td><p>Compare 200–5,000 synthetic counts to vary the shot-noise strength.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Poisson strength</p></td>
+<td><p>1, range 0–2</p></td>
+<td><p>Try 0.25–1 to scale the added residual. Zero preserves the input.</p></td>
+</tr>
+<tr class="row-even"><td><p>Poisson scale</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">image_range</span></code></p></td>
+<td><p>Use <code class="docutils literal notranslate"><span class="pre">dtype_range</span></code> to compare with the full storage span.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Salt-and-pepper amount</p></td>
+<td><p>0.01, range 0–1</p></td>
+<td><p>Try 0.001–0.02 for impulse-noise comparisons.</p></td>
+</tr>
+<tr class="row-even"><td><p>Seed for each noise method</p></td>
+<td><p>0, integer range 0–2,147,483,647</p></td>
+<td><p>Keep fixed to reproduce the same noise.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Use a calibrated noise model for detector-specific studies. The synthetic controls preserve alpha and pixels outside the target.</p>
 </section>
 <section id="official-references-and-validation-limits">
 <h3>Official references and validation limits<a class="headerlink" href="#official-references-and-validation-limits" title="Link to this heading">#</a></h3>
@@ -1733,12 +1996,25 @@ for denoising method defaults and units.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start-modes-and-workspace">Start, modes and workspace</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-python-and-conda-gpu-setup">Installation, Python and Conda GPU setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-images-and-native-autosaves">Opening images and native autosaves</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-python-and-conda-gpu-setup">Installation, Python and Conda GPU setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-windows-and-linux">CPU, Windows and Linux</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#offline-cpu-edition">Offline CPU edition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpu-with-conda">NVIDIA GPU with Conda</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-images-and-native-autosaves">Opening images and native autosaves</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#original-and-processed-input">Original and processed input</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#excel-pixel-size-lookup">Excel pixel-size lookup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whole-image-exemplars-single-objects-and-roi">Whole-image exemplars, single objects and ROI</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#target-size-range">Target size range</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-grid-and-text-prompts">Automatic grid and text prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-manager-and-sam3-onnx">Model manager and SAM3 ONNX</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-public-sam3-onnx-text-segmentation">Run public SAM3 ONNX text segmentation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#otsu-watershed">Otsu + watershed</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-geometry-and-edit-tools">Manual geometry and Edit tools</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refine-disconnected-parts">Refine disconnected parts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mask-pusher">Mask pusher</a></li>
@@ -1751,8 +2027,10 @@ for denoising method defaults and units.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistics-and-metric-applicability">Statistics and metric applicability</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metric-colors-and-plot-groups">Metric colors and plot groups</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#masks-overlays-and-dataset-export">Masks, overlays and dataset export</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-plugins">Local plugins</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menu-and-control-reference">Menu and control reference</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shortcuts-recovery-and-troubleshooting">Shortcuts, recovery and troubleshooting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-coverage">Release coverage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#official-references">Official references</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#denoising-parameters">Denoising parameters</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-and-physical-interpretation">Workflow and physical interpretation</a></li>

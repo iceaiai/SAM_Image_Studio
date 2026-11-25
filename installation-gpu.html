@@ -403,72 +403,52 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="gpu-installation-and-updates">
 <h1>GPU installation and updates<a class="headerlink" href="#gpu-installation-and-updates" title="Link to this heading">#</a></h1>
-<p>This page is readable both on GitHub and on the Sphinx website. The
-<a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/blob/main/GPU/INSTALLATION.md">complete GPU guide</a>
-contains the full prerequisites, diagnostics and model-access details.</p>
 <section id="obtain-the-complete-project-first">
 <h2>1. Obtain the complete project first<a class="headerlink" href="#obtain-the-complete-project-first" title="Link to this heading">#</a></h2>
-<p>Choose one route before creating an environment:</p>
-<ul class="simple">
-<li><p><strong>ZIP:</strong> get the standard ZIP from the <a class="reference internal" href="downloads.html"><span class="std std-doc">CPU version download list</span></a>
-and extract every file. The same source bundle includes <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>.
-Open the extracted project folder containing <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, <code class="docutils literal notranslate"><span class="pre">samstudio/</span></code> and <code class="docutils literal notranslate"><span class="pre">GPU/</span></code>.</p></li>
-<li><p><strong>Git:</strong> run these shared commands in your chosen parent folder:</p></li>
-</ul>
+<p>Get the <strong>Standard ZIP</strong> and extract it, or clone the repository using the commands below. The project root contains <code class="docutils literal notranslate"><span class="pre">GPU/install.py</span></code>, <code class="docutils literal notranslate"><span class="pre">samstudio/</span></code> and <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>. <a class="reference external" href="https://iceaiai.github.io/SAM_Image_Studio/downloads.html">Downloads</a></p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/iceaiai/SAM_Image_Studio.git
 <span class="nb">cd</span><span class="w"> </span>SAM_Image_Studio
 </pre></div>
 </div>
-<p>ZIP users do not need to clone again. For native SAM3.1, run installation in
-Linux/WSL2 using Linux Conda; obtain the source there or make the extracted
-folder accessible to Ubuntu. Native Windows supports SAM1/2 and SAM3 ONNX.</p>
+<p>Install Miniforge or Anaconda for your platform. Open its terminal, change to the project root and run <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> to check that the NVIDIA driver can see the GPU. For WSL2, run the commands inside the Linux distribution with Linux Conda and a working WSLg display.</p>
 </section>
 <section id="select-the-route-and-install">
 <h2>2. Select the route and install<a class="headerlink" href="#select-the-route-and-install" title="Link to this heading">#</a></h2>
-<p>Use <strong>64-bit Python 3.12</strong>. Run from the complete project root obtained above.</p>
-<p><strong>Windows or Linux: SAM1/2 and SAM3 ONNX</strong></p>
+<p>Use a dedicated Conda environment with <strong>64-bit Python 3.12</strong>. The installer checks the driver, selects the matching Torch and ONNX Runtime dependencies, prepares missing Ubuntu Qt libraries and runs installation checks. Installing Ubuntu system libraries can require your sudo password.</p>
+<p><strong>Windows or Linux for SAM1/2 and SAM3 ONNX</strong></p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-gpu<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip<span class="w"> </span>-y
 conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-gpu
 python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current
 python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </pre></div>
 </div>
-<p><strong>Linux/WSL2: additionally native SAM3 and SAM3.1</strong></p>
+<p>On Windows, use an Anaconda or Miniforge terminal. You can also run <code class="docutils literal notranslate"><span class="pre">GPU\Install_GPU_Conda.bat</span></code> followed by <code class="docutils literal notranslate"><span class="pre">GPU\Start_GUI_GPU.bat</span></code> for the default environment.</p>
+<p><strong>Linux/WSL2 for native SAM3 and SAM3.1</strong></p>
+<p>These models require NVIDIA driver support for CUDA 12.6 or later. Some newer GPUs require a newer driver. Run the following in a Linux Conda terminal.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-sam3<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip<span class="w"> </span>-y
 conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-sam3
 python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current<span class="w"> </span>--sam3
 python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </pre></div>
 </div>
-<p>The installer handles driver-aware Torch selection, application dependencies,
-ONNX runtime, compatible setuptools and missing Ubuntu Qt libraries, then runs
-checks. Ubuntu may request your sudo password for missing system libraries.
-Application packages are installed only into the dedicated environment.
-A supported NVIDIA driver and, for WSL GUI use, working WSLg are prerequisites.</p>
 </section>
 <section id="load-the-selected-model">
 <h2>3. Load the selected model<a class="headerlink" href="#load-the-selected-model" title="Link to this heading">#</a></h2>
-<p>In <strong>Load model…</strong>, choose the family and NVIDIA CUDA device. SAM3/3.1 need
-approved access to their distinct authentic weights. Paste an approved read
-token in the optional masked field or reuse local Hugging Face login. The GUI
-field is not saved. SAM3 ONNX downloads public text-only weights without HF login.</p>
-<p>See <a class="reference internal" href="segmentation/sam31.html"><span class="std std-doc">SAM3.1 text/shape prompts</span></a> and
-<a class="reference internal" href="segmentation/sam3-onnx.html"><span class="std std-doc">public ONNX text segmentation</span></a>.</p>
+<ol class="arabic simple">
+<li><p>Open an image and choose <strong>Load model…</strong>. Select the model family and <strong>NVIDIA CUDA GPU (Conda)</strong> where available.</p></li>
+<li><p>For <strong>SAM1/2</strong>, choose a variant and download or select its matching checkpoint. For <strong>SAM3 ONNX</strong>, choose <strong>ViT-H · text prompts</strong> and let the app download the public files or browse to a verified local folder. ONNX CUDA uses CUDA 12.x and cuDNN 9. With the legacy CUDA 11.8 plan, use CPU for ONNX and CUDA for SAM1/2.</p></li>
+<li><p>For <strong>native SAM3 or SAM3.1</strong>, get access to the chosen model on Hugging Face. Use a matching local checkpoint, an existing Hugging Face login, or paste an approved read token into the optional masked field. The app does not save that field. SAM3.1 uses <code class="docutils literal notranslate"><span class="pre">sam3.1_multiplex.pt</span></code>.</p></li>
+<li><p>Click <strong>Download / load</strong> and wait for the loaded model status. In <strong>Segment</strong>, run a short text prompt for SAM3 ONNX, or draw a supported prompt for the selected native model. Check the preview before <strong>Accept masks</strong>. To check CUDA, run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">samstudio.selftest</span> <span class="pre">--device</span> <span class="pre">cuda</span></code> in the same environment. The preview checks that your specific model loads and runs.</p></li>
+</ol>
 </section>
 <section id="update-an-existing-installation">
 <h2>4. Update an existing installation<a class="headerlink" href="#update-an-existing-installation" title="Link to this heading">#</a></h2>
-<p>Close the GUI, download/extract or pull the new complete source, then enter
-its project root. Reuse the existing environment instead of recreating it:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-sam3
-python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current<span class="w"> </span>--sam3
-python<span class="w"> </span>-m<span class="w"> </span>samstudio
-</pre></div>
-</div>
-<p>For the ordinary GPU environment activate <code class="docutils literal notranslate"><span class="pre">sam-image-studio-gpu</span></code> and omit
-<code class="docutils literal notranslate"><span class="pre">--sam3</span></code>. No routine uninstall is needed. Preserve projects, model caches and
-local login separately from downloaded source folders.</p>
-<p>For failures, follow <a class="reference internal" href="troubleshooting.html"><span class="std std-doc">troubleshooting</span></a> and the
-<a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/blob/main/GPU/INSTALLATION.md">complete GPU guide</a>.</p>
+<p>Close the app, obtain the new complete source and enter its project root. Activate the existing environment, rerun its installer command from step 2 and start the app. Use <code class="docutils literal notranslate"><span class="pre">--sam3</span></code> again for the native SAM3/3.1 environment. Keep your project files and model caches when replacing an extracted source folder.</p>
+<p>For driver checks, authentication, WSL startup and updates, see the <a class="reference external" href="https://github.com/iceaiai/SAM_Image_Studio/blob/main/GPU/INSTALLATION.md">full GPU installation guide</a>.</p>
+</section>
+<section id="model-workflows-and-troubleshooting">
+<h2>Model workflows and troubleshooting<a class="headerlink" href="#model-workflows-and-troubleshooting" title="Link to this heading">#</a></h2>
+<p>Follow the examples for <a class="reference internal" href="segmentation/sam31.html"><span class="std std-doc">native SAM3.1 text and shapes</span></a> and <a class="reference internal" href="segmentation/sam3-onnx.html"><span class="std std-doc">public SAM3 ONNX text</span></a>. For startup and model-loading problems, see <a class="reference internal" href="troubleshooting.html"><span class="std std-doc">Troubleshooting</span></a>.</p>
 </section>
 </section>
 
@@ -523,6 +503,7 @@ local login separately from downloaded source folders.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-the-route-and-install">2. Select the route and install</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-selected-model">3. Load the selected model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-an-existing-installation">4. Update an existing installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-workflows-and-troubleshooting">Model workflows and troubleshooting</a></li>
 </ul>
   </nav></div>
 
