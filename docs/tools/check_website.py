@@ -126,6 +126,7 @@ with sync_playwright() as p:
                  'nvidia-smi', 'conda env list', 'conda activate sam-image-studio-gpu',
                  'python GPU/install.py --current --sam3', 'python -m samstudio.selftest --device cuda']:
   assert command in gpu_guide.inner_text(), command
+ assert 'CUDA UMD Version' in gpu_guide.inner_text()
  gpu_update = gpu_guide.locator('section#update-an-existing-installation')
  assert 'python GPU/install.py --current' in gpu_update.inner_text()
  assert 'conda create' not in gpu_update.inner_text()

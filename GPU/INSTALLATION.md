@@ -9,7 +9,7 @@ SAM3 ONNX public text weights do not require Hugging Face login.
 
 Do this before every installation route below. Choose **one** option:
 
-- [Download the complete v1.4.5.1 ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-docs.zip),
+- [Download the complete v1.4.5.2 ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.2.zip),
   extract the whole archive, and find the extracted project folder containing
   `pyproject.toml`, `samstudio/` and `GPU/`. The same source bundle
   contains all GPU setup files; it is the shared application.
@@ -188,6 +188,7 @@ conflicts, keeping the old working one until the replacement is validated.
 | PowerShell positional-parameter error | Quote the complete folder path with `Set-Location -LiteralPath`. |
 | Native SAM3 selected on Windows | Run the native SAM3.1 recipe inside WSL2/Linux; Windows supports the other GPU paths. |
 | No GPU detected | Check the Windows/Linux NVIDIA driver and `nvidia-smi`; the app does not install drivers. |
+| 1.4.5.1 reports `cuda_runtime_max: null` and `nvidia-smi` shows a numeric **CUDA UMD Version** | Update to 1.4.5.2 and rerun the installer in your existing environment. |
 | HF `Invalid user token` / whoami 401 | Recopy a complete valid read token. GUI paste is masked; CLI input is completely invisible. |
 | Login works, model download is denied | Obtain approval and enable access to that gated repository on the fine-grained token. |
 | Missing Qt library or `pkg_resources` from an older installation | Update to this source and rerun the installer in the same environment; the repair is automatic. |

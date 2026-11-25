@@ -1,7 +1,7 @@
 # Offline CPU edition: prepare online, install offline
 
-First [download the offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-offline-docs.zip)
-and extract the **whole** archive. Enter `SAM_Image_Studio-1.4.5.1-offline-docs/`, the
+First [download the offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.2-offline.zip)
+and extract the **whole** archive. Enter `SAM_Image_Studio-1.4.5.2-offline/`, the
 folder containing `pyproject.toml`, `packaging/` and `offline/`. Keep everything
 together. The normal source ZIP does not activate this restricted edition.
 
@@ -83,7 +83,7 @@ weights. Example images are under `examples/user_samples/`.
 ## Updates and checks
 
 For updated source, download its complete offline ZIP and run preparation
-online in the new folder, including for the 1.4.5.1 documentation refresh. On the same platform you can copy the existing
+online in the new folder. On the same platform you can copy the existing
 `offline-cache/` into the new folder first to reuse downloaded files.
 Preparation builds the application wheel for the new version and records a
 new manifest. Transfer the prepared folder and run its installer. Keep a

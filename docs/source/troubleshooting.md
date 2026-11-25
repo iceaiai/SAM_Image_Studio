@@ -103,6 +103,12 @@ Use `python GPU/install.py --inspect` to check detection. `nvidia-smi` must see
 a supported NVIDIA device. The installer does not install drivers; AMD/Intel
 GPUs use the CPU route. Native SAM3.1 requires Linux/WSL2 and matching weights.
 
+If 1.4.5.1 reports `cuda_runtime_max: null` and `nvidia-smi` shows a numeric
+**CUDA UMD Version**, update to 1.4.5.2 and rerun `python GPU/install.py --current`
+in your existing Conda environment. The updated installer reads both CUDA
+version labels. For example, CUDA UMD 13.3 with an RTX 3060 selects the supported
+CUDA 12.8 PyTorch wheels. [GPU update steps](installation-gpu.md#4-update-an-existing-installation)
+
 `python -m samstudio.selftest --device cuda` verifies real CUDA operations and
 installation contracts. Then load the model and run a real preview. A CUDA pass
 does not prove sufficient VRAM for SAM3.1. A 6 GB laptop GPU can still run out of

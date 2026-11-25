@@ -137,6 +137,42 @@ def test_gpu_install_commands_are_conda_only(monkeypatch):
     assert commands[-1][-2:]==['--device','cuda']
 
 
+@pytest.mark.parametrize(
+    "summary, runtime, wheel_index",
+    [
+        ("| NVIDIA-SMI 560.94  Driver Version: 560.94  CUDA Version: 12.6 |", "12.6", "cu126"),
+        ("| NVIDIA-SMI 610.91  KMD Version: 610.91  CUDA UMD Version: 13.3 |", "13.3", "cu128"),
+        ("| NVIDIA-SMI 610.91  KMD Version: 610.91  CUDA UMD Version: N/A |", None, None),
+    ],
+)
+def test_windows_nvidia_smi_cuda_headers(monkeypatch, tmp_path, summary, runtime, wheel_index):
+    from samstudio import hardware
+
+    monkeypatch.setattr(hardware.sys, "platform", "win32")
+    monkeypatch.setattr(hardware.shutil, "which", lambda name: name)
+    monkeypatch.setenv("CONDA_PREFIX", str(tmp_path / "sam-image-studio-gpu"))
+
+    def nvidia_smi(command, **kwargs):
+        if len(command) == 1:
+            return SimpleNamespace(stdout=summary)
+        return SimpleNamespace(stdout="0, NVIDIA GeForce RTX 3060 Laptop GPU, 610.91, 6144, 8.6\n")
+
+    report = detect_gpus(run=nvidia_smi)
+    assert report["detected"] is True
+    assert report["cuda_runtime_max"] == runtime
+    assert report["gpus"][0]["compute_capability"] == "8.6"
+    if wheel_index is None:
+        with pytest.raises(ValueError, match="did not report a CUDA Version"):
+            conda_gpu_plan(tmp_path, report, current=True)
+    else:
+        commands = conda_gpu_plan(tmp_path, report, current=True)
+        assert any(f"https://download.pytorch.org/whl/{wheel_index}" in command for command in commands)
+        assert any(
+            Path(command[1]).name == "install_onnx_runtime.py" and command[-2:] == ["--device", "cuda"]
+            for command in commands
+        )
+
+
 def test_actual_cpu_detection_does_not_claim_gpu():
     report=detect_gpus()
     if not report['detected']:

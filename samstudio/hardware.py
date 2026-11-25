@@ -17,17 +17,24 @@ def detect_gpus(run=subprocess.run):
             if len(row)<5:continue
             index,name,driver,memory,cap=(x.strip() for x in row[:5])
             report['gpus'].append({'index':int(index),'name':name,'driver_version':driver,'memory_mib':float(memory),'compute_capability':cap})
+        report['detected'] = bool(report['gpus'])
         info=run([executable],capture_output=True,text=True,check=True,timeout=15)
-        match=re.search(r'CUDA Version:\s*([0-9.]+)',info.stdout)
-        if match:report['cuda_runtime_max']=match.group(1)
-        report['detected']=bool(report['gpus'])
-        if not report['detected']:report['reason']='The NVIDIA utility reported no devices.'
+        match = re.search(r'\bCUDA(?: UMD)? Version:\s*(\d+(?:\.\d+)+)\b', info.stdout)
+        if match:
+            report['cuda_runtime_max'] = match.group(1)
+        if not report['detected']:
+            report['reason'] = 'The NVIDIA utility reported no devices.'
+        elif not match:
+            report['reason'] = 'nvidia-smi did not report a CUDA Version or CUDA UMD Version for the detected GPU.'
     except (OSError,ValueError,subprocess.SubprocessError) as e:report['reason']='NVIDIA detection failed: '+str(e)
     return report
 
 def cuda_index(report,sam3=False):
     if not report.get('gpus'):raise ValueError(report.get('reason','No NVIDIA GPU was detected.'))
-    maximum=tuple(int(x) for x in str(report.get('cuda_runtime_max') or '0.0').split('.')[:2])
+    cuda_version = report.get('cuda_runtime_max')
+    if not cuda_version:
+        raise ValueError(report.get('reason', 'Could not determine the CUDA version for the detected GPU.'))
+    maximum = tuple(int(part) for part in str(cuda_version).split('.')[:2])
     if maximum>=(12,8):index='cu128'
     elif maximum>=(12,6):index='cu126'
     elif maximum>=(11,8) and not sam3:index='cu118'

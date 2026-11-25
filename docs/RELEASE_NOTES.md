@@ -1,3 +1,10 @@
+# SAM Image Studio 1.4.5.2
+
+- Detect the CUDA driver capability from both `CUDA Version` and `CUDA UMD Version` in `nvidia-smi`. A Windows RTX 3060 reporting CUDA UMD 13.3 selects the supported PyTorch CUDA 12.8 wheels.
+- Report an unreadable CUDA version separately from a confirmed older driver.
+
+---
+
 # SAM Image Studio 1.4.5.1
 
 - Select a disconnected mask part in Edit and press Delete to remove it.

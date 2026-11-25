@@ -40,7 +40,7 @@ Run the same CPU install and launch commands on the target. They recognize the p
 
 Open a Miniforge or Anaconda terminal and run `nvidia-smi` to check driver visibility. Use Linux Conda inside Linux/WSL2, with a working WSLg display on WSL2. WSLg startup selects X11 when the display is available and no Qt platform is explicitly set. For SAM1/2 and SAM3 ONNX on Windows or Linux, run the following commands from the project root.
 
-In Windows **Anaconda Prompt**, use `cd /d "C:\Work\AI Projects\SAM_Image_Studio"` with your actual folder. If extraction creates two identically named folders, enter the inner one and check it with `dir GPU\install.py`. Run `conda env list` to find any existing SAM Image Studio environment. Use the creation step only for a first installation.
+In Windows **Anaconda Prompt**, use `cd /d "C:\Work\AI Projects\SAM_Image_Studio"` with your actual folder. If extraction creates two identically named folders, enter the inner one and check it with `dir GPU\install.py`. Run `conda env list` to find any existing SAM Image Studio environment. Use the creation step only for a first installation. The installer reads either **CUDA Version** or **CUDA UMD Version** from `nvidia-smi`. For an RTX 3060 reporting CUDA UMD 13.3, it selects the supported PyTorch CUDA 12.8 wheels.
 
 ```sh
 conda create -n sam-image-studio-gpu python=3.12 pip -y
@@ -485,6 +485,7 @@ Use these chapter names to find the current workflows introduced or changed in e
 
 | Version | Changes and manual chapters |
 | --- | --- |
+| 1.4.5.2 | Reads the **CUDA UMD Version** field in newer NVIDIA driver output and distinguishes a missing version from an older driver. See **Installation, Python and Conda GPU setup**. |
 | 1.4.5.1 | Keyboard deletion of selected pieces under **Refine disconnected parts**, candidate review under **Whole-image exemplars, single objects and ROI**, matching histogram ranges under **Metric colors and plot groups**, drawn links under **Filaments and occluded fragments**, and independent strokes under **Mask pusher**. |
 | 1.4.5 | Two-column tools and toolbar visibility under **Start, modes and workspace**, disconnected-part cleanup under **Refine disconnected parts**, batch vertex deletion and adjustable closing distance under **Manual geometry and Edit tools**, and the adjustable push/carve brush under **Mask pusher**. |
 | 1.4.4.2 | **Distance measurements** covers calibrated line and curve rulers. Dialog fixes apply to **Target size range**, **Scale bars**, calibration and **Metric colors and plot groups**. |
