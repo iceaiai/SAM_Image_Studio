@@ -36,7 +36,15 @@ first_stable_version = '1.4.2'
 assert release_versions[0] == app_version and first_stable_version in release_versions
 visible_releases = {*release_versions[:5], '1.4.3', first_stable_version}
 visible_versions = [version for version in release_versions if version in visible_releases]
-archived_versions = [version for version in release_versions if version not in visible_releases]
+legacy_archives = {
+ path.name.removeprefix('SAM_Image_Studio_v').removesuffix('_CPU.zip'): path.name
+ for path in (repository / 'uploads' / 'legacy-cpu').glob('SAM_Image_Studio_v*_CPU.zip')
+}
+archived_versions = sorted(
+ (set(release_versions) | legacy_archives.keys()) - visible_releases,
+ key=lambda version: tuple(map(int, version.split('.'))),
+ reverse=True,
+)
 
 
 def check_version_table(table, versions):
@@ -51,6 +59,12 @@ def check_version_table(table, versions):
    assert cells.nth(0).inner_text() == '1.4.2 — First stable version'
    stable = downloads.get_by_role('link', name='CPU ZIP', exact=True)
    assert stable.get_attribute('href').endswith('/uploads/SAM_Image_Studio_v1.4.2_CPU.zip')
+  elif version in legacy_archives:
+   archive = downloads.get_by_role('link', name='CPU ZIP', exact=True)
+   assert archive.get_attribute('href').endswith(f'/uploads/legacy-cpu/{legacy_archives[version]}')
+   if version == '1.4.0':
+    assert cells.nth(0).inner_text() == '1.4.0 — ZIP filename'
+    assert '1.5.0' in cells.nth(2).inner_text()
   else:
    standard = downloads.get_by_role('link', name='Standard ZIP', exact=True)
    assert standard.get_attribute('href').endswith(f'/archive/refs/tags/v{version}.zip')
@@ -90,10 +104,13 @@ with sync_playwright() as p:
  archive = page.locator('article details').filter(has_text='Show all versions')
  page.screenshot(path='/tmp/samstudio-downloads-desktop.png',full_page=True)
  if archived_versions:
+  assert page.locator('#earlier-cpu-versions').count()==1
   assert not archive.locator('table').is_visible()
   archive.locator('summary').click()
   assert archive.locator('table').is_visible()
   check_version_table(archive.locator('table'), archived_versions)
+  checksums = archive.get_by_role('link', name='SHA-256 checksums', exact=True)
+  assert checksums.get_attribute('href').endswith('/uploads/legacy-cpu/SHA256SUMS')
   archive.locator('summary').click()
   assert not archive.locator('table').is_visible()
  page.goto(base+'/installation.html',wait_until='networkidle')
@@ -157,6 +174,7 @@ with sync_playwright() as p:
   mobile_archive=mobile.locator('article details').filter(has_text='Show all versions')
   mobile_archive.locator('summary').click()
   assert mobile_archive.locator('table').is_visible()
+  check_version_table(mobile_archive.locator('table'), archived_versions)
   width=mobile.evaluate('({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth})')
   assert width['scroll']<=width['client']+1,width
  assert not errors,errors

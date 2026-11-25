@@ -33,7 +33,7 @@ folders have been removed. Preserve those separately when migrating machines.
 | `docs/validation/` | Original release reports and test records, not automatically rerun evidence. |
 | `vendor/` | Bundled dependency wheels, including the verified SAM2 wheel. |
 | `uploads/original-wheel/` | Original v1.4.2 application wheel; historical, not the current source. |
-| `uploads/` | The five original supplied artifacts, retained unchanged. |
+| `uploads/` | Supplied release artifacts and checksums, including earlier CPU ZIPs under `uploads/legacy-cpu/`. |
 | `.venv/` | Default app-owned CPU installation, if used. |
 | `.docs-venv/` | Optional isolated documentation build environment. |
 

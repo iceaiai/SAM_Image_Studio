@@ -31,6 +31,8 @@ You do not need Git if you download a ZIP.
 | 1.4.3 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip) | Adds public SAM3 ONNX text segmentation, updates CPU/GPU installers, and publishes illustrated guides. |
 | 1.4.2 — First stable version | [CPU ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip) | Includes calibrated segmentation, Excel pixel-size lookup, image restoration, and bundled manuals. |
 
+The downloads page also lists the earlier CPU archives with their release summaries. [Show all versions](https://iceaiai.github.io/SAM_Image_Studio/downloads.html#earlier-cpu-versions)
+
 Use the installation instructions included in the ZIP you download. For
 1.4.2, run `Install_CPU.bat` or `bash install_cpu.sh` from its inner
 `SAM_Image_Studio` folder. For an Offline CPU ZIP, [prepare the cache online](offline/README.md)
@@ -112,7 +114,7 @@ clipping. Native point/shape concepts use the separate SAM3.1 backend. See the
 | [`offline/`](offline/) | CPU offline preparation guide, model profile and entry points. |
 | [`scripts/`](scripts/) | Shared setup, diagnostics, validation and website publishing helpers. |
 | [`tests/`](tests/) | Regression tests. |
-| [`uploads/`](uploads/) | Five original uploads, their digests, original archive manifest and historical wheel. |
+| [`uploads/`](uploads/) | Historical CPU archives and checksums, supplied manuals and notebook, and the 1.4.2 archive manifest and wheel. |
 | [`vendor/`](vendor/) / [`third_party/`](third_party/) | Verified bundled SAM2 wheel and upstream notices/licenses. |
 
 `pyproject.toml`, `README.md`, `LICENSE` and hosting configuration stay at the root

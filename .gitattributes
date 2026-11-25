@@ -5,3 +5,6 @@
 *.png binary
 *.tif binary
 *.tiff binary
+
+# Serve earlier CPU ZIPs separately from new source archives.
+uploads/legacy-cpu export-ignore
