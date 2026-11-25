@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Calibration and statistics &#8212; SAM Image Studio 1.4.5</title>
+    <title>Calibration and statistics &#8212; SAM Image Studio 1.4.5.1</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=c6b7524a"></script>
+    <script src="../_static/documentation_options.js?v=49bba49e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Compressed sensing: controls and suggested parameters" href="compressed-sensing.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5" />
+  <meta name="docsearch:version" content="1.4.5.1" />
   </head>
   
   
@@ -506,9 +506,12 @@ each metric, formula, unit, and applicability rule.</p>
 <p>Switch to <strong>Edit</strong> and choose <strong>Filament → Mark group as Filament…</strong>. The
 centerline follows the visible outline through bends. To treat an occluded
 filament as one measured object, select two separate visible masks in that
-group, choose <strong>Connect visible fragments…</strong>, and click the two marked ends
-facing the gap. Each free end can connect once. The result reports the visible
-arc length, a straight-line estimate across linked gaps, and their sum.
+group, choose <strong>Draw filament connection…</strong>, and drag from just inside one
+tip to just inside the other. The line direction determines where it meets the
+mask boundaries. <strong>Connect visible fragments…</strong> offers detected ends when
+available and switches to drawing when the masks have no usable open centerline.
+Repeat with neighboring masks to build a chain. The result reports the visible
+arc length, an estimate across linked gaps, and their sum when both resolve.
 Perpendicular cross-sections contribute widths only where a mask is visible.
 Use <a class="reference internal" href="../user-manual.html#filaments-and-occluded-fragments"><span class="std std-ref">Filaments and occluded fragments</span></a>
 for measurement details and disconnect controls.</p>
@@ -526,6 +529,10 @@ Choose <strong>Object points (mask colors)</strong> for one point per measured o
 the displayed mask color. Check up to nine metrics. The color metric can
 differ from the plotted metrics.</p></li>
 </ol>
+<p>For a distribution, choose <strong>Histogram (mask colors)</strong>. A histogram of the
+color measurement uses the palette’s exact intervals and colors, including
+conversion between physical display units. For another measurement, the bins
+use the chosen count and stack objects by their displayed mask colors.</p>
 <p>Reopen any closed member frames to include them in the group scale and plots.
 Physical palettes use calibrated values in the chosen unit. A mask without a
 value in those units keeps its base color. To color a single image independently,

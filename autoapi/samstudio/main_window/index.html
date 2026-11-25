@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.main_window &#8212; SAM Image Studio 1.4.5</title>
+    <title>samstudio.main_window &#8212; SAM Image Studio 1.4.5.1</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=c6b7524a"></script>
+    <script src="../../../_static/documentation_options.js?v=49bba49e"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="samstudio.inference" href="../inference/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5" />
+  <meta name="docsearch:version" content="1.4.5.1" />
   </head>
   
   
@@ -738,6 +738,16 @@
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="samstudio.main_window.MainWindow.select_mask_part_tool">
+<span class="sig-name descname"><span class="pre">select_mask_part_tool</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.main_window.MainWindow.select_mask_part_tool" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.main_window.MainWindow.delete_selected_mask_part">
+<span class="sig-name descname"><span class="pre">delete_selected_mask_part</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.main_window.MainWindow.delete_selected_mask_part" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="samstudio.main_window.MainWindow.delete_selected">
 <span class="sig-name descname"><span class="pre">delete_selected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.main_window.MainWindow.delete_selected" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -900,6 +910,11 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="samstudio.main_window.MainWindow.refine_selected_inference">
 <span class="sig-name descname"><span class="pre">refine_selected_inference</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.main_window.MainWindow.refine_selected_inference" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.main_window.MainWindow.review_preview">
+<span class="sig-name descname"><span class="pre">review_preview</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.main_window.MainWindow.review_preview" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1125,6 +1140,8 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.invert_region"><code class="docutils literal notranslate"><span class="pre">MainWindow.invert_region()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.create_region_object"><code class="docutils literal notranslate"><span class="pre">MainWindow.create_region_object()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.selected_objects"><code class="docutils literal notranslate"><span class="pre">MainWindow.selected_objects()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.select_mask_part_tool"><code class="docutils literal notranslate"><span class="pre">MainWindow.select_mask_part_tool()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.delete_selected_mask_part"><code class="docutils literal notranslate"><span class="pre">MainWindow.delete_selected_mask_part()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.delete_selected"><code class="docutils literal notranslate"><span class="pre">MainWindow.delete_selected()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.delete_vertex"><code class="docutils literal notranslate"><span class="pre">MainWindow.delete_vertex()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.edit_object"><code class="docutils literal notranslate"><span class="pre">MainWindow.edit_object()</span></code></a></li>
@@ -1158,6 +1175,7 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.run_inference"><code class="docutils literal notranslate"><span class="pre">MainWindow.run_inference()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.infer_selected_roi"><code class="docutils literal notranslate"><span class="pre">MainWindow.infer_selected_roi()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.refine_selected_inference"><code class="docutils literal notranslate"><span class="pre">MainWindow.refine_selected_inference()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.review_preview"><code class="docutils literal notranslate"><span class="pre">MainWindow.review_preview()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.accept_preview"><code class="docutils literal notranslate"><span class="pre">MainWindow.accept_preview()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.cancel_operation"><code class="docutils literal notranslate"><span class="pre">MainWindow.cancel_operation()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.main_window.MainWindow.refine_masks"><code class="docutils literal notranslate"><span class="pre">MainWindow.refine_masks()</span></code></a></li>

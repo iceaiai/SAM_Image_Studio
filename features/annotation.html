@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Manual annotation and editing &#8212; SAM Image Studio 1.4.5</title>
+    <title>Manual annotation and editing &#8212; SAM Image Studio 1.4.5.1</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=c6b7524a"></script>
+    <script src="../_static/documentation_options.js?v=49bba49e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Example microscopy images" href="examples.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5" />
+  <meta name="docsearch:version" content="1.4.5.1" />
   </head>
   
   
@@ -448,9 +448,10 @@ transparency are display choices, not changes to binary mask ownership.</p>
 </section>
 <section id="clean-up-disconnected-mask-parts">
 <h2>Clean up disconnected mask parts<a class="headerlink" href="#clean-up-disconnected-mask-parts" title="Link to this heading">#</a></h2>
-<p>Several disjoint shapes can belong to one mask. In <strong>Edit</strong>, choose <strong>Select
-objects</strong>, right-click the unwanted piece on the image, and select <strong>Remove this
-disconnected part</strong>. The other parts of that mask survive.</p>
+<p>Several disjoint shapes can belong to one mask. In <strong>Edit</strong> mode, choose
+<strong>Edit → Select mask part</strong>, click the unwanted piece to highlight it, then
+press <strong>Delete</strong>. To remove a piece from the context menu, right-click it with
+<strong>Select objects</strong> active and choose <strong>Remove this disconnected part</strong>.</p>
 <p>Use <strong>Edit → Refine disconnected parts…</strong> to preview cleanup for selected masks.
 Choose <strong>Keep largest connected part</strong> or set a minimum part area in px². The
 largest part always remains. Pixel edges and corners count as connected. Red
@@ -465,7 +466,9 @@ mask with a rounded stroke. Right-drag carves inward. Green and red show the
 pending additions and removals. Release to apply the stroke. Use Esc to discard
 an active stroke or Undo to reverse a committed stroke.</p>
 <p>The edit applies to the selected mask within the swept circle. An outward
-stroke grows where the circle overlaps the mask.</p>
+stroke grows wherever the circle reaches the mask as it was at the beginning
+of that stroke. Move the circle to another edge to continue there, or release
+and start a new stroke on any side.</p>
 </section>
 <section id="rotate-an-image">
 <h2>Rotate an image<a class="headerlink" href="#rotate-an-image" title="Link to this heading">#</a></h2>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.filaments &#8212; SAM Image Studio 1.4.5</title>
+    <title>samstudio.filaments &#8212; SAM Image Studio 1.4.5.1</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=c6b7524a"></script>
+    <script src="../../../_static/documentation_options.js?v=49bba49e"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="samstudio.filament_ui" href="../filament_ui/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5" />
+  <meta name="docsearch:version" content="1.4.5.1" />
   </head>
   
   
@@ -500,8 +500,8 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#samstudio.filaments.open_endpoints" title="samstudio.filaments.open_endpoints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">open_endpoints</span></code></a>(traces)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.filaments.resolve_bridge" title="samstudio.filaments.resolve_bridge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolve_bridge</span></code></a>(link, endpoints)</p></td>
-<td><p>Snap saved anchors to the nearest current visible endpoints.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.filaments.resolve_bridge" title="samstudio.filaments.resolve_bridge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolve_bridge</span></code></a>(link, endpoints[, masks])</p></td>
+<td><p>Resolve detected endpoints or trim a drawn line to the two mask boundaries.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#samstudio.filaments.filament_values" title="samstudio.filaments.filament_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filament_values</span></code></a>(members, links, matrix, mask_keys)</p></td>
 <td><p></p></td>
@@ -545,9 +545,19 @@
 <span class="sig-name descname"><span class="pre">second_anchor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#samstudio.filaments.FilamentLink.second_anchor" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.filaments.FilamentLink.drawn">
+<span class="sig-name descname"><span class="pre">drawn</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#samstudio.filaments.FilamentLink.drawn" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="samstudio.filaments.FilamentLink.ends">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ends</span></span><a class="headerlink" href="#samstudio.filaments.FilamentLink.ends" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.filaments.FilamentLink.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.filaments.FilamentLink.to_dict" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -617,8 +627,8 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="samstudio.filaments.resolve_bridge">
-<span class="sig-prename descclassname"><span class="pre">samstudio.filaments.</span></span><span class="sig-name descname"><span class="pre">resolve_bridge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.filaments.resolve_bridge" title="Link to this definition">#</a></dt>
-<dd><p>Snap saved anchors to the nearest current visible endpoints.</p>
+<span class="sig-prename descclassname"><span class="pre">samstudio.filaments.</span></span><span class="sig-name descname"><span class="pre">resolve_bridge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.filaments.resolve_bridge" title="Link to this definition">#</a></dt>
+<dd><p>Resolve detected endpoints or trim a drawn line to the two mask boundaries.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -687,7 +697,9 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filaments.FilamentLink.second_id"><code class="docutils literal notranslate"><span class="pre">FilamentLink.second_id</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filaments.FilamentLink.first_anchor"><code class="docutils literal notranslate"><span class="pre">FilamentLink.first_anchor</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filaments.FilamentLink.second_anchor"><code class="docutils literal notranslate"><span class="pre">FilamentLink.second_anchor</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filaments.FilamentLink.drawn"><code class="docutils literal notranslate"><span class="pre">FilamentLink.drawn</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filaments.FilamentLink.ends"><code class="docutils literal notranslate"><span class="pre">FilamentLink.ends</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filaments.FilamentLink.to_dict"><code class="docutils literal notranslate"><span class="pre">FilamentLink.to_dict()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filaments.validate_links"><code class="docutils literal notranslate"><span class="pre">validate_links()</span></code></a></li>

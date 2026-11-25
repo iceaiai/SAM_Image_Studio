@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>User Manual &#8212; SAM Image Studio 1.4.5</title>
+    <title>User Manual &#8212; SAM Image Studio 1.4.5.1</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=c6b7524a"></script>
+    <script src="_static/documentation_options.js?v=49bba49e"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="GPU installation and updates" href="installation-gpu.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5" />
+  <meta name="docsearch:version" content="1.4.5.1" />
   </head>
   
   
@@ -403,7 +403,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="user-manual">
 <h1>User Manual<a class="headerlink" href="#user-manual" title="Link to this heading">#</a></h1>
-<p>This manual covers SAM Image Studio 1.4.5. See <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>
+<p>This manual covers SAM Image Studio 1.4.5.1. See <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>
 for the current platform setup instructions and <a class="reference internal" href="#denoising-parameters">Denoising parameters</a>
 for denoising method defaults and units.</p>
 <section id="start-modes-and-workspace">
@@ -451,6 +451,7 @@ for denoising method defaults and units.</p>
 <h2>Whole-image exemplars, single objects and ROI<a class="headerlink" href="#whole-image-exemplars-single-objects-and-roi" title="Link to this heading">#</a></h2>
 <p>Prompt project, whole image means that examples describe the desired object type across the current image. The examples are searched across the current image. Before accepting, add multiple positive examples and negative examples. Left/right clicks add positive/negative points. Choose Positive example or Negative example for rectangle, circle, ellipse and polygon prompts.</p>
 <p>With Live prompt preview enabled, adding an example schedules a background update. Newer input supersedes older preview results; accepted objects remain protected. Preview masks are disposable until Accept masks. Cancel clears pending examples. CPU searches may take time; the status bar reports progress while the interface remains available.</p>
+<p>When candidates are ready, click <strong>Review…</strong> next to <strong>Run preview</strong> to inspect them before <strong>Accept masks</strong>. Choose all candidates or a single candidate, turn the overlay on and off, and zoom or pan to check the outline against the image. Close the review window to return to the pending masks.</p>
 <p>SAM3 uses native image concept prompting. SAM3.1 uses the official multiplex predictor on a lossless single PNG frame, with its own sam3.1_multiplex.pt checkpoint. SAM3.1 receives all positive/negative boxes together in normalized top-left XYWH format; point exemplars first produce an instance whose box becomes a concept prompt. SAM3.1 is GPU-only and requires the separate Linux/WSL2 Conda environment and approved facebook/sam3.1 weights. Other shapes and points first identify an exemplar object, whose bounding box becomes a SAM3 concept example. SAM1/2 use the application’s candidate-and-retrieval layer: propose masks, pool SAM features, compare image/shape descriptors and filter using positive/negative examples. Repeated small objects also receive template-based candidate seeds. This is a heuristic retrieval layer, not native SAM3 or a trained nanoparticle classifier.</p>
 <p>Example: mark one bright particle positive, then mark a contamination feature negative. The preview searches for similar particles throughout the image. Add another positive particle if size or appearance varies. A clearly negative type suppresses similar candidate types; an explicitly negative object is excluded. When positive and negative appearances cannot be distinguished, inspect and correct the preview.</p>
 <p>Single object (native SAM) keeps the ordinary point/box refinement behavior for one object. Inside ROI only predicts from an area prompt and clips its result to that region. With Point (dot) selected, Single object and Inside ROI only are hidden and disabled. A previously selected area-only scope switches to Prompt project, whole image. To use Single object or ROI only, choose an area tool. Point coordinates remain image pixels at every zoom.</p>
@@ -481,13 +482,13 @@ for denoising method defaults and units.</p>
 </section>
 <section id="refine-disconnected-parts">
 <h2>Refine disconnected parts<a class="headerlink" href="#refine-disconnected-parts" title="Link to this heading">#</a></h2>
-<p>A mask can contain several disconnected parts under one row in Objects. To remove a specific fragment, switch to <strong>Edit</strong>, choose <strong>Select objects</strong>, and right-click the fragment on the image. Choose <strong>Remove this disconnected part</strong> to remove the connected pixels under the cursor. The object keeps its other parts.</p>
+<p>A mask can contain several disconnected parts under one row in Objects. In <strong>Edit</strong>, choose <strong>Edit → Select mask part</strong>, click the fragment on the image to highlight it in orange, then press <strong>Delete</strong>. You can also right-click a fragment with <strong>Select objects</strong> and choose <strong>Remove this disconnected part</strong>. Either action removes the connected pixels in that piece and keeps the object’s other parts. Use <strong>Esc</strong> to clear the highlighted part or switch to <strong>Select objects</strong> to resume vertex editing.</p>
 <p>For one or more selected unlocked masks, open <strong>Edit → Refine disconnected parts…</strong>. <strong>Keep largest connected part</strong> retains one part per mask. <strong>Remove parts smaller than a chosen area</strong> keeps parts at or above the minimum in px² and always retains the largest. Pixels touching at edges or corners belong to the same part. Click <strong>Preview</strong> to see removed pixels in red, then <strong>Apply</strong> to commit. Use <strong>Undo</strong> to restore the prior masks.</p>
 </section>
 <section id="mask-pusher">
 <h2>Mask pusher<a class="headerlink" href="#mask-pusher" title="Link to this heading">#</a></h2>
 <p>In <strong>Edit</strong>, select one visible, unlocked area mask and choose <strong>Mask pusher</strong> in the left toolbar. Change <strong>Mask pusher radius (px)</strong> in the Image settings toolbar or use <strong>Edit → Mask pusher radius…</strong>. The ring shows the brush footprint in image pixels.</p>
-<p>Left-drag along the boundary to add a round sweep where the ring overlaps the mask. Right-drag to carve inward. Green previews added pixels and red previews removed pixels. Release to commit one undoable stroke or press <strong>Esc</strong> while dragging to cancel. Each stroke edits the selected mask within the swept circle and keeps at least part of the object.</p>
+<p>Left-drag along the boundary to add a round sweep where the ring touches the mask as it was when you pressed the mouse. You can move to another side during the drag or start a new stroke there. Right-drag to carve inward. Green previews added pixels and red previews removed pixels. Release to commit one undoable stroke or press <strong>Esc</strong> while dragging to cancel. Each stroke edits the selected mask within the swept circle and keeps at least part of the object.</p>
 </section>
 <section id="scale-bars">
 <h2>Scale bars<a class="headerlink" href="#scale-bars" title="Link to this heading">#</a></h2>
@@ -580,8 +581,9 @@ for denoising method defaults and units.</p>
 <section id="filaments-and-occluded-fragments">
 <h2>Filaments and occluded fragments<a class="headerlink" href="#filaments-and-occluded-fragments" title="Link to this heading">#</a></h2>
 <p>Use <strong>Edit</strong> mode and choose <strong>Edit → Filament → Mark group as Filament…</strong>. Choose a foreground group with the visible masks of fibers, lines or tubes. Each mask is measured along its skeleton centerline, including bends. The centerline extends to the boundary at visible ends. Branched shapes use a principal path between skeleton endpoints; inspect such masks before interpreting their results.</p>
-<p>For a filament interrupted by an occlusion, keep each visible, unbranched section as its own mask in the same group. Ctrl+click two fragment rows in <strong>Objects</strong> and choose <strong>Connect visible fragments…</strong>. Click one marked end on each fragment, choosing the two ends facing the gap. The dashed bridge shows the link. Repeat for additional fragments to make a chain. Select connected fragments and choose <strong>Disconnect selected fragments</strong> to remove their links. Selecting one fragment removes its incident links; selecting several removes links between those selected.</p>
-<p>In <strong>Statistics → Plot Object Statistics…</strong>, choose the Filament metrics. <strong>Visible length</strong> sums the measured centerlines. <strong>Estimated gap length</strong> sums straight distances between linked visible ends. <strong>Estimated total length</strong> adds those two values. Each linked chain appears as one measured filament. Its visible masks remain independently editable and each fragment ID is recorded in the statistics CSV.</p>
+<p>For a filament interrupted by an occlusion, keep each visible section as its own mask in the same group. Ctrl+click two fragment rows in <strong>Objects</strong> and choose <strong>Edit → Filament → Draw filament connection…</strong>. Drag a straight line from just inside one tip to just inside the facing tip on the other mask. The app trims the line to the two boundaries and draws a dashed bridge across the gap. This works with branched masks. <strong>Connect visible fragments…</strong> lets you click detected ends and switches to drawing when it cannot find a usable open centerline.</p>
+<p>Repeat with each neighboring pair to make a chain. Choose <strong>Disconnect selected fragments</strong> to remove links. Selecting one fragment removes its incident links. Selecting several removes the links between those fragments.</p>
+<p>In <strong>Statistics → Plot Object Statistics…</strong>, choose the Filament metrics. <strong>Visible length</strong> sums the measured centerlines. <strong>Estimated gap length</strong> sums straight distances between linked visible ends. <strong>Estimated total length</strong> adds those two values when the visible traces and gaps are resolved. Each linked chain appears as one measured filament. Its visible masks remain independently editable and each fragment ID is recorded in the statistics CSV.</p>
 <p>Widths are measured across the visible mask along local normals to the centerline, using the calibrated basis for physical results. The report includes mean, minimum, maximum, population standard deviation and population variance. The mean and variance weight cross-sections by arc length. Width statistics exclude gap segments, and width variance uses squared length units. Check the measured boundaries at your image resolution. If editing a mask leaves an unresolved link, reconnect the fragments before using the estimated lengths.</p>
 </section>
 <section id="statistics-and-metric-applicability">
@@ -702,6 +704,7 @@ for denoising method defaults and units.</p>
 <p>To color masks in one image, choose <strong>Edit → Assign mask colors… → By measurement</strong>. Pick a metric such as projected area, equivalent diameter or perimeter, the measurement unit and the number of colors. The default is 20 and you can choose up to 256. The palette spans the eligible values in that image. Objects without a value in the chosen units keep their base colors.</p>
 <p>To share a color scale across several images, Ctrl+click their file or frame rows in <strong>Image files</strong>, then choose <strong>Create…</strong> next to <strong>Plot group</strong>. Name the group, confirm the included frames and choose the color metric, units and color count. Selecting a file row includes all its frames. The active group uses a single scale across its open member frames. Other images keep their own colors. Reopen any closed group members to include them in the scale and plots. <strong>Edit…</strong> beside the group selector changes its membership or palette.</p>
 <p>In <strong>Plot Object Statistics…</strong>, choose <strong>Plot group: name</strong> under <strong>Images</strong>. This uses that group for both the plot and the canvas palette. Select <strong>Object points (mask colors)</strong> to plot one point per eligible object in its exact mask color. Change the plotted metrics independently of the color metric, with up to nine checked at once. Use <strong>Histogram</strong> for a distribution, or export all or selected statistics. The CSV includes the mask color and the fragment IDs for filaments.</p>
+<p>Select <strong>Histogram (mask colors)</strong> to color columns. When the plotted metric uses the same measurement and scale as the masks, the histogram uses the palette ranges and their exact colors. Compatible physical units convert automatically, such as nm² to µm². With a different metric or multiple independent color scales, each bin stacks counts in the objects’ mask colors. <strong>Bins</strong> controls those other ranges.</p>
 <p>Example: group three images from one condition, color by projected area in nm², then plot perimeter, ECD and circularity. A given mask keeps its area color in all three plots. <strong>Save masks… → Color by object</strong> uses those same displayed object colors in its preview and output.</p>
 </section>
 <section id="masks-overlays-and-dataset-export">
@@ -815,155 +818,159 @@ for denoising method defaults and units.</p>
 <td><p>Preview removal of smaller parts within each selected mask.</p></td>
 <td><p>Keep the largest part of a segmented object while clearing stray lines.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Object context &gt; Remove this disconnected part</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Select mask part / Delete selected mask part</p></td>
+<td><p>Highlight and delete just one disconnected part.</p></td>
+<td><p>Click a stray piece and press Delete.</p></td>
+</tr>
+<tr class="row-even"><td><p>Object context &gt; Remove this disconnected part</p></td>
 <td><p>In Edit, remove the connected component under the cursor.</p></td>
 <td><p>Right-click a stray fragment to remove it from the mask.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Mask pusher</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Mask pusher</p></td>
 <td><p>Adjust a selected mask with a circular stroke.</p></td>
 <td><p>Set a 12 px radius and right-drag to carve into an edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Edit &gt; Add / Edit / Remove scale bar</p></td>
+<tr class="row-even"><td><p>Edit &gt; Add / Edit / Remove scale bar</p></td>
 <td><p>Preview and save a scale bar on the canvas.</p></td>
 <td><p>Set a 50 nm bar in the lower-right corner.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Filament</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Filament</p></td>
 <td><p>Mark a group as Filament and connect visible ends across gaps.</p></td>
 <td><p>Link two masks of a bent fiber separated by an occlusion.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Edit &gt; Fill holes / Smooth edges</p></td>
+<tr class="row-even"><td><p>Edit &gt; Fill holes / Smooth edges</p></td>
 <td><p>Preview exact hole filling or smooth editable cubic contours.</p></td>
 <td><p>Smooth a jagged outline and compare the area before Apply.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Rotate image</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Rotate image</p></td>
 <td><p>Rotate pixels and annotations together; optionally enlarge to a rectangle/square and fill padding.</p></td>
 <td><p>Rotate 30 degrees, select square padding and neighbor fill, then inspect the preview.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Edit &gt; Scale masks / savepoints</p></td>
+<tr class="row-even"><td><p>Edit &gt; Scale masks / savepoints</p></td>
 <td><p>Uniformly scale selected masks or a group about each object centroid.</p></td>
 <td><p>Create original and 1.10x savepoints; restore original if objects grow too far.</p></td>
 </tr>
-<tr class="row-even"><td><p>Edit &gt; Morphology / inner region</p></td>
+<tr class="row-odd"><td><p>Edit &gt; Morphology / inner region</p></td>
 <td><p>Assign morphology and explicit outer/core/cavity links for applicable measurements.</p></td>
 <td><p>Link a separate core mask to its enclosing particle before measuring shell thickness.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Models &gt; Model manager</p></td>
+<tr class="row-even"><td><p>Models &gt; Model manager</p></td>
 <td><p>Choose family, variant, compatible checkpoint and CPU or Conda CUDA device.</p></td>
 <td><p>Download SAM2.1 Tiny for CPU; a local checkpoint must match the selected architecture.</p></td>
 </tr>
-<tr class="row-even"><td><p>Models &gt; Segmentation options</p></td>
+<tr class="row-odd"><td><p>Models &gt; Segmentation options</p></td>
 <td><p>Set candidate options and an optional target size range.</p></td>
 <td><p>Use a maximum ECD of 20 nm in a calibrated image.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Models &gt; Text prompt aliases</p></td>
+<tr class="row-even"><td><p>Models &gt; Text prompt aliases</p></td>
 <td><p>Map complete phrases to an effective prompt, without retraining.</p></td>
 <td><p>Map nanoparticle and powder to big dots; the resolved phrase appears in the tooltip.</p></td>
 </tr>
-<tr class="row-even"><td><p>Run preview / Accept masks / Cancel</p></td>
-<td><p>Generate a disposable preview, commit eligible masks or cancel pending work.</p></td>
-<td><p>Add two positive examples and one negative example; Accept only after inspection.</p></td>
+<tr class="row-odd"><td><p>Run preview / Review / Accept masks / Cancel</p></td>
+<td><p>Generate, inspect, commit or clear pending masks.</p></td>
+<td><p>Review one candidate up close before accepting the preview.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Remove selected image area</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Remove selected image area</p></td>
 <td><p>Retain removals as visible, reversible cleaning objects.</p></td>
 <td><p>Remove a contamination spot, then choose a fill method.</p></td>
 </tr>
-<tr class="row-even"><td><p>Object context &gt; Delete for cleaning</p></td>
+<tr class="row-odd"><td><p>Object context &gt; Delete for cleaning</p></td>
 <td><p>Convert an unlocked area object into a cleaning region while in Clean mode.</p></td>
 <td><p>Use a drawn mask to remove an unwanted particle from the derived image.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Restore selected area / all edits</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Restore selected area / all edits</p></td>
 <td><p>Restore pixels while retaining other valid cleaning records.</p></td>
 <td><p>Restore a small removed area without erasing a separate filled region.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Fill from neighboring pixels</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Fill from neighboring pixels</p></td>
 <td><p>Estimate fill values from nearby available pixels.</p></td>
 <td><p>Fill a small isolated background spot.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Fill with LaMa</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Fill with LaMa</p></td>
 <td><p>Run asynchronous model-based inpainting inside the requested region.</p></td>
 <td><p>Preview a larger removed contamination region; pixels outside it stay exact.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Background patches</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Background patches</p></td>
 <td><p>Tile source pixels from a selected manual background group.</p></td>
 <td><p>Choose a group named Clean support; its name need not be Background.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Cleaning &gt; Choose / Add / Clear background group</p></td>
+<tr class="row-even"><td><p>Cleaning &gt; Choose / Add / Clear background group</p></td>
 <td><p>Select manually drawn polygon/rectangle/ellipse background areas, or clear that selection.</p></td>
 <td><p>Select several clean background patches; reject sources intersecting processed pixels.</p></td>
 </tr>
-<tr class="row-even"><td><p>Cleaning &gt; Brush radius</p></td>
+<tr class="row-odd"><td><p>Cleaning &gt; Brush radius</p></td>
 <td><p>Set the radius of the point cleaning brush, independently of SAM point prompts.</p></td>
 <td><p>Use a small brush to remove a thin mark in Clean mode.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Show cleaning regions</p></td>
+<tr class="row-even"><td><p>Show cleaning regions</p></td>
 <td><p>Hide/show the display of cleaning objects; deleting a cleaning object restores its pixels.</p></td>
 <td><p>Hide the removal outline to inspect a filled region.</p></td>
 </tr>
-<tr class="row-even"><td><p>Processing &gt; Denoise</p></td>
+<tr class="row-odd"><td><p>Processing &gt; Denoise</p></td>
 <td><p>Preview restoration and open the Denoising parameters chapter.</p></td>
 <td><p>Compare a TV weight of 0.08 against the original before Apply.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Processing &gt; Smooth (Gaussian)</p></td>
+<tr class="row-even"><td><p>Processing &gt; Smooth (Gaussian)</p></td>
 <td><p>Select an odd kernel size and sigma.</p></td>
 <td><p>Use kernel 5 and sigma 1 for a small spatial smoothing operation.</p></td>
 </tr>
-<tr class="row-even"><td><p>Processing &gt; Crop selected region / masks</p></td>
+<tr class="row-odd"><td><p>Processing &gt; Crop selected region / masks</p></td>
 <td><p>Retain real pixels in the mask bounding rectangle plus 3 pixels of context.</p></td>
 <td><p>Store an irregular particle and its real surrounding background; no artificial black corners are added.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Processing &gt; Retained crops / paste back</p></td>
+<tr class="row-even"><td><p>Processing &gt; Retained crops / paste back</p></td>
 <td><p>Protect/release, export, remove or paste retained crop snapshots.</p></td>
 <td><p>Denoise the rest of the image, then paste the preserved rectangular patch back.</p></td>
 </tr>
-<tr class="row-even"><td><p>Processing &gt; Add noise</p></td>
+<tr class="row-odd"><td><p>Processing &gt; Add noise</p></td>
 <td><p>Add reproducible Gaussian, Poisson or salt-and-pepper noise with adjustable strength/seed.</p></td>
 <td><p>Use a fixed seed to compare two denoisers on the same synthetic noise.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Export &gt; COCO dataset</p></td>
+<tr class="row-even"><td><p>Export &gt; COCO dataset</p></td>
 <td><p>Write exact masks, groups, calibration, attributes and cleaning extensions.</p></td>
 <td><p>Export all open images with an uncleaned image and a separate processed-image copy.</p></td>
 </tr>
-<tr class="row-even"><td><p>Export &gt; YOLO dataset</p></td>
+<tr class="row-odd"><td><p>Export &gt; YOLO dataset</p></td>
 <td><p>Export polygons with explicit handling of holes/disconnected masks.</p></td>
 <td><p>Choose COCO for exact holes, or explicitly review a lossy YOLO conversion.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Save masks / Transparent mask images</p></td>
+<tr class="row-even"><td><p>Save masks / Transparent mask images</p></td>
 <td><p>Choose binary, overlap-weighted grayscale, color masks, labels, overlay, opacity and alpha options.</p></td>
 <td><p>Keep binary masks for training and export a transparent colored overlay for presentation.</p></td>
 </tr>
-<tr class="row-even"><td><p>File &gt; Save original / processed images</p></td>
+<tr class="row-odd"><td><p>File &gt; Save original / processed images</p></td>
 <td><p>Save the acquired image, current processed image or both as TIFF.</p></td>
 <td><p>Keep the acquired TIFF and save a rotated/denoised derivative separately.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Statistics &gt; Plot Object Statistics</p></td>
+<tr class="row-even"><td><p>Statistics &gt; Plot Object Statistics</p></td>
 <td><p>Choose an image scope and up to nine metrics.</p></td>
 <td><p>Plot ECD and perimeter for a named image group, with points colored by mask area.</p></td>
 </tr>
-<tr class="row-even"><td><p>Statistics &gt; Edit image calibration</p></td>
+<tr class="row-odd"><td><p>Statistics &gt; Edit image calibration</p></td>
 <td><p>Enter X/Y physical pixel size and length unit.</p></td>
 <td><p>Use X=0.2 nm and Y=0.3 nm when pixels are anisotropic.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Statistics &gt; Export plot / Export statistics</p></td>
+<tr class="row-even"><td><p>Statistics &gt; Export plot / Export statistics</p></td>
 <td><p>Save a visual plot or choose which numerical metrics to export.</p></td>
 <td><p>Display three metrics and save all measurements and summary tables.</p></td>
 </tr>
-<tr class="row-even"><td><p>View &gt; Masks / Contours / Prompts / Panels</p></td>
+<tr class="row-odd"><td><p>View &gt; Masks / Contours / Prompts / Panels</p></td>
 <td><p>Adjust visibility and reopen hidden docks.</p></td>
 <td><p>Hide prompt markers while inspecting a mask, then reopen the Objects panel.</p></td>
 </tr>
-<tr class="row-odd"><td><p>View &gt; Toolbars</p></td>
+<tr class="row-even"><td><p>View &gt; Toolbars</p></td>
 <td><p>Toggle each top toolbar independently.</p></td>
 <td><p>Hide Segmentation prompts while editing a mask.</p></td>
 </tr>
-<tr class="row-even"><td><p>View &gt; Toolbar icon size</p></td>
+<tr class="row-odd"><td><p>View &gt; Toolbar icon size</p></td>
 <td><p>Adjust drawing-tool icon sizes. Undo/Redo retain their enlarged controls.</p></td>
 <td><p>Use Large icons on a high-resolution display.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Plugin &gt; Install / Manage</p></td>
+<tr class="row-even"><td><p>Plugin &gt; Install / Manage</p></td>
 <td><p>Install a local plugin folder; enable, disable, reload or remove it.</p></td>
 <td><p>Disable a plugin that fails to load, without changing images or annotations.</p></td>
 </tr>
-<tr class="row-even"><td><p>Help &gt; User Manual</p></td>
+<tr class="row-odd"><td><p>Help &gt; User Manual</p></td>
 <td><p>Open the English manual for the running app version.</p></td>
 <td><p>Jump to Denoising parameters inside the manual.</p></td>
 </tr>
@@ -1002,7 +1009,7 @@ for denoising method defaults and units.</p>
 <td><p>Edit existing object</p></td>
 </tr>
 <tr class="row-odd"><td><p>Delete</p></td>
-<td><p>Remove highlighted vertices in Edit mode. Delete objects in other modes.</p></td>
+<td><p>Remove the highlighted mask part with Select mask part active. Otherwise remove eligible vertices in Edit or selected objects in the other modes.</p></td>
 </tr>
 <tr class="row-even"><td><p>Esc</p></td>
 <td><p>Cancel a mask-pusher stroke, clear a distance measurement, or cancel a filament connection, drawing, preview or running task.</p></td>

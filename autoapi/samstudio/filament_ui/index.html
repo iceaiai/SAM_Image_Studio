@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.filament_ui &#8212; SAM Image Studio 1.4.5</title>
+    <title>samstudio.filament_ui &#8212; SAM Image Studio 1.4.5.1</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=c6b7524a"></script>
+    <script src="../../../_static/documentation_options.js?v=49bba49e"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="samstudio.exports" href="../exports/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5" />
+  <meta name="docsearch:version" content="1.4.5.1" />
   </head>
   
   
@@ -455,7 +455,7 @@
                   
   <section id="module-samstudio.filament_ui">
 <span id="samstudio-filament-ui"></span><h1>samstudio.filament_ui<a class="headerlink" href="#module-samstudio.filament_ui" title="Link to this heading">#</a></h1>
-<p>Filament group actions and interactive selection of visible ends.</p>
+<p>Filament group actions, detected endpoints and drawn connections.</p>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
@@ -480,6 +480,16 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="samstudio.filament_ui.FilamentWorkflowMixin.begin_filament_link">
 <span class="sig-name descname"><span class="pre">begin_filament_link</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.filament_ui.FilamentWorkflowMixin.begin_filament_link" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.filament_ui.FilamentWorkflowMixin.begin_drawn_filament_link">
+<span class="sig-name descname"><span class="pre">begin_drawn_filament_link</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.filament_ui.FilamentWorkflowMixin.begin_drawn_filament_link" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.filament_ui.FilamentWorkflowMixin.finish_drawn_filament_link">
+<span class="sig-name descname"><span class="pre">finish_drawn_filament_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.filament_ui.FilamentWorkflowMixin.finish_drawn_filament_link" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -554,6 +564,8 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filament_ui.FilamentWorkflowMixin"><code class="docutils literal notranslate"><span class="pre">FilamentWorkflowMixin</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filament_ui.FilamentWorkflowMixin.set_filament_group"><code class="docutils literal notranslate"><span class="pre">FilamentWorkflowMixin.set_filament_group()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filament_ui.FilamentWorkflowMixin.begin_filament_link"><code class="docutils literal notranslate"><span class="pre">FilamentWorkflowMixin.begin_filament_link()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filament_ui.FilamentWorkflowMixin.begin_drawn_filament_link"><code class="docutils literal notranslate"><span class="pre">FilamentWorkflowMixin.begin_drawn_filament_link()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filament_ui.FilamentWorkflowMixin.finish_drawn_filament_link"><code class="docutils literal notranslate"><span class="pre">FilamentWorkflowMixin.finish_drawn_filament_link()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filament_ui.FilamentWorkflowMixin.pick_filament_end"><code class="docutils literal notranslate"><span class="pre">FilamentWorkflowMixin.pick_filament_end()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filament_ui.FilamentWorkflowMixin.cancel_filament_link"><code class="docutils literal notranslate"><span class="pre">FilamentWorkflowMixin.cancel_filament_link()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.filament_ui.FilamentWorkflowMixin.disconnect_filaments"><code class="docutils literal notranslate"><span class="pre">FilamentWorkflowMixin.disconnect_filaments()</span></code></a></li>

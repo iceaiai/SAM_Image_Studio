@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.canvas &#8212; SAM Image Studio 1.4.5</title>
+    <title>samstudio.canvas &#8212; SAM Image Studio 1.4.5.1</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=c6b7524a"></script>
+    <script src="../../../_static/documentation_options.js?v=49bba49e"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="samstudio.calibration_table" href="../calibration_table/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5" />
+  <meta name="docsearch:version" content="1.4.5.1" />
   </head>
   
   
@@ -562,6 +562,11 @@
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.mask_part_delete_requested">
+<span class="sig-name descname"><span class="pre">mask_part_delete_requested</span></span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.mask_part_delete_requested" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.message">
 <span class="sig-name descname"><span class="pre">message</span></span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.message" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -589,6 +594,11 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.filament_end_picked">
 <span class="sig-name descname"><span class="pre">filament_end_picked</span></span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.filament_end_picked" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.filament_connection_drawn">
+<span class="sig-name descname"><span class="pre">filament_connection_drawn</span></span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.filament_connection_drawn" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -732,6 +742,16 @@
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.draw_filament_connection">
+<span class="sig-name descname"><span class="pre">draw_filament_connection</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#samstudio.canvas.ImageCanvas.draw_filament_connection" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.filament_connection_draft">
+<span class="sig-name descname"><span class="pre">filament_connection_draft</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#samstudio.canvas.ImageCanvas.filament_connection_draft" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.object_colors">
 <span class="sig-name descname"><span class="pre">object_colors</span></span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.object_colors" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -769,6 +789,21 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.set_tool">
 <span class="sig-name descname"><span class="pre">set_tool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.set_tool" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.filament_link_active">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filament_link_active</span></span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.filament_link_active" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.clear_mask_part">
+<span class="sig-name descname"><span class="pre">clear_mask_part</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.clear_mask_part" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="samstudio.canvas.ImageCanvas.selected_mask_part">
+<span class="sig-name descname"><span class="pre">selected_mask_part</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.canvas.ImageCanvas.selected_mask_part" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -924,12 +959,14 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.prompt_added"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.prompt_added</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.geometry_changed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.geometry_changed</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.mask_pushed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.mask_pushed</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.mask_part_delete_requested"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.mask_part_delete_requested</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.message"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.message</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.zoom_changed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.zoom_changed</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.tool_changed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.tool_changed</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.object_context_requested"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.object_context_requested</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.preview_count_changed"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.preview_count_changed</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.filament_end_picked"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.filament_end_picked</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.filament_connection_drawn"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.filament_connection_drawn</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.document"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.document</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.mode"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.mode</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.tool"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.tool</span></code></a></li>
@@ -958,6 +995,8 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.filament_picks"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.filament_picks</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.filament_first"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.filament_first</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.filament_bridges"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.filament_bridges</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.draw_filament_connection"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.draw_filament_connection</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.filament_connection_draft"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.filament_connection_draft</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.object_colors"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.object_colors</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.set_document"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.set_document()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.refresh"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.refresh()</span></code></a></li>
@@ -966,6 +1005,9 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.clear_scale_bar_preview"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.clear_scale_bar_preview()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.set_selected"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.set_selected()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.set_tool"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.set_tool()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.filament_link_active"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.filament_link_active</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.clear_mask_part"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.clear_mask_part()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.selected_mask_part"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.selected_mask_part()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.fit_image"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.fit_image()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.to_image"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.to_image()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#samstudio.canvas.ImageCanvas.to_widget"><code class="docutils literal notranslate"><span class="pre">ImageCanvas.to_widget()</span></code></a></li>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>samstudio.processing &#8212; SAM Image Studio 1.4.5</title>
+    <title>samstudio.processing &#8212; SAM Image Studio 1.4.5.1</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=c6b7524a"></script>
+    <script src="../../../_static/documentation_options.js?v=49bba49e"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="samstudio.plugin_ui" href="../plugin_ui/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5" />
+  <meta name="docsearch:version" content="1.4.5.1" />
   </head>
   
   
@@ -469,7 +469,7 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#samstudio.processing.push_mask_segment" title="samstudio.processing.push_mask_segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">push_mask_segment</span></code></a>(mask, start, end, radius, *, expand)</p></td>
-<td><p>Apply overlapping circular brush stamps and return the changed bounds.</p></td>
+<td><p>Apply circular stamps, using the original stroke mask for outward contact.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#samstudio.processing.bounding_box" title="samstudio.processing.bounding_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounding_box</span></code></a>(mask)</p></td>
 <td><p></p></td>
@@ -552,8 +552,8 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="samstudio.processing.push_mask_segment">
-<span class="sig-prename descclassname"><span class="pre">samstudio.processing.</span></span><span class="sig-name descname"><span class="pre">push_mask_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.processing.push_mask_segment" title="Link to this definition">#</a></dt>
-<dd><p>Apply overlapping circular brush stamps and return the changed bounds.</p>
+<span class="sig-prename descclassname"><span class="pre">samstudio.processing.</span></span><span class="sig-name descname"><span class="pre">push_mask_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#samstudio.processing.push_mask_segment" title="Link to this definition">#</a></dt>
+<dd><p>Apply circular stamps, using the original stroke mask for outward contact.</p>
 </dd></dl>
 
 <dl class="py function">
