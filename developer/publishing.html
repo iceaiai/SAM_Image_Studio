@@ -505,6 +505,10 @@ uses the offline guide as its root README. Both tags share the application
 version and all other source files.
 Create the offline commit in a temporary ordinary clone, never by modifying the
 normal working checkout. Preserve existing tags; push new tags without force.</p>
+<p>Update the README and CPU downloads page with one row for each release. Keep
+the original archive and the five most recent versions in the main table, and
+move earlier versions under <strong>Show all versions</strong>. List the available ZIPs and
+briefly describe the changes in each version.</p>
 <p>Neither source archive includes <code class="docutils literal notranslate"><span class="pre">.venv*</span></code>, <code class="docutils literal notranslate"><span class="pre">.python312</span></code>, <code class="docutils literal notranslate"><span class="pre">offline-cache</span></code> or model
 weights. Verify both ZIPs after publishing, including CRCs, entry points, edition
 marker presence/absence and comparable initial sizes. The user then prepares
