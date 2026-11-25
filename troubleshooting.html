@@ -563,7 +563,7 @@ If saving fails, image removal is blocked to protect recovery.</p>
 <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">check</span></code> and inspect the processor’s shape/dtype/target contract.
 CAREamics training creates model files before image Apply; Cancel or Undo does
 not delete those files.</p>
-<p>The original release omitted <code class="docutils literal notranslate"><span class="pre">external_assets.json</span></code>; the fetch helper now looks
+<p>The 1.4.2 archive omitted <code class="docutils literal notranslate"><span class="pre">external_assets.json</span></code>; the fetch helper now looks
 under <code class="docutils literal notranslate"><span class="pre">docs/validation/</span></code>. Obtain the authoritative manifest before full external
 validation. Do not invent digests, disable TLS/checksums, or call skipped model
 tests a full model validation. See <a class="reference internal" href="development.html"><span class="std std-doc">development</span></a>.</p>
