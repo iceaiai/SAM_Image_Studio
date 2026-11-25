@@ -1,8 +1,9 @@
 # Sources, versions, and licenses
 
-This documentation is based on the supplied SAM Image Studio **1.4.2** CPU
-archive, its application source and editable manuals, the three separately
-uploaded PDF manuals, and the compressed-sensing teaching notebook.
+This documentation is based on the supplied CPU archive for **1.4.2**, the first
+stable version of SAM Image Studio. It also uses that version's application
+source and editable manuals, the three separately uploaded PDF manuals, and the
+compressed-sensing teaching notebook.
 The PDFs identify an English edition dated October 22, 2026.
 
 The original uploads are retained unchanged under `uploads/`.
@@ -13,9 +14,9 @@ new repository documentation. Version 1.4.3 adds the SAM3 ONNX adapter,
 model-manager token entry, installation repairs and repository organization.
 Version 1.4.4 adds the classical watershed, signal-scaled noise, per-image input
 state, automatic Python preparation and restricted offline CPU distribution.
-Current code/requirements therefore differ from the original archive.
+Current code and requirements therefore differ from the 1.4.2 archive.
 
-`uploads/FILE_MANIFEST_SHA256_v142.json` is the **original release archive manifest**. Its
+`uploads/FILE_MANIFEST_SHA256_v142.json` is the **1.4.2 archive manifest**. Its
 paths refer to files in that archive, including the original README, not to
 the newly authored repository README or other documentation additions. Verify
 it against the ZIP's `SAM_Image_Studio/` contents. It is not a manifest of the

@@ -32,10 +32,11 @@ repository = Path(__file__).resolve().parents[2]
 app_version = runpy.run_path(str(repository / 'samstudio' / '__init__.py'))['__version__']
 release_versions = re.findall(r'^# SAM Image Studio (\d+(?:\.\d+)+)$',
                               (repository / 'docs' / 'RELEASE_NOTES.md').read_text(), re.MULTILINE)
-original_version = '1.4.2'
-assert release_versions[0] == app_version and release_versions[-1] == original_version
-recent_versions = release_versions[:-1][:5]
-archived_versions = release_versions[:-1][5:]
+first_stable_version = '1.4.2'
+assert release_versions[0] == app_version and first_stable_version in release_versions
+visible_releases = {*release_versions[:5], '1.4.3', first_stable_version}
+visible_versions = [version for version in release_versions if version in visible_releases]
+archived_versions = [version for version in release_versions if version not in visible_releases]
 
 
 def check_version_table(table, versions):
@@ -46,9 +47,10 @@ def check_version_table(table, versions):
   assert cells.nth(0).inner_text().split(' —', 1)[0] == version
   assert cells.nth(2).inner_text().strip(), version
   downloads = cells.nth(1)
-  if version == original_version:
-   original = downloads.get_by_role('link', name='Original CPU ZIP', exact=True)
-   assert original.get_attribute('href').endswith('/uploads/SAM_Image_Studio_v1.4.2_CPU.zip')
+  if version == first_stable_version:
+   assert cells.nth(0).inner_text() == '1.4.2 — First stable version'
+   stable = downloads.get_by_role('link', name='CPU ZIP', exact=True)
+   assert stable.get_attribute('href').endswith('/uploads/SAM_Image_Studio_v1.4.2_CPU.zip')
   else:
    standard = downloads.get_by_role('link', name='Standard ZIP', exact=True)
    assert standard.get_attribute('href').endswith(f'/archive/refs/tags/v{version}.zip')
@@ -83,15 +85,17 @@ with sync_playwright() as p:
  page.get_by_role('link',name='Download CPU versions',exact=True).click()
  page.wait_for_load_state('networkidle')
  assert page.url.endswith('/downloads.html')
- check_version_table(page.locator('article table').first, recent_versions + [original_version])
+ check_version_table(page.locator('article table').first, visible_versions)
+ assert page.get_by_role('link', name='1.4.3', exact=True).is_visible()
  archive = page.locator('article details').filter(has_text='Show all versions')
- assert not archive.locator('table').is_visible()
  page.screenshot(path='/tmp/samstudio-downloads-desktop.png',full_page=True)
- archive.locator('summary').click()
- assert archive.locator('table').is_visible()
- check_version_table(archive.locator('table'), archived_versions)
- archive.locator('summary').click()
- assert not archive.locator('table').is_visible()
+ if archived_versions:
+  assert not archive.locator('table').is_visible()
+  archive.locator('summary').click()
+  assert archive.locator('table').is_visible()
+  check_version_table(archive.locator('table'), archived_versions)
+  archive.locator('summary').click()
+  assert not archive.locator('table').is_visible()
  page.goto(base+'/installation.html',wait_until='networkidle')
  headings=page.locator('article h2').all_text_contents()
  assert headings[0].startswith('First for every route:'),headings
@@ -138,11 +142,14 @@ with sync_playwright() as p:
  width=mobile.evaluate('({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth})')
  assert width['scroll']<=width['client']+1,width
  mobile.screenshot(path='/tmp/samstudio-downloads-mobile.png',full_page=True)
- mobile_archive=mobile.locator('article details').filter(has_text='Show all versions')
- mobile_archive.locator('summary').click()
- assert mobile_archive.locator('table').is_visible()
- width=mobile.evaluate('({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth})')
- assert width['scroll']<=width['client']+1,width
+ assert mobile.get_by_role('link', name='1.4.3', exact=True).is_visible()
+ assert mobile.get_by_text('1.4.2 — First stable version', exact=True).is_visible()
+ if archived_versions:
+  mobile_archive=mobile.locator('article details').filter(has_text='Show all versions')
+  mobile_archive.locator('summary').click()
+  assert mobile_archive.locator('table').is_visible()
+  width=mobile.evaluate('({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth})')
+  assert width['scroll']<=width['client']+1,width
  assert not errors,errors
  assert not bad_resources,bad_resources
  print('Browser validation passed: download list, shared source acquisition, readable GPU guide, desktop navigation, SAM3.1 guide, menu reference, search, mobile layout; no JS errors or missing local resources.')

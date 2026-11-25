@@ -28,16 +28,8 @@ You do not need Git if you download a ZIP.
 | 1.4.4.2 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.2.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.2-offline.zip) | Adds calibrated line and curve rulers and fixes crashes in segmentation options, mask-color, and plot-group dialogs. |
 | 1.4.4.1 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1-offline.zip) | Adds segmentation size filters, editable scale bars, filament measurements, and shared colors for plot groups. |
 | 1.4.4 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4-offline.zip) | Adds Otsu + watershed, signal-scaled noise, automatic Python 3.12 setup, and the offline CPU edition. |
-| 1.4.2 — original | [Original CPU ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip) | Original archive with calibrated segmentation, Excel pixel-size lookup, image restoration, and the original manuals. |
-
-<details>
-<summary>Show all versions</summary>
-
-| Earlier version | Downloads | Main changes |
-| --- | --- | --- |
 | 1.4.3 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip) | Adds public SAM3 ONNX text segmentation, updates CPU/GPU installers, and publishes illustrated guides. |
-
-</details>
+| 1.4.2 — First stable version | [CPU ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip) | Includes calibrated segmentation, Excel pixel-size lookup, image restoration, and bundled manuals. |
 
 Use the installation instructions included in the ZIP you download. For
 1.4.2, run `Install_CPU.bat` or `bash install_cpu.sh` from its inner

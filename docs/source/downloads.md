@@ -12,15 +12,8 @@ for that version. No Git account or clone command is required for ZIP downloads.
 | [1.4.4.2](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.4.2) | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.2.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.2-offline.zip) | Adds calibrated line and curve rulers and fixes crashes in segmentation options, mask-color, and plot-group dialogs. |
 | [1.4.4.1](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.4.1) | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1-offline.zip) | Adds segmentation size filters, editable scale bars, filament measurements, and shared colors for plot groups. |
 | [1.4.4](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.4) | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4-offline.zip) | Adds Otsu + watershed, signal-scaled noise, automatic Python 3.12 setup, and the offline CPU edition. |
-| 1.4.2 — original | [Original CPU ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip) · [SHA-256](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SHA256SUMS) | Original archive with calibrated segmentation, Excel pixel-size lookup, image restoration, and the original manuals. |
-
-:::{dropdown} Show all versions
-
-| Earlier version | Downloads | Main changes |
-| --- | --- | --- |
 | [1.4.3](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.3) | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip) | Adds public SAM3 ONNX text segmentation, updates CPU/GPU installers, and publishes illustrated guides. |
-
-:::
+| 1.4.2 — First stable version | [CPU ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip) · [SHA-256](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SHA256SUMS) | Includes calibrated segmentation, Excel pixel-size lookup, image restoration, and bundled manuals. |
 
 Every source package needs installation after extraction. The current CPU helpers
 automatically use or prepare **64-bit Python 3.12** on Windows/Linux x86-64.
@@ -48,8 +41,8 @@ then `bash start_gui.sh`. See the manuals bundled with that ZIP.
 
 ## Original PDF manuals and notebook
 
-These files are retained byte-for-byte as originally supplied. The PDF manuals
-describe the original release; use the current website for newer install paths
+These files are retained byte-for-byte as supplied. The PDF manuals describe
+1.4.2, the first stable version. The current website covers newer install paths
 and features.
 
 | File | Download |

@@ -142,7 +142,7 @@ Local plugins need compatible dependencies in the active environment. Run
 CAREamics training creates model files before image Apply; Cancel or Undo does
 not delete those files.
 
-The original release omitted `external_assets.json`; the fetch helper now looks
+The 1.4.2 archive omitted `external_assets.json`; the fetch helper now looks
 under `docs/validation/`. Obtain the authoritative manifest before full external
 validation. Do not invent digests, disable TLS/checksums, or call skipped model
 tests a full model validation. See [development](development.md).
