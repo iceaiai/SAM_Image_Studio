@@ -3,7 +3,7 @@ from html.parser import HTMLParser
 from urllib.parse import urlsplit,unquote
 from functools import partial
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
-import runpy, threading, json
+import re, runpy, threading, json
 from playwright.sync_api import sync_playwright
 root=(Path(__file__).resolve().parents[1]/'_build/html').resolve();parsed={};links=[]
 class Page(HTMLParser):
@@ -27,6 +27,36 @@ for source,url in links:
  count+=1
 assert not broken,broken[:20]
 print('HTML validation:',len(parsed),'pages;',count,'local references; no broken local links/anchors.')
+
+repository = Path(__file__).resolve().parents[2]
+app_version = runpy.run_path(str(repository / 'samstudio' / '__init__.py'))['__version__']
+release_versions = re.findall(r'^# SAM Image Studio (\d+(?:\.\d+)+)$',
+                              (repository / 'docs' / 'RELEASE_NOTES.md').read_text(), re.MULTILINE)
+original_version = '1.4.2'
+assert release_versions[0] == app_version and release_versions[-1] == original_version
+recent_versions = release_versions[:-1][:5]
+archived_versions = release_versions[:-1][5:]
+
+
+def check_version_table(table, versions):
+ rows = table.locator('tbody tr')
+ assert rows.count() == len(versions)
+ for index, version in enumerate(versions):
+  cells = rows.nth(index).locator('td')
+  assert cells.nth(0).inner_text().split(' —', 1)[0] == version
+  assert cells.nth(2).inner_text().strip(), version
+  downloads = cells.nth(1)
+  if version == original_version:
+   original = downloads.get_by_role('link', name='Original CPU ZIP', exact=True)
+   assert original.get_attribute('href').endswith('/uploads/SAM_Image_Studio_v1.4.2_CPU.zip')
+  else:
+   standard = downloads.get_by_role('link', name='Standard ZIP', exact=True)
+   assert standard.get_attribute('href').endswith(f'/archive/refs/tags/v{version}.zip')
+   if tuple(map(int, version.split('.'))) >= (1, 4, 4):
+    offline = downloads.get_by_role('link', name='Offline CPU ZIP', exact=True)
+    assert offline.get_attribute('href').endswith(f'/archive/refs/tags/v{version}-offline.zip')
+
+
 class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(root)))
@@ -53,12 +83,15 @@ with sync_playwright() as p:
  page.get_by_role('link',name='Download CPU versions',exact=True).click()
  page.wait_for_load_state('networkidle')
  assert page.url.endswith('/downloads.html')
- app_version=runpy.run_path(str(Path(__file__).resolve().parents[2]/'samstudio'/'__init__.py'))['__version__']
- downloads=page.locator('article').get_by_role('link',name='Download ZIP',exact=True)
- assert downloads.count()==4
- for i, suffix in enumerate([f'/archive/refs/tags/v{app_version}.zip',f'/archive/refs/tags/v{app_version}-offline.zip','/archive/refs/tags/v1.4.3.zip','/uploads/SAM_Image_Studio_v1.4.2_CPU.zip']):
-  assert downloads.nth(i).get_attribute('href').endswith(suffix)
+ check_version_table(page.locator('article table').first, recent_versions + [original_version])
+ archive = page.locator('article details').filter(has_text='Show all versions')
+ assert not archive.locator('table').is_visible()
  page.screenshot(path='/tmp/samstudio-downloads-desktop.png',full_page=True)
+ archive.locator('summary').click()
+ assert archive.locator('table').is_visible()
+ check_version_table(archive.locator('table'), archived_versions)
+ archive.locator('summary').click()
+ assert not archive.locator('table').is_visible()
  page.goto(base+'/installation.html',wait_until='networkidle')
  headings=page.locator('article h2').all_text_contents()
  assert headings[0].startswith('First for every route:'),headings
@@ -105,6 +138,11 @@ with sync_playwright() as p:
  width=mobile.evaluate('({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth})')
  assert width['scroll']<=width['client']+1,width
  mobile.screenshot(path='/tmp/samstudio-downloads-mobile.png',full_page=True)
+ mobile_archive=mobile.locator('article details').filter(has_text='Show all versions')
+ mobile_archive.locator('summary').click()
+ assert mobile_archive.locator('table').is_visible()
+ width=mobile.evaluate('({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth})')
+ assert width['scroll']<=width['client']+1,width
  assert not errors,errors
  assert not bad_resources,bad_resources
  print('Browser validation passed: download list, shared source acquisition, readable GPU guide, desktop navigation, SAM3.1 guide, menu reference, search, mobile layout; no JS errors or missing local resources.')

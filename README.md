@@ -21,12 +21,28 @@ The release is also available as an offline CPU edition.
 Choose **one** method below before following any CPU or GPU installation route.
 You do not need Git if you download a ZIP.
 
-| CPU version | Download | Package / next step |
+| Version | Downloads | Main changes |
 | --- | --- | --- |
-| **1.4.5.1 — recommended** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1.zip)** | Extract, then run `packaging/Install_CPU.bat` on Windows or `bash packaging/install_cpu.sh` on Linux. |
-| **1.4.5.1 — offline CPU** | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-offline.zip)** | Extract and [prepare once online](offline/README.md), then install using the normal CPU installer. Includes SAM1 ViT-B and SAM2.1 Small/Base+. |
-| 1.4.3 — earlier | **[Download ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip)** | Complete source bundle for Windows/Linux CPU; extract, then use `packaging/Install_CPU.bat` or `bash packaging/install_cpu.sh`. |
-| 1.4.2 — original archive | **[Download ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip)** | Historical CPU source bundle; extract, then use `Install_CPU.bat` or `bash install_cpu.sh` inside its `SAM_Image_Studio` folder. |
+| **1.4.5.1 — recommended** | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-offline.zip) | Adds keyboard deletion of mask pieces, segmentation review, measurement-colored histograms, and hand-drawn filament links. Fixes Mask pusher strokes when changing sides. |
+| 1.4.5 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5-offline.zip) | Adds two-column tools, mask-fragment cleanup, a circular mask pusher, batch vertex deletion, and adjustable polygon closure. |
+| 1.4.4.2 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.2.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.2-offline.zip) | Adds calibrated line and curve rulers and fixes crashes in segmentation options, mask-color, and plot-group dialogs. |
+| 1.4.4.1 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1-offline.zip) | Adds segmentation size filters, editable scale bars, filament measurements, and shared colors for plot groups. |
+| 1.4.4 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4-offline.zip) | Adds Otsu + watershed, signal-scaled noise, automatic Python 3.12 setup, and the offline CPU edition. |
+| 1.4.2 — original | [Original CPU ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip) | Original archive with calibrated segmentation, Excel pixel-size lookup, image restoration, and the original manuals. |
+
+<details>
+<summary>Show all versions</summary>
+
+| Earlier version | Downloads | Main changes |
+| --- | --- | --- |
+| 1.4.3 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip) | Adds public SAM3 ONNX text segmentation, updates CPU/GPU installers, and publishes illustrated guides. |
+
+</details>
+
+Use the installation instructions included in the ZIP you download. For
+1.4.2, run `Install_CPU.bat` or `bash install_cpu.sh` from its inner
+`SAM_Image_Studio` folder. For an Offline CPU ZIP, [prepare the cache online](offline/README.md)
+before installing offline.
 
 These are source packages with an installation step. The current CPU installer
 uses an existing compatible **64-bit Python 3.12**, or downloads a verified runtime
@@ -36,7 +52,7 @@ runtime and three checkpoints must be pre-downloaded before disconnecting.
 The normal source bundle also contains the optional GPU setup files;
 you do not need to download a second source package for GPU installation.
 
-**Download route:** click Download ZIP, extract the entire archive, and open the
+**Download route:** choose a ZIP, extract the entire archive, and open the
 project folder containing `pyproject.toml` and `samstudio/`. Keep the folder contents
 together. The standard ZIP extracts to `SAM_Image_Studio-1.4.5.1/` and
 contains both `GPU/` and `packaging/`.

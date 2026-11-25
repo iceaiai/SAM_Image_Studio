@@ -68,6 +68,11 @@ version and all other source files.
 Create the offline commit in a temporary ordinary clone, never by modifying the
 normal working checkout. Preserve existing tags; push new tags without force.
 
+Update the README and CPU downloads page with one row for each release. Keep
+the original archive and the five most recent versions in the main table, and
+move earlier versions under **Show all versions**. List the available ZIPs and
+briefly describe the changes in each version.
+
 Neither source archive includes `.venv*`, `.python312`, `offline-cache` or model
 weights. Verify both ZIPs after publishing, including CRCs, entry points, edition
 marker presence/absence and comparable initial sizes. The user then prepares
