@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>User Manual &#8212; SAM Image Studio 1.4.5.1</title>
+    <title>User Manual &#8212; SAM Image Studio 1.4.5.2</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=49bba49e"></script>
+    <script src="_static/documentation_options.js?v=e4ebd452"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="GPU installation and updates" href="installation-gpu.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5.1" />
+  <meta name="docsearch:version" content="1.4.5.2" />
   </head>
   
   
@@ -403,7 +403,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="user-manual">
 <h1>User Manual<a class="headerlink" href="#user-manual" title="Link to this heading">#</a></h1>
-<p>This manual covers SAM Image Studio 1.4.5.1. See <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>
+<p>This manual covers SAM Image Studio 1.4.5.2. See <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>
 for the current platform setup instructions and <a class="reference internal" href="#denoising-parameters">Denoising parameters</a>
 for denoising method defaults and units.</p>
 <section id="start-modes-and-workspace">
@@ -436,7 +436,7 @@ bash<span class="w"> </span>packaging/start_gui.sh
 <section id="nvidia-gpu-with-conda">
 <h3>NVIDIA GPU with Conda<a class="headerlink" href="#nvidia-gpu-with-conda" title="Link to this heading">#</a></h3>
 <p>Open a Miniforge or Anaconda terminal and run <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> to check driver visibility. Use Linux Conda inside Linux/WSL2, with a working WSLg display on WSL2. WSLg startup selects X11 when the display is available and no Qt platform is explicitly set. For SAM1/2 and SAM3 ONNX on Windows or Linux, run the following commands from the project root.</p>
-<p>In Windows <strong>Anaconda Prompt</strong>, use <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/d</span> <span class="pre">&quot;C:\Work\AI</span> <span class="pre">Projects\SAM_Image_Studio&quot;</span></code> with your actual folder. If extraction creates two identically named folders, enter the inner one and check it with <code class="docutils literal notranslate"><span class="pre">dir</span> <span class="pre">GPU\install.py</span></code>. Run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">list</span></code> to find any existing SAM Image Studio environment. Use the creation step only for a first installation.</p>
+<p>In Windows <strong>Anaconda Prompt</strong>, use <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/d</span> <span class="pre">&quot;C:\Work\AI</span> <span class="pre">Projects\SAM_Image_Studio&quot;</span></code> with your actual folder. If extraction creates two identically named folders, enter the inner one and check it with <code class="docutils literal notranslate"><span class="pre">dir</span> <span class="pre">GPU\install.py</span></code>. Run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">list</span></code> to find any existing SAM Image Studio environment. Use the creation step only for a first installation. The installer reads either <strong>CUDA Version</strong> or <strong>CUDA UMD Version</strong> from <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code>. For an RTX 3060 reporting CUDA UMD 13.3, it selects the supported PyTorch CUDA 12.8 wheels.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sam-image-studio-gpu<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip<span class="w"> </span>-y
 conda<span class="w"> </span>activate<span class="w"> </span>sam-image-studio-gpu
 python<span class="w"> </span>GPU/install.py<span class="w"> </span>--current
@@ -1235,25 +1235,28 @@ python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>1.4.5.1</p></td>
+<tr class="row-even"><td><p>1.4.5.2</p></td>
+<td><p>Reads the <strong>CUDA UMD Version</strong> field in newer NVIDIA driver output and distinguishes a missing version from an older driver. See <strong>Installation, Python and Conda GPU setup</strong>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.4.5.1</p></td>
 <td><p>Keyboard deletion of selected pieces under <strong>Refine disconnected parts</strong>, candidate review under <strong>Whole-image exemplars, single objects and ROI</strong>, matching histogram ranges under <strong>Metric colors and plot groups</strong>, drawn links under <strong>Filaments and occluded fragments</strong>, and independent strokes under <strong>Mask pusher</strong>.</p></td>
 </tr>
-<tr class="row-odd"><td><p>1.4.5</p></td>
+<tr class="row-even"><td><p>1.4.5</p></td>
 <td><p>Two-column tools and toolbar visibility under <strong>Start, modes and workspace</strong>, disconnected-part cleanup under <strong>Refine disconnected parts</strong>, batch vertex deletion and adjustable closing distance under <strong>Manual geometry and Edit tools</strong>, and the adjustable push/carve brush under <strong>Mask pusher</strong>.</p></td>
 </tr>
-<tr class="row-even"><td><p>1.4.4.2</p></td>
+<tr class="row-odd"><td><p>1.4.4.2</p></td>
 <td><p><strong>Distance measurements</strong> covers calibrated line and curve rulers. Dialog fixes apply to <strong>Target size range</strong>, <strong>Scale bars</strong>, calibration and <strong>Metric colors and plot groups</strong>.</p></td>
 </tr>
-<tr class="row-odd"><td><p>1.4.4.1</p></td>
+<tr class="row-even"><td><p>1.4.4.1</p></td>
 <td><p><strong>Target size range</strong>, <strong>Scale bars</strong>, separate object and vertex deletion, <strong>Filaments and occluded fragments</strong>, <strong>Metric colors and plot groups</strong>, versioned help and <strong>Denoising parameters</strong>, and shared Windows Python bootstrap and version-checked offline preparation under <strong>Installation, Python and Conda GPU setup</strong>.</p></td>
 </tr>
-<tr class="row-even"><td><p>1.4.4</p></td>
+<tr class="row-odd"><td><p>1.4.4</p></td>
 <td><p><strong>Otsu + watershed</strong>, signal-scaled synthetic noise under <strong>Processing</strong>, original input and undoable discard under <strong>Opening images and native autosaves</strong>, ONNX diagnostics under <strong>Model manager and SAM3 ONNX</strong>, rotation reset, panel selection, LaMa controls under <strong>Cleaning and reversible image records</strong>, and local Python and offline CPU setup under <strong>Installation, Python and Conda GPU setup</strong>.</p></td>
 </tr>
-<tr class="row-odd"><td><p>1.4.3</p></td>
+<tr class="row-even"><td><p>1.4.3</p></td>
 <td><p><strong>Installation, Python and Conda GPU setup</strong> covers the CPU/GPU folder layout and in-place updates. <strong>Model manager and SAM3 ONNX</strong> covers public ONNX and native-model access. <strong>Whole-image exemplars, single objects and ROI</strong> covers selected-mask exemplars and scope behavior.</p></td>
 </tr>
-<tr class="row-even"><td><p>1.4.2</p></td>
+<tr class="row-odd"><td><p>1.4.2</p></td>
 <td><p>First stable version. See <strong>Excel pixel-size lookup</strong>, <strong>Whole-image exemplars, single objects and ROI</strong>, <strong>Processing</strong>, <strong>Denoising parameters</strong>, and the annotation, cleaning, measurement, export, recovery and plugin chapters.</p></td>
 </tr>
 </tbody>
