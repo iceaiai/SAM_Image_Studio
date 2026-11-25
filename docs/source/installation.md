@@ -108,6 +108,10 @@ the provided helper selects the correct distribution for the environment.
 First download/extract or clone the complete current source using the common
 steps above and enter its root. All GPU setup files live under `GPU/`.
 
+On Windows, the GPU guide shows how to enter a quoted path in **Anaconda Prompt**
+when ZIP extraction creates two nested folders with the same name.
+[Windows folder and installer steps](installation-gpu.md#2-select-the-route-and-install)
+
 For **SAM1/2 and SAM3 ONNX** on Windows or Linux, open an initialized Conda
 terminal in that folder, then run:
 
@@ -128,11 +132,9 @@ python GPU/install.py --current --sam3
 python -m samstudio
 ```
 
-These creation steps are for first installation only. No application packages
-are installed into Conda base. For complete prerequisites, quoted paths,
-authentication and update steps, read the
-[GPU installation guide](installation-gpu.md), or the
-[full guide on GitHub](https://github.com/iceaiai/SAM_Image_Studio/blob/main/GPU/INSTALLATION.md).
+Create the environment only for a first installation. If you already installed
+SAM Image Studio, activate the existing dedicated environment and use the
+update commands. [GPU update guide](installation-gpu.md#4-update-an-existing-installation)
 
 ## Choose a model after installation
 
@@ -147,16 +149,20 @@ local HF login. See [SAM3.1 prompting](segmentation/sam31.md).
 
 ## Update without uninstalling
 
-Close the GUI, update/extract the **complete** new source, and enter its root.
-For the existing app-owned CPU environment, rerun its installer. For an activated
-dedicated CPU environment, use `--current`. GPU uses `GPU/install.py --current`
-and, for native SAM3.1, `--sam3`. Do not recreate the same Conda environment for
-every update, and do not install only a requirements file as an app update.
+Close the GUI. Extract the complete new ZIP, or run `git pull --ff-only` in
+your source checkout. Enter the folder containing `pyproject.toml`. Keep your
+source images, `.sam.json` projects, exports and model cache.
+
+| Existing installation | Update |
+| --- | --- |
+| **GPU with Conda** | Activate your existing environment by name, run `python GPU/install.py --current` from the updated source, then `python -m samstudio`. Include `--sam3` for the native SAM3/3.1 environment in Linux/WSL2. |
+| **CPU in a dedicated environment** | Activate your existing 64-bit Python 3.12 environment and run `python scripts/install_environment.py --backend cpu --current`, then `python -m samstudio`. |
+| **CPU with project-local `.venv`** | Rerun the CPU helper in an updated checkout to reuse its `.venv`. When extracting into a new folder, the helper prepares a local environment there. To reuse the old `.venv`, activate it from its original path and use the dedicated CPU commands. |
+| **Offline CPU** | Reuse the downloaded cache files on a matching platform. Rerun offline preparation in the new source before running the normal installer on the target. See the [offline instructions](installation-offline.md). |
 
 Version 1.4.3 automatically handles the Qt/font/XCB libraries and
 `pkg_resources` compatibility encountered with the earlier v1.4.2 installation.
 The installer performs these repairs; normal users need no per-library commands.
-Keep source images, `.sam.json` projects, exports and model caches separately.
 
 ## Storage, network and diagnostics
 

@@ -40,6 +40,8 @@ Run the same CPU install and launch commands on the target. They recognize the p
 
 Open a Miniforge or Anaconda terminal and run `nvidia-smi` to check driver visibility. Use Linux Conda inside Linux/WSL2, with a working WSLg display on WSL2. WSLg startup selects X11 when the display is available and no Qt platform is explicitly set. For SAM1/2 and SAM3 ONNX on Windows or Linux, run the following commands from the project root.
 
+In Windows **Anaconda Prompt**, use `cd /d "C:\Work\AI Projects\SAM_Image_Studio"` with your actual folder. If extraction creates two identically named folders, enter the inner one and check it with `dir GPU\install.py`. Run `conda env list` to find any existing SAM Image Studio environment. Use the creation step only for a first installation.
+
 ```sh
 conda create -n sam-image-studio-gpu python=3.12 pip -y
 conda activate sam-image-studio-gpu
@@ -58,7 +60,13 @@ python -m samstudio
 
 On native Windows, `GPU\Install_GPU_Conda.bat` and `GPU\Start_GUI_GPU.bat` use the default `sam-image-studio-gpu` environment. Use a dedicated environment for GPU execution. The installer uses driver and hardware capabilities to select the runtime. Try `python GPU/install.py --inspect` for detected devices or add `--dry-run` to the install command to check its plan. For detailed instructions in the source folder, open **GPU/QUICK_GUIDE.md** or **GPU/INSTALLATION.md**.
 
-After installation, choose the model and **NVIDIA CUDA GPU (Conda)** in **Load model…**. Run `python -m samstudio.selftest --device cuda` and try a model preview on your own machine. To update, obtain the new complete source, activate your existing dedicated environment where applicable, and rerun the corresponding installer. Preserve native projects and model caches when replacing a source folder.
+After installation, choose the model and **NVIDIA CUDA GPU (Conda)** in **Load model…**. Run `python -m samstudio.selftest --device cuda` and try a model preview on your own machine. To start again, enter the project root, activate the environment and run `python -m samstudio`.
+
+### Update an existing installation
+
+Close the app and obtain the complete new source. Enter its project root and activate your existing compatible Conda environment. Run `python GPU/install.py --current` for GPU, adding `--sam3` in the native SAM3/3.1 environment in Linux/WSL2. For a dedicated CPU environment, run `python scripts/install_environment.py --backend cpu --current`. Then launch with `python -m samstudio`. Reuse the existing environment name, including when the new source is in a different folder.
+
+For an app-owned CPU environment in an updated checkout, rerun the normal CPU helper. An extracted ZIP in a new folder has its own local environment. To reuse a previous local CPU environment, activate it at its original location and use the dedicated CPU update command. For offline CPU, bring the existing cache to the new source on a matching online machine and rerun preparation. Preserve images, native projects and model caches.
 
 
 ## Opening images and native autosaves

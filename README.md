@@ -23,7 +23,7 @@ You do not need Git if you download a ZIP.
 
 | Version | Downloads | Main changes |
 | --- | --- | --- |
-| **1.4.5.1 — recommended** | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-offline.zip) | Adds keyboard deletion of mask pieces, segmentation review, measurement-colored histograms, and hand-drawn filament links. Fixes Mask pusher strokes when changing sides. |
+| **1.4.5.1 — recommended** | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-docs.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-offline-docs.zip) | Adds keyboard deletion of mask pieces, segmentation review, measurement-colored histograms, and hand-drawn filament links. Fixes Mask pusher strokes when changing sides. |
 | 1.4.5 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5-offline.zip) | Adds two-column tools, mask-fragment cleanup, a circular mask pusher, batch vertex deletion, and adjustable polygon closure. |
 | 1.4.4.2 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.2.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.2-offline.zip) | Adds calibrated line and curve rulers and fixes crashes in segmentation options, mask-color, and plot-group dialogs. |
 | 1.4.4.1 | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1-offline.zip) | Adds segmentation size filters, editable scale bars, filament measurements, and shared colors for plot groups. |
@@ -48,8 +48,8 @@ you do not need to download a second source package for GPU installation.
 
 **Download route:** choose a ZIP, extract the entire archive, and open the
 project folder containing `pyproject.toml` and `samstudio/`. Keep the folder contents
-together. The standard ZIP extracts to `SAM_Image_Studio-1.4.5.1/` and
-contains both `GPU/` and `packaging/`.
+together. The standard 1.4.5.1 ZIP extracts to `SAM_Image_Studio-1.4.5.1-docs/`.
+It includes `GPU/QUICK_GUIDE.md` and the updated User Manual.
 
 **Git alternative, shared by CPU and GPU:** open a terminal in the parent folder
 where you want to keep the project, then run:
@@ -83,7 +83,10 @@ files and instructions are in the [GPU folder](GPU/README.md). Start with the
 [GPU quick installation guide](GPU/QUICK_GUIDE.md).
 Use a dedicated Anaconda/Conda environment. Native SAM3.1 requires Linux/WSL2;
 SAM1/2 and SAM3 ONNX also have a native Windows GPU installation path.
-Routine updates reuse the environment; uninstalling is unnecessary.
+For an existing GPU installation, activate its Conda environment in the new
+source folder, run `python GPU/install.py --current` and launch with
+`python -m samstudio`. Add `--sam3` to the installer command if you already use
+the native SAM3/3.1 environment. [Update instructions](GPU/QUICK_GUIDE.md#4-update-an-existing-installation)
 
 ## What can it do?
 

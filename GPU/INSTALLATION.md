@@ -9,7 +9,7 @@ SAM3 ONNX public text weights do not require Hugging Face login.
 
 Do this before every installation route below. Choose **one** option:
 
-- [Download the complete v1.4.5.1 ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1.zip),
+- [Download the complete v1.4.5.1 ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-docs.zip),
   extract the whole archive, and find the extracted project folder containing
   `pyproject.toml`, `samstudio/` and `GPU/`. The same source bundle
   contains all GPU setup files; it is the shared application.
@@ -27,9 +27,9 @@ also describes the 1.4.2 archive, the first stable version. Use the current rele
 
 ## 2. Open the correct terminal and project folder
 
-On Windows, open **Anaconda PowerShell Prompt** or an initialized Conda prompt.
-The path below is a fictional example; replace it with your actual extracted
-or cloned folder. Quote paths containing spaces:
+The example below uses **Anaconda PowerShell Prompt**. For the regular Windows
+**Anaconda Prompt**, see the [quoted path in the quick guide](QUICK_GUIDE.md#2-select-the-route-and-install).
+Replace the example path with your actual project root.
 
 ```powershell
 Set-Location -LiteralPath 'C:\Projects\Example Folder\SAM_Image_Studio'
@@ -63,7 +63,9 @@ display; keep WSL updated through Windows when its display service is unavailabl
 ## 3. Create one dedicated environment
 
 First complete source download/extraction or cloning, enter the project root,
-and check `GPU/install.py` exists as above. Then choose one environment:
+and check `GPU/install.py` exists as above. If you already have an environment,
+use its name with the [update steps](#7-update-without-uninstalling).
+For a first installation, choose one environment.
 
 **Windows or Linux, SAM1/2 + SAM3 ONNX:**
 

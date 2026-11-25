@@ -66,11 +66,12 @@ def check_version_table(table, versions):
     assert cells.nth(0).inner_text() == '1.4.0 — ZIP filename'
     assert '1.5.0' in cells.nth(2).inner_text()
   else:
+   docs_suffix = '-docs' if version == '1.4.5.1' else ''
    standard = downloads.get_by_role('link', name='Standard ZIP', exact=True)
-   assert standard.get_attribute('href').endswith(f'/archive/refs/tags/v{version}.zip')
+   assert standard.get_attribute('href').endswith(f'/archive/refs/tags/v{version}{docs_suffix}.zip')
    if tuple(map(int, version.split('.'))) >= (1, 4, 4):
     offline = downloads.get_by_role('link', name='Offline CPU ZIP', exact=True)
-    assert offline.get_attribute('href').endswith(f'/archive/refs/tags/v{version}-offline.zip')
+    assert offline.get_attribute('href').endswith(f'/archive/refs/tags/v{version}-offline{docs_suffix}.zip')
 
 
 class Quiet(SimpleHTTPRequestHandler):
@@ -121,9 +122,13 @@ with sync_playwright() as p:
  page.goto(base+'/installation-gpu.html',wait_until='networkidle')
  assert page.get_by_role('heading',name='1. Obtain the complete project first',exact=True).count()==1
  gpu_guide = page.locator('article')
- for command in ['nvidia-smi', 'conda activate sam-image-studio-gpu',
+ for command in ['cd /d "C:\\Work\\AI Projects\\', 'dir GPU\\install.py',
+                 'nvidia-smi', 'conda env list', 'conda activate sam-image-studio-gpu',
                  'python GPU/install.py --current --sam3', 'python -m samstudio.selftest --device cuda']:
   assert command in gpu_guide.inner_text(), command
+ gpu_update = gpu_guide.locator('section#update-an-existing-installation')
+ assert 'python GPU/install.py --current' in gpu_update.inner_text()
+ assert 'conda create' not in gpu_update.inner_text()
  assert '{include}' not in gpu_guide.inner_text()
  page.goto(base+'/documentation/menus.html',wait_until='networkidle')
  assert page.get_by_role('heading',name='Processing',exact=True).count()==1

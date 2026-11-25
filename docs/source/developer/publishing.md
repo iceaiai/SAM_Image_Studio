@@ -65,8 +65,11 @@ Publish the standard and offline source archives as immutable Git tags. For
 `samstudio/resources/offline_profile.json` from `offline/profile.json` and
 uses the offline guide as its root README. Both tags share the application
 version and all other source files.
-Create the offline commit in a temporary ordinary clone, never by modifying the
-normal working checkout. Preserve existing tags; push new tags without force.
+Create the offline commit in a temporary ordinary clone. Push new tags without
+force. The documentation refresh is available as `v1.4.5.1-docs` and
+`v1.4.5.1-offline-docs`. Those tags include the GPU Quick Guide and updated
+manual with application version 1.4.5.1. The download table points to the
+refreshed archives, and the original tags remain available.
 
 Update the README and CPU downloads page with one row for each release. Show
 the five most recent versions, 1.4.3, and 1.4.2 (the first stable version) in

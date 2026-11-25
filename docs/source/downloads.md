@@ -7,13 +7,17 @@ for that version. No Git account or clone command is required for ZIP downloads.
 
 | Version | Downloads | Main changes |
 | --- | --- | --- |
-| [**1.4.5.1**](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.5.1) **— recommended** | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-offline.zip) | Adds keyboard deletion of mask pieces, segmentation review, measurement-colored histograms, and hand-drawn filament links. Fixes Mask pusher strokes when changing sides. |
+| [**1.4.5.1**](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.5.1-docs) **— recommended** | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-docs.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-offline-docs.zip) | Adds keyboard deletion of mask pieces, segmentation review, measurement-colored histograms, and hand-drawn filament links. Fixes Mask pusher strokes when changing sides. |
 | [1.4.5](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.5) | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5-offline.zip) | Adds two-column tools, mask-fragment cleanup, a circular mask pusher, batch vertex deletion, and adjustable polygon closure. |
 | [1.4.4.2](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.4.2) | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.2.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.2-offline.zip) | Adds calibrated line and curve rulers and fixes crashes in segmentation options, mask-color, and plot-group dialogs. |
 | [1.4.4.1](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.4.1) | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.1-offline.zip) | Adds segmentation size filters, editable scale bars, filament measurements, and shared colors for plot groups. |
 | [1.4.4](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.4) | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4.zip) · [Offline CPU ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.4-offline.zip) | Adds Otsu + watershed, signal-scaled noise, automatic Python 3.12 setup, and the offline CPU edition. |
 | [1.4.3](https://github.com/iceaiai/SAM_Image_Studio/tree/v1.4.3) | [Standard ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.3.zip) | Adds public SAM3 ONNX text segmentation, updates CPU/GPU installers, and publishes illustrated guides. |
 | 1.4.2 — First stable version | [CPU ZIP](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SAM_Image_Studio_v1.4.2_CPU.zip) · [SHA-256](https://raw.githubusercontent.com/iceaiai/SAM_Image_Studio/main/uploads/SHA256SUMS) | Includes calibrated segmentation, Excel pixel-size lookup, image restoration, and bundled manuals. |
+
+The recommended 1.4.5.1 ZIPs include `GPU/QUICK_GUIDE.md` and the expanded User
+Manual. If you already have an installation, follow the
+[update instructions](installation.md#update-without-uninstalling).
 
 :::{dropdown} Show all versions
 :name: earlier-cpu-versions

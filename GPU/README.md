@@ -16,7 +16,7 @@ the folder containing `pyproject.toml`, `samstudio/` and `GPU/`.
 
 ## First: download/extract or clone the source
 
-Before either GPU route, [download the complete v1.4.5.1 ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1.zip)
+Before either GPU route, [download the complete v1.4.5.1 ZIP](https://github.com/iceaiai/SAM_Image_Studio/archive/refs/tags/v1.4.5.1-docs.zip)
 and extract **all** files. The same source bundle supports CPU and GPU; it contains this `GPU/` folder
 and the shared application.
 Open the extracted project folder containing `pyproject.toml`, `samstudio/`, `packaging/`
@@ -35,8 +35,11 @@ below are fictional examples: substitute your own extracted/clone folder.
 
 ## Windows: SAM1/2 and public SAM3 ONNX
 
-First download/extract or clone the complete project as above. Then open an
-Anaconda/Miniforge PowerShell prompt and enter that project folder:
+The example below uses Anaconda PowerShell Prompt. For regular **Anaconda
+Prompt**, including paths with spaces and nested extraction folders, follow
+the [quick guide](QUICK_GUIDE.md#2-select-the-route-and-install). Run
+`conda create` for a first installation. Existing users can go directly to
+[Update an existing environment](#update-an-existing-environment).
 
 ```powershell
 Set-Location -LiteralPath 'C:\Projects\Example Folder\SAM_Image_Studio'
@@ -76,15 +79,22 @@ Hugging Face token. It is a different backend from native SAM3.1.
 
 Close the GUI, update/extract the new **complete source**, enter its root, then:
 
+```sh
+conda activate sam-image-studio-gpu
+python GPU/install.py --current
+python -m samstudio
+```
+
+For the native SAM3.1 Linux/WSL2 installation, use its existing environment.
+
 ```bash
 conda activate sam-image-studio-sam3
 python GPU/install.py --current --sam3
 python -m samstudio
 ```
 
-For the ordinary GPU environment, activate `sam-image-studio-gpu` and omit
-`--sam3`. Do not rerun `conda create` for routine updates. Keep your projects,
-weights and local token cache; no uninstall is required.
+Use your existing environment name if it differs. Keep your projects,
+weights and local token cache.
 
 The [website](https://iceaiai.github.io/SAM_Image_Studio/) documents every menu,
 button and prompting scope. Source implementation remains under `samstudio/`
