@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>User Manual &#8212; SAM Image Studio 1.4.5.3</title>
+    <title>User Manual &#8212; SAM Image Studio 1.4.5.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=80240416"></script>
+    <script src="_static/documentation_options.js?v=653a338b"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="GPU installation and updates" href="installation-gpu.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5.3" />
+  <meta name="docsearch:version" content="1.4.5.4" />
   </head>
   
   
@@ -403,7 +403,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="user-manual">
 <h1>User Manual<a class="headerlink" href="#user-manual" title="Link to this heading">#</a></h1>
-<p>This manual covers SAM Image Studio 1.4.5.3. See <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>
+<p>This manual covers SAM Image Studio 1.4.5.4. See <a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a>
 for the current platform setup instructions and <a class="reference internal" href="#denoising-parameters">Denoising parameters</a>
 for denoising method defaults and units.</p>
 <section id="start-modes-and-workspace">
@@ -464,6 +464,7 @@ python<span class="w"> </span>-m<span class="w"> </span>samstudio
 <p>Open images accepts PNG, JPEG, BMP, TIFF and supported EMD, DM3 and DM4 datasets. Each source filename appears in Image files; stack frames have separate entries. Supported physical calibration is read from the source; unavailable calibration remains in pixel units. Edit image calibration sets X/Y sizes and units manually.</p>
 <p>The v1.4 annotation workflow and COCO export representation are retained. A matching native SAM_Annotations project restores objects, prompts, groups, calibration, exact contours, original/derived pixels, cleaning history and rotation. Native schema 6 stores scale bars, filament connections, and per-image measurement color settings alongside exemplar prompts and retained crops. It reads native schemas 1–5.</p>
 <p>Committed operations autosave atomically into a .sam.json project, with a previous valid backup. Save project now forces a save; Choose project folder selects another writable destination. Open project JSON can locate its source/frame after moving a project. Preserve the native project for complete editable recovery. Area-mask exports omit point annotations and report their count.</p>
+<p>When an older autosave contains an unfinished area region or a shape prompt smaller than one pixel, reopen the original image in the current app. It restores the saved annotations and valid prompts and skips the undersized area draft.</p>
 <p>Example: draw and accept two masks, close the image, then reopen the same TIFF. Its native project restores those masks. Removing selected entries from Image files saves the native projects and only removes them from the workspace. Source images and annotation files remain. At startup, choose Yes to reopen the previous images or No to start empty.</p>
 <section id="original-and-processed-input">
 <h3>Original and processed input<a class="headerlink" href="#original-and-processed-input" title="Link to this heading">#</a></h3>
@@ -587,6 +588,7 @@ python<span class="w"> </span>-m<span class="w"> </span>samstudio
 <section id="manual-geometry-and-edit-tools">
 <h2>Manual geometry and Edit tools<a class="headerlink" href="#manual-geometry-and-edit-tools" title="Link to this heading">#</a></h2>
 <p>Use Manual for points and closed shapes. After placing at least three polygon vertices, click near the first vertex to close. It turns green when the cursor is close enough. Choose <strong>Edit → Polygon closing distance…</strong> to set the distance in screen pixels. The default is 14 and 0 turns off closing by proximity. Press Enter or double-click to close at any setting. Point annotations remain points at every zoom.</p>
+<p>Drag at least one image pixel in both directions for a rectangle, circle or ellipse. The status bar reports gestures below this minimum. You can immediately draw another shape.</p>
 <p>In Edit, select an object on the canvas or in the list and drag its existing handles. To delete vertices, choose <strong>Vertices per delete</strong> in the Image settings toolbar and set <strong>Vertex radius (px)</strong>. The radius defaults to 20 image pixels and the count defaults to one. Click near the target contour to highlight the closest eligible vertices in amber, then press <strong>Delete vertex</strong> or <strong>Del</strong>. Each press removes up to ten highlighted vertices from one contour, leaves at least three, and can be undone in one step. These settings are also in the Edit menu. Use the separate <strong>Delete objects</strong> button to remove entire annotations.</p>
 <p>Fill holes and Smooth edges open previews. Smooth edges retains editable cubic curves rather than merely changing a jagged display. Batch changes are one undoable operation. Mask sizes and statistics update after applying changes.</p>
 <p>Rotation offers angle presets and arbitrary angles. No padding keeps original dimensions and may crop corners. Rectangle or square padding enlarges the canvas; choose black, neighbor, LaMa or a manually selected background-group fill. Review the result before Apply. Pixels, masks, cleaning records and the physical coordinate basis rotate together. Paste/remove retained crop snapshots before rotating.</p>
@@ -1236,31 +1238,34 @@ python<span class="w"> </span>-m<span class="w"> </span>samstudio
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>1.4.5.3</p></td>
+<tr class="row-even"><td><p>1.4.5.4</p></td>
+<td><p>Rejects subpixel area gestures with a status message and recovers projects with unusable saved area drafts. See <strong>Manual geometry and Edit tools</strong> and <strong>Opening images and native autosaves</strong>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.4.5.3</p></td>
 <td><p><strong>Mask pusher</strong> follows the left-drag direction for inward and outward edits. Esc, Delete vertex and tool changes exit the pusher.</p></td>
 </tr>
-<tr class="row-odd"><td><p>1.4.5.2</p></td>
+<tr class="row-even"><td><p>1.4.5.2</p></td>
 <td><p>Reads the <strong>CUDA UMD Version</strong> field in newer NVIDIA driver output and distinguishes a missing version from an older driver. See <strong>Installation, Python and Conda GPU setup</strong>.</p></td>
 </tr>
-<tr class="row-even"><td><p>1.4.5.1</p></td>
+<tr class="row-odd"><td><p>1.4.5.1</p></td>
 <td><p>Keyboard deletion of selected pieces under <strong>Refine disconnected parts</strong>, candidate review under <strong>Whole-image exemplars, single objects and ROI</strong>, matching histogram ranges under <strong>Metric colors and plot groups</strong>, drawn links under <strong>Filaments and occluded fragments</strong>, and independent strokes under <strong>Mask pusher</strong>.</p></td>
 </tr>
-<tr class="row-odd"><td><p>1.4.5</p></td>
+<tr class="row-even"><td><p>1.4.5</p></td>
 <td><p>Two-column tools and toolbar visibility under <strong>Start, modes and workspace</strong>, disconnected-part cleanup under <strong>Refine disconnected parts</strong>, batch vertex deletion and adjustable closing distance under <strong>Manual geometry and Edit tools</strong>, and the adjustable push/carve brush under <strong>Mask pusher</strong>.</p></td>
 </tr>
-<tr class="row-even"><td><p>1.4.4.2</p></td>
+<tr class="row-odd"><td><p>1.4.4.2</p></td>
 <td><p><strong>Distance measurements</strong> covers calibrated line and curve rulers. Dialog fixes apply to <strong>Target size range</strong>, <strong>Scale bars</strong>, calibration and <strong>Metric colors and plot groups</strong>.</p></td>
 </tr>
-<tr class="row-odd"><td><p>1.4.4.1</p></td>
+<tr class="row-even"><td><p>1.4.4.1</p></td>
 <td><p><strong>Target size range</strong>, <strong>Scale bars</strong>, separate object and vertex deletion, <strong>Filaments and occluded fragments</strong>, <strong>Metric colors and plot groups</strong>, versioned help and <strong>Denoising parameters</strong>, and shared Windows Python bootstrap and version-checked offline preparation under <strong>Installation, Python and Conda GPU setup</strong>.</p></td>
 </tr>
-<tr class="row-even"><td><p>1.4.4</p></td>
+<tr class="row-odd"><td><p>1.4.4</p></td>
 <td><p><strong>Otsu + watershed</strong>, signal-scaled synthetic noise under <strong>Processing</strong>, original input and undoable discard under <strong>Opening images and native autosaves</strong>, ONNX diagnostics under <strong>Model manager and SAM3 ONNX</strong>, rotation reset, panel selection, LaMa controls under <strong>Cleaning and reversible image records</strong>, and local Python and offline CPU setup under <strong>Installation, Python and Conda GPU setup</strong>.</p></td>
 </tr>
-<tr class="row-odd"><td><p>1.4.3</p></td>
+<tr class="row-even"><td><p>1.4.3</p></td>
 <td><p><strong>Installation, Python and Conda GPU setup</strong> covers the CPU/GPU folder layout and in-place updates. <strong>Model manager and SAM3 ONNX</strong> covers public ONNX and native-model access. <strong>Whole-image exemplars, single objects and ROI</strong> covers selected-mask exemplars and scope behavior.</p></td>
 </tr>
-<tr class="row-even"><td><p>1.4.2</p></td>
+<tr class="row-odd"><td><p>1.4.2</p></td>
 <td><p>First stable version. See <strong>Excel pixel-size lookup</strong>, <strong>Whole-image exemplars, single objects and ROI</strong>, <strong>Processing</strong>, <strong>Denoising parameters</strong>, and the annotation, cleaning, measurement, export, recovery and plugin chapters.</p></td>
 </tr>
 </tbody>

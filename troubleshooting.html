@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Troubleshooting installation and operation &#8212; SAM Image Studio 1.4.5.3</title>
+    <title>Troubleshooting installation and operation &#8212; SAM Image Studio 1.4.5.4</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=80240416"></script>
+    <script src="_static/documentation_options.js?v=653a338b"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="User Manual" href="user-manual.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.4.5.3" />
+  <meta name="docsearch:version" content="1.4.5.4" />
   </head>
   
   
@@ -403,7 +403,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="troubleshooting-installation-and-operation">
 <h1>Troubleshooting installation and operation<a class="headerlink" href="#troubleshooting-installation-and-operation" title="Link to this heading">#</a></h1>
-<p>Use current installers from a complete version 1.4.5.3 source tree. They handle
+<p>Use current installers from a complete version 1.4.5.4 source tree. They handle
 the repeated dependency fixes encountered during v1.4.2 WSL installation. Rerunning
 in an existing dedicated environment is a supported repair; deleting that
 environment is usually unnecessary.</p>
@@ -539,6 +539,7 @@ memory on large models. Capture the actual error instead of assuming CPU fallbac
 <section id="unexpected-masks-cleaning-or-reconstruction">
 <h2>6. Unexpected masks, cleaning or reconstruction<a class="headerlink" href="#unexpected-masks-cleaning-or-reconstruction" title="Link to this heading">#</a></h2>
 <ul class="simple">
+<li><p>If an older build repeatedly shows <strong>The selected shape is smaller than one pixel</strong>, close it and reopen the original image in 1.4.5.4 or later. The updated app skips unusable saved area drafts and opens the saved objects and valid prompts.</p></li>
 <li><p>Check Mode, Scope, text and pending examples. <strong>Point</strong> hides ROI/single-object
 choices; choose an area tool. See <a class="reference internal" href="segmentation/scopes.html"><span class="std std-doc">scope diagrams</span></a>.</p></li>
 <li><p>Automatic grid ignores text. Single object should use empty text for its
